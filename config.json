@@ -1,6 +1,53 @@
 {
-  "url": "sqlite:///${caleydo_server.dataDir}/bioinfo.sqlite",
-  "databases": [
+  "url": "sqlite:///${caleydo_server.dataDir}/bioinfo_sample.sqlite",
+  "schema_tissue": "",
+  "schema_public": "",
+  "index_gene": "(t.rowid-1) as _index",
+  "index_tissue": "(t.rowid-1) as _index",
+  "views": {
+    "tissue": {
+      "table": "${targid_bioinfodb.schema_tissue}targid_tissue",
+      "idType": "Tissue",
+      "columns": {
+        "tissuename": { "label": "id", "type": "string" },
+        "species": { "label": "species", "type": "categorical" },
+        "tumortype": { "label": "tumortype", "type": "categorical" },
+        "organ": { "label": "organ", "type": "categorical" },
+        "gender": { "label": "gender", "type": "categorical" }
+      },
+      "column_query": "tissuename as id, species, tumortype, organ, gender",
 
-  ]
+      "queryCategories": "select distinct %(col)s as cat from ${table} where %(col)s is not null and %(col)s <> ''",
+
+      "query": "select ${targid_bioinfodb.index_tissue}, ${column_query} from ${table} t"
+    },
+    "tissue_filtered": {
+      "idType": "Tissue",
+      "query": "select ${targid_bioinfodb.index_tissue}, ${targid_bioinfodb.views.tissue.column_query} from ${targid_bioinfodb.schema_tissue}targid_tissue t WHERE species = :species",
+      "arguments": ["species"]
+    },
+    "enrichment": {
+      "idType": "Ensembl",
+      "query": "SELECT a.ensg as id, a.symbol, max(cnv) as score FROM ${targid_bioinfodb.schema_tissue}targid_copynumber ab INNER JOIN ${targid_bioinfodb.schema_public}targid_gene a ON a.ensg = ab.ensg INNER JOIN ${targid_bioinfodb.schema_tissue}targid_tissue b ON b.tissuename= ab.tissuename WHERE ab.cn = :cn AND b.tumortype = :tumortype AND cnv > (select max(cnv) FROM ${targid_bioinfodb.schema_tissue}targid_copynumber ab INNER JOIN ${targid_bioinfodb.schema_tissue}targid_tissue b ON b.tissuename = ab.tissuename WHERE ab.cn = :cn AND b.tumortype = :tumortype AND ab.ensg = :ensg) GROUP BY a.ensg",
+      "arguments": ["ensg", "cn", "tumortype"]
+    },
+    "onco_print": {
+      "idType": "Cellline",
+      "query": "SELECT d.ensg as id, d.tissuename, cn, d.log2fpkm as expr, d.dna_mutated FROM ${targid_bioinfodb.schema_tissue}targid_data d INNER JOIN targid_tissue c ON d.tissuename = c.tissuename WHERE c.tumortype = :tumortype AND d.ensg in (%(ensgs)s)",
+      "replacements": ["ensgs"],
+      "arguments": ["tumortype"]
+    },
+    "expression_score": {
+      "idType": "Ensembl",
+      "query": "SELECT ensg as id, %(agg)s(%(score)s) as score FROM ${targid_bioinfodb.schema_tissue}targid_expression ab INNER JOIN ${targid_bioinfodb.schema_tissue}targid_tissue b ON b.tissuename = ab.tissuename WHERE b.tumortype = :tumortype GROUP BY ab.ensg",
+      "replacements": ["agg", "score"],
+      "arguments": ["tumortype"]
+    },
+    "expression_table": {
+      "idType": "Cellline",
+      "query": "SELECT b.tissuename as id, b.species, b.organ, gender, %(score)s as score FROM ${targid_bioinfodb.schema_tissue}targid_expression ab INNER JOIN ${targid_bioinfodb.schema_tissue}targid_tissue b ON b.tissuename = ab.tissuename WHERE b.tumortype = :tumortype AND ab.ensg = :ensg",
+      "replacements": ["score"],
+      "arguments": ["tumortype","ensg"]
+    }
+  }
 }

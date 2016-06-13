@@ -2,7 +2,7 @@
   "name": "targid_celllinedb",
   "version": "0.0.1",
   "license" : "SEE LICENSE IN LICENSE",
-  "repository": "Caleydo/targid_celllinedb",
+  "repository": "Caleydo/targid_bioinfodb",
   "dependencies": {
   },
   "peerDependencies": {
