@@ -1,0 +1,6 @@
+{
+  "url": "sqlite:///${caleydo_server.dataDir}/bioinfo.sqlite",
+  "databases": [
+
+  ]
+}
