@@ -1,5 +1,5 @@
 {
-  "name": "targid_celllinedb",
+  "name": "targid_bioinfodb",
   "version": "0.0.1",
   "license" : "SEE LICENSE IN LICENSE",
   "repository": "Caleydo/targid_bioinfodb",
@@ -11,11 +11,125 @@
   "caleydo": {
     "plugins": {
       "web": [
-
+        {
+          "folder": "targid_celllinedb",
+          "id": "bioinfodb_tissue_start",
+          "name": "BioInfoDB Tissues",
+          "type": "targidStart",
+          "file": "CelllineList",
+          "factory": "createStartFactory",
+          "viewId": "bioinfodb_tissue_start",
+          "idtype": "Tissue",
+          "selection": "none",
+          "sampleType": "Tissue"
+        },
+        {
+          "folder": "targid_celllinedb",
+          "id": "bioinfodb_tissue_start",
+          "name": "BioInfoDB Tissues",
+          "type": "targidView",
+          "file": "CelllineList",
+          "factory": "createStart",
+          "idtype": "Tissue",
+          "selection": "none",
+          "sampleType": "Tissue"
+        },
+        {
+          "folder": "targid_celllinedb",
+          "type": "targidView",
+          "id": "bioinfodb_enrichment",
+          "name": "Tissue Enrichment",
+          "category": "dynamic",
+          "file": "Enrichment",
+          "idtype": "Ensembl",
+          "selection": "single",
+          "sampleType": "Tissue"
+        },
+        {
+          "folder": "targid_celllinedb",
+          "id": "bioinfodb_onco_print",
+          "name": "Tissue Oncoprint",
+          "type": "targidView",
+          "category": "static",
+          "file": "OncoPrint",
+          "factory": "create",
+          "idtype": "Ensembl",
+          "selection": "some",
+          "sampleType": "Tissue"
+        },
+        {
+          "folder": "targid_celllinedb",
+          "id": "bioinfodb_expressionscore",
+          "name": "Expression Tissue Score",
+          "type": "targidScore",
+          "file": "ExpressionScore",
+          "idtype": "Ensembl",
+          "sampleType": "Tissue"
+        },
+        {
+          "folder": "targid_celllinedb",
+          "id": "bioinfodb_expressiontable",
+          "name": "Expression Tissue Table",
+          "type": "targidView",
+          "file": "ExpressionScore",
+          "factory": "createTable",
+          "idtype": "Ensembl",
+          "selection": "some",
+          "sampleType": "Tissue"
+        },
+        {
+          "folder": "targid_celllinedb",
+          "id": "bioinfodb_expressionscore_inverted",
+          "name": "Expression Score",
+          "type": "targidScore",
+          "file": "InvertedExpressionScore",
+          "idtype": "Tissue",
+          "sampleType": "Tissue"
+        },
+        {
+          "folder": "targid_celllinedb",
+          "id": "bioinfodb_expressiontable_inverted",
+          "name": "Expression Table",
+          "type": "targidView",
+          "file": "InvertedExpressionScore",
+          "factory": "createTable",
+          "idtype": "Tissue",
+          "sampleType": "Tissue",
+          "selection": "some"
+        },
+        {
+          "folder": "targid_celllinedb",
+          "id": "bioinfodb_single_gene_score",
+          "name": "Single Gene Score",
+          "type": "targidScore",
+          "file": "SingleGeneScore",
+          "idtype": "Tissue",
+          "sampleType": "Tissue"
+        },
+        {
+          "folder": "targid_celllinedb",
+          "id": "bioinfodb_alteration_mutation_frequency",
+          "name": "Mutation Frequency",
+          "type": "targidScore",
+          "file": "AlterationFrequencyScore",
+          "idtype": "Ensembl",
+          "sampleType": "Tissue"
+        },
+        {
+          "folder": "targid_celllinedb",
+          "id": "bioinfodb_alteration_cnv_frequency",
+          "name": "CNV Frequency",
+          "type": "targidScore",
+          "file": "AlterationFrequencyScore",
+          "factory": "create_cnv",
+          "idtype": "Ensembl",
+          "sampleType": "Tissue"
+        }
       ],
       "python": [
         {
-          "type": "sql-database-definition",
+          "type": "targid-sql-database-definition",
+          "id": "bioinfodb",
           "configKey": "targid_bioinfodb"
         }
       ]
