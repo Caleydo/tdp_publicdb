@@ -1,5 +1,5 @@
 {
-  "url": "sqlite:///${caleydo_server.dataDir}/bioinfo_sample.sqlite",
+  "url": "sqlite:///${caleydo_server.dataDir}/bioinfodb_sample.sqlite",
   "schema_tissue": "",
   "schema_public": "",
   "index_gene": "(t.rowid-1) as _index",
@@ -17,37 +17,173 @@
       },
       "column_query": "tissuename as id, species, tumortype, organ, gender",
 
-      "queryCategories": "select distinct %(col)s as cat from ${table} where %(col)s is not null and %(col)s <> ''",
+      "queryCategories": "SELECT distinct %(col)s as cat FROM ${table} WHERE %(col)s is not null AND %(col)s <> ''",
 
-      "query": "select ${targid_bioinfodb.index_tissue}, ${column_query} from ${table} t"
+      "query": "SELECT ${targid_bioinfodb.index_tissue}, ${column_query} FROM ${table} t"
     },
     "tissue_filtered": {
       "idType": "Tissue",
-      "query": "select ${targid_bioinfodb.index_tissue}, ${targid_bioinfodb.views.tissue.column_query} from ${targid_bioinfodb.schema_tissue}targid_tissue t WHERE species = :species",
+      "query": [
+        "SELECT ${targid_bioinfodb.index_tissue}, ${targid_bioinfodb.views.tissue.column_query} ",
+        "FROM ${targid_bioinfodb.schema_tissue}targid_tissue t ",
+        "WHERE species = :species"
+      ],
       "arguments": ["species"]
     },
     "enrichment": {
       "idType": "Ensembl",
-      "query": "SELECT a.ensg as id, a.symbol, max(cnv) as score FROM ${targid_bioinfodb.schema_tissue}targid_copynumber ab INNER JOIN ${targid_bioinfodb.schema_public}targid_gene a ON a.ensg = ab.ensg INNER JOIN ${targid_bioinfodb.schema_tissue}targid_tissue b ON b.tissuename= ab.tissuename WHERE ab.cn = :cn AND b.tumortype = :tumortype AND cnv > (select max(cnv) FROM ${targid_bioinfodb.schema_tissue}targid_copynumber ab INNER JOIN ${targid_bioinfodb.schema_tissue}targid_tissue b ON b.tissuename = ab.tissuename WHERE ab.cn = :cn AND b.tumortype = :tumortype AND ab.ensg = :ensg) GROUP BY a.ensg",
+      "query": [
+        "SELECT a.ensg as id, a.symbol, max(cnv) as score ",
+        "FROM ${targid_bioinfodb.schema_tissue}targid_copynumber ab INNER JOIN ${targid_bioinfodb.schema_public}targid_gene a ON a.ensg = ab.ensg INNER JOIN ${targid_bioinfodb.schema_tissue}targid_tissue b ON b.tissuename= ab.tissuename ",
+        "WHERE ab.cn = :cn AND b.tumortype = :tumortype AND cnv > ",
+        "(SELECT max(cnv) FROM ${targid_bioinfodb.schema_tissue}targid_copynumber ab INNER JOIN ${targid_bioinfodb.schema_tissue}targid_tissue b ON b.tissuename = ab.tissuename WHERE ab.cn = :cn AND b.tumortype = :tumortype AND ab.ensg = :ensg) ",
+        "GROUP BY a.ensg"
+      ],
       "arguments": ["ensg", "cn", "tumortype"]
     },
     "onco_print": {
       "idType": "Cellline",
-      "query": "SELECT d.ensg as id, d.tissuename, cn, d.log2fpkm as expr, d.dna_mutated FROM ${targid_bioinfodb.schema_tissue}targid_data d INNER JOIN targid_tissue c ON d.tissuename = c.tissuename WHERE c.tumortype = :tumortype AND d.ensg in (%(ensgs)s)",
+      "query": [
+        "SELECT d.ensg as id, d.tissuename, cn, d.log2fpkm as expr, d.dna_mutated, g.symbol ",
+        "FROM ${targid_bioinfodb.schema_tissue}targid_data d INNER JOIN ${targid_bioinfodb.schema_tissue}targid_tissue c ON d.tissuename = c.tissuename INNER JOIN ${targid_bioinfodb.schema_tissue}targid_gene g ON d.ensg = g.ensg ",
+        "WHERE c.tumortype = :tumortype AND d.ensg in (%(ensgs)s)"
+      ],
       "replacements": ["ensgs"],
       "arguments": ["tumortype"]
     },
     "expression_score": {
       "idType": "Ensembl",
-      "query": "SELECT ensg as id, %(agg)s(%(score)s) as score FROM ${targid_bioinfodb.schema_tissue}targid_expression ab INNER JOIN ${targid_bioinfodb.schema_tissue}targid_tissue b ON b.tissuename = ab.tissuename WHERE b.tumortype = :tumortype GROUP BY ab.ensg",
+      "query": [
+        "SELECT ensg as id, %(agg)s(%(score)s) as score ",
+        "FROM ${targid_bioinfodb.schema_tissue}targid_expression ab INNER JOIN ${targid_bioinfodb.schema_tissue}targid_tissue b ON b.tissuename = ab.tissuename ",
+        "WHERE b.tumortype = :tumortype ",
+        "GROUP BY ab.ensg"
+      ],
       "replacements": ["agg", "score"],
       "arguments": ["tumortype"]
     },
+    "expression_score_all": {
+      "idType": "Ensembl",
+      "query": [
+        "SELECT ensg as id, %(agg)s(%(score)s) as score ",
+        "FROM ${targid_bioinfodb.schema_tissue}targid_expression ab ",
+        "GROUP BY ab.ensg"
+      ],
+      "replacements": ["agg", "score"]
+    },
     "expression_table": {
       "idType": "Cellline",
-      "query": "SELECT b.tissuename as id, b.species, b.organ, gender, %(score)s as score FROM ${targid_bioinfodb.schema_tissue}targid_expression ab INNER JOIN ${targid_bioinfodb.schema_tissue}targid_tissue b ON b.tissuename = ab.tissuename WHERE b.tumortype = :tumortype AND ab.ensg = :ensg",
-      "replacements": ["score"],
-      "arguments": ["tumortype","ensg"]
+      "query": [
+        "SELECT b.tissuename as id, b.species, b.organ, gender, ensg, %(score)s as score ",
+        "FROM ${targid_bioinfodb.schema_tissue}targid_expression ab INNER JOIN ${targid_bioinfodb.schema_tissue}targid_tissue b ON b.tissuename = ab.tissuename ",
+        "WHERE b.tumortype = :tumortype AND ab.ensg in (%(ensgs)s)"
+      ],
+      "replacements": ["score","ensgs"],
+      "arguments": ["tumortype"]
+    },
+    "expression_table_all": {
+      "idType": "Cellline",
+      "query": [
+        "SELECT b.tissuename as id, b.species, b.organ, gender, ensg, %(score)s as score ",
+        "FROM ${targid_bioinfodb.schema_tissue}targid_expression ab INNER JOIN ${targid_bioinfodb.schema_tissue}targid_tissue b ON b.tissuename = ab.tissuename ",
+        "WHERE ab.ensg in (%(ensgs)s)"
+      ],
+      "replacements": ["score","ensgs"]
+    },
+    "expression_score_inverted": {
+      "idType": "Cellline",
+      "query": [
+        "SELECT tissuename as id, %(agg)s(%(score)s) as score ",
+        "FROM ${targid_bioinfodb.schema_tissue}targid_expression ab INNER JOIN ${targid_bioinfodb.schema_tissue}targid_gene b ON b.ensg = ab.ensg ",
+        "WHERE b.biotype = :biotype ",
+        "GROUP BY ab.tissuename"
+      ],
+      "replacements": ["agg", "score"],
+      "arguments": ["biotype"]
+    },
+    "expression_score_inverted_all": {
+      "idType": "Cellline",
+      "query": [
+        "SELECT tissuename as id, %(agg)s(%(score)s) as score ",
+        "FROM ${targid_bioinfodb.schema_tissue}targid_expression ab ",
+        "GROUP BY ab.tissuename"
+      ],
+      "replacements": ["agg", "score"]
+    },
+    "expression_table_inverted": {
+      "idType": "Ensembl",
+      "query": [
+        "SELECT b.ensg as id, b.symbol, b.species, b.strand, biotype, tissuename, %(score)s as score ",
+        "FROM ${targid_bioinfodb.schema_tissue}targid_expression ab INNER JOIN ${targid_bioinfodb.schema_tissue}targid_gene b ON b.ensg = ab.ensg ",
+        "WHERE b.biotype = :biotype AND ab.tissuename in (%(tissuenames)s)"
+      ],
+      "replacements": ["score", "tissuenames"],
+      "arguments": ["biotype"]
+    },
+    "expression_table_inverted_all": {
+      "idType": "Ensembl",
+      "query": [
+        "SELECT b.ensg as id, b.symbol, b.species, b.strand, biotype, tissuename, %(score)s as score ",
+        "FROM ${targid_bioinfodb.schema_tissue}targid_expression ab INNER JOIN ${targid_bioinfodb.schema_tissue}targid_gene b ON b.ensg = ab.ensg ",
+        "WHERE ab.tissuename in (%(tissuenames)s)"
+      ],
+      "replacements": ["score","tissuenames"]
+    },
+    "tissue_gene_copynumber": {
+      "idType": "Cellline",
+      "query": [
+        "SELECT tissuename as id, cnv as score ",
+        "FROM ${targid_bioinfodb.schema_tissue}targid_copynumber ",
+        "WHERE ensg = :ensg"
+      ],
+      "arguments": ["ensg"]
+    },
+    "tissue_gene_mutation": {
+      "idType": "Cellline",
+      "query": [
+        "SELECT tissuename as id, dnamutation as score ",
+        "FROM ${targid_bioinfodb.schema_tissue}targid_mutation ",
+        "WHERE ensg = :ensg"
+      ],
+      "arguments": ["ensg"]
+    },
+    "alteration_mutation_frequency": {
+      "idType": "Ensembl",
+      "query": [
+        "SELECT a.ensg as id, (ifnull(mut.mutated,0)+0.0) / a.total as score ",
+        "FROM (SELECT count(*) as total, ensg FROM ${targid_bioinfodb.schema_tissue}targid_mutation m INNER JOIN ${targid_bioinfodb.schema_tissue}targid_tissue c ON c.tissuename = m.tissuename WHERE c.tumortype = :tumortype group by ensg) a ",
+        "LEFT JOIN (SELECT count(*) as mutated, ensg FROM ${targid_bioinfodb.schema_tissue}targid_mutation m INNER JOIN ${targid_bioinfodb.schema_tissue}targid_tissue c ON c.tissuename = m.tissuename WHERE c.tumortype = :tumortype AND dna_mutated = 't' group by ensg) mut ",
+        "ON mut.ensg = a.ensg"
+      ],
+      "arguments": ["tumortype"]
+    },
+    "alteration_mutation_frequency_all": {
+      "idType": "Ensembl",
+      "query": [
+        "SELECT a.ensg as id, (ifnull(mut.mutated,0)+0.0) / a.total as score ",
+        "FROM (SELECT count(*) as total, ensg FROM ${targid_bioinfodb.schema_tissue}targid_mutation group by ensg) a ",
+        "LEFT JOIN (SELECT count(*) as mutated, ensg FROM ${targid_bioinfodb.schema_tissue}targid_mutation where dna_mutated = 't' group by ensg) mut ON mut.ensg = a.ensg"
+      ]
+    },
+    "alteration_cnv_frequency": {
+      "idType": "Ensembl",
+      "query": [
+        "SELECT a.ensg as id, (ifnull(mut.mutated,0)+0.0) / a.total as score ",
+        "FROM (SELECT count(*) as total, ensg FROM ${targid_bioinfodb.schema_tissue}targid_copynumber m INNER JOIN ${targid_bioinfodb.schema_tissue}targid_tissue c ON c.tissuename = m.tissuename WHERE c.tumortype = :tumortype group by ensg) a ",
+        "LEFT JOIN (SELECT count(*) as mutated, ensg FROM ${targid_bioinfodb.schema_tissue}targid_copynumber m INNER JOIN ${targid_bioinfodb.schema_tissue}targid_tissue c ON c.tissuename = m.tissuename WHERE c.tumortype = :tumortype AND cnv %(operator)s %(value)s group by ensg) mut ",
+        "ON mut.ensg = a.ensg"
+      ],
+      "replacements": ["operator", "value"],
+      "arguments": ["tumortype"]
+    },
+    "alteration_cnv_frequency_all": {
+      "idType": "Ensembl",
+      "query": [
+        "SELECT a.ensg as id, (ifnull(mut.mutated,0)+0.0) / a.total as score ",
+        "FROM (SELECT count(*) as total, ensg FROM ${targid_bioinfodb.schema_tissue}targid_copynumber group by ensg) a ",
+        "LEFT JOIN (SELECT count(*) as mutated, ensg FROM ${targid_bioinfodb.schema_tissue}targid_copynumber WHERE cnv %(operator)s %(value)s group by ensg) mut ON mut.ensg = a.ensg"
+      ],
+      "replacements": ["operator", "value"]
     }
   }
 }
