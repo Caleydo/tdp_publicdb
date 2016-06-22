@@ -19,7 +19,7 @@
 
       "queryCategories": "SELECT distinct %(col)s as cat FROM ${targid_bioinfodb.schema_tissue}_tissue WHERE %(col)s is not null AND %(col)s <> ''",
 
-      "query": "SELECT ${targid_bioinfodb.index_tissue}, ${column_query} FROM ${table} t"
+      "query": "SELECT ${targid_bioinfodb.index_tissue}, ${column_query} FROM ${targid_bioinfodb.schema_tissue}_tissue t"
     },
     "tissue_filtered": {
       "idType": "Tissue",
@@ -44,7 +44,7 @@
     "onco_print": {
       "idType": "Tissue",
       "query": [
-        "SELECT d.ensg as id, d.tissuename, cn, d.log2fpkm as expr, d.dna_mutated, g.symbol ",
+        "SELECT d.ensg as id, d.tissuename as name, cn, d.log2fpkm as expr, d.dna_mutated, g.symbol ",
         "FROM ${targid_bioinfodb.schema_tissue}_data d INNER JOIN ${targid_bioinfodb.schema_tissue}_tissue c ON d.tissuename = c.tissuename INNER JOIN ${targid_bioinfodb.schema_public}_gene g ON d.ensg = g.ensg ",
         "WHERE c.tumortype = :tumortype AND d.ensg in (%(ensgs)s)"
       ],
@@ -113,7 +113,7 @@
     "expression_table_inverted": {
       "idType": "Ensembl",
       "query": [
-        "SELECT b.ensg as id, b.symbol, b.species, b.strand, biotype, tissuename, %(score)s as score ",
+        "SELECT b.ensg as id, b.symbol, b.species, b.strand, biotype, tissuename as name, %(score)s as score ",
         "FROM ${targid_bioinfodb.schema_tissue}_expression ab INNER JOIN ${targid_bioinfodb.schema_public}_gene b ON b.ensg = ab.ensg ",
         "WHERE b.biotype = :biotype AND ab.tissuename in (%(names)s)"
       ],
@@ -123,7 +123,7 @@
     "expression_table_inverted_all": {
       "idType": "Ensembl",
       "query": [
-        "SELECT b.ensg as id, b.symbol, b.species, b.strand, biotype, tissuename, %(score)s as score ",
+        "SELECT b.ensg as id, b.symbol, b.species, b.strand, biotype, tissuename as name, %(score)s as score ",
         "FROM ${targid_bioinfodb.schema_tissue}_expression ab INNER JOIN ${targid_bioinfodb.schema_public}_gene b ON b.ensg = ab.ensg ",
         "WHERE ab.tissuename in (%(names)s)"
       ],
