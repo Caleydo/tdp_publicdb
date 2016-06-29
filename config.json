@@ -37,7 +37,7 @@
         "FROM ${targid_bioinfodb.schema_tissue}_copynumber ab INNER JOIN ${targid_bioinfodb.schema_public}targid_gene a ON a.ensg = ab.ensg INNER JOIN ${targid_bioinfodb.schema_tissue}_tissue b ON b.tissuename= ab.tissuename ",
         "WHERE ab.cn = :cn AND b.tumortype = :tumortype AND cnv > ",
         "(SELECT max(cnv) FROM ${targid_bioinfodb.schema_tissue}_copynumber ab INNER JOIN ${targid_bioinfodb.schema_tissue}_tissue b ON b.tissuename = ab.tissuename WHERE ab.cn = :cn AND b.tumortype = :tumortype AND ab.ensg = :ensg) ",
-        "GROUP BY a.ensg"
+        "GROUP BY a.ensg, a.symbol"
       ],
       "arguments": ["ensg", "cn", "tumortype"]
     },
