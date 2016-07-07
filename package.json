@@ -60,7 +60,7 @@
         {
           "folder": "targid_celllinedb",
           "id": "bioinfodb_expressionscore",
-          "name": "Expression Tissue Score",
+          "name": "Expression Score (Tissue)",
           "type": "targidScore",
           "file": "ExpressionScore",
           "idtype": "Ensembl",
@@ -69,7 +69,7 @@
         {
           "folder": "targid_celllinedb",
           "id": "bioinfodb_expressiontable",
-          "name": "Expression Tissue Table",
+          "name": "Expression Table (Tissue)",
           "type": "targidView",
           "file": "ExpressionScore",
           "factory": "createTable",
@@ -80,7 +80,7 @@
         {
           "folder": "targid_celllinedb",
           "id": "bioinfodb_expressionscore_inverted",
-          "name": "Expression Score",
+          "name": "Expression Score (Tissue)",
           "type": "targidScore",
           "file": "InvertedExpressionScore",
           "idtype": "Tissue",
@@ -89,7 +89,7 @@
         {
           "folder": "targid_celllinedb",
           "id": "bioinfodb_expressiontable_inverted",
-          "name": "Expression Table",
+          "name": "Expression Table (Tissue)",
           "type": "targidView",
           "file": "InvertedExpressionScore",
           "factory": "createTable",
@@ -100,7 +100,7 @@
         {
           "folder": "targid_celllinedb",
           "id": "bioinfodb_single_gene_score",
-          "name": "Single Gene Score",
+          "name": "Single Gene Score (Tissue)",
           "type": "targidScore",
           "file": "SingleGeneScore",
           "idtype": "Tissue",
@@ -109,7 +109,7 @@
         {
           "folder": "targid_celllinedb",
           "id": "bioinfodb_alteration_mutation_frequency",
-          "name": "Mutation Frequency",
+          "name": "Mutation Frequency (Tissue)",
           "type": "targidScore",
           "file": "AlterationFrequencyScore",
           "idtype": "Ensembl",
@@ -118,7 +118,7 @@
         {
           "folder": "targid_celllinedb",
           "id": "bioinfodb_alteration_cnv_frequency",
-          "name": "CNV Frequency",
+          "name": "CNV Frequency (Tissue)",
           "type": "targidScore",
           "file": "AlterationFrequencyScore",
           "factory": "create_cnv",
