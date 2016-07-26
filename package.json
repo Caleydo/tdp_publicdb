@@ -59,28 +59,19 @@
         },
         {
           "folder": "targid_celllinedb",
-          "id": "bioinfodb_expressionscore",
-          "name": "Tissue Expression Score",
-          "type": "targidScore",
-          "file": "ExpressionScore",
-          "idtype": "Ensembl",
-          "sampleType": "Tissue"
-        },
-        {
-          "folder": "targid_celllinedb",
           "id": "bioinfodb_expressiontable",
           "name": "Tissue Expression",
           "type": "targidView",
-          "file": "ExpressionScore",
+          "file": "ExpressionTable",
           "factory": "createTable",
           "idtype": "Ensembl",
-          "selection": "some",
-          "sampleType": "Tissue"
+          "selection": "some"
         },
+
         {
           "folder": "targid_celllinedb",
           "id": "bioinfodb_expressionscore_inverted",
-          "name": "Tissue Expression Score",
+          "name": "Expression Score",
           "type": "targidScore",
           "file": "InvertedExpressionScore",
           "idtype": "Tissue",
@@ -100,29 +91,10 @@
         {
           "folder": "targid_celllinedb",
           "id": "bioinfodb_single_gene_score",
-          "name": "Tissue Single Gene Score",
+          "name": "Single Gene Score",
           "type": "targidScore",
           "file": "SingleGeneScore",
           "idtype": "Tissue",
-          "sampleType": "Tissue"
-        },
-        {
-          "folder": "targid_celllinedb",
-          "id": "bioinfodb_alteration_mutation_frequency",
-          "name": "Tissue Mutation Frequency",
-          "type": "targidScore",
-          "file": "AlterationFrequencyScore",
-          "idtype": "Ensembl",
-          "sampleType": "Tissue"
-        },
-        {
-          "folder": "targid_celllinedb",
-          "id": "bioinfodb_alteration_cnv_frequency",
-          "name": "Tissue CNV Frequency",
-          "type": "targidScore",
-          "file": "AlterationFrequencyScore",
-          "factory": "create_cnv",
-          "idtype": "Ensembl",
           "sampleType": "Tissue"
         }
       ],

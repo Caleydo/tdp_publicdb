@@ -54,22 +54,42 @@
     "expression_score": {
       "idType": "Ensembl",
       "query": [
-        "SELECT ensg as id, %(agg)s(%(score)s) as score ",
+        "SELECT ensg as id, %(agg)s(%(data_subtype)s) as score ",
         "FROM ${targid_bioinfodb.schema_tissue}_expression ab INNER JOIN ${targid_bioinfodb.schema_tissue}_tissue b ON b.tissuename = ab.tissuename ",
         "WHERE b.tumortype = :tumortype ",
         "GROUP BY ab.ensg"
       ],
-      "replacements": ["agg", "score"],
+      "replacements": ["agg", "data_subtype"],
       "arguments": ["tumortype"]
     },
     "expression_score_all": {
       "idType": "Ensembl",
       "query": [
-        "SELECT ensg as id, %(agg)s(%(score)s) as score ",
+        "SELECT ensg as id, %(agg)s(%(data_subtype)s) as score ",
         "FROM ${targid_bioinfodb.schema_tissue}_expression ab ",
         "GROUP BY ab.ensg"
       ],
-      "replacements": ["agg", "score"]
+      "replacements": ["agg", "data_subtype"]
+    },
+    "copynumber_score": {
+      "idType": "Ensembl",
+      "query": [
+        "SELECT ensg as id, %(agg)s(%(data_subtype)s) as score ",
+        "FROM ${targid_bioinfodb.schema_tissue}_copynumber ab INNER JOIN ${targid_bioinfodb.schema_tissue}_tissue b ON b.tissuename = ab.tissuename ",
+        "WHERE b.tumortype = :tumortype ",
+        "GROUP BY ab.ensg"
+      ],
+      "replacements": ["agg", "data_subtype"],
+      "arguments": ["tumortype"]
+    },
+    "copynumber_score_all": {
+      "idType": "Ensembl",
+      "query": [
+        "SELECT ensg as id, %(agg)s(%(data_subtype)s) as score ",
+        "FROM ${targid_bioinfodb.schema_tissue}_copynumber ab ",
+        "GROUP BY ab.ensg"
+      ],
+      "replacements": ["agg", "data_subtype"]
     },
     "expression_table": {
       "idType": "Tissue",
