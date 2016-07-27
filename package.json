@@ -42,8 +42,8 @@
           "category": "dynamic",
           "file": "Enrichment",
           "idtype": "Ensembl",
-          "selection": "single",
-          "sampleType": "Tissue"
+          "sampleType": "Tissue",
+          "selection": "single"
         },
         {
           "folder": "targid_celllinedb",
