@@ -66,7 +66,7 @@
       "idType": "Ensembl",
       "query": [
         "SELECT a.ensg as id, a.symbol, max(cnv) as score ",
-        "FROM ${targid_bioinfodb.schema_tissue}_copynumber ab INNER JOIN ${targid_bioinfodb.schema_public}targid_gene a ON a.ensg = ab.ensg INNER JOIN ${targid_bioinfodb.schema_tissue}_tissue b ON b.tissuename= ab.tissuename ",
+        "FROM ${targid_bioinfodb.schema_tissue}_copynumber ab INNER JOIN ${targid_bioinfodb.schema_public}_gene a ON a.ensg = ab.ensg INNER JOIN ${targid_bioinfodb.schema_tissue}_tissue b ON b.tissuename= ab.tissuename ",
         "WHERE ab.cn = :cn AND b.tumortype = :tumortype AND cnv > ",
         "(SELECT max(cnv) FROM ${targid_bioinfodb.schema_tissue}_copynumber ab INNER JOIN ${targid_bioinfodb.schema_tissue}_tissue b ON b.tissuename = ab.tissuename WHERE ab.cn = :cn AND b.tumortype = :tumortype AND ab.ensg = :ensg) ",
         "GROUP BY a.ensg, a.symbol"
@@ -77,7 +77,7 @@
       "idType": "Ensembl",
       "query": [
         "SELECT a.ensg as id, a.symbol, max(cnv) as score ",
-        "FROM ${targid_bioinfodb.schema_tissue}_copynumber ab INNER JOIN ${targid_bioinfodb.schema_public}targid_gene a ON a.ensg = ab.ensg INNER JOIN ${targid_bioinfodb.schema_tissue}_tissue b ON b.tissuename= ab.tissuename ",
+        "FROM ${targid_bioinfodb.schema_tissue}_copynumber ab INNER JOIN ${targid_bioinfodb.schema_public}_gene a ON a.ensg = ab.ensg INNER JOIN ${targid_bioinfodb.schema_tissue}_tissue b ON b.tissuename= ab.tissuename ",
         "WHERE ab.cn = :cn AND cnv > ",
         "(SELECT max(cnv) FROM ${targid_bioinfodb.schema_tissue}_copynumber ab INNER JOIN ${targid_bioinfodb.schema_tissue}_tissue b ON b.tissuename = ab.tissuename WHERE ab.cn = :cn AND ab.ensg = :ensg) ",
         "GROUP BY a.ensg, a.symbol"
@@ -93,6 +93,15 @@
       ],
       "replacements": ["ensgs"],
       "arguments": ["tumortype"]
+    },
+    "onco_print_all": {
+      "idType": "Tissue",
+      "query": [
+        "SELECT d.ensg as id, d.tissuename as name, cn, d.log2fpkm as expr, d.dna_mutated, g.symbol ",
+        "FROM ${targid_bioinfodb.schema_tissue}_data d INNER JOIN ${targid_bioinfodb.schema_tissue}_tissue c ON d.tissuename = c.tissuename INNER JOIN ${targid_bioinfodb.schema_public}_gene g ON d.ensg = g.ensg ",
+        "WHERE d.ensg in (%(ensgs)s)"
+      ],
+      "replacements": ["ensgs"]
     },
     "expression_score": {
       "idType": "Ensembl",
