@@ -14,8 +14,8 @@
         {
           "folder": "targid_celllinedb",
           "id": "bioinfodb_tissue_start",
-          "name": "BioInfoDB Tissues",
-          "type": "targidStart",
+          "name": "Tissues",
+          "type": "targidStartEntryPoint",
           "file": "CelllineList",
           "factory": "createStartFactory",
           "viewId": "bioinfodb_tissue_start",
