@@ -21,6 +21,38 @@
 
       "query": "SELECT ${targid_bioinfodb.index_tissue}, ${column_query} FROM ${targid_bioinfodb.schema_tissue}_tissue t"
     },
+    "gene": {
+      "table": "targid_gene",
+      "idType": "Ensembl",
+      "columns": {
+        "ensg": { "label": "id", "type": "string" },
+        "symbol": { "label": "symbol", "type": "string" },
+        "species":{ "label": "species", "type": "categorical" },
+        "chromosome":{ "label": "chromosome", "type": "string" },
+        "strand": { "label": "strand", "type": "number" },
+        "biotype": { "label": "biotype", "type": "categorical" }
+      },
+      "column_query": "ensg as id, symbol, species, chromosome, strand, biotype",
+
+      "queryStats": "SELECT min(strand) as strand_min, max(strand) as strand_max FROM ${table}",
+      "queryCategories": "SELECT DISTINCT %(col)s as cat FROM ${table} where %(col)s is not null and %(col)s <> ''",
+
+      "query": "SELECT ${targid_bioinfodb.index_gene}, ${column_query} FROM ${table} t ORDER BY t.symbol ASC"
+    },
+    "gene_filtered": {
+      "idType": "Ensembl",
+      "query": "SELECT ${targid_bioinfodb.index_gene}, ${targid_bioinfodb.views.gene.column_query} FROM targid_gene t WHERE species = :species ORDER BY symbol ASC",
+      "arguments": ["species"]
+    },
+    "gene_simple": {
+      "idType": "Ensembl",
+      "query": "SELECT ensg as id, symbol FROM targid_gene ORDER BY symbol ASC"
+    },
+    "gene_map_ensgs": {
+      "idType": "Ensembl",
+      "query": "SELECT ensg as id, symbol FROM targid_gene WHERE ensg in (%(ensgs)s) ORDER BY symbol ASC",
+      "replacements": ["ensgs"]
+    },
     "tissue_filtered": {
       "idType": "Tissue",
       "query": [
@@ -40,6 +72,17 @@
         "GROUP BY a.ensg, a.symbol"
       ],
       "arguments": ["ensg", "cn", "tumortype"]
+    },
+    "enrichment_all": {
+      "idType": "Ensembl",
+      "query": [
+        "SELECT a.ensg as id, a.symbol, max(cnv) as score ",
+        "FROM ${targid_bioinfodb.schema_tissue}_copynumber ab INNER JOIN ${targid_bioinfodb.schema_public}targid_gene a ON a.ensg = ab.ensg INNER JOIN ${targid_bioinfodb.schema_tissue}_tissue b ON b.tissuename= ab.tissuename ",
+        "WHERE ab.cn = :cn AND cnv > ",
+        "(SELECT max(cnv) FROM ${targid_bioinfodb.schema_tissue}_copynumber ab INNER JOIN ${targid_bioinfodb.schema_tissue}_tissue b ON b.tissuename = ab.tissuename WHERE ab.cn = :cn AND ab.ensg = :ensg) ",
+        "GROUP BY a.ensg, a.symbol"
+      ],
+      "arguments": ["ensg", "cn"]
     },
     "onco_print": {
       "idType": "Tissue",
@@ -94,21 +137,21 @@
     "expression_table": {
       "idType": "Tissue",
       "query": [
-        "SELECT b.tissuename as id, b.species, b.organ, gender, ensg, %(score)s as score ",
+        "SELECT b.tissuename as id, b.species, b.organ, gender, ensg, %(data_subtype)s as score ",
         "FROM ${targid_bioinfodb.schema_tissue}_expression ab INNER JOIN ${targid_bioinfodb.schema_tissue}_tissue b ON b.tissuename = ab.tissuename ",
         "WHERE b.tumortype = :tumortype AND ab.ensg in (%(ensgs)s)"
       ],
-      "replacements": ["score","ensgs"],
+      "replacements": ["data_subtype","ensgs"],
       "arguments": ["tumortype"]
     },
     "expression_table_all": {
       "idType": "Tissue",
       "query": [
-        "SELECT b.tissuename as id, b.species, b.organ, gender, ensg, %(score)s as score ",
+        "SELECT b.tissuename as id, b.species, b.organ, gender, ensg, %(data_subtype)s as score ",
         "FROM ${targid_bioinfodb.schema_tissue}_expression ab INNER JOIN ${targid_bioinfodb.schema_tissue}_tissue b ON b.tissuename = ab.tissuename ",
         "WHERE ab.ensg in (%(ensgs)s)"
       ],
-      "replacements": ["score","ensgs"]
+      "replacements": ["data_subtype","ensgs"]
     },
     "expression_score_inverted": {
       "idType": "Tissue",

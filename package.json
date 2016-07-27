@@ -65,9 +65,9 @@
           "file": "ExpressionTable",
           "factory": "createTable",
           "idtype": "Ensembl",
+          "sampleType": "Tissue",
           "selection": "some"
         },
-
         {
           "folder": "targid_celllinedb",
           "id": "bioinfodb_expressionscore_inverted",
