@@ -256,6 +256,52 @@
         "LEFT JOIN (SELECT count(*) as mutated, ensg FROM ${targid_bioinfodb.schema_tissue}_copynumber WHERE cnv %(operator)s %(value)s group by ensg) mut ON mut.ensg = a.ensg"
       ],
       "replacements": ["operator", "value"]
+    },
+     "co_expression": {
+      "idType": "Ensembl",
+      "query": [
+        "SELECT a.ensg as id, g.symbol, c.tissuename, a.log2fpkm as expression",
+        "FROM ${targid_bioinfodb.schema_tissue}_expression as a ",
+        "INNER JOIN ${targid_bioinfodb.schema_public}_gene g ON a.ensg = g.ensg ",
+        "INNER JOIN ${targid_bioinfodb.schema_tissue}_tissue c ON a.tissuename = c.tissuename",
+       "WHERE c.tumortype = :tumortype AND a.ensg = :ensg"
+      ],
+      "arguments": ["ensg", "tumortype"]
+    },
+    "co_expression_all": {
+      "idType": "Ensembl",
+      "query": [
+        "SELECT a.ensg as id, g.symbol, c.tissuename, a.log2fpkm as expression",
+        "FROM ${targid_bioinfodb.schema_tissue}_expression as a ",
+        "INNER JOIN ${targid_bioinfodb.schema_public}_gene g ON a.ensg = g.ensg ",
+        "INNER JOIN ${targid_bioinfodb.schema_tissue}_tissue c ON a.tissuename = c.tissuename",
+        "WHERE a.ensg = :ensg"
+      ],
+      "arguments": ["ensg"]
+    },
+    "expression_vs_copynumber": {
+      "idType": "Ensembl",
+      "query": [
+        "SELECT a.ensg as id, g.symbol, c.tissuename, a.log2fpkm as expression, b.cnv as cn",
+        "FROM ${targid_bioinfodb.schema_tissue}_expression as a ",
+        "INNER JOIN ${targid_bioinfodb.schema_tissue}_copynumber as b ON a.ensg = b.ensg AND a.tissuename = b.tissuename",
+        "INNER JOIN ${targid_bioinfodb.schema_public}_gene g ON a.ensg = g.ensg ",
+        "INNER JOIN ${targid_bioinfodb.schema_tissue}_tissue c ON a.tissuename = c.tissuename",
+        "WHERE c.tumortype = :tumortype AND a.ensg = :ensg"
+      ],
+      "arguments": ["ensg", "tumortype"]
+    },
+    "expression_vs_copynumber_all": {
+      "idType": "Ensembl",
+      "query": [
+        "SELECT a.ensg as id, g.symbol, c.tissuename, a.log2fpkm as expression, b.cnv as cn",
+        "FROM ${targid_bioinfodb.schema_tissue}_expression as a ",
+        "INNER JOIN ${targid_bioinfodb.schema_tissue}_copynumber as b ON a.ensg = b.ensg AND a.tissuename = b.tissuename",
+        "INNER JOIN ${targid_bioinfodb.schema_public}_gene g ON a.ensg = g.ensg ",
+        "INNER JOIN ${targid_bioinfodb.schema_tissue}_tissue c ON a.tissuename = c.tissuename",
+        "WHERE a.ensg = :ensg"
+      ],
+      "arguments": ["ensg"]
     }
   }
 }

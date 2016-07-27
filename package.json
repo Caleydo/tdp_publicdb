@@ -36,40 +36,6 @@
         },
         {
           "folder": "targid_celllinedb",
-          "type": "targidView",
-          "id": "bioinfodb_enrichment",
-          "name": "Tissue Enrichment",
-          "category": "dynamic",
-          "file": "Enrichment",
-          "idtype": "Ensembl",
-          "sampleType": "Tissue",
-          "selection": "single"
-        },
-        {
-          "folder": "targid_celllinedb",
-          "id": "bioinfodb_onco_print",
-          "name": "Tissue Oncoprint",
-          "type": "targidView",
-          "category": "static",
-          "file": "OncoPrint",
-          "factory": "create",
-          "idtype": "Ensembl",
-          "selection": "some",
-          "sampleType": "Tissue"
-        },
-        {
-          "folder": "targid_celllinedb",
-          "id": "bioinfodb_expressiontable",
-          "name": "Tissue Expression",
-          "type": "targidView",
-          "file": "ExpressionTable",
-          "factory": "createTable",
-          "idtype": "Ensembl",
-          "sampleType": "Tissue",
-          "selection": "some"
-        },
-        {
-          "folder": "targid_celllinedb",
           "id": "bioinfodb_expressionscore_inverted",
           "name": "Expression Score",
           "type": "targidScore",
@@ -80,7 +46,7 @@
         {
           "folder": "targid_celllinedb",
           "id": "bioinfodb_expressiontable_inverted",
-          "name": "Tissue Expression",
+          "name": "Expression",
           "type": "targidView",
           "file": "InvertedExpressionScore",
           "factory": "createTable",
