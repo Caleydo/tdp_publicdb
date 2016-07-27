@@ -94,6 +94,15 @@
       "replacements": ["ensgs"],
       "arguments": ["tumortype"]
     },
+    "onco_print_all": {
+      "idType": "Tissue",
+      "query": [
+        "SELECT d.ensg as id, d.tissuename as name, cn, d.log2fpkm as expr, d.dna_mutated, g.symbol ",
+        "FROM ${targid_bioinfodb.schema_tissue}_data d INNER JOIN ${targid_bioinfodb.schema_tissue}_tissue c ON d.tissuename = c.tissuename INNER JOIN ${targid_bioinfodb.schema_public}_gene g ON d.ensg = g.ensg ",
+        "WHERE d.ensg in (%(ensgs)s)"
+      ],
+      "replacements": ["ensgs"]
+    },
     "expression_score": {
       "idType": "Ensembl",
       "query": [
