@@ -165,41 +165,41 @@
     "expression_score_inverted": {
       "idType": "Tissue",
       "query": [
-        "SELECT tissuename as id, %(agg)s(%(score)s) as score ",
+        "SELECT tissuename as id, %(agg)s(%(data_subtype)s) as score ",
         "FROM ${targid_bioinfodb.schema_tissue}_expression ab INNER JOIN ${targid_bioinfodb.schema_public}_gene b ON b.ensg = ab.ensg ",
         "WHERE b.biotype = :biotype ",
         "GROUP BY ab.tissuename"
       ],
-      "replacements": ["agg", "score"],
+      "replacements": ["agg", "data_subtype"],
       "arguments": ["biotype"]
     },
     "expression_score_inverted_all": {
       "idType": "Tissue",
       "query": [
-        "SELECT tissuename as id, %(agg)s(%(score)s) as score ",
+        "SELECT tissuename as id, %(agg)s(%(data_subtype)s) as score ",
         "FROM ${targid_bioinfodb.schema_tissue}_expression ab ",
         "GROUP BY ab.tissuename"
       ],
-      "replacements": ["agg", "score"]
+      "replacements": ["agg", "data_subtype"]
     },
     "expression_table_inverted": {
       "idType": "Ensembl",
       "query": [
-        "SELECT b.ensg as id, b.symbol, b.species, b.strand, biotype, tissuename as name, %(score)s as score ",
+        "SELECT b.ensg as id, b.symbol, b.species, b.strand, biotype, tissuename as name, %(data_subtype)s as score ",
         "FROM ${targid_bioinfodb.schema_tissue}_expression ab INNER JOIN ${targid_bioinfodb.schema_public}_gene b ON b.ensg = ab.ensg ",
         "WHERE b.biotype = :biotype AND ab.tissuename in (%(names)s)"
       ],
-      "replacements": ["score", "names"],
+      "replacements": ["data_subtype", "names"],
       "arguments": ["biotype"]
     },
     "expression_table_inverted_all": {
       "idType": "Ensembl",
       "query": [
-        "SELECT b.ensg as id, b.symbol, b.species, b.strand, biotype, tissuename as name, %(score)s as score ",
+        "SELECT b.ensg as id, b.symbol, b.species, b.strand, biotype, tissuename as name, %(data_subtype)s as score ",
         "FROM ${targid_bioinfodb.schema_tissue}_expression ab INNER JOIN ${targid_bioinfodb.schema_public}_gene b ON b.ensg = ab.ensg ",
         "WHERE ab.tissuename in (%(names)s)"
       ],
-      "replacements": ["score","names"]
+      "replacements": ["data_subtype","names"]
     },
     "tissue_gene_copynumber": {
       "idType": "Tissue",

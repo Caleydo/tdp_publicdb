@@ -48,7 +48,7 @@
           "id": "bioinfodb_expressiontable_inverted",
           "name": "Expression",
           "type": "targidView",
-          "file": "InvertedExpressionScore",
+          "file": "InvertedExpressionTable",
           "factory": "createTable",
           "idtype": "Tissue",
           "sampleType": "Tissue",
