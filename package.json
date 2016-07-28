@@ -26,7 +26,7 @@
         {
           "folder": "targid_celllinedb",
           "id": "bioinfodb_tissue_start",
-          "name": "BioInfoDB Tissues",
+          "name": "Tissues",
           "type": "targidView",
           "file": "CelllineList",
           "factory": "createStart",
