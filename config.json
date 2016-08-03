@@ -41,16 +41,16 @@
     },
     "gene_filtered": {
       "idType": "Ensembl",
-      "query": "SELECT ${targid_bioinfodb.index_gene}, ${targid_bioinfodb.views.gene.column_query} FROM targid_gene t WHERE species = :species ORDER BY symbol ASC",
+      "query": "SELECT ${targid_bioinfodb.index_gene}, ${targid_bioinfodb.views.gene.column_query} FROM ${targid_bioinfodb.schema_public}_gene t WHERE species = :species ORDER BY symbol ASC",
       "arguments": ["species"]
     },
     "gene_simple": {
       "idType": "Ensembl",
-      "query": "SELECT ensg as id, symbol FROM targid_gene ORDER BY symbol ASC"
+      "query": "SELECT ensg as id, symbol FROM ${targid_bioinfodb.schema_public}_gene ORDER BY symbol ASC"
     },
     "gene_map_ensgs": {
       "idType": "Ensembl",
-      "query": "SELECT ensg as id, symbol FROM targid_gene WHERE ensg in (%(ensgs)s) ORDER BY symbol ASC",
+      "query": "SELECT ensg as id, symbol FROM ${targid_bioinfodb.schema_public}_gene WHERE ensg in (%(ensgs)s) ORDER BY symbol ASC",
       "replacements": ["ensgs"]
     },
     "tissue_filtered": {
