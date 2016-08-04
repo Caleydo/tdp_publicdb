@@ -34,7 +34,7 @@
       },
       "column_query": "ensg as id, symbol, species, chromosome, strand, biotype",
 
-      "queryStats": "SELECT min(strand) as strand_min, max(strand) as strand_max FROM ${table}",
+      "queryStats": "SELECT min(strand) as strand_min, max(strand) as strand_max, FROM ${table}",
       "queryCategories": "SELECT DISTINCT %(col)s as cat FROM ${table} where %(col)s is not null and %(col)s <> ''",
 
       "query": "SELECT ${targid_bioinfodb.index_gene}, ${column_query} FROM ${table} t ORDER BY t.symbol ASC"
@@ -65,22 +65,20 @@
     "enrichment": {
       "idType": "Ensembl",
       "query": [
-        "SELECT a.ensg as id, a.symbol, max(cnv) as score ",
-        "FROM ${targid_bioinfodb.schema_tissue}_copynumber ab INNER JOIN ${targid_bioinfodb.schema_public}_gene a ON a.ensg = ab.ensg INNER JOIN ${targid_bioinfodb.schema_tissue}_tissue b ON b.tissuename= ab.tissuename ",
-        "WHERE ab.cn = :cn AND b.tumortype = :tumortype AND cnv > ",
-        "(SELECT max(cnv) FROM ${targid_bioinfodb.schema_tissue}_copynumber ab INNER JOIN ${targid_bioinfodb.schema_tissue}_tissue b ON b.tissuename = ab.tissuename WHERE ab.cn = :cn AND b.tumortype = :tumortype AND ab.ensg = :ensg) ",
-        "GROUP BY a.ensg, a.symbol"
+        "SELECT cn.ensg as id, symbol, 2*pow(2, max(cnv)) as score ",
+        "FROM ${targid_bioinfodb.schema_tissue}_copynumber2 cn JOIN ${targid_bioinfodb.schema_public}_gene g on g.ensg = cn.ensg ",
+        "WHERE cnv > (SELECT max(cnv) FROM ${targid_bioinfodb.schema_tissue}_copynumber2 ab INNER JOIN ${targid_bioinfodb.schema_tissue}_tissue b ON b.tissuename = ab.tissuename WHERE ab.cn = :cn AND b.tumortype = :tumortype AND ab.ensg = :ensg) ",
+        "GROUP BY cn.ensg, symbol"
       ],
       "arguments": ["ensg", "cn", "tumortype"]
     },
     "enrichment_all": {
       "idType": "Ensembl",
       "query": [
-        "SELECT a.ensg as id, a.symbol, max(cnv) as score ",
-        "FROM ${targid_bioinfodb.schema_tissue}_copynumber ab INNER JOIN ${targid_bioinfodb.schema_public}_gene a ON a.ensg = ab.ensg INNER JOIN ${targid_bioinfodb.schema_tissue}_tissue b ON b.tissuename= ab.tissuename ",
-        "WHERE ab.cn = :cn AND cnv > ",
-        "(SELECT max(cnv) FROM ${targid_bioinfodb.schema_tissue}_copynumber ab INNER JOIN ${targid_bioinfodb.schema_tissue}_tissue b ON b.tissuename = ab.tissuename WHERE ab.cn = :cn AND ab.ensg = :ensg) ",
-        "GROUP BY a.ensg, a.symbol"
+        "SELECT cn.ensg as id, symbol, 2*pow(2, max(cnv)) as score ",
+        "FROM ${targid_bioinfodb.schema_tissue}_copynumber2 cn JOIN ${targid_bioinfodb.schema_public}_gene g on g.ensg = cn.ensg ",
+        "WHERE cnv > (SELECT max(cnv) FROM ${targid_bioinfodb.schema_tissue}_copynumber2 ab INNER JOIN ${targid_bioinfodb.schema_tissue}_tissue b ON b.tissuename = ab.tissuename WHERE ab.cn = :cn AND ab.ensg = :ensg) ",
+        "GROUP BY cn.ensg, symbol"
       ],
       "arguments": ["ensg", "cn"]
     },
