@@ -220,7 +220,7 @@
     "alteration_mutation_frequency": {
       "idType": "Ensembl",
       "query": [
-        "SELECT a.ensg as id, (ifnull(mut.mutated,0)+0.0) / a.total as score ",
+        "SELECT a.ensg as id, (coalesce(mut.mutated,0)+0.0) / a.total as score ",
         "FROM (SELECT count(*) as total, ensg FROM ${targid_bioinfodb.schema_tissue}_mutation m INNER JOIN ${targid_bioinfodb.schema_tissue}_tissue c ON c.tissuename = m.tissuename WHERE c.tumortype = :tumortype group by ensg) a ",
         "LEFT JOIN (SELECT count(*) as mutated, ensg FROM ${targid_bioinfodb.schema_tissue}_mutation m INNER JOIN ${targid_bioinfodb.schema_tissue}_tissue c ON c.tissuename = m.tissuename WHERE c.tumortype = :tumortype AND dna_mutated = 't' group by ensg) mut ",
         "ON mut.ensg = a.ensg"
@@ -230,7 +230,7 @@
     "alteration_mutation_frequency_all": {
       "idType": "Ensembl",
       "query": [
-        "SELECT a.ensg as id, (ifnull(mut.mutated,0)+0.0) / a.total as score ",
+        "SELECT a.ensg as id, (coalesce(mut.mutated,0)+0.0) / a.total as score ",
         "FROM (SELECT count(*) as total, ensg FROM ${targid_bioinfodb.schema_tissue}_mutation group by ensg) a ",
         "LEFT JOIN (SELECT count(*) as mutated, ensg FROM ${targid_bioinfodb.schema_tissue}_mutation where dna_mutated = 't' group by ensg) mut ON mut.ensg = a.ensg"
       ]
@@ -238,7 +238,7 @@
     "alteration_cnv_frequency": {
       "idType": "Ensembl",
       "query": [
-        "SELECT a.ensg as id, (ifnull(mut.mutated,0)+0.0) / a.total as score ",
+        "SELECT a.ensg as id, (coalesce(mut.mutated,0)+0.0) / a.total as score ",
         "FROM (SELECT count(*) as total, ensg FROM ${targid_bioinfodb.schema_tissue}_copynumber m INNER JOIN ${targid_bioinfodb.schema_tissue}_tissue c ON c.tissuename = m.tissuename WHERE c.tumortype = :tumortype group by ensg) a ",
         "LEFT JOIN (SELECT count(*) as mutated, ensg FROM ${targid_bioinfodb.schema_tissue}_copynumber m INNER JOIN ${targid_bioinfodb.schema_tissue}_tissue c ON c.tissuename = m.tissuename WHERE c.tumortype = :tumortype AND cnv %(operator)s %(value)s group by ensg) mut ",
         "ON mut.ensg = a.ensg"
@@ -249,7 +249,7 @@
     "alteration_cnv_frequency_all": {
       "idType": "Ensembl",
       "query": [
-        "SELECT a.ensg as id, (ifnull(mut.mutated,0)+0.0) / a.total as score ",
+        "SELECT a.ensg as id, (coalesce(mut.mutated,0)+0.0) / a.total as score ",
         "FROM (SELECT count(*) as total, ensg FROM ${targid_bioinfodb.schema_tissue}_copynumber group by ensg) a ",
         "LEFT JOIN (SELECT count(*) as mutated, ensg FROM ${targid_bioinfodb.schema_tissue}_copynumber WHERE cnv %(operator)s %(value)s group by ensg) mut ON mut.ensg = a.ensg"
       ],
