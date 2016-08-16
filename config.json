@@ -101,45 +101,25 @@
       ],
       "replacements": ["ensgs"]
     },
-    "expression_score": {
+    "aggregated_score": {
       "idType": "Ensembl",
       "query": [
         "SELECT ensg as id, %(agg)s(%(data_subtype)s) as score ",
-        "FROM ${targid_bioinfodb.schema_tissue}_expression ab INNER JOIN ${targid_bioinfodb.schema_tissue}_tissue b ON b.tissuename = ab.tissuename ",
+        "FROM ${targid_bioinfodb.schema_tissue}_%(table_name)s ab INNER JOIN ${targid_bioinfodb.schema_tissue}_tissue b ON b.tissuename = ab.tissuename ",
         "WHERE b.tumortype = :tumortype ",
         "GROUP BY ab.ensg"
       ],
-      "replacements": ["agg", "data_subtype"],
+      "replacements": ["table_name", "data_subtype", "agg"],
       "arguments": ["tumortype"]
     },
-    "expression_score_all": {
+    "aggregated_score_all": {
       "idType": "Ensembl",
       "query": [
         "SELECT ensg as id, %(agg)s(%(data_subtype)s) as score ",
-        "FROM ${targid_bioinfodb.schema_tissue}_expression ab ",
+        "FROM ${targid_bioinfodb.schema_tissue}_%(table_name)s ab ",
         "GROUP BY ab.ensg"
       ],
-      "replacements": ["agg", "data_subtype"]
-    },
-    "copynumber_score": {
-      "idType": "Ensembl",
-      "query": [
-        "SELECT ensg as id, %(agg)s(%(data_subtype)s) as score ",
-        "FROM ${targid_bioinfodb.schema_tissue}_copynumber ab INNER JOIN ${targid_bioinfodb.schema_tissue}_tissue b ON b.tissuename = ab.tissuename ",
-        "WHERE b.tumortype = :tumortype ",
-        "GROUP BY ab.ensg"
-      ],
-      "replacements": ["agg", "data_subtype"],
-      "arguments": ["tumortype"]
-    },
-    "copynumber_score_all": {
-      "idType": "Ensembl",
-      "query": [
-        "SELECT ensg as id, %(agg)s(%(data_subtype)s) as score ",
-        "FROM ${targid_bioinfodb.schema_tissue}_copynumber ab ",
-        "GROUP BY ab.ensg"
-      ],
-      "replacements": ["agg", "data_subtype"]
+      "replacements": ["table_name", "data_subtype", "agg"]
     },
     "expression_table": {
       "idType": "Tissue",
@@ -217,43 +197,43 @@
       ],
       "arguments": ["ensg"]
     },
-    "alteration_mutation_frequency": {
+    "frequency_score": {
+      "idType": "Ensembl",
+      "query": [
+        "SELECT a.ensg as id, (ifnull(mut.mutated,0)+0.0) / a.total as score ",
+        "FROM (SELECT count(*) as total, ensg FROM ${targid_bioinfodb.schema_tissue}_%(table_name)s m INNER JOIN ${targid_bioinfodb.schema_tissue}_tissue c ON c.tissuename = m.tissuename WHERE c.tumortype = :tumortype group by ensg) a ",
+        "LEFT JOIN (SELECT count(*) as mutated, ensg FROM ${targid_bioinfodb.schema_tissue}_%(table_name)s m INNER JOIN ${targid_bioinfodb.schema_tissue}_tissue c ON c.tissuename = m.tissuename WHERE c.tumortype = :tumortype AND %(data_subtype)s %(operator)s %(value)s group by ensg) mut ",
+        "ON mut.ensg = a.ensg"
+      ],
+      "replacements": ["table_name", "data_subtype", "operator", "value"],
+      "arguments": ["tumortype"]
+    },
+    "frequency_score_all": {
+      "idType": "Ensembl",
+      "query": [
+        "SELECT a.ensg as id, (ifnull(mut.mutated,0)+0.0) / a.total as score ",
+        "FROM (SELECT count(*) as total, ensg FROM ${targid_bioinfodb.schema_tissue}_%(table_name)s group by ensg) a ",
+        "LEFT JOIN (SELECT count(*) as mutated, ensg FROM ${targid_bioinfodb.schema_tissue}_%(table_name)s WHERE %(data_subtype)s %(operator)s %(value)s group by ensg) mut ON mut.ensg = a.ensg"
+      ],
+      "replacements": ["table_name", "data_subtype", "operator", "value"]
+    },
+    "mutation_frequency": {
       "idType": "Ensembl",
       "query": [
         "SELECT a.ensg as id, (coalesce(mut.mutated,0)+0.0) / a.total as score ",
-        "FROM (SELECT count(*) as total, ensg FROM ${targid_bioinfodb.schema_tissue}_mutation m INNER JOIN ${targid_bioinfodb.schema_tissue}_tissue c ON c.tissuename = m.tissuename WHERE c.tumortype = :tumortype group by ensg) a ",
-        "LEFT JOIN (SELECT count(*) as mutated, ensg FROM ${targid_bioinfodb.schema_tissue}_mutation m INNER JOIN ${targid_bioinfodb.schema_tissue}_tissue c ON c.tissuename = m.tissuename WHERE c.tumortype = :tumortype AND dna_mutated = 't' group by ensg) mut ",
+        "FROM (SELECT count(*) as total, ensg FROM ${targid_bioinfodb.schema_tissue}_mutation m INNER JOIN ${targid_bioinfodb.schema_tissue}_tissue c ON c.ctissuename = m.tissuename WHERE c.tumortype = :tumortype group by ensg) a ",
+        "LEFT JOIN (SELECT count(*) as mutated, ensg FROM ${targid_bioinfodb.schema_tissue}_mutation m INNER JOIN ${targid_bioinfodb.schema_tissue}_tissuename c ON c.tissuename = m.tissuename WHERE c.tumortype = :tumortype AND dna_mutated = 't' group by ensg) mut ",
         "ON mut.ensg = a.ensg"
       ],
       "arguments": ["tumortype"]
     },
-    "alteration_mutation_frequency_all": {
+    "mutation_frequency_all": {
       "idType": "Ensembl",
       "query": [
         "SELECT a.ensg as id, (coalesce(mut.mutated,0)+0.0) / a.total as score ",
         "FROM (SELECT count(*) as total, ensg FROM ${targid_bioinfodb.schema_tissue}_mutation group by ensg) a ",
         "LEFT JOIN (SELECT count(*) as mutated, ensg FROM ${targid_bioinfodb.schema_tissue}_mutation where dna_mutated = 't' group by ensg) mut ON mut.ensg = a.ensg"
       ]
-    },
-    "alteration_cnv_frequency": {
-      "idType": "Ensembl",
-      "query": [
-        "SELECT a.ensg as id, (coalesce(mut.mutated,0)+0.0) / a.total as score ",
-        "FROM (SELECT count(*) as total, ensg FROM ${targid_bioinfodb.schema_tissue}_copynumber m INNER JOIN ${targid_bioinfodb.schema_tissue}_tissue c ON c.tissuename = m.tissuename WHERE c.tumortype = :tumortype group by ensg) a ",
-        "LEFT JOIN (SELECT count(*) as mutated, ensg FROM ${targid_bioinfodb.schema_tissue}_copynumber m INNER JOIN ${targid_bioinfodb.schema_tissue}_tissue c ON c.tissuename = m.tissuename WHERE c.tumortype = :tumortype AND cnv %(operator)s %(value)s group by ensg) mut ",
-        "ON mut.ensg = a.ensg"
-      ],
-      "replacements": ["operator", "value"],
-      "arguments": ["tumortype"]
-    },
-    "alteration_cnv_frequency_all": {
-      "idType": "Ensembl",
-      "query": [
-        "SELECT a.ensg as id, (coalesce(mut.mutated,0)+0.0) / a.total as score ",
-        "FROM (SELECT count(*) as total, ensg FROM ${targid_bioinfodb.schema_tissue}_copynumber group by ensg) a ",
-        "LEFT JOIN (SELECT count(*) as mutated, ensg FROM ${targid_bioinfodb.schema_tissue}_copynumber WHERE cnv %(operator)s %(value)s group by ensg) mut ON mut.ensg = a.ensg"
-      ],
-      "replacements": ["operator", "value"]
     },
      "co_expression": {
       "idType": "Ensembl",
