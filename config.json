@@ -169,7 +169,7 @@
         "FROM ${targid_bioinfodb.schema_tissue}_%(table_name)s ab INNER JOIN ${targid_bioinfodb.schema_tissue}_tissue b ON b.tissuename = ab.tissuename INNER JOIN ${targid_bioinfodb.schema_public}_gene g ON ab.ensg = g.ensg ",
         "WHERE ab.ensg in (%(ensgs)s)"
       ],
-      "replacements": ["table_name", "data_subtype", "ensgs"],
+      "replacements": ["table_name", "data_subtype", "ensgs"]
     },
     "expression_score_inverted": {
       "idType": "Tissue",
