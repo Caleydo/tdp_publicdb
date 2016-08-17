@@ -3,8 +3,37 @@
   "schema_tissue": "targid",
   "schema_public": "targid",
   "index_gene": "(t.rowid-1) as _index",
+  "index_cellline": "(t.rowid-1) as _index",
   "index_tissue": "(t.rowid-1) as _index",
   "views": {
+    "cellline": {
+      "table": "targid_cellline",
+      "idType": "Cellline",
+      "columns": {
+        "celllinename": { "label": "id", "type": "string" },
+        "species": { "label": "species", "type": "categorical" },
+        "tumortype": { "label": "tumortype", "type": "categorical" },
+        "organ": { "label": "organ", "type": "categorical" },
+        "gender": { "label": "gender", "type": "categorical" }
+      },
+      "column_query": "celllinename as id, species, tumortype, organ, gender",
+
+      "queryCategories": "SELECT DISTINCT %(col)s as cat FROM ${table} where %(col)s is not null and %(col)s <> ''",
+
+      "query": [
+        "SELECT ${targid_bioinfodb.index_cellline}, ${column_query} ",
+        "FROM ${table} t",
+        "ORDER BY celllinename ASC"
+      ]
+    },
+    "cellline_filtered": {
+      "idType": "Cellline",
+      "query": [
+        "SELECT ${targid_bioinfodb.index_cellline}, ${targid_bioinfodb.views.cellline.column_query} ",
+        "FROM targid_cellline t WHERE species = :species"
+      ],
+      "arguments": ["species"]
+    },
     "tissue": {
       "table": "${targid_bioinfodb.schema_tissue}_tissue",
       "idType": "Tissue",
@@ -30,11 +59,13 @@
         "species":{ "label": "species", "type": "categorical" },
         "chromosome":{ "label": "chromosome", "type": "string" },
         "strand": { "label": "strand", "type": "number" },
-        "biotype": { "label": "biotype", "type": "categorical" }
+        "biotype": { "label": "biotype", "type": "categorical" },
+        "seqregionstart": { "label": "seqregionstart", "type": "number" },
+        "seqregionend": { "label": "seqregionend", "type": "number" }
       },
-      "column_query": "ensg as id, symbol, species, chromosome, strand, biotype",
+      "column_query": "ensg as id, symbol, species, chromosome, strand, biotype, seqregionstart, seqregionend",
 
-      "queryStats": "SELECT min(strand) as strand_min, max(strand) as strand_max, FROM ${table}",
+      "queryStats": "SELECT min(strand) as strand_min, max(strand) as strand_max, min(seqregionstart) as seqregionstart_min, max(seqregionstart) as seqregionstart_max, min(seqregionend) as seqregionend_min, max(seqregionend) as seqregionend_max FROM ${table}",
       "queryCategories": "SELECT DISTINCT %(col)s as cat FROM ${table} where %(col)s is not null and %(col)s <> ''",
 
       "query": "SELECT ${targid_bioinfodb.index_gene}, ${column_query} FROM ${table} t ORDER BY t.symbol ASC"
