@@ -113,6 +113,22 @@
       ],
       "arguments": ["ensg", "cn"]
     },
+    "onco_print_sample_list": {
+      "idType": "Tissue",
+      "query": [
+        "SELECT d.tissuename as id ",
+        "FROM ${targid_bioinfodb.schema_tissue}_tissue d",
+        "WHERE d.tumortype = :tumortype"
+      ],
+      "arguments": ["tumortype"]
+    },
+    "onco_print_sample_list_all": {
+      "idType": "Tissue",
+      "query": [
+        "SELECT d.tissuename as id ",
+        "FROM ${targid_bioinfodb.schema_tissue}_tissue d"
+      ]
+    },
     "onco_print": {
       "idType": "Tissue",
       "query": [
