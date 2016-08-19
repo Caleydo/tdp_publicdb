@@ -191,21 +191,21 @@
       "idType": "Tissue",
       "query": [
         "SELECT tissuename as id, %(agg)s(%(data_subtype)s) as score ",
-        "FROM ${targid_bioinfodb.schema_tissue}_expression ab INNER JOIN ${targid_bioinfodb.schema_public}_gene b ON b.ensg = ab.ensg ",
+        "FROM ${targid_bioinfodb.schema_tissue}_%(table_name)s ab INNER JOIN ${targid_bioinfodb.schema_public}_gene b ON b.ensg = ab.ensg ",
         "WHERE b.biotype = :biotype ",
         "GROUP BY ab.tissuename"
       ],
-      "replacements": ["agg", "data_subtype"],
+      "replacements": ["table_name", "data_subtype", "agg"],
       "arguments": ["biotype"]
     },
     "expression_score_inverted_all": {
       "idType": "Tissue",
       "query": [
         "SELECT tissuename as id, %(agg)s(%(data_subtype)s) as score ",
-        "FROM ${targid_bioinfodb.schema_tissue}_expression ab ",
+        "FROM ${targid_bioinfodb.schema_tissue}_%(table_name)s ab ",
         "GROUP BY ab.tissuename"
       ],
-      "replacements": ["agg", "data_subtype"]
+      "replacements": ["table_name", "data_subtype", "agg"]
     },
     "expression_table_inverted": {
       "idType": "Ensembl",
