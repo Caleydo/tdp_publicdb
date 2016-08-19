@@ -187,7 +187,7 @@
       ],
       "replacements": ["table_name", "data_subtype", "ensgs"]
     },
-    "expression_score_inverted": {
+    "aggregated_score_inverted": {
       "idType": "Tissue",
       "query": [
         "SELECT tissuename as id, %(agg)s(%(data_subtype)s) as score ",
@@ -198,7 +198,7 @@
       "replacements": ["table_name", "data_subtype", "agg"],
       "arguments": ["biotype"]
     },
-    "expression_score_inverted_all": {
+    "aggregated_score_inverted_all": {
       "idType": "Tissue",
       "query": [
         "SELECT tissuename as id, %(agg)s(%(data_subtype)s) as score ",
