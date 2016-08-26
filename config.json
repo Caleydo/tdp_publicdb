@@ -207,24 +207,24 @@
       ],
       "replacements": ["table_name", "data_subtype", "agg"]
     },
-    "expression_table_inverted": {
+    "raw_data_table_inverted": {
       "idType": "Ensembl",
       "query": [
         "SELECT b.ensg as id, b.symbol, b.species, b.strand, biotype, tissuename as name, %(data_subtype)s as score ",
-        "FROM ${targid_bioinfodb.schema_tissue}_expression ab INNER JOIN ${targid_bioinfodb.schema_public}_gene b ON b.ensg = ab.ensg ",
+        "FROM ${targid_bioinfodb.schema_tissue}_%(table_name)s ab INNER JOIN ${targid_bioinfodb.schema_public}_gene b ON b.ensg = ab.ensg ",
         "WHERE b.biotype = :biotype AND ab.tissuename in (%(names)s)"
       ],
-      "replacements": ["data_subtype", "names"],
+      "replacements": ["table_name", "data_subtype", "names"],
       "arguments": ["biotype"]
     },
-    "expression_table_inverted_all": {
+    "raw_data_table_inverted_all": {
       "idType": "Ensembl",
       "query": [
         "SELECT b.ensg as id, b.symbol, b.species, b.strand, biotype, tissuename as name, %(data_subtype)s as score ",
-        "FROM ${targid_bioinfodb.schema_tissue}_expression ab INNER JOIN ${targid_bioinfodb.schema_public}_gene b ON b.ensg = ab.ensg ",
+        "FROM ${targid_bioinfodb.schema_tissue}_%(table_name)s ab INNER JOIN ${targid_bioinfodb.schema_public}_gene b ON b.ensg = ab.ensg ",
         "WHERE ab.tissuename in (%(names)s)"
       ],
-      "replacements": ["data_subtype","names"]
+      "replacements": ["table_name", "data_subtype","names"]
     },
     "tissue_gene_copynumber": {
       "idType": "Tissue",
