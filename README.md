@@ -1,4 +1,4 @@
-Targid BioInfoDB Connector ![Caleydo Web Server Plugin](https://img.shields.io/badge/Caleydo%20Web-Server-10ACDF.svg)
+TargID BioInfoDB Connector ![Caleydo Web Server Plugin](https://img.shields.io/badge/Caleydo%20Web-Server-10ACDF.svg)
 ===================
 
 This repository contains the database connector for the BioInfoDB and the respective SQL queries to drive the [tagid_common](https://github.com/Caleydo/targid_common/) views and visualizations.
