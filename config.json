@@ -1,13 +1,13 @@
 {
-  "dburl": "sqlite:///${caleydo_server.dataDir}/bioinfodb_sample.sqlite",
-  "schema_tissue": "targid",
-  "schema_public": "targid",
-  "index_gene": "(t.rowid-1) as _index",
-  "index_cellline": "(t.rowid-1) as _index",
-  "index_tissue": "(t.rowid-1) as _index",
+  "dburl": "postgres://postgres:admin@10.0.2.2:5432/postgres",
+  "schema_tissue": "tissue.targid",
+  "schema_public": "public.targid",
+  "schema_cellline": "cellline.targid",
+  "index_gene": "row_number() OVER(ORDER BY ensg ASC) as _index",
+  "index_cellline": "row_number() OVER(ORDER BY celllinename ASC) as _index",
+  "index_tissue": "row_number() OVER(ORDER BY tissuename ASC) as _index",
   "views": {
     "cellline": {
-      "table": "targid_cellline",
       "idType": "Cellline",
       "columns": {
         "celllinename": { "label": "id", "type": "string" },
@@ -18,11 +18,11 @@
       },
       "column_query": "celllinename as id, species, tumortype, organ, gender",
 
-      "queryCategories": "SELECT DISTINCT %(col)s as cat FROM ${table} where %(col)s is not null and %(col)s <> ''",
+      "queryCategories": "SELECT DISTINCT %(col)s as cat FROM ${targid_bioinfodb.schema_cellline}_cellline where %(col)s is not null and %(col)s <> ''",
 
       "query": [
         "SELECT ${targid_bioinfodb.index_cellline}, ${column_query} ",
-        "FROM ${table} t",
+        "FROM ${targid_bioinfodb.schema_cellline}_cellline t",
         "ORDER BY celllinename ASC"
       ]
     },
@@ -30,7 +30,7 @@
       "idType": "Cellline",
       "query": [
         "SELECT ${targid_bioinfodb.index_cellline}, ${targid_bioinfodb.views.cellline.column_query} ",
-        "FROM targid_cellline t WHERE species = :species"
+        "FROM ${targid_bioinfodb.schema_cellline}_cellline t WHERE species = :species"
       ],
       "arguments": ["species"]
     },
@@ -51,7 +51,6 @@
       "query": "SELECT ${targid_bioinfodb.index_tissue}, ${column_query} FROM ${targid_bioinfodb.schema_tissue}_tissue t"
     },
     "gene": {
-      "table": "targid_gene",
       "idType": "Ensembl",
       "columns": {
         "ensg": { "label": "id", "type": "string" },
@@ -65,10 +64,10 @@
       },
       "column_query": "ensg as id, symbol, species, chromosome, strand, biotype, seqregionstart, seqregionend",
 
-      "queryStats": "SELECT min(strand) as strand_min, max(strand) as strand_max, min(seqregionstart) as seqregionstart_min, max(seqregionstart) as seqregionstart_max, min(seqregionend) as seqregionend_min, max(seqregionend) as seqregionend_max FROM ${table}",
-      "queryCategories": "SELECT DISTINCT %(col)s as cat FROM ${table} where %(col)s is not null and %(col)s <> ''",
+      "queryStats": "SELECT min(strand) as strand_min, max(strand) as strand_max, min(seqregionstart) as seqregionstart_min, max(seqregionstart) as seqregionstart_max, min(seqregionend) as seqregionend_min, max(seqregionend) as seqregionend_max FROM ${targid_bioinfodb.schema_public}_gene",
+      "queryCategories": "SELECT DISTINCT %(col)s as cat FROM ${targid_bioinfodb.schema_public}_gene where %(col)s is not null and %(col)s <> ''",
 
-      "query": "SELECT ${targid_bioinfodb.index_gene}, ${column_query} FROM ${table} t ORDER BY t.symbol ASC"
+      "query": "SELECT ${targid_bioinfodb.index_gene}, ${column_query} FROM ${targid_bioinfodb.schema_public}_gene t ORDER BY t.symbol ASC"
     },
     "gene_filtered": {
       "idType": "Ensembl",
@@ -97,8 +96,8 @@
       "idType": "Ensembl",
       "query": [
         "SELECT cn.ensg as id, symbol, 2*pow(2, max(cnv)) as score ",
-        "FROM ${targid_bioinfodb.schema_tissue}_copynumber2 cn JOIN ${targid_bioinfodb.schema_public}_gene g on g.ensg = cn.ensg ",
-        "WHERE cnv > (SELECT max(cnv) FROM ${targid_bioinfodb.schema_tissue}_copynumber2 ab INNER JOIN ${targid_bioinfodb.schema_tissue}_tissue b ON b.tissuename = ab.tissuename WHERE ab.cn = :cn AND b.tumortype = :tumortype AND ab.ensg = :ensg) ",
+        "FROM ${targid_bioinfodb.schema_tissue}_copynumber cn JOIN ${targid_bioinfodb.schema_public}_gene g on g.ensg = cn.ensg ",
+        "WHERE cnv > (SELECT max(cnv) FROM ${targid_bioinfodb.schema_tissue}_copynumber ab INNER JOIN ${targid_bioinfodb.schema_tissue}_tissue b ON b.tissuename = ab.tissuename WHERE ab.cn = :cn AND b.tumortype = :tumortype AND ab.ensg = :ensg) ",
         "GROUP BY cn.ensg, symbol"
       ],
       "arguments": ["ensg", "cn", "tumortype"]
@@ -107,8 +106,8 @@
       "idType": "Ensembl",
       "query": [
         "SELECT cn.ensg as id, symbol, 2*pow(2, max(cnv)) as score ",
-        "FROM ${targid_bioinfodb.schema_tissue}_copynumber2 cn JOIN ${targid_bioinfodb.schema_public}_gene g on g.ensg = cn.ensg ",
-        "WHERE cnv > (SELECT max(cnv) FROM ${targid_bioinfodb.schema_tissue}_copynumber2 ab INNER JOIN ${targid_bioinfodb.schema_tissue}_tissue b ON b.tissuename = ab.tissuename WHERE ab.cn = :cn AND ab.ensg = :ensg) ",
+        "FROM ${targid_bioinfodb.schema_tissue}_copynumber cn JOIN ${targid_bioinfodb.schema_public}_gene g on g.ensg = cn.ensg ",
+        "WHERE cnv > (SELECT max(cnv) FROM ${targid_bioinfodb.schema_tissue}_copynumber ab INNER JOIN ${targid_bioinfodb.schema_tissue}_tissue b ON b.tissuename = ab.tissuename WHERE ab.cn = :cn AND ab.ensg = :ensg) ",
         "GROUP BY cn.ensg, symbol"
       ],
       "arguments": ["ensg", "cn"]
