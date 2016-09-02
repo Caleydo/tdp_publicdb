@@ -134,3 +134,39 @@ CREATE INDEX targid_mutation_tissuename_idx
   USING btree
   (tissuename COLLATE pg_catalog."default");
 
+
+
+-- View: tissue.targid_data
+
+-- DROP VIEW tissue.targid_data;
+
+CREATE OR REPLACE VIEW tissue.targid_data AS
+ SELECT omics.ensg,
+    omics.tissuename,
+    max(omics.copynumberclass) AS copynumberclass,
+    max(omics.log2tpm) AS log2tpm,
+    every(omics.dna_mutated) AS dna_mutated
+   FROM ( SELECT targid_copynumber.ensg,
+            targid_copynumber.tissuename,
+            targid_copynumber.copynumberclass,
+            NULL::real AS log2tpm,
+            NULL::boolean AS dna_mutated
+           FROM tissue.targid_copynumber
+        UNION ALL
+         SELECT targid_expression.ensg,
+            targid_expression.tissuename,
+            NULL::smallint AS copynumberclass,
+            targid_expression.log2tpm,
+            NULL::boolean AS dna_mutated
+           FROM tissue.targid_expression
+        UNION ALL
+         SELECT targid_mutation.ensg,
+            targid_mutation.tissuename,
+            NULL::smallint AS copynumberclass,
+            NULL::real AS log2tpm,
+            targid_mutation.dna_mutated
+           FROM tissue.targid_mutation) omics
+  GROUP BY omics.ensg, omics.tissuename;
+
+ALTER TABLE tissue.targid_data
+  OWNER TO postgres;
