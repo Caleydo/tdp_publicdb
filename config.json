@@ -35,7 +35,6 @@
       "arguments": ["species"]
     },
     "tissue": {
-      "table": "${targid_bioinfodb.schema_tissue}_tissue",
       "idType": "Tissue",
       "columns": {
         "tissuename": { "label": "id", "type": "string" },
