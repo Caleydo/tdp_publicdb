@@ -42,4 +42,4 @@ Local PostgreSQL installation
 
 ***
 
-This code has been specifically implemented for Boehringer Ingelheim and is not part of the **[Caleydo Web](http://caleydo.org/)** platform.
+This repository has been developed for Boehringer Ingelheim as part of a research collaboration and is not part of the **[Caleydo Web](http://caleydo.org/)** platform.
