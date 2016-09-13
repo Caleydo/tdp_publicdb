@@ -42,5 +42,4 @@ Local PostgreSQL installation
 
 ***
 
-<a href="https://caleydo.org"><img src="http://caleydo.org/assets/images/logos/caleydo.svg" align="left" width="200px" hspace="10" vspace="6"></a>
-This repository is part of **[Caleydo Web](http://caleydo.org/)**, a platform for developing web-based visualization applications. For tutorials, API docs, and more information about the build and deployment process, see the [documentation page](http://caleydo.org/documentation/). Note that the code in this repository has been specifically written for Boehringer Ingehlheim.
+Note that this code has been specifically implemented for Boehringer Ingelheim and is not part of the **[Caleydo Web](http://caleydo.org/)** platform.
