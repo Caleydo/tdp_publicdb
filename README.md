@@ -27,6 +27,7 @@ Local PostgreSQL installation
 ------------
 
 1. [Download PostgreSQL](http://www.enterprisedb.com/products-services-training/pgdownload) for your operating system and install it
+  - Use _admin_ as password for the user _postgres_ (or modify the password in the _config.json_ later) 
 2. Add the installation path to the PATH variable
   - On Windows: `C:\Program Files\PostgreSQL\9.5\bin`
 3. Start pgAdmin (is included in the download from enterprisedb.com) and try the database connection
