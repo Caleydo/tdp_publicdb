@@ -39,7 +39,7 @@ Local PostgreSQL installation
   - The console output is updated from time to time
 7. When the import has finished: Switch to pgAdmin and refresh the _postgres_ database
   - You should now be able to see the schemas _cellline_, _public_, and _tissues_
-
+8. Run the SQL queries from [sql/postgres_tissue_tables_initialization.sql](https://github.com/Caleydo/targid_bioinfodb/blob/master/sql/postgres_tissue_tables_initialization.sql) to initialize the tissue tables
 
 ***
 
