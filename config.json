@@ -146,6 +146,13 @@
       ],
       "replacements": ["schema", "table_name", "entity_name", "ensgs"]
     },
+    "row": {
+      "idType": "Tissue",
+      "query": [
+        "SELECT b.%(entity_name)s as id, * FROM %(schema)s.targid_%(table_name)s b WHERE b.%(entity_name)s IN (%(entities)s)"
+      ],
+      "replacements": ["schema", "table_name", "entity_name", "entities"]
+    },
     "raw_data_table": {
       "idType": "Tissue",
       "query": [
@@ -299,20 +306,20 @@
       "query": [
         "SELECT a.ensg as id, (coalesce(mut.mutated,0)+0.0) / a.total as score ",
         "FROM (SELECT count(*) as total, ensg FROM %(schema)s.targid_mutation m INNER JOIN %(schema)s.targid_%(schema)s c ON c.%(entity_name)s = m.%(entity_name)s WHERE c.tumortype = :tumortype group by ensg) a ",
-        "LEFT JOIN (SELECT count(*) as mutated, ensg FROM %(schema)s.targid_mutation m INNER JOIN %(schema)s.targid_%(schema)s c ON c.%(entity_name)s = m.%(entity_name)s WHERE c.tumortype = :tumortype AND dna_mutated = 't' group by ensg) mut ",
+        "LEFT JOIN (SELECT count(*) as mutated, ensg FROM %(schema)s.targid_mutation m INNER JOIN %(schema)s.targid_%(schema)s c ON c.%(entity_name)s = m.%(entity_name)s WHERE c.tumortype = :tumortype AND %(data_subtype)s = 'true' group by ensg) mut ",
         "ON mut.ensg = a.ensg"
       ],
       "arguments": ["tumortype"],
-      "replacements": ["schema", "entity_name"]
+      "replacements": ["schema", "entity_name", "data_subtype"]
     },
     "mutation_frequency_all": {
       "idType": "Ensembl",
       "query": [
         "SELECT a.ensg as id, (coalesce(mut.mutated,0)+0.0) / a.total as score ",
         "FROM (SELECT count(*) as total, ensg FROM %(schema)s.targid_mutation group by ensg) a ",
-        "LEFT JOIN (SELECT count(*) as mutated, ensg FROM %(schema)s.targid_mutation where dna_mutated = 't' group by ensg) mut ON mut.ensg = a.ensg"
+        "LEFT JOIN (SELECT count(*) as mutated, ensg FROM %(schema)s.targid_mutation where %(data_subtype)s = 'true' group by ensg) mut ON mut.ensg = a.ensg"
       ],
-      "replacements": ["schema", "entity_name"]
+      "replacements": ["schema", "entity_name", "data_subtype"]
     }
   }
 }
