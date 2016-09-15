@@ -277,10 +277,10 @@
     "frequency_score": {
       "idType": "Ensembl",
       "query": [
-        "SELECT a.ensg as id, (coalesce(mut.mutated,0)+0.0) / a.total as score ",
+        "SELECT a.ensg as id, (coalesce(freq.count,0)+0.0) / a.total as score ",
         "FROM (SELECT count(*) as total, ensg FROM %(schema)s.targid_%(table_name)s m INNER JOIN %(schema)s.targid_%(schema)s c ON c.%(entity_name)s = m.%(entity_name)s WHERE c.tumortype = :tumortype group by ensg) a ",
-        "LEFT JOIN (SELECT count(*) as mutated, ensg FROM %(schema)s.targid_%(table_name)s m INNER JOIN %(schema)s.targid_%(schema)s c ON c.%(entity_name)s = m.%(entity_name)s WHERE c.tumortype = :tumortype AND %(data_subtype)s %(operator)s %(value)s group by ensg) mut ",
-        "ON mut.ensg = a.ensg"
+        "LEFT JOIN (SELECT count(*) as count, ensg FROM %(schema)s.targid_%(table_name)s m INNER JOIN %(schema)s.targid_%(schema)s c ON c.%(entity_name)s = m.%(entity_name)s WHERE c.tumortype = :tumortype AND %(data_subtype)s %(operator)s %(value)s group by ensg) freq ",
+        "ON freq.ensg = a.ensg"
       ],
       "replacements": ["schema", "entity_name", "table_name", "data_subtype", "operator", "value"],
       "arguments": ["tumortype"]
@@ -288,9 +288,9 @@
     "frequency_score_all": {
       "idType": "Ensembl",
       "query": [
-        "SELECT a.ensg as id, (coalesce(mut.mutated,0)+0.0) / a.total as score ",
+        "SELECT a.ensg as id, (coalesce(freq.count,0)+0.0) / a.total as score ",
         "FROM (SELECT count(*) as total, ensg FROM %(schema)s.targid_%(table_name)s group by ensg) a ",
-        "LEFT JOIN (SELECT count(*) as mutated, ensg FROM %(schema)s.targid_%(table_name)s WHERE %(data_subtype)s %(operator)s %(value)s group by ensg) mut ON mut.ensg = a.ensg"
+        "LEFT JOIN (SELECT count(*) as count, ensg FROM %(schema)s.targid_%(table_name)s WHERE %(data_subtype)s %(operator)s %(value)s group by ensg) freq ON freq.ensg = a.ensg"
       ],
       "replacements": ["schema", "entity_name", "table_name", "data_subtype", "operator", "value"]
     },
