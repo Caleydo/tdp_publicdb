@@ -73,9 +73,15 @@
       "column_query": "ensg as id, symbol, species, chromosome, strand, biotype, seqregionstart, seqregionend",
 
       "queryStats": "SELECT min(strand) as strand_min, max(strand) as strand_max, min(seqregionstart) as seqregionstart_min, max(seqregionstart) as seqregionstart_max, min(seqregionend) as seqregionend_min, max(seqregionend) as seqregionend_max FROM ${targid_bioinfodb.schema_public}_gene",
-      "queryCategories": "SELECT DISTINCT %(col)s as cat FROM ${targid_bioinfodb.schema_public}_gene where %(col)s is not null and %(col)s <> ''",
+      "queryCategories": "SELECT DISTINCT %(col)s as cat FROM ${targid_bioinfodb.schema_public}_gene WHERE %(col)s is not null and %(col)s <> ''",
 
       "query": "SELECT ${targid_bioinfodb.index_gene}, ${column_query} FROM ${targid_bioinfodb.schema_public}_gene t ORDER BY t.symbol ASC"
+    },
+    "gene_lookup": {
+      "query": "SELECT ensg as id, symbol FROM ${targid_bioinfodb.schema_public}_gene g WHERE LOWER(%(column)s) LIKE :query ORDER BY %(column)s ASC LIMIT %(limit)s OFFSET %(offset)s",
+      "count": "SELECT COUNT(*) as total_count FROM ${targid_bioinfodb.schema_public}_gene g WHERE LOWER(%(column)s) LIKE :query",
+      "replacements": ["column", "limit", "offset"],
+      "arguments": ["query"]
     },
     "gene_filtered": {
       "idType": "Ensembl",
@@ -320,6 +326,16 @@
         "LEFT JOIN (SELECT count(*) as mutated, ensg FROM %(schema)s.targid_mutation where %(data_subtype)s = 'true' group by ensg) mut ON mut.ensg = a.ensg"
       ],
       "replacements": ["schema", "entity_name", "data_subtype"]
+    },
+    "single_gene_score": {
+      "idType": "Cellline",
+      "query": [
+        "SELECT celllinename as id, %(data_subtype)s as score ",
+        "FROM %(schema)s.targid_%(table_name)s ",
+        "WHERE ensg = :ensg"
+      ],
+      "replacements": ["schema", "entity_name", "table_name", "data_subtype"],
+      "arguments": ["ensg"]
     }
   }
 }
