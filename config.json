@@ -77,12 +77,6 @@
 
       "query": "SELECT ${targid_bioinfodb.index_gene}, ${column_query} FROM ${targid_bioinfodb.schema_public}_gene t ORDER BY t.symbol ASC"
     },
-    "gene_lookup": {
-      "query": "SELECT ensg as id, symbol FROM ${targid_bioinfodb.schema_public}_gene g WHERE LOWER(%(column)s) LIKE :query ORDER BY %(column)s ASC LIMIT %(limit)s OFFSET %(offset)s",
-      "count": "SELECT COUNT(*) as total_count FROM ${targid_bioinfodb.schema_public}_gene g WHERE LOWER(%(column)s) LIKE :query",
-      "replacements": ["column", "limit", "offset"],
-      "arguments": ["query"]
-    },
     "gene_filtered": {
       "idType": "Ensembl",
       "query": "SELECT ${targid_bioinfodb.index_gene}, ${targid_bioinfodb.views.gene.column_query} FROM ${targid_bioinfodb.schema_public}_gene t WHERE species = :species ORDER BY symbol ASC",
@@ -369,15 +363,31 @@
       ],
       "replacements": ["schema", "entity_name", "data_subtype"]
     },
-    "single_gene_score": {
-      "idType": "Cellline",
+    "single_entity_lookup": {
+      "query": "SELECT %(id_column)s as id, %(query_column)s as text FROM %(schema)s.targid_%(table_name)s WHERE LOWER(%(query_column)s) LIKE :query ORDER BY %(query_column)s ASC LIMIT %(limit)s OFFSET %(offset)s",
+      "count": "SELECT COUNT(*) as total_count FROM %(schema)s.targid_%(table_name)s WHERE LOWER(%(query_column)s) LIKE :query",
+      "replacements": ["schema", "table_name", "query_column", "id_column", "limit", "offset"],
+      "arguments": ["query"]
+    },
+    "single_entity_score": {
+      "idType": "Ensembl",
       "query": [
-        "SELECT celllinename as id, %(data_subtype)s as score ",
+        "SELECT ensg as id, %(data_subtype)s as score ",
         "FROM %(schema)s.targid_%(table_name)s ",
-        "WHERE ensg = :ensg"
+        "WHERE %(entity_name)s = :entity_value"
       ],
       "replacements": ["schema", "entity_name", "table_name", "data_subtype"],
-      "arguments": ["ensg"]
+      "arguments": ["entity_value"]
+    },
+    "single_entity_score_inverted": {
+      "idType": "Cellline",
+      "query": [
+        "SELECT %(entity_name)s as id, %(data_subtype)s as score ",
+        "FROM %(schema)s.targid_%(table_name)s ",
+        "WHERE ensg = :entity_value"
+      ],
+      "replacements": ["schema", "entity_name", "table_name", "data_subtype"],
+      "arguments": ["entity_value"]
     }
   }
 }
