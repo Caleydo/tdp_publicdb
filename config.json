@@ -18,7 +18,7 @@
       },
       "column_query": "celllinename as id, species, tumortype, organ, gender",
 
-      "queryCategories": "SELECT DISTINCT %(col)s as cat FROM ${targid_bioinfodb.schema_cellline}_cellline where %(col)s is not null and %(col)s <> ''",
+      "queryCategories": "SELECT DISTINCT %(col)s as cat FROM ${targid_bioinfodb.schema_cellline}_cellline WHERE %(col)s is not null and %(col)s <> ''",
 
       "query": [
         "SELECT ${targid_bioinfodb.index_cellline}, ${column_query} ",
@@ -290,40 +290,82 @@
     "frequency_score": {
       "idType": "Ensembl",
       "query": [
-        "SELECT a.ensg as id, (coalesce(freq.count,0)+0.0) / a.total as score ",
-        "FROM (SELECT count(*) as total, ensg FROM %(schema)s.targid_%(table_name)s m INNER JOIN %(schema)s.targid_%(schema)s c ON c.%(entity_name)s = m.%(entity_name)s WHERE c.tumortype = :tumortype group by ensg) a ",
-        "LEFT JOIN (SELECT count(*) as count, ensg FROM %(schema)s.targid_%(table_name)s m INNER JOIN %(schema)s.targid_%(schema)s c ON c.%(entity_name)s = m.%(entity_name)s WHERE c.tumortype = :tumortype AND %(data_subtype)s %(operator)s %(value)s group by ensg) freq ",
+        "SELECT a.ensg as id, (coalesce(freq.count,0)+0.0) as count, a.total ",
+        "FROM (SELECT COUNT(*) as total, ensg FROM %(schema)s.targid_%(table_name)s m INNER JOIN %(schema)s.targid_%(schema)s c ON c.%(entity_name)s = m.%(entity_name)s WHERE c.tumortype = :tumortype GROUP BY ensg) a ",
+        "LEFT JOIN (SELECT COUNT(*) as count, ensg FROM %(schema)s.targid_%(table_name)s m INNER JOIN %(schema)s.targid_%(schema)s c ON c.%(entity_name)s = m.%(entity_name)s WHERE c.tumortype = :tumortype AND %(data_subtype)s %(operator)s %(value)s GROUP BY ensg) freq ",
         "ON freq.ensg = a.ensg"
       ],
-      "replacements": ["schema", "entity_name", "table_name", "data_subtype", "operator", "value"],
-      "arguments": ["tumortype"]
+      "arguments": ["tumortype"],
+      "replacements": ["schema", "entity_name", "table_name", "data_subtype", "operator", "value"]
     },
     "frequency_score_all": {
       "idType": "Ensembl",
       "query": [
-        "SELECT a.ensg as id, (coalesce(freq.count,0)+0.0) / a.total as score ",
-        "FROM (SELECT count(*) as total, ensg FROM %(schema)s.targid_%(table_name)s group by ensg) a ",
-        "LEFT JOIN (SELECT count(*) as count, ensg FROM %(schema)s.targid_%(table_name)s WHERE %(data_subtype)s %(operator)s %(value)s group by ensg) freq ON freq.ensg = a.ensg"
+        "SELECT a.ensg as id, (coalesce(freq.count,0)+0.0) as count, a.total ",
+        "FROM (SELECT COUNT(*) as total, ensg FROM %(schema)s.targid_%(table_name)s GROUP BY ensg) a ",
+        "LEFT JOIN (SELECT COUNT(*) as count, ensg FROM %(schema)s.targid_%(table_name)s WHERE %(data_subtype)s %(operator)s %(value)s GROUP BY ensg) freq ON freq.ensg = a.ensg"
+      ],
+      "replacements": ["schema", "entity_name", "table_name", "data_subtype", "operator", "value"]
+    },
+    "frequency_score_inverted": {
+      "idType": "Tissue",
+      "query": [
+        "SELECT a.%(entity_name)s as id, (coalesce(freq.count,0)+0.0) as count, a.total ",
+        "FROM (SELECT COUNT(*) as total, %(entity_name)s FROM %(schema)s.targid_%(table_name)s m INNER JOIN ${targid_bioinfodb.schema_public}_gene g ON g.ensg = m.ensg WHERE g.biotype = :biotype GROUP BY %(entity_name)s) a",
+        "LEFT JOIN (SELECT COUNT(*) as count, %(entity_name)s FROM %(schema)s.targid_%(table_name)s m INNER JOIN ${targid_bioinfodb.schema_public}_gene g ON g.ensg = m.ensg WHERE g.biotype = :biotype AND %(data_subtype)s %(operator)s %(value)s GROUP BY %(entity_name)s) freq",
+        "ON freq.%(entity_name)s = a.%(entity_name)s"
+      ],
+      "arguments": ["biotype"],
+      "replacements": ["schema", "entity_name", "table_name", "data_subtype", "operator", "value"]
+    },
+    "frequency_score_inverted_all": {
+      "idType": "Tissue",
+      "query": [
+        "SELECT a.%(entity_name)s as id, (coalesce(freq.count,0)+0.0) as count, a.total ",
+        "FROM (SELECT COUNT(*) as total, %(entity_name)s FROM %(schema)s.targid_%(table_name)s GROUP BY %(entity_name)s) a ",
+        "LEFT JOIN (SELECT COUNT(*) as count, %(entity_name)s FROM %(schema)s.targid_%(table_name)s WHERE %(data_subtype)s %(operator)s %(value)s GROUP BY %(entity_name)s) freq",
+        "ON freq.%(entity_name)s = a.%(entity_name)s"
       ],
       "replacements": ["schema", "entity_name", "table_name", "data_subtype", "operator", "value"]
     },
     "mutation_frequency": {
       "idType": "Ensembl",
       "query": [
-        "SELECT a.ensg as id, (coalesce(mut.mutated,0)+0.0) / a.total as score ",
-        "FROM (SELECT count(*) as total, ensg FROM %(schema)s.targid_mutation m INNER JOIN %(schema)s.targid_%(schema)s c ON c.%(entity_name)s = m.%(entity_name)s WHERE c.tumortype = :tumortype group by ensg) a ",
-        "LEFT JOIN (SELECT count(*) as mutated, ensg FROM %(schema)s.targid_mutation m INNER JOIN %(schema)s.targid_%(schema)s c ON c.%(entity_name)s = m.%(entity_name)s WHERE c.tumortype = :tumortype AND %(data_subtype)s = 'true' group by ensg) mut ",
+        "SELECT a.ensg as id, (coalesce(mut.mutated,0)+0.0) as count, a.total ",
+        "FROM (SELECT COUNT(*) as total, ensg FROM %(schema)s.targid_mutation m INNER JOIN %(schema)s.targid_%(schema)s c ON c.%(entity_name)s = m.%(entity_name)s WHERE c.tumortype = :tumortype GROUP BY ensg) a ",
+        "LEFT JOIN (SELECT COUNT(*) as mutated, ensg FROM %(schema)s.targid_mutation m INNER JOIN %(schema)s.targid_%(schema)s c ON c.%(entity_name)s = m.%(entity_name)s WHERE c.tumortype = :tumortype AND %(data_subtype)s = 'TRUE' GROUP BY ensg) mut ",
         "ON mut.ensg = a.ensg"
       ],
-      "arguments": ["tumortype"],
+      "arguments": ["biotype"],
       "replacements": ["schema", "entity_name", "data_subtype"]
     },
     "mutation_frequency_all": {
       "idType": "Ensembl",
       "query": [
-        "SELECT a.ensg as id, (coalesce(mut.mutated,0)+0.0) / a.total as score ",
-        "FROM (SELECT count(*) as total, ensg FROM %(schema)s.targid_mutation group by ensg) a ",
-        "LEFT JOIN (SELECT count(*) as mutated, ensg FROM %(schema)s.targid_mutation where %(data_subtype)s = 'true' group by ensg) mut ON mut.ensg = a.ensg"
+        "SELECT a.ensg as id, (coalesce(mut.mutated,0)+0.0) as count, a.total ",
+        "FROM (SELECT COUNT(*) as total, ensg FROM %(schema)s.targid_mutation GROUP BY ensg) a ",
+        "LEFT JOIN (SELECT COUNT(*) as mutated, ensg FROM %(schema)s.targid_mutation WHERE %(data_subtype)s = 'TRUE' GROUP BY ensg) mut ON mut.ensg = a.ensg"
+      ],
+      "replacements": ["schema", "entity_name", "data_subtype"]
+    },
+    "mutation_frequency_inverted": {
+      "idType": "Ensembl",
+      "query": [
+        "SELECT a.%(entity_name)s as id, (coalesce(mut.mutated,0)+0.0) as count, a.total ",
+        "FROM (SELECT COUNT(*) as total, %(entity_name)s FROM %(schema)s.targid_mutation m INNER JOIN ${targid_bioinfodb.schema_public}_gene g ON g.ensg = m.ensg WHERE g.biotype = :biotype GROUP BY %(entity_name)s) a ",
+        "LEFT JOIN (SELECT COUNT(*) as mutated, %(entity_name)s FROM %(schema)s.targid_mutation m INNER JOIN ${targid_bioinfodb.schema_public}_gene g ON g.ensg = m.ensg WHERE g.biotype = :biotype AND %(data_subtype)s = 'TRUE' GROUP BY %(entity_name)s) mut ",
+        "ON mut.%(entity_name)s = a.%(entity_name)s"
+      ],
+      "arguments": ["biotype"],
+      "replacements": ["schema", "entity_name", "data_subtype"]
+    },
+    "mutation_frequency_inverted_all": {
+      "idType": "Ensembl",
+      "query": [
+        "SELECT a.%(entity_name)s as id, (coalesce(mut.mutated,0)+0.0) as count, a.total ",
+        "FROM (SELECT COUNT(*) as total, %(entity_name)s FROM %(schema)s.targid_mutation GROUP BY %(entity_name)s) a ",
+        "LEFT JOIN (SELECT COUNT(*) as mutated, %(entity_name)s FROM %(schema)s.targid_mutation WHERE %(data_subtype)s = 'TRUE' GROUP BY %(entity_name)s) mut ",
+        "ON mut.%(entity_name)s = a.%(entity_name)s"
       ],
       "replacements": ["schema", "entity_name", "data_subtype"]
     },
