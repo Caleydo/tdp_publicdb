@@ -21,7 +21,7 @@ CREATE OR REPLACE FUNCTION getSpecies(ensg TEXT) RETURNS TEXT AS $$
 $$ LANGUAGE plpgsql STABLE COST 100;
 
 /*
-How to use:
+Alterating the view does not work locally:
 
 CREATE OR REPLACE VIEW targid_gene AS
   SELECT ensg, getSpecies(ensg) AS species, symbol, chromosome, strand, biotype, seqregionstart, seqregionend
