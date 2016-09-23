@@ -3,6 +3,12 @@ Add DB function to get species for given Ensembl ID #248
 @see https://github.com/Caleydo/targid2/issues/248
 */
 
+UPDATE public.targid_gene set species = 'human' WHERE species = 'Homo_sapiens';
+UPDATE public.targid_gene set species = 'mouse' WHERE species = 'Mus_musculus';
+UPDATE public.targid_gene set species = 'rat' WHERE species = 'Rattus_norvegicus';
+
+/* When using views instead of tables us the following SQL queries*/
+/*
 CREATE OR REPLACE FUNCTION getSpecies(ensg TEXT) RETURNS TEXT AS $$
   DECLARE
     part TEXT;
@@ -19,9 +25,6 @@ CREATE OR REPLACE FUNCTION getSpecies(ensg TEXT) RETURNS TEXT AS $$
     END IF;
   END;
 $$ LANGUAGE plpgsql STABLE COST 100;
-
-/*
-Alterating the view does not work locally:
 
 CREATE OR REPLACE VIEW targid_gene AS
   SELECT ensg, getSpecies(ensg) AS species, symbol, chromosome, strand, biotype, seqregionstart, seqregionend
