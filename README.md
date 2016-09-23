@@ -43,6 +43,7 @@ Local PostgreSQL installation
   * [sql/targid_views.sql](https://github.com/Caleydo/targid_bioinfodb/blob/master/sql/targid_views.sql)
   * [sql/postgres_tissue_tables_initialization.sql](https://github.com/Caleydo/targid_bioinfodb/blob/master/sql/postgres_tissue_tables_initialization.sql)
   * [sql/postgres_get_species_for_ensembl.sql](https://github.com/Caleydo/targid_bioinfodb/blob/master/sql/postgres_get_species_for_ensembl.sql)
+  * [sql/replace-log2fpkm-with-tpm.sql](https://github.com/Caleydo/targid_bioinfodb/blob/master/sql/replace-log2fpkm-with-tpm.sql)
 
 ***
 
