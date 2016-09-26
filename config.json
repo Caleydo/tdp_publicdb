@@ -327,7 +327,7 @@
       "query": [
         "SELECT a.ensg as id, (coalesce(mut.mutated,0)+0.0) as count, a.total ",
         "FROM (SELECT COUNT(*) as total, ensg FROM %(schema)s.targid_mutation m INNER JOIN %(schema)s.targid_%(schema)s c ON c.%(entity_name)s = m.%(entity_name)s WHERE c.tumortype = :tumortype GROUP BY ensg) a ",
-        "LEFT JOIN (SELECT COUNT(*) as mutated, ensg FROM %(schema)s.targid_mutation m INNER JOIN %(schema)s.targid_%(schema)s c ON c.%(entity_name)s = m.%(entity_name)s WHERE c.tumortype = :tumortype AND LOWER(%(data_subtype)s) = 'true' GROUP BY ensg) mut ",
+        "LEFT JOIN (SELECT COUNT(*) as mutated, ensg FROM %(schema)s.targid_mutation m INNER JOIN %(schema)s.targid_%(schema)s c ON c.%(entity_name)s = m.%(entity_name)s WHERE c.tumortype = :tumortype AND %(data_subtype)s = 'true' GROUP BY ensg) mut ",
         "ON mut.ensg = a.ensg"
       ],
       "arguments": ["biotype"],
@@ -338,7 +338,7 @@
       "query": [
         "SELECT a.ensg as id, (coalesce(mut.mutated,0)+0.0) as count, a.total ",
         "FROM (SELECT COUNT(*) as total, ensg FROM %(schema)s.targid_mutation GROUP BY ensg) a ",
-        "LEFT JOIN (SELECT COUNT(*) as mutated, ensg FROM %(schema)s.targid_mutation WHERE LOWER(%(data_subtype)s) = 'true' GROUP BY ensg) mut ON mut.ensg = a.ensg"
+        "LEFT JOIN (SELECT COUNT(*) as mutated, ensg FROM %(schema)s.targid_mutation WHERE %(data_subtype)s = 'true' GROUP BY ensg) mut ON mut.ensg = a.ensg"
       ],
       "replacements": ["schema", "entity_name", "data_subtype"]
     },
@@ -347,7 +347,7 @@
       "query": [
         "SELECT a.%(entity_name)s as id, (coalesce(mut.mutated,0)+0.0) as count, a.total ",
         "FROM (SELECT COUNT(*) as total, %(entity_name)s FROM %(schema)s.targid_mutation m INNER JOIN ${targid_bioinfodb.schema_public}_gene g ON g.ensg = m.ensg WHERE g.biotype = :biotype GROUP BY %(entity_name)s) a ",
-        "LEFT JOIN (SELECT COUNT(*) as mutated, %(entity_name)s FROM %(schema)s.targid_mutation m INNER JOIN ${targid_bioinfodb.schema_public}_gene g ON g.ensg = m.ensg WHERE g.biotype = :biotype AND LOWER(%(data_subtype)s) = 'true' GROUP BY %(entity_name)s) mut ",
+        "LEFT JOIN (SELECT COUNT(*) as mutated, %(entity_name)s FROM %(schema)s.targid_mutation m INNER JOIN ${targid_bioinfodb.schema_public}_gene g ON g.ensg = m.ensg WHERE g.biotype = :biotype AND %(data_subtype)s = 'true' GROUP BY %(entity_name)s) mut ",
         "ON mut.%(entity_name)s = a.%(entity_name)s"
       ],
       "arguments": ["biotype"],
@@ -358,7 +358,7 @@
       "query": [
         "SELECT a.%(entity_name)s as id, (coalesce(mut.mutated,0)+0.0) as count, a.total ",
         "FROM (SELECT COUNT(*) as total, %(entity_name)s FROM %(schema)s.targid_mutation GROUP BY %(entity_name)s) a ",
-        "LEFT JOIN (SELECT COUNT(*) as mutated, %(entity_name)s FROM %(schema)s.targid_mutation WHERE LOWER(%(data_subtype)s) = 'true' GROUP BY %(entity_name)s) mut ",
+        "LEFT JOIN (SELECT COUNT(*) as mutated, %(entity_name)s FROM %(schema)s.targid_mutation WHERE %(data_subtype)s = 'true' GROUP BY %(entity_name)s) mut ",
         "ON mut.%(entity_name)s = a.%(entity_name)s"
       ],
       "replacements": ["schema", "entity_name", "data_subtype"]
