@@ -9,6 +9,9 @@ UPDATE cellline.targid_expression set tpm = pow(2, log2tpm);
 ALTER TABLE tissue.targid_expression rename column log2fpkm to tpm;
 UPDATE tissue.targid_expression set tpm = pow(2, log2tpm);
 
+ALTER TABLE cellline.targid_data rename column log2tpm to tpm;
+UPDATE cellline.targid_data set tpm = pow(2, log2tpm);
+
 /* When using views instead of tables us the following SQL queries*/
 /*
 DROP VIEW  cellline.targid_expression;
