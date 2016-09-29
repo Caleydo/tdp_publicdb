@@ -34,6 +34,15 @@
       ],
       "arguments": ["species"]
     },
+    "cellline_filtered_namedset": {
+      "idType": "Cellline",
+      "query": [
+        "SELECT ${targid_bioinfodb.index_cellline}, ${targid_bioinfodb.views.cellline.column_query} ",
+        "FROM ${targid_bioinfodb.schema_cellline}_cellline t WHERE species = :species AND targidid IN (%(ids)s)"
+      ],
+      "arguments": ["species"],
+      "replacements": ["ids"]
+    },
     "tissue": {
       "idType": "Tissue",
       "columns": {
@@ -58,6 +67,16 @@
       ],
       "arguments": ["species"]
     },
+    "tissue_filtered_namedset": {
+      "idType": "Tissue",
+      "query": [
+        "SELECT ${targid_bioinfodb.index_tissue}, ${targid_bioinfodb.views.tissue.column_query} ",
+        "FROM ${targid_bioinfodb.schema_tissue}_tissue t ",
+        "WHERE species = :species AND targidid IN (%(ids)s)"
+      ],
+      "arguments": ["species"],
+      "replacements": ["ids"]
+    },
     "gene": {
       "idType": "Ensembl",
       "columns": {
@@ -81,6 +100,12 @@
       "idType": "Ensembl",
       "query": "SELECT ${targid_bioinfodb.index_gene}, ${targid_bioinfodb.views.gene.column_query} FROM ${targid_bioinfodb.schema_public}_gene t WHERE species = :species ORDER BY symbol ASC",
       "arguments": ["species"]
+    },
+    "gene_filtered_namedset": {
+      "idType": "Ensembl",
+      "query": "SELECT ${targid_bioinfodb.index_gene}, ${targid_bioinfodb.views.gene.column_query} FROM ${targid_bioinfodb.schema_public}_gene t WHERE species = :species AND targidid IN (%(ids)s) ORDER BY symbol ASC",
+      "arguments": ["species"],
+      "replacements": ["ids"]
     },
     "gene_map_ensgs": {
       "idType": "Ensembl",
