@@ -32,14 +32,15 @@ Local PostgreSQL installation
   - On Windows: `C:\Program Files\PostgreSQL\9.5\bin`
 3. Start pgAdmin (is included in the download from enterprisedb.com) and try the database connection
   - On Windows: After the installation the _postgresql-x64-9.5_ service should already run
-4. Open a command line window
+4. Ensure that the `postgres` username has the password `admin`, you can change it using `ALTER USER "postgres" WITH PASSWORD 'admin';` later on
+5. Open a command line window
   - On Windows: **Git Bash does not work**, use the normal command line instead
-5. Run `psql -d postgres -U postgres < D:\Downloads\targid2.dump` importing the dump into the default _postgres_ database (-d) using the _postgres_ user (-U)
-6. Depending on the dump file size the import takes a while
+6. Run `psql -d postgres -U postgres < D:\Downloads\targid2.dump` importing the dump into the default _postgres_ database (-d) using the _postgres_ user (-U)
+7. Depending on the dump file size the import takes a while
   - The console output is updated from time to time
-7. When the import has finished: Switch to pgAdmin and refresh the _postgres_ database
+8. When the import has finished: Switch to pgAdmin and refresh the _postgres_ database
   - You should now be able to see the schemas _cellline_, _public_, and _tissues_
-8. Run the following SQL queries files:
+9. Run the following SQL queries files:
   * [sql/targid_views.sql](https://github.com/Caleydo/targid_bioinfodb/blob/master/sql/targid_views.sql)
   * [sql/postgres_tissue_tables_initialization.sql](https://github.com/Caleydo/targid_bioinfodb/blob/master/sql/postgres_tissue_tables_initialization.sql)
   * [sql/postgres_get_species_for_ensembl.sql](https://github.com/Caleydo/targid_bioinfodb/blob/master/sql/postgres_get_species_for_ensembl.sql)
