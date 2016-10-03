@@ -109,7 +109,7 @@
     },
     "gene_map_ensgs": {
       "idType": "Ensembl",
-      "query": "SELECT targidid as _id, ensg as id, symbol FROM ${targid_bioinfodb.schema_public}_gene WHERE ensg in (%(ensgs)s) ORDER BY symbol ASC",
+      "query": "SELECT targidid as _id, ensg as id, symbol FROM ${targid_bioinfodb.schema_public}_gene WHERE ensg IN (%(ensgs)s) ORDER BY symbol ASC",
       "replacements": ["ensgs"]
     },
     "enrichment": {
@@ -397,7 +397,7 @@
     "single_entity_score": {
       "idType": "Ensembl",
       "query": [
-        "SELECT targidid as _id, ensg as id, %(data_subtype)s as score ",
+        "SELECT ensg as id, %(data_subtype)s as score ",
         "FROM %(schema)s.targid_%(table_name)s ",
         "WHERE %(entity_name)s = :entity_value"
       ],
