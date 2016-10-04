@@ -389,5 +389,10 @@
       "replacements": ["schema", "entity_name", "table_name", "data_subtype"],
       "arguments": ["entity_value"]
     }
+  },
+  "mappings": {
+    "Cellline": "SELECT celllinename as id, targidid as _id FROM ${targid_bioinfodb.schema_cellline}_cellline ORDER BY celllinename ASC",
+    "Tissue": "SELECT tissuename as id, targidid as _id FROM ${targid_bioinfodb.schema_tissue}_tissue ORDER BY tissuename ASC",
+    "Ensembl": "SELECT ensg as id, targidid as _id FROM ${targid_bioinfodb.schema_public}_gene ORDER BY symbol ASC"
   }
 }
