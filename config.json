@@ -34,6 +34,15 @@
       ],
       "arguments": ["species"]
     },
+    "cellline_filtered_namedset": {
+      "idType": "Cellline",
+      "query": [
+        "SELECT ${targid_bioinfodb.index_cellline}, ${targid_bioinfodb.views.cellline.column_query} ",
+        "FROM ${targid_bioinfodb.schema_cellline}_cellline t WHERE species = :species AND targidid IN (%(ids)s)"
+      ],
+      "arguments": ["species"],
+      "replacements": ["ids"]
+    },
     "tissue": {
       "idType": "Tissue",
       "columns": {
@@ -57,6 +66,16 @@
         "WHERE species = :species"
       ],
       "arguments": ["species"]
+    },
+    "tissue_filtered_namedset": {
+      "idType": "Tissue",
+      "query": [
+        "SELECT ${targid_bioinfodb.index_tissue}, ${targid_bioinfodb.views.tissue.column_query} ",
+        "FROM ${targid_bioinfodb.schema_tissue}_tissue t ",
+        "WHERE species = :species AND targidid IN (%(ids)s)"
+      ],
+      "arguments": ["species"],
+      "replacements": ["ids"]
     },
     "gene": {
       "idType": "Ensembl",
@@ -82,9 +101,15 @@
       "query": "SELECT ${targid_bioinfodb.index_gene}, ${targid_bioinfodb.views.gene.column_query} FROM ${targid_bioinfodb.schema_public}_gene t WHERE species = :species ORDER BY symbol ASC",
       "arguments": ["species"]
     },
+    "gene_filtered_namedset": {
+      "idType": "Ensembl",
+      "query": "SELECT ${targid_bioinfodb.index_gene}, ${targid_bioinfodb.views.gene.column_query} FROM ${targid_bioinfodb.schema_public}_gene t WHERE species = :species AND targidid IN (%(ids)s) ORDER BY symbol ASC",
+      "arguments": ["species"],
+      "replacements": ["ids"]
+    },
     "gene_map_ensgs": {
       "idType": "Ensembl",
-      "query": "SELECT targidid as _id, ensg as id, symbol FROM ${targid_bioinfodb.schema_public}_gene WHERE ensg in (%(ensgs)s) ORDER BY symbol ASC",
+      "query": "SELECT targidid as _id, ensg as id, symbol FROM ${targid_bioinfodb.schema_public}_gene WHERE ensg IN (%(ensgs)s) ORDER BY symbol ASC",
       "replacements": ["ensgs"]
     },
     "enrichment": {
@@ -372,7 +397,7 @@
     "single_entity_score": {
       "idType": "Ensembl",
       "query": [
-        "SELECT targidid as _id, ensg as id, %(data_subtype)s as score ",
+        "SELECT ensg as id, %(data_subtype)s as score ",
         "FROM %(schema)s.targid_%(table_name)s ",
         "WHERE %(entity_name)s = :entity_value"
       ],
