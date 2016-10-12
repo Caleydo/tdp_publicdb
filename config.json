@@ -427,7 +427,7 @@
     "single_entity_score_inverted": {
       "idType": "Cellline",
       "query": [
-        "SELECT targidid as _id, %(entity_name)s as id, %(data_subtype)s as score ",
+        "SELECT %(entity_name)s as id, %(data_subtype)s as score ",
         "FROM %(schema)s.targid_%(table_name)s ",
         "WHERE ensg = :entity_value"
       ],
