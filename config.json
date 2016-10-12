@@ -181,40 +181,60 @@
     "raw_data_table": {
       "idType": "Tissue",
       "query": [
-        "SELECT b.targidid as _id, b.%(entity_name)s as id, g.symbol, b.species, b.organ, b.tumortype, b.gender, ab.ensg, %(data_subtype)s as score ",
-        "FROM %(schema)s.targid_%(table_name)s ab INNER JOIN %(schema)s.targid_%(schema)s b ON b.%(entity_name)s = ab.%(entity_name)s INNER JOIN ${targid_bioinfodb.schema_public}_gene g ON ab.ensg = g.ensg ",
-        "WHERE b.tumortype = :tumortype AND ab.ensg in (%(ensgs)s)"
+        "SELECT b.targidid as _id, b.%(entity_name)s as id, b.species, b.organ, b.tumortype, b.gender ",
+        "FROM %(schema)s.targid_%(schema)s b ",
+        "WHERE b.tumortype = :tumortype"
       ],
-      "replacements": ["schema", "table_name", "entity_name", "data_subtype", "ensgs"],
+      "replacements": ["schema", "table_name", "entity_name", "data_subtype"],
       "arguments": ["tumortype"]
     },
     "raw_data_table_all": {
       "idType": "Tissue",
       "query": [
-        "SELECT b.targidid as _id, b.%(entity_name)s as id, g.symbol, b.species, b.organ, b.tumortype, b.gender, ab.ensg, %(data_subtype)s as score ",
-        "FROM %(schema)s.targid_%(table_name)s ab INNER JOIN %(schema)s.targid_%(schema)s b ON b.%(entity_name)s = ab.%(entity_name)s INNER JOIN ${targid_bioinfodb.schema_public}_gene g ON ab.ensg = g.ensg ",
-        "WHERE ab.ensg in (%(ensgs)s)"
+        "SELECT b.targidid as _id, b.%(entity_name)s as id, b.species, b.organ, b.tumortype, b.gender ",
+        "FROM %(schema)s.targid_%(schema)s b "
       ],
-      "replacements": ["schema", "table_name", "entity_name", "data_subtype", "ensgs"]
+      "replacements": ["schema", "table_name", "entity_name", "data_subtype"]
+    },
+    "raw_data_table_column": {
+      "idType": "Tissue",
+      "query": [
+        "SELECT b.targidid as _id, b.%(entity_name)s as id, %(data_subtype)s as score ",
+        "FROM %(schema)s.targid_%(schema)s b ",
+        "INNER JOIN %(schema)s.targid_%(table_name)s ab ON b.%(entity_name)s = ab.%(entity_name)s ",
+        "WHERE ab.ensg = :ensg"
+      ],
+      "replacements": ["schema", "table_name", "entity_name", "data_subtype"],
+      "arguments": ["ensg"]
     },
     "raw_data_table_inverted": {
       "idType": "Ensembl",
       "query": [
-        "SELECT b.targidid as _id, b.ensg as id, b.symbol, b.species, b.strand, b.chromosome, b.biotype, b.seqregionstart, b.seqregionend, %(entity_name)s as name, %(data_subtype)s as score ",
-        "FROM %(schema)s.targid_%(table_name)s ab INNER JOIN ${targid_bioinfodb.schema_public}_gene b ON b.ensg = ab.ensg ",
-        "WHERE b.biotype = :biotype AND ab.%(entity_name)s in (%(names)s)"
+        "SELECT b.targidid as _id, b.ensg as id, b.symbol, b.species, b.strand, b.chromosome, b.biotype, b.seqregionstart, b.seqregionend ",
+        "FROM ${targid_bioinfodb.schema_public}_gene b ",
+        "WHERE b.biotype = :biotype"
       ],
-      "replacements": ["schema", "table_name", "entity_name", "data_subtype", "names"],
+      "replacements": ["schema", "table_name", "entity_name", "data_subtype"],
       "arguments": ["biotype"]
     },
     "raw_data_table_inverted_all": {
       "idType": "Ensembl",
       "query": [
-        "SELECT b.targidid as _id, b.ensg as id, b.symbol, b.species, b.strand, b.chromosome, b.biotype, b.seqregionstart, b.seqregionend, %(entity_name)s as name, %(data_subtype)s as score ",
-        "FROM %(schema)s.targid_%(table_name)s ab INNER JOIN ${targid_bioinfodb.schema_public}_gene b ON b.ensg = ab.ensg ",
-        "WHERE ab.%(entity_name)s in (%(names)s)"
+        "SELECT b.targidid as _id, b.ensg as id, b.symbol, b.species, b.strand, b.chromosome, b.biotype, b.seqregionstart, b.seqregionend ",
+        "FROM ${targid_bioinfodb.schema_public}_gene b"
       ],
-      "replacements": ["schema", "table_name", "entity_name", "data_subtype", "names"]
+      "replacements": ["schema", "table_name", "entity_name", "data_subtype"]
+    },
+    "raw_data_table_inverted_column": {
+      "idType": "Ensembl",
+      "query": [
+        "SELECT b.targidid as _id, b.ensg as id, %(data_subtype)s as score ",
+        "FROM ${targid_bioinfodb.schema_public}_gene b ",
+        "INNER JOIN %(schema)s.targid_%(table_name)s ab ON ab.ensg = b.ensg ",
+        "WHERE ab.%(entity_name)s = :entity_value"
+      ],
+      "replacements": ["schema", "table_name", "entity_name", "data_subtype"],
+      "arguments": ["entity_value"]
     },
     "co_expression": {
       "idType": "Ensembl",
