@@ -170,7 +170,7 @@
         "FROM %(schema)s.targid_data d ",
         "INNER JOIN %(schema)s.targid_%(table_name)s c ON d.%(entity_name)s = c.%(entity_name)s ",
         "INNER JOIN ${targid_bioinfodb.schema_public}_gene g ON d.ensg = g.ensg ",
-        "WHERE c.tumortype = :tumortype AND d.ensg in (%(ensgs)s) AND d.species = :species"
+        "WHERE c.tumortype = :tumortype AND d.ensg in (%(ensgs)s) AND c.species = :species"
       ],
       "replacements": ["schema", "table_name", "entity_name", "ensgs"],
       "arguments": ["tumortype", "species"]
@@ -182,7 +182,7 @@
         "FROM %(schema)s.targid_data d ",
         "INNER JOIN %(schema)s.targid_%(table_name)s c ON d.%(entity_name)s = c.%(entity_name)s ",
         "INNER JOIN ${targid_bioinfodb.schema_public}_gene g ON d.ensg = g.ensg ",
-        "WHERE d.ensg in (%(ensgs)s) AND d.species = :species"
+        "WHERE d.ensg in (%(ensgs)s) AND c.species = :species"
       ],
       "arguments": ["species"],
       "replacements": ["schema", "table_name", "entity_name", "ensgs"]
