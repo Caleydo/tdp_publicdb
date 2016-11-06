@@ -1,0 +1,32 @@
+{
+  "generator-phovea": {
+    "type": "server",
+    "name": "targid_bioinfodb",
+    "author": "The Caleydo Team",
+    "githubAccount": "phovea",
+    "modules": [
+      "phovea_data_sql",
+      "targid2"
+    ],
+    "extensions": [],
+    "sextensions": [
+      {
+        "type": "targid-sql-database-definition",
+        "id": "bioinfodb",
+        "module": "",
+        "extras": {
+          "configKey": "targid_bioinfodb"
+        }
+      }
+    ],
+    "libraries": [],
+    "unknown": {
+      "requirements": [],
+      "debianPackages": [
+        "python-psycopg2"
+      ],
+      "redhatPackages": []
+    },
+    "today": "Sun, 06 Nov 2016 23:21:43 GMT"
+  }
+}

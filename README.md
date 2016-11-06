@@ -1,51 +1,44 @@
-TargID bioinfoDB.hg19 Connector ![Caleydo Web Server Plugin](https://img.shields.io/badge/Caleydo%20Web-Server-10ACDF.svg)
-===================
+targid_bioinfodb [![Phovea][phovea-image]][phovea-url] [![NPM version][npm-image]][npm-url] [![Build Status][travis-image]][travis-url] [![Dependency Status][daviddm-image]][daviddm-url]
+=====================
 
 This repository contains the database connector for the BI-internal bioinfoDB.hg19 database and the respective SQL queries to drive the [tagid_common](https://github.com/Caleydo/targid_common/) views and visualizations.
 
 Installation
 ------------
 
-[Set up a virtual machine using Vagrant](http://www.caleydo.org/documentation/vagrant/) and run these commands inside the virtual machine:
-
-```bash
-./manage.sh clone Caleydo/targid_bioinfodb
-./manage.sh resolve
+```
+git clone https://github.com/phovea/targid_bioinfodb.git
+cd targid_bioinfodb
+npm install
 ```
 
-If you want this plugin to be dynamically resolved as part of another application of plugin, you need to add it as a peer dependency to the _package.json_ of the application or plugin it should belong to:
+Testing
+-------
 
-```json
-{
-  "peerDependencies": {
-    "targid_bioinfodb": "*"
-  }
-}
+```
+npm run test
 ```
 
-Local PostgreSQL installation
-------------
+Building
+--------
 
-1. [Download PostgreSQL](http://www.enterprisedb.com/products-services-training/pgdownload) for your operating system and install it
-  - Use _admin_ as password for the user _postgres_ (or modify the password in the _config.json_ later) 
-2. Add the installation path to the PATH variable
-  - On Windows: `C:\Program Files\PostgreSQL\9.5\bin`
-3. Start pgAdmin (is included in the download from enterprisedb.com) and try the database connection
-  - On Windows: After the installation the _postgresql-x64-9.5_ service should already run
-4. Ensure that the `postgres` username has the password `admin`, you can change it using `ALTER USER "postgres" WITH PASSWORD 'admin';` later on
-5. Open a command line window
-  - On Windows: **Git Bash does not work**, use the normal command line instead
-6. Run `psql -d postgres -U postgres < D:\Downloads\targid2.dump` importing the dump into the default _postgres_ database (-d) using the _postgres_ user (-U)
-7. Depending on the dump file size the import takes a while
-  - The console output is updated from time to time
-8. When the import has finished: Switch to pgAdmin and refresh the _postgres_ database
-  - You should now be able to see the schemas _cellline_, _public_, and _tissues_
-9. Run the following SQL queries files:
-  * [sql/targid_views.sql](https://github.com/Caleydo/targid_bioinfodb/blob/master/sql/targid_views.sql)
-  * [sql/postgres_tissue_tables_initialization.sql](https://github.com/Caleydo/targid_bioinfodb/blob/master/sql/postgres_tissue_tables_initialization.sql)
-  * [sql/postgres_get_species_for_ensembl.sql](https://github.com/Caleydo/targid_bioinfodb/blob/master/sql/postgres_get_species_for_ensembl.sql)
-  * [sql/replace-log2fpkm-with-tpm.sql](https://github.com/Caleydo/targid_bioinfodb/blob/master/sql/replace-log2fpkm-with-tpm.sql)
+```
+npm run build
+```
+
+
 
 ***
 
-This repository has been developed for Boehringer Ingelheim as part of a research collaboration and is not part of the **[Caleydo Web](http://caleydo.org/)** platform.
+<a href="https://caleydo.org"><img src="http://caleydo.org/assets/images/logos/caleydo.svg" align="left" width="200px" hspace="10" vspace="6"></a>
+This repository is part of **[Phovea](http://phovea.caleydo.org/)**, a platform for developing web-based visualization applications. For tutorials, API docs, and more information about the build and deployment process, see the [documentation page](http://caleydo.org/documentation/).
+
+
+[phovea-image]: https://img.shields.io/badge/Phovea-Server%20Plugin-10ACDF.svg
+[phovea-url]: https://phovea.caleydo.org
+[npm-image]: https://badge.fury.io/js/targid_bioinfodb.svg
+[npm-url]: https://npmjs.org/package/targid_bioinfodb
+[travis-image]: https://travis-ci.org/phovea/targid_bioinfodb.svg?branch=master
+[travis-url]: https://travis-ci.org/phovea/targid_bioinfodb
+[daviddm-image]: https://david-dm.org/phovea/targid_bioinfodb.svg?theme=shields.io
+[daviddm-url]: https://david-dm.org/phovea/targid_bioinfodb
