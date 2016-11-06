@@ -12,7 +12,7 @@ def phovea(registry):
   """
   # generator-phovea:begin
   registry.append('targid-sql-database-definition', 'bioinfodb', 'targid_bioinfodb.', {
-   'configKey': 'targid_bioinfodb'
+     'configKey': 'targid_bioinfodb'
   })
   # generator-phovea:end
   pass
