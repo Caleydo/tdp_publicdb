@@ -27,10 +27,10 @@
   },
   "license": "BSD-3-Clause",
   "bugs": {
-    "url": "https://github.com/phovea/targid_bioinfodb/issues"
+    "url": "https://github.com/caleydo/targid_bioinfodb/issues"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/phovea/targid_bioinfodb.git"
+    "url": "https://github.com/caleydo/targid_bioinfodb.git"
   }
 }

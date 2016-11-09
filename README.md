@@ -7,7 +7,7 @@ Installation
 ------------
 
 ```
-git clone https://github.com/phovea/targid_bioinfodb.git
+git clone https://github.com/caleydo/targid_bioinfodb.git
 cd targid_bioinfodb
 npm install
 ```
@@ -38,7 +38,7 @@ This repository is part of **[Phovea](http://phovea.caleydo.org/)**, a platform 
 [phovea-url]: https://phovea.caleydo.org
 [npm-image]: https://badge.fury.io/js/targid_bioinfodb.svg
 [npm-url]: https://npmjs.org/package/targid_bioinfodb
-[travis-image]: https://travis-ci.org/phovea/targid_bioinfodb.svg?branch=master
-[travis-url]: https://travis-ci.org/phovea/targid_bioinfodb
-[daviddm-image]: https://david-dm.org/phovea/targid_bioinfodb.svg?theme=shields.io
-[daviddm-url]: https://david-dm.org/phovea/targid_bioinfodb
+[travis-image]: https://travis-ci.org/caleydo/targid_bioinfodb.svg?branch=master
+[travis-url]: https://travis-ci.org/caleydo/targid_bioinfodb
+[daviddm-image]: https://david-dm.org/caleydo/targid_bioinfodb.svg?theme=shields.io
+[daviddm-url]: https://david-dm.org/caleydo/targid_bioinfodb

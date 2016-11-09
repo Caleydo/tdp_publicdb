@@ -1,9 +1,9 @@
 {
   "generator-phovea": {
-    "type": "server",
+    "type": "slib",
     "name": "targid_bioinfodb",
     "author": "The Caleydo Team",
-    "githubAccount": "phovea",
+    "githubAccount": "caleydo",
     "modules": [
       "phovea_data_sql",
       "targid2"
