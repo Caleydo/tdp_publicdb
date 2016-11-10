@@ -309,10 +309,9 @@
       "idType": "Ensembl",
       "query": [
         "SELECT ensg as id, %(agg)s(%(data_subtype)s) as score ",
-        "FROM %(schema)s.targid_%(table_name)s ab ",
-        "INNER JOIN %(schema)s.targid_%(schema)s b ON b.%(entity_name)s = ab.%(entity_name)s ",
-        "WHERE b.tumortype = :tumortype AND b.species = :species ",
-        "GROUP BY ab.ensg"
+        "FROM %(schema)s.targid_%(table_name)s ",
+        "WHERE %(entity_name)s = ANY(ARRAY(SELECT %(entity_name)s FROM %(schema)s.targid_%(schema)s WHERE tumortype = :tumortype AND species = :species))",
+        "GROUP BY ensg"
       ],
       "replacements": ["schema", "entity_name", "table_name", "data_subtype", "agg"],
       "arguments": ["tumortype", "species"]
@@ -321,10 +320,9 @@
       "idType": "Ensembl",
       "query": [
         "SELECT ensg as id, %(agg)s(%(data_subtype)s) as score ",
-        "FROM %(schema)s.targid_%(table_name)s ab ",
-        "INNER JOIN %(schema)s.targid_%(schema)s b ON b.%(entity_name)s = ab.%(entity_name)s ",
-        "WHERE b.species = :species ",
-        "GROUP BY ab.ensg"
+        "FROM %(schema)s.targid_%(table_name)s ",
+        "WHERE %(entity_name)s = ANY(ARRAY(SELECT %(entity_name)s FROM %(schema)s.targid_%(schema)s WHERE species = :species))",
+        "GROUP BY ensg"
       ],
       "replacements": ["schema", "entity_name", "table_name", "data_subtype", "agg"],
       "arguments": ["species"]
