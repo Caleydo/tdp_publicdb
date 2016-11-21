@@ -6,6 +6,11 @@
   "index_gene": "row_number() OVER(ORDER BY ensg ASC) as _index",
   "index_cellline": "row_number() OVER(ORDER BY celllinename ASC) as _index",
   "index_tissue": "row_number() OVER(ORDER BY tissuename ASC) as _index",
+  "agg_score": {
+    "query": "%(agg)s(%(data_subtype)s)",
+    "query_median": "percentile_cont(0.5) WITHIN GROUP (ORDER BY %(data_subtype)s)",
+    "replacements": ["agg", "data_subtype"]
+  },
   "views": {
     "cellline": {
       "idType": "Cellline",
@@ -308,47 +313,47 @@
     "aggregated_score": {
       "idType": "Ensembl",
       "query": [
-        "SELECT ensg as id, %(agg)s(%(data_subtype)s) as score ",
+        "SELECT ensg as id, %(agg_score)s as score ",
         "FROM %(schema)s.targid_%(table_name)s ",
         "WHERE %(entity_name)s = ANY(ARRAY(SELECT %(entity_name)s FROM %(schema)s.targid_%(schema)s WHERE tumortype = :tumortype AND species = :species))",
         "GROUP BY ensg"
       ],
-      "replacements": ["schema", "entity_name", "table_name", "data_subtype", "agg"],
+      "replacements": ["schema", "entity_name", "table_name", "data_subtype", "agg", "agg_score"],
       "arguments": ["tumortype", "species"]
     },
     "aggregated_score_all": {
       "idType": "Ensembl",
       "query": [
-        "SELECT ensg as id, %(agg)s(%(data_subtype)s) as score ",
+        "SELECT ensg as id, %(agg_score)s as score ",
         "FROM %(schema)s.targid_%(table_name)s ",
         "WHERE %(entity_name)s = ANY(ARRAY(SELECT %(entity_name)s FROM %(schema)s.targid_%(schema)s WHERE species = :species))",
         "GROUP BY ensg"
       ],
-      "replacements": ["schema", "entity_name", "table_name", "data_subtype", "agg"],
+      "replacements": ["schema", "entity_name", "table_name", "data_subtype", "agg", "agg_score"],
       "arguments": ["species"]
     },
     "aggregated_score_inverted": {
       "idType": "Tissue",
       "query": [
-        "SELECT %(entity_name)s as id, %(agg)s(%(data_subtype)s) as score ",
+        "SELECT %(entity_name)s as id, %(agg_score)s as score ",
         "FROM %(schema)s.targid_%(table_name)s ab ",
         "INNER JOIN ${targid_bioinfodb.schema_public}_gene b ON b.ensg = ab.ensg ",
         "WHERE b.biotype = :biotype AND b.species = :species ",
         "GROUP BY ab.%(entity_name)s"
       ],
-      "replacements": ["schema", "entity_name", "table_name", "data_subtype", "agg"],
+      "replacements": ["schema", "entity_name", "table_name", "data_subtype", "agg", "agg_score"],
       "arguments": ["biotype", "species"]
     },
     "aggregated_score_inverted_all": {
       "idType": "Tissue",
       "query": [
-        "SELECT %(entity_name)s as id, %(agg)s(%(data_subtype)s) as score ",
+        "SELECT %(entity_name)s as id, %(agg_score)s as score ",
         "FROM %(schema)s.targid_%(table_name)s ab ",
         "INNER JOIN ${targid_bioinfodb.schema_public}_gene b ON b.ensg = ab.ensg ",
         "WHERE b.species = :species ",
         "GROUP BY ab.%(entity_name)s"
       ],
-      "replacements": ["schema", "entity_name", "table_name", "data_subtype", "agg"],
+      "replacements": ["schema", "entity_name", "table_name", "data_subtype", "agg", "agg_score"],
       "arguments": ["species"]
     },
     "frequency_score": {
