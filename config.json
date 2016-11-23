@@ -351,6 +351,17 @@
       "replacements": ["schema", "entity_name", "table_name", "data_subtype", "agg", "agg_score"],
       "arguments": ["tumortype", "species"]
     },
+    "aggregated_score_panel": {
+      "idType": "Ensembl",
+      "query": [
+        "SELECT ensg as id, %(agg_score)s as score ",
+        "FROM %(schema)s.targid_%(table_name)s ",
+        "WHERE %(entity_name)s = ANY(ARRAY(SELECT %(entity_name)s FROM %(schema)s.targid_panelassignment WHERE panel = :panel))",
+        "GROUP BY ensg"
+      ],
+      "replacements": ["schema", "entity_name", "table_name", "data_subtype", "agg", "agg_score"],
+      "arguments": ["panel"]
+    },
     "aggregated_score_all": {
       "idType": "Ensembl",
       "query": [
