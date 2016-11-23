@@ -3,9 +3,9 @@
   "schema_tissue": "tissue.targid",
   "schema_public": "public.targid",
   "schema_cellline": "cellline.targid",
-  "index_gene": "row_number() OVER(ORDER BY ensg ASC) as _index",
-  "index_cellline": "row_number() OVER(ORDER BY celllinename ASC) as _index",
-  "index_tissue": "row_number() OVER(ORDER BY tissuename ASC) as _index",
+  "index_gene": "row_number() OVER(ORDER BY t.ensg ASC) as _index",
+  "index_cellline": "row_number() OVER(ORDER BY t.celllinename ASC) as _index",
+  "index_tissue": "row_number() OVER(ORDER BY t.tissuename ASC) as _index",
   "agg_score": {
     "query": "%(agg)s(%(data_subtype)s)",
     "query_median": "percentile_cont(0.5) WITHIN GROUP (ORDER BY %(data_subtype)s)",
@@ -21,7 +21,7 @@
         "organ": { "label": "organ", "type": "categorical" },
         "gender": { "label": "gender", "type": "categorical" }
       },
-      "column_query": "targidid as _id, celllinename as id, species, tumortype, organ, gender",
+      "column_query": "targidid as _id, t.celllinename as id, species, tumortype, organ, gender",
 
       "queryCategories": "SELECT DISTINCT %(col)s as cat FROM ${targid_bioinfodb.schema_cellline}_cellline WHERE %(col)s is not null and %(col)s <> ''",
 
@@ -30,6 +30,9 @@
         "FROM ${targid_bioinfodb.schema_cellline}_cellline t",
         "ORDER BY celllinename ASC"
       ]
+    },
+    "cellline_panel": {
+      "query": "SELECT panel as id, paneldescription as description from ${targid_bioinfodb.schema_cellline}_panel order by panel ASC"
     },
     "cellline_filtered": {
       "idType": "Cellline",
@@ -47,6 +50,14 @@
       ],
       "replacements": ["ids"]
     },
+    "cellline_filtered_panel": {
+      "idType": "Cellline",
+      "query": [
+        "SELECT ${targid_bioinfodb.index_cellline}, ${targid_bioinfodb.views.cellline.column_query} ",
+        "FROM ${targid_bioinfodb.schema_cellline}_panelassignment s JOIN ${targid_bioinfodb.schema_cellline}_cellline t ON s.celllinename = t.celllinename WHERE s.panel = :panel"
+      ],
+      "arguments": ["panel"]
+    },
     "tissue": {
       "idType": "Tissue",
       "columns": {
@@ -56,11 +67,14 @@
         "organ": { "label": "organ", "type": "categorical" },
         "gender": { "label": "gender", "type": "categorical" }
       },
-      "column_query": "targidid as _id, tissuename as id, species, tumortype, organ, gender",
+      "column_query": "targidid as _id, t.tissuename as id, species, tumortype, organ, gender",
 
       "queryCategories": "SELECT distinct %(col)s as cat FROM ${targid_bioinfodb.schema_tissue}_tissue WHERE %(col)s is not null AND %(col)s <> ''",
 
       "query": "SELECT ${targid_bioinfodb.index_tissue}, ${column_query} FROM ${targid_bioinfodb.schema_tissue}_tissue t"
+    },
+    "tissue_panel": {
+      "query": "SELECT panel as id, paneldescription as description from ${targid_bioinfodb.schema_tissue}_panel order by panel ASC"
     },
     "tissue_filtered": {
       "idType": "Tissue",
@@ -80,6 +94,14 @@
       ],
       "replacements": ["ids"]
     },
+    "tissue_filtered_panel": {
+      "idType": "Cellline",
+      "query": [
+        "SELECT ${targid_bioinfodb.index_tissue}, ${targid_bioinfodb.views.tissue.column_query} ",
+        "FROM ${targid_bioinfodb.schema_tissue}_panelassignment s JOIN ${targid_bioinfodb.schema_tissue}_tissue t ON s.tissuename = t.tissuename WHERE s.panel = :panel"
+      ],
+      "arguments": ["panel"]
+    },
     "gene": {
       "idType": "Ensembl",
       "columns": {
@@ -92,12 +114,15 @@
         "seqregionstart": { "label": "seqregionstart", "type": "number" },
         "seqregionend": { "label": "seqregionend", "type": "number" }
       },
-      "column_query": "targidid as _id, ensg as id, symbol, species, chromosome, strand, biotype, seqregionstart, seqregionend",
+      "column_query": "targidid as _id, t.ensg as id, symbol, species, chromosome, strand, biotype, seqregionstart, seqregionend",
 
       "queryStats": "SELECT min(strand) as strand_min, max(strand) as strand_max, min(seqregionstart) as seqregionstart_min, max(seqregionstart) as seqregionstart_max, min(seqregionend) as seqregionend_min, max(seqregionend) as seqregionend_max FROM ${targid_bioinfodb.schema_public}_gene",
       "queryCategories": "SELECT DISTINCT %(col)s as cat FROM ${targid_bioinfodb.schema_public}_gene WHERE %(col)s is not null and %(col)s <> ''",
 
       "query": "SELECT ${targid_bioinfodb.index_gene}, ${column_query} FROM ${targid_bioinfodb.schema_public}_gene t ORDER BY t.symbol ASC"
+    },
+    "gene_panel": {
+      "query": "SELECT genesetname as id, species as description from ${targid_bioinfodb.schema_public}_geneset order by genesetname ASC"
     },
     "gene_filtered": {
       "idType": "Ensembl",
@@ -108,6 +133,11 @@
       "idType": "Ensembl",
       "query": "SELECT ${targid_bioinfodb.index_gene}, ${targid_bioinfodb.views.gene.column_query} FROM ${targid_bioinfodb.schema_public}_gene t WHERE targidid IN (%(ids)s) ORDER BY symbol ASC",
       "replacements": ["ids"]
+    },
+    "gene_filtered_panel": {
+      "idType": "Ensembl",
+      "query": "SELECT ${targid_bioinfodb.index_gene}, ${targid_bioinfodb.views.gene.column_query} FROM ${targid_bioinfodb.schema_public}_geneassignment s JOIN ${targid_bioinfodb.schema_public}_gene t ON s.ensg = t.ensg WHERE s.genesetname = :panel ORDER BY symbol ASC",
+      "arguments": ["panel"]
     },
     "gene_map_ensgs": {
       "idType": "Ensembl",
@@ -320,6 +350,17 @@
       ],
       "replacements": ["schema", "entity_name", "table_name", "data_subtype", "agg", "agg_score"],
       "arguments": ["tumortype", "species"]
+    },
+    "aggregated_score_panel": {
+      "idType": "Ensembl",
+      "query": [
+        "SELECT ensg as id, %(agg_score)s as score ",
+        "FROM %(schema)s.targid_%(table_name)s ",
+        "WHERE %(entity_name)s = ANY(ARRAY(SELECT %(entity_name)s FROM %(schema)s.targid_panelassignment WHERE panel = :panel))",
+        "GROUP BY ensg"
+      ],
+      "replacements": ["schema", "entity_name", "table_name", "data_subtype", "agg", "agg_score"],
+      "arguments": ["panel"]
     },
     "aggregated_score_all": {
       "idType": "Ensembl",
