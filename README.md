@@ -30,6 +30,10 @@ Local PostgreSQL installation
   - Use _admin_ as password for the user _postgres_ (or modify the password in the _config.json_ later) 
 2. Add the installation path to the PATH variable
   - On Windows: `C:\Program Files\PostgreSQL\9.5\bin`
+  - On Mac : Open Bash Profile 
+            `vi .bash_profile 
+            then add following line
+            export PATH=/Library/PostgreSQL/9.6/bin:$PATH`
 3. Start pgAdmin (is included in the download from enterprisedb.com) and try the database connection
   - On Windows: After the installation the _postgresql-x64-9.5_ service should already run
 4. Ensure that the `postgres` username has the password `admin`, you can change it using `ALTER USER "postgres" WITH PASSWORD 'admin';` later on
