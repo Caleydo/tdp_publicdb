@@ -198,7 +198,7 @@
     "onco_print": {
       "idType": "Tissue",
       "query": [
-        "SELECT g.targidid as _id, d.ensg as id, d.%(entity_name)s as name, copynumberclass as cn, d.tpm as expr, d.dna_mutated, g.symbol ",
+        "SELECT g.targidid as _id, d.ensg as id, d.%(entity_name)s as name, copynumberclass as cn, d.tpm as expr, d.aa_mutated, g.symbol ",
         "FROM %(schema)s.targid_data d ",
         "INNER JOIN %(schema)s.targid_%(table_name)s c ON d.%(entity_name)s = c.%(entity_name)s ",
         "INNER JOIN ${targid_bioinfodb.schema_public}_gene g ON d.ensg = g.ensg ",
@@ -210,7 +210,7 @@
     "onco_print_all": {
       "idType": "Tissue",
       "query": [
-        "SELECT g.targidid as _id, d.ensg as id, d.%(entity_name)s as name, copynumberclass as cn, d.tpm as expr, d.dna_mutated, g.symbol ",
+        "SELECT g.targidid as _id, d.ensg as id, d.%(entity_name)s as name, copynumberclass as cn, d.tpm as expr, d.aa_mutated, g.symbol ",
         "FROM %(schema)s.targid_data d ",
         "INNER JOIN %(schema)s.targid_%(table_name)s c ON d.%(entity_name)s = c.%(entity_name)s ",
         "INNER JOIN ${targid_bioinfodb.schema_public}_gene g ON d.ensg = g.ensg ",
