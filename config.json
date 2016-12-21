@@ -9,22 +9,38 @@
   "agg_score": {
     "query": "%(agg)s(%(data_subtype)s)",
     "query_median": "percentile_cont(0.5) WITHIN GROUP (ORDER BY %(data_subtype)s)",
-    "replacements": ["agg", "data_subtype"]
+    "replacements": [
+      "agg",
+      "data_subtype"
+    ]
   },
   "views": {
     "cellline": {
       "idType": "Cellline",
       "columns": {
-        "celllinename": { "label": "id", "type": "string" },
-        "species": { "label": "species", "type": "categorical" },
-        "tumortype": { "label": "tumortype", "type": "categorical" },
-        "organ": { "label": "organ", "type": "categorical" },
-        "gender": { "label": "gender", "type": "categorical" }
+        "celllinename": {
+          "label": "id",
+          "type": "string"
+        },
+        "species": {
+          "label": "species",
+          "type": "categorical"
+        },
+        "tumortype": {
+          "label": "tumortype",
+          "type": "categorical"
+        },
+        "organ": {
+          "label": "organ",
+          "type": "categorical"
+        },
+        "gender": {
+          "label": "gender",
+          "type": "categorical"
+        }
       },
       "column_query": "targidid as _id, t.celllinename as id, species, tumortype, organ, gender",
-
       "queryCategories": "SELECT DISTINCT %(col)s as cat FROM ${targid_bioinfodb.schema_cellline}_cellline WHERE %(col)s is not null and %(col)s <> ''",
-
       "query": [
         "SELECT ${targid_bioinfodb.index_cellline}, ${column_query} ",
         "FROM ${targid_bioinfodb.schema_cellline}_cellline t",
@@ -40,7 +56,9 @@
         "SELECT ${targid_bioinfodb.index_cellline}, ${targid_bioinfodb.views.cellline.column_query} ",
         "FROM ${targid_bioinfodb.schema_cellline}_cellline t WHERE species = :species"
       ],
-      "arguments": ["species"]
+      "arguments": [
+        "species"
+      ]
     },
     "cellline_filtered_namedset": {
       "idType": "Cellline",
@@ -48,7 +66,9 @@
         "SELECT ${targid_bioinfodb.index_cellline}, ${targid_bioinfodb.views.cellline.column_query} ",
         "FROM ${targid_bioinfodb.schema_cellline}_cellline t WHERE targidid IN (%(ids)s)"
       ],
-      "replacements": ["ids"]
+      "replacements": [
+        "ids"
+      ]
     },
     "cellline_filtered_panel": {
       "idType": "Cellline",
@@ -56,21 +76,36 @@
         "SELECT ${targid_bioinfodb.index_cellline}, ${targid_bioinfodb.views.cellline.column_query} ",
         "FROM ${targid_bioinfodb.schema_cellline}_panelassignment s JOIN ${targid_bioinfodb.schema_cellline}_cellline t ON s.celllinename = t.celllinename WHERE s.panel = :panel"
       ],
-      "arguments": ["panel"]
+      "arguments": [
+        "panel"
+      ]
     },
     "tissue": {
       "idType": "Tissue",
       "columns": {
-        "tissuename": { "label": "id", "type": "string" },
-        "species": { "label": "species", "type": "categorical" },
-        "tumortype": { "label": "tumortype", "type": "categorical" },
-        "organ": { "label": "organ", "type": "categorical" },
-        "gender": { "label": "gender", "type": "categorical" }
+        "tissuename": {
+          "label": "id",
+          "type": "string"
+        },
+        "species": {
+          "label": "species",
+          "type": "categorical"
+        },
+        "tumortype": {
+          "label": "tumortype",
+          "type": "categorical"
+        },
+        "organ": {
+          "label": "organ",
+          "type": "categorical"
+        },
+        "gender": {
+          "label": "gender",
+          "type": "categorical"
+        }
       },
       "column_query": "targidid as _id, t.tissuename as id, species, tumortype, organ, gender",
-
       "queryCategories": "SELECT distinct %(col)s as cat FROM ${targid_bioinfodb.schema_tissue}_tissue WHERE %(col)s is not null AND %(col)s <> ''",
-
       "query": "SELECT ${targid_bioinfodb.index_tissue}, ${column_query} FROM ${targid_bioinfodb.schema_tissue}_tissue t"
     },
     "tissue_panel": {
@@ -83,7 +118,9 @@
         "FROM ${targid_bioinfodb.schema_tissue}_tissue t ",
         "WHERE species = :species"
       ],
-      "arguments": ["species"]
+      "arguments": [
+        "species"
+      ]
     },
     "tissue_filtered_namedset": {
       "idType": "Tissue",
@@ -92,7 +129,9 @@
         "FROM ${targid_bioinfodb.schema_tissue}_tissue t ",
         "WHERE targidid IN (%(ids)s)"
       ],
-      "replacements": ["ids"]
+      "replacements": [
+        "ids"
+      ]
     },
     "tissue_filtered_panel": {
       "idType": "Cellline",
@@ -100,25 +139,49 @@
         "SELECT ${targid_bioinfodb.index_tissue}, ${targid_bioinfodb.views.tissue.column_query} ",
         "FROM ${targid_bioinfodb.schema_tissue}_panelassignment s JOIN ${targid_bioinfodb.schema_tissue}_tissue t ON s.tissuename = t.tissuename WHERE s.panel = :panel"
       ],
-      "arguments": ["panel"]
+      "arguments": [
+        "panel"
+      ]
     },
     "gene": {
       "idType": "Ensembl",
       "columns": {
-        "ensg": { "label": "id", "type": "string" },
-        "symbol": { "label": "symbol", "type": "string" },
-        "species":{ "label": "species", "type": "categorical" },
-        "chromosome":{ "label": "chromosome", "type": "string" },
-        "strand": { "label": "strand", "type": "number" },
-        "biotype": { "label": "biotype", "type": "categorical" },
-        "seqregionstart": { "label": "seqregionstart", "type": "number" },
-        "seqregionend": { "label": "seqregionend", "type": "number" }
+        "ensg": {
+          "label": "id",
+          "type": "string"
+        },
+        "symbol": {
+          "label": "symbol",
+          "type": "string"
+        },
+        "species": {
+          "label": "species",
+          "type": "categorical"
+        },
+        "chromosome": {
+          "label": "chromosome",
+          "type": "string"
+        },
+        "strand": {
+          "label": "strand",
+          "type": "number"
+        },
+        "biotype": {
+          "label": "biotype",
+          "type": "categorical"
+        },
+        "seqregionstart": {
+          "label": "seqregionstart",
+          "type": "number"
+        },
+        "seqregionend": {
+          "label": "seqregionend",
+          "type": "number"
+        }
       },
       "column_query": "targidid as _id, t.ensg as id, symbol, species, chromosome, strand, biotype, seqregionstart, seqregionend",
-
       "queryStats": "SELECT min(strand) as strand_min, max(strand) as strand_max, min(seqregionstart) as seqregionstart_min, max(seqregionstart) as seqregionstart_max, min(seqregionend) as seqregionend_min, max(seqregionend) as seqregionend_max FROM ${targid_bioinfodb.schema_public}_gene",
       "queryCategories": "SELECT DISTINCT %(col)s as cat FROM ${targid_bioinfodb.schema_public}_gene WHERE %(col)s is not null and %(col)s <> ''",
-
       "query": "SELECT ${targid_bioinfodb.index_gene}, ${column_query} FROM ${targid_bioinfodb.schema_public}_gene t ORDER BY t.symbol ASC"
     },
     "gene_panel": {
@@ -127,23 +190,33 @@
     "gene_filtered": {
       "idType": "Ensembl",
       "query": "SELECT ${targid_bioinfodb.index_gene}, ${targid_bioinfodb.views.gene.column_query} FROM ${targid_bioinfodb.schema_public}_gene t WHERE species = :species ORDER BY symbol ASC",
-      "arguments": ["species"]
+      "arguments": [
+        "species"
+      ]
     },
     "gene_filtered_namedset": {
       "idType": "Ensembl",
       "query": "SELECT ${targid_bioinfodb.index_gene}, ${targid_bioinfodb.views.gene.column_query} FROM ${targid_bioinfodb.schema_public}_gene t WHERE targidid IN (%(ids)s) ORDER BY symbol ASC",
-      "replacements": ["ids"]
+      "replacements": [
+        "ids"
+      ]
     },
     "gene_filtered_panel": {
       "idType": "Ensembl",
       "query": "SELECT ${targid_bioinfodb.index_gene}, ${targid_bioinfodb.views.gene.column_query} FROM ${targid_bioinfodb.schema_public}_geneassignment s JOIN ${targid_bioinfodb.schema_public}_gene t ON s.ensg = t.ensg WHERE s.genesetname = :panel ORDER BY symbol ASC",
-      "arguments": ["panel"]
+      "arguments": [
+        "panel"
+      ]
     },
     "gene_map_ensgs": {
       "idType": "Ensembl",
       "query": "SELECT targidid as _id, ensg as id, symbol FROM ${targid_bioinfodb.schema_public}_gene WHERE ensg IN (%(ensgs)s) AND species = :species ORDER BY symbol ASC",
-      "arguments": ["species"],
-      "replacements": ["ensgs"]
+      "arguments": [
+        "species"
+      ],
+      "replacements": [
+        "ensgs"
+      ]
     },
     "enrichment": {
       "idType": "Ensembl",
@@ -157,8 +230,16 @@
         "WHERE ab.cn = :cn AND b.tumortype = :tumortype AND ab.ensg = :ensg ",
         ") GROUP BY cn.ensg, symbol"
       ],
-      "arguments": ["ensg", "cn", "tumortype"],
-      "replacements": ["schema", "table_name", "entity_name"]
+      "arguments": [
+        "ensg",
+        "cn",
+        "tumortype"
+      ],
+      "replacements": [
+        "schema",
+        "table_name",
+        "entity_name"
+      ]
     },
     "enrichment_all": {
       "idType": "Ensembl",
@@ -172,8 +253,15 @@
         "WHERE ab.cn = :cn AND ab.ensg = :ensg ",
         ") GROUP BY cn.ensg, symbol"
       ],
-      "arguments": ["ensg", "cn"],
-      "replacements": ["schema", "table_name", "entity_name"]
+      "arguments": [
+        "ensg",
+        "cn"
+      ],
+      "replacements": [
+        "schema",
+        "table_name",
+        "entity_name"
+      ]
     },
     "onco_print_sample_list": {
       "idType": "Tissue",
@@ -182,8 +270,15 @@
         "FROM %(schema)s.targid_%(table_name)s d",
         "WHERE d.tumortype = :tumortype AND d.species = :species"
       ],
-      "arguments": ["tumortype", "species"],
-      "replacements": ["schema", "table_name", "entity_name"]
+      "arguments": [
+        "tumortype",
+        "species"
+      ],
+      "replacements": [
+        "schema",
+        "table_name",
+        "entity_name"
+      ]
     },
     "onco_print_sample_list_all": {
       "idType": "Tissue",
@@ -192,8 +287,14 @@
         "FROM %(schema)s.targid_%(table_name)s d",
         "WHERE d.species = :species"
       ],
-      "arguments": ["species"],
-      "replacements": ["schema", "table_name", "entity_name"]
+      "arguments": [
+        "species"
+      ],
+      "replacements": [
+        "schema",
+        "table_name",
+        "entity_name"
+      ]
     },
     "onco_print": {
       "idType": "Tissue",
@@ -204,8 +305,16 @@
         "INNER JOIN ${targid_bioinfodb.schema_public}_gene g ON d.ensg = g.ensg ",
         "WHERE c.tumortype = :tumortype AND d.ensg in (%(ensgs)s) AND c.species = :species"
       ],
-      "replacements": ["schema", "table_name", "entity_name", "ensgs"],
-      "arguments": ["tumortype", "species"]
+      "replacements": [
+        "schema",
+        "table_name",
+        "entity_name",
+        "ensgs"
+      ],
+      "arguments": [
+        "tumortype",
+        "species"
+      ]
     },
     "onco_print_all": {
       "idType": "Tissue",
@@ -216,8 +325,15 @@
         "INNER JOIN ${targid_bioinfodb.schema_public}_gene g ON d.ensg = g.ensg ",
         "WHERE d.ensg in (%(ensgs)s) AND c.species = :species"
       ],
-      "arguments": ["species"],
-      "replacements": ["schema", "table_name", "entity_name", "ensgs"]
+      "arguments": [
+        "species"
+      ],
+      "replacements": [
+        "schema",
+        "table_name",
+        "entity_name",
+        "ensgs"
+      ]
     },
     "row": {
       "idType": "Tissue",
@@ -226,7 +342,12 @@
         "FROM %(schema)s.targid_%(table_name)s b ",
         "WHERE b.%(entity_name)s IN (%(entities)s)"
       ],
-      "replacements": ["schema", "table_name", "entity_name", "entities"]
+      "replacements": [
+        "schema",
+        "table_name",
+        "entity_name",
+        "entities"
+      ]
     },
     "raw_data_table": {
       "idType": "Tissue",
@@ -235,8 +356,16 @@
         "FROM %(schema)s.targid_%(schema)s b ",
         "WHERE b.tumortype = :tumortype AND b.species = :species"
       ],
-      "replacements": ["schema", "table_name", "entity_name", "data_subtype"],
-      "arguments": ["tumortype", "species"]
+      "replacements": [
+        "schema",
+        "table_name",
+        "entity_name",
+        "data_subtype"
+      ],
+      "arguments": [
+        "tumortype",
+        "species"
+      ]
     },
     "raw_data_table_all": {
       "idType": "Tissue",
@@ -245,8 +374,15 @@
         "FROM %(schema)s.targid_%(schema)s b ",
         "WHERE b.species = :species"
       ],
-      "replacements": ["schema", "table_name", "entity_name", "data_subtype"],
-      "arguments": ["species"]
+      "replacements": [
+        "schema",
+        "table_name",
+        "entity_name",
+        "data_subtype"
+      ],
+      "arguments": [
+        "species"
+      ]
     },
     "raw_data_table_column": {
       "idType": "Tissue",
@@ -256,8 +392,15 @@
         "INNER JOIN %(schema)s.targid_%(table_name)s ab ON b.%(entity_name)s = ab.%(entity_name)s ",
         "WHERE ab.ensg = :ensg"
       ],
-      "replacements": ["schema", "table_name", "entity_name", "data_subtype"],
-      "arguments": ["ensg"]
+      "replacements": [
+        "schema",
+        "table_name",
+        "entity_name",
+        "data_subtype"
+      ],
+      "arguments": [
+        "ensg"
+      ]
     },
     "raw_data_table_inverted": {
       "idType": "Ensembl",
@@ -266,8 +409,16 @@
         "FROM ${targid_bioinfodb.schema_public}_gene b ",
         "WHERE b.biotype = :biotype AND b.species = :species"
       ],
-      "replacements": ["schema", "table_name", "entity_name", "data_subtype"],
-      "arguments": ["biotype", "species"]
+      "replacements": [
+        "schema",
+        "table_name",
+        "entity_name",
+        "data_subtype"
+      ],
+      "arguments": [
+        "biotype",
+        "species"
+      ]
     },
     "raw_data_table_inverted_all": {
       "idType": "Ensembl",
@@ -276,8 +427,15 @@
         "FROM ${targid_bioinfodb.schema_public}_gene b",
         "WHERE b.species = :species"
       ],
-      "replacements": ["schema", "table_name", "entity_name", "data_subtype"],
-      "arguments": ["species"]
+      "replacements": [
+        "schema",
+        "table_name",
+        "entity_name",
+        "data_subtype"
+      ],
+      "arguments": [
+        "species"
+      ]
     },
     "raw_data_table_inverted_column": {
       "idType": "Ensembl",
@@ -287,8 +445,15 @@
         "INNER JOIN %(schema)s.targid_%(table_name)s ab ON ab.ensg = b.ensg ",
         "WHERE ab.%(entity_name)s = :entity_value"
       ],
-      "replacements": ["schema", "table_name", "entity_name", "data_subtype"],
-      "arguments": ["entity_value"]
+      "replacements": [
+        "schema",
+        "table_name",
+        "entity_name",
+        "data_subtype"
+      ],
+      "arguments": [
+        "entity_value"
+      ]
     },
     "co_expression": {
       "idType": "Ensembl",
@@ -299,8 +464,15 @@
         "INNER JOIN %(schema)s.targid_%(schema)s c ON a.%(entity_name)s = c.%(entity_name)s",
         "WHERE c.tumortype = :tumortype AND a.ensg = :ensg"
       ],
-      "arguments": ["ensg", "tumortype"],
-      "replacements": ["schema", "entity_name", "expression_subtype"]
+      "arguments": [
+        "ensg",
+        "tumortype"
+      ],
+      "replacements": [
+        "schema",
+        "entity_name",
+        "expression_subtype"
+      ]
     },
     "co_expression_all": {
       "idType": "Ensembl",
@@ -311,8 +483,14 @@
         "INNER JOIN %(schema)s.targid_%(schema)s c ON a.%(entity_name)s = c.%(entity_name)s",
         "WHERE a.ensg = :ensg"
       ],
-      "arguments": ["ensg"],
-      "replacements": ["schema", "entity_name", "expression_subtype"]
+      "arguments": [
+        "ensg"
+      ],
+      "replacements": [
+        "schema",
+        "entity_name",
+        "expression_subtype"
+      ]
     },
     "expression_vs_copynumber": {
       "idType": "Ensembl",
@@ -324,8 +502,16 @@
         "INNER JOIN %(schema)s.targid_%(schema)s c ON a.%(entity_name)s = c.%(entity_name)s",
         "WHERE c.tumortype = :tumortype AND a.ensg = :ensg"
       ],
-      "arguments": ["ensg", "tumortype"],
-      "replacements": ["schema", "entity_name", "expression_subtype", "copynumber_subtype"]
+      "arguments": [
+        "ensg",
+        "tumortype"
+      ],
+      "replacements": [
+        "schema",
+        "entity_name",
+        "expression_subtype",
+        "copynumber_subtype"
+      ]
     },
     "expression_vs_copynumber_all": {
       "idType": "Ensembl",
@@ -337,8 +523,15 @@
         "INNER JOIN %(schema)s.targid_%(schema)s c ON a.%(entity_name)s = c.%(entity_name)s",
         "WHERE a.ensg = :ensg"
       ],
-      "arguments": ["ensg"],
-      "replacements": ["schema", "entity_name", "expression_subtype", "copynumber_subtype"]
+      "arguments": [
+        "ensg"
+      ],
+      "replacements": [
+        "schema",
+        "entity_name",
+        "expression_subtype",
+        "copynumber_subtype"
+      ]
     },
     "aggregated_score": {
       "idType": "Ensembl",
@@ -348,8 +541,18 @@
         "WHERE %(entity_name)s = ANY(ARRAY(SELECT %(entity_name)s FROM %(schema)s.targid_%(schema)s WHERE tumortype = :tumortype AND species = :species))",
         "GROUP BY ensg"
       ],
-      "replacements": ["schema", "entity_name", "table_name", "data_subtype", "agg", "agg_score"],
-      "arguments": ["tumortype", "species"]
+      "replacements": [
+        "schema",
+        "entity_name",
+        "table_name",
+        "data_subtype",
+        "agg",
+        "agg_score"
+      ],
+      "arguments": [
+        "tumortype",
+        "species"
+      ]
     },
     "aggregated_score_panel": {
       "idType": "Ensembl",
@@ -359,8 +562,17 @@
         "WHERE %(entity_name)s = ANY(ARRAY(SELECT %(entity_name)s FROM %(schema)s.targid_panelassignment WHERE panel = :panel))",
         "GROUP BY ensg"
       ],
-      "replacements": ["schema", "entity_name", "table_name", "data_subtype", "agg", "agg_score"],
-      "arguments": ["panel"]
+      "replacements": [
+        "schema",
+        "entity_name",
+        "table_name",
+        "data_subtype",
+        "agg",
+        "agg_score"
+      ],
+      "arguments": [
+        "panel"
+      ]
     },
     "aggregated_score_all": {
       "idType": "Ensembl",
@@ -370,8 +582,17 @@
         "WHERE %(entity_name)s = ANY(ARRAY(SELECT %(entity_name)s FROM %(schema)s.targid_%(schema)s WHERE species = :species))",
         "GROUP BY ensg"
       ],
-      "replacements": ["schema", "entity_name", "table_name", "data_subtype", "agg", "agg_score"],
-      "arguments": ["species"]
+      "replacements": [
+        "schema",
+        "entity_name",
+        "table_name",
+        "data_subtype",
+        "agg",
+        "agg_score"
+      ],
+      "arguments": [
+        "species"
+      ]
     },
     "aggregated_score_inverted": {
       "idType": "Tissue",
@@ -382,8 +603,18 @@
         "WHERE b.biotype = :biotype AND b.species = :species ",
         "GROUP BY ab.%(entity_name)s"
       ],
-      "replacements": ["schema", "entity_name", "table_name", "data_subtype", "agg", "agg_score"],
-      "arguments": ["biotype", "species"]
+      "replacements": [
+        "schema",
+        "entity_name",
+        "table_name",
+        "data_subtype",
+        "agg",
+        "agg_score"
+      ],
+      "arguments": [
+        "biotype",
+        "species"
+      ]
     },
     "aggregated_score_inverted_all": {
       "idType": "Tissue",
@@ -394,198 +625,281 @@
         "WHERE b.species = :species ",
         "GROUP BY ab.%(entity_name)s"
       ],
-      "replacements": ["schema", "entity_name", "table_name", "data_subtype", "agg", "agg_score"],
-      "arguments": ["species"]
+      "replacements": [
+        "schema",
+        "entity_name",
+        "table_name",
+        "data_subtype",
+        "agg",
+        "agg_score"
+      ],
+      "arguments": [
+        "species"
+      ]
     },
     "frequency_score": {
       "idType": "Ensembl",
       "query": [
         "SELECT a.ensg as id, (coalesce(freq.count,0)+0.0) as count, a.total ",
         "FROM ( ",
-          "SELECT COUNT(*) as total, ensg ",
-          "FROM %(schema)s.targid_%(table_name)s m ",
-          "INNER JOIN %(schema)s.targid_%(schema)s c ON c.%(entity_name)s = m.%(entity_name)s ",
-          "WHERE c.tumortype = :tumortype AND c.species = :species ",
-          "GROUP BY ensg ",
+        "SELECT COUNT(*) as total, ensg ",
+        "FROM %(schema)s.targid_%(table_name)s m ",
+        "INNER JOIN %(schema)s.targid_%(schema)s c ON c.%(entity_name)s = m.%(entity_name)s ",
+        "WHERE c.tumortype = :tumortype AND c.species = :species ",
+        "GROUP BY ensg ",
         ") a ",
         "LEFT JOIN ( ",
-          "SELECT COUNT(*) as count, ensg ",
-          "FROM %(schema)s.targid_%(table_name)s m ",
-          "INNER JOIN %(schema)s.targid_%(schema)s c ON c.%(entity_name)s = m.%(entity_name)s ",
-          "WHERE c.tumortype = :tumortype AND %(data_subtype)s %(operator)s %(value)s AND c.species = :species ",
-          "GROUP BY ensg ",
+        "SELECT COUNT(*) as count, ensg ",
+        "FROM %(schema)s.targid_%(table_name)s m ",
+        "INNER JOIN %(schema)s.targid_%(schema)s c ON c.%(entity_name)s = m.%(entity_name)s ",
+        "WHERE c.tumortype = :tumortype AND %(data_subtype)s %(operator)s %(value)s AND c.species = :species ",
+        "GROUP BY ensg ",
         ") freq ",
         "ON freq.ensg = a.ensg"
       ],
-      "arguments": ["tumortype", "species"],
-      "replacements": ["schema", "entity_name", "table_name", "data_subtype", "operator", "value"]
+      "arguments": [
+        "tumortype",
+        "species"
+      ],
+      "replacements": [
+        "schema",
+        "entity_name",
+        "table_name",
+        "data_subtype",
+        "operator",
+        "value"
+      ]
     },
     "frequency_score_all": {
       "idType": "Ensembl",
       "query": [
         "SELECT a.ensg as id, (coalesce(freq.count,0)+0.0) as count, a.total ",
         "FROM ( ",
-          "SELECT COUNT(*) as total, ensg ",
-          "FROM %(schema)s.targid_%(table_name)s m ",
-          "INNER JOIN %(schema)s.targid_%(schema)s c ON c.%(entity_name)s = m.%(entity_name)s ",
-          "WHERE c.species = :species ",
-          "GROUP BY ensg",
+        "SELECT COUNT(*) as total, ensg ",
+        "FROM %(schema)s.targid_%(table_name)s m ",
+        "INNER JOIN %(schema)s.targid_%(schema)s c ON c.%(entity_name)s = m.%(entity_name)s ",
+        "WHERE c.species = :species ",
+        "GROUP BY ensg",
         ") a ",
         "LEFT JOIN ( ",
-          "SELECT COUNT(*) as count, ensg ",
-          "FROM %(schema)s.targid_%(table_name)s  m ",
-          "INNER JOIN %(schema)s.targid_%(schema)s c ON c.%(entity_name)s = m.%(entity_name)s ",
-          "WHERE %(data_subtype)s %(operator)s %(value)s AND c.species = :species ",
-          "GROUP BY ensg ",
+        "SELECT COUNT(*) as count, ensg ",
+        "FROM %(schema)s.targid_%(table_name)s  m ",
+        "INNER JOIN %(schema)s.targid_%(schema)s c ON c.%(entity_name)s = m.%(entity_name)s ",
+        "WHERE %(data_subtype)s %(operator)s %(value)s AND c.species = :species ",
+        "GROUP BY ensg ",
         ") freq ",
         "ON freq.ensg = a.ensg"
       ],
-      "arguments": ["species"],
-      "replacements": ["schema", "entity_name", "table_name", "data_subtype", "operator", "value"]
+      "arguments": [
+        "species"
+      ],
+      "replacements": [
+        "schema",
+        "entity_name",
+        "table_name",
+        "data_subtype",
+        "operator",
+        "value"
+      ]
     },
     "frequency_score_inverted": {
       "idType": "Tissue",
       "query": [
         "SELECT a.%(entity_name)s as id, (coalesce(freq.count,0)+0.0) as count, a.total ",
         "FROM ( ",
-          "SELECT COUNT(*) as total, %(entity_name)s ",
-          "FROM %(schema)s.targid_%(table_name)s m ",
-          "INNER JOIN ${targid_bioinfodb.schema_public}_gene g ON g.ensg = m.ensg ",
-          "WHERE g.biotype = :biotype AND g.species = :species ",
-          "GROUP BY %(entity_name)s ",
+        "SELECT COUNT(*) as total, %(entity_name)s ",
+        "FROM %(schema)s.targid_%(table_name)s m ",
+        "INNER JOIN ${targid_bioinfodb.schema_public}_gene g ON g.ensg = m.ensg ",
+        "WHERE g.biotype = :biotype AND g.species = :species ",
+        "GROUP BY %(entity_name)s ",
         ") a",
         "LEFT JOIN ( ",
-          "SELECT COUNT(*) as count, %(entity_name)s ",
-          "FROM %(schema)s.targid_%(table_name)s m ",
-          "INNER JOIN ${targid_bioinfodb.schema_public}_gene g ON g.ensg = m.ensg ",
-          "WHERE g.biotype = :biotype AND %(data_subtype)s %(operator)s %(value)s AND g.species = :species ",
-          "GROUP BY %(entity_name)s ",
+        "SELECT COUNT(*) as count, %(entity_name)s ",
+        "FROM %(schema)s.targid_%(table_name)s m ",
+        "INNER JOIN ${targid_bioinfodb.schema_public}_gene g ON g.ensg = m.ensg ",
+        "WHERE g.biotype = :biotype AND %(data_subtype)s %(operator)s %(value)s AND g.species = :species ",
+        "GROUP BY %(entity_name)s ",
         ") freq ",
         "ON freq.%(entity_name)s = a.%(entity_name)s"
       ],
-      "arguments": ["biotype", "species"],
-      "replacements": ["schema", "entity_name", "table_name", "data_subtype", "operator", "value"]
+      "arguments": [
+        "biotype",
+        "species"
+      ],
+      "replacements": [
+        "schema",
+        "entity_name",
+        "table_name",
+        "data_subtype",
+        "operator",
+        "value"
+      ]
     },
     "frequency_score_inverted_all": {
       "idType": "Tissue",
       "query": [
         "SELECT a.%(entity_name)s as id, (coalesce(freq.count,0)+0.0) as count, a.total ",
         "FROM ( ",
-          "SELECT COUNT(*) as total, %(entity_name)s ",
-          "FROM %(schema)s.targid_%(table_name)s m ",
-          "INNER JOIN ${targid_bioinfodb.schema_public}_gene g ON g.ensg = m.ensg ",
-          "WHERE g.species = :species ",
-          "GROUP BY %(entity_name)s ",
+        "SELECT COUNT(*) as total, %(entity_name)s ",
+        "FROM %(schema)s.targid_%(table_name)s m ",
+        "INNER JOIN ${targid_bioinfodb.schema_public}_gene g ON g.ensg = m.ensg ",
+        "WHERE g.species = :species ",
+        "GROUP BY %(entity_name)s ",
         ") a ",
         "LEFT JOIN ( ",
-          "SELECT COUNT(*) as count, %(entity_name)s ",
-          "FROM %(schema)s.targid_%(table_name)s m ",
-          "INNER JOIN ${targid_bioinfodb.schema_public}_gene g ON g.ensg = m.ensg ",
-          "WHERE %(data_subtype)s %(operator)s %(value)s AND g.species = :species ",
-          "GROUP BY %(entity_name)s ",
+        "SELECT COUNT(*) as count, %(entity_name)s ",
+        "FROM %(schema)s.targid_%(table_name)s m ",
+        "INNER JOIN ${targid_bioinfodb.schema_public}_gene g ON g.ensg = m.ensg ",
+        "WHERE %(data_subtype)s %(operator)s %(value)s AND g.species = :species ",
+        "GROUP BY %(entity_name)s ",
         ") freq",
         "ON freq.%(entity_name)s = a.%(entity_name)s"
       ],
-      "arguments": ["species"],
-      "replacements": ["schema", "entity_name", "table_name", "data_subtype", "operator", "value"]
+      "arguments": [
+        "species"
+      ],
+      "replacements": [
+        "schema",
+        "entity_name",
+        "table_name",
+        "data_subtype",
+        "operator",
+        "value"
+      ]
     },
     "mutation_frequency": {
       "idType": "Ensembl",
       "query": [
         "SELECT a.ensg as id, (coalesce(mut.mutated,0)+0.0) as count, a.total ",
         "FROM ( ",
-          "SELECT COUNT(*) as total, ensg ",
-          "FROM %(schema)s.targid_mutation m ",
-          "INNER JOIN %(schema)s.targid_%(schema)s c ON c.%(entity_name)s = m.%(entity_name)s ",
-          "WHERE c.tumortype = :tumortype AND c.species = :species ",
-          "GROUP BY ensg ",
+        "SELECT COUNT(*) as total, ensg ",
+        "FROM %(schema)s.targid_mutation m ",
+        "INNER JOIN %(schema)s.targid_%(schema)s c ON c.%(entity_name)s = m.%(entity_name)s ",
+        "WHERE c.tumortype = :tumortype AND c.species = :species ",
+        "GROUP BY ensg ",
         ") a ",
         "LEFT JOIN ( ",
-          "SELECT COUNT(*) as mutated, ensg ",
-          "FROM %(schema)s.targid_mutation m ",
-          "INNER JOIN %(schema)s.targid_%(schema)s c ON c.%(entity_name)s = m.%(entity_name)s ",
-          "WHERE c.tumortype = :tumortype AND %(data_subtype)s = 'true' AND c.species = :species ",
-          "GROUP BY ensg ",
+        "SELECT COUNT(*) as mutated, ensg ",
+        "FROM %(schema)s.targid_mutation m ",
+        "INNER JOIN %(schema)s.targid_%(schema)s c ON c.%(entity_name)s = m.%(entity_name)s ",
+        "WHERE c.tumortype = :tumortype AND %(data_subtype)s = 'true' AND c.species = :species ",
+        "GROUP BY ensg ",
         ") mut ",
         "ON mut.ensg = a.ensg"
       ],
-      "arguments": ["tumortype", "species"],
-      "replacements": ["schema", "entity_name", "data_subtype"]
+      "arguments": [
+        "tumortype",
+        "species"
+      ],
+      "replacements": [
+        "schema",
+        "entity_name",
+        "data_subtype"
+      ]
     },
     "mutation_frequency_all": {
       "idType": "Ensembl",
       "query": [
         "SELECT a.ensg as id, (coalesce(mut.mutated,0)+0.0) as count, a.total ",
         "FROM ( ",
-          "SELECT COUNT(*) as total, ensg ",
-          "FROM %(schema)s.targid_mutation m ",
-          "INNER JOIN %(schema)s.targid_%(schema)s c ON c.%(entity_name)s = m.%(entity_name)s ",
-          "WHERE c.species = :species ",
-          "GROUP BY ensg ",
+        "SELECT COUNT(*) as total, ensg ",
+        "FROM %(schema)s.targid_mutation m ",
+        "INNER JOIN %(schema)s.targid_%(schema)s c ON c.%(entity_name)s = m.%(entity_name)s ",
+        "WHERE c.species = :species ",
+        "GROUP BY ensg ",
         ") a ",
         "LEFT JOIN ( ",
-          "SELECT COUNT(*) as mutated, ensg ",
-          "FROM %(schema)s.targid_mutation m ",
-          "INNER JOIN %(schema)s.targid_%(schema)s c ON c.%(entity_name)s = m.%(entity_name)s ",
-          "WHERE %(data_subtype)s = 'true' AND c.species = :species ",
-          "GROUP BY ensg ",
+        "SELECT COUNT(*) as mutated, ensg ",
+        "FROM %(schema)s.targid_mutation m ",
+        "INNER JOIN %(schema)s.targid_%(schema)s c ON c.%(entity_name)s = m.%(entity_name)s ",
+        "WHERE %(data_subtype)s = 'true' AND c.species = :species ",
+        "GROUP BY ensg ",
         ") mut ",
         "ON mut.ensg = a.ensg"
       ],
-      "arguments": ["species"],
-      "replacements": ["schema", "entity_name", "data_subtype"]
+      "arguments": [
+        "species"
+      ],
+      "replacements": [
+        "schema",
+        "entity_name",
+        "data_subtype"
+      ]
     },
     "mutation_frequency_inverted": {
       "idType": "Ensembl",
       "query": [
         "SELECT a.%(entity_name)s as id, (coalesce(mut.mutated,0)+0.0) as count, a.total ",
         "FROM ( ",
-          "SELECT COUNT(*) as total, %(entity_name)s ",
-          "FROM %(schema)s.targid_mutation m ",
-          "INNER JOIN ${targid_bioinfodb.schema_public}_gene g ON g.ensg = m.ensg ",
-          "WHERE g.biotype = :biotype AND g.species = :species ",
-          "GROUP BY %(entity_name)s ",
+        "SELECT COUNT(*) as total, %(entity_name)s ",
+        "FROM %(schema)s.targid_mutation m ",
+        "INNER JOIN ${targid_bioinfodb.schema_public}_gene g ON g.ensg = m.ensg ",
+        "WHERE g.biotype = :biotype AND g.species = :species ",
+        "GROUP BY %(entity_name)s ",
         ") a ",
         "LEFT JOIN ( ",
-          "SELECT COUNT(*) as mutated, %(entity_name)s ",
-          "FROM %(schema)s.targid_mutation m ",
-          "INNER JOIN ${targid_bioinfodb.schema_public}_gene g ON g.ensg = m.ensg ",
-          "WHERE g.biotype = :biotype AND %(data_subtype)s = 'true' AND g.species = :species ",
-          "GROUP BY %(entity_name)s",
+        "SELECT COUNT(*) as mutated, %(entity_name)s ",
+        "FROM %(schema)s.targid_mutation m ",
+        "INNER JOIN ${targid_bioinfodb.schema_public}_gene g ON g.ensg = m.ensg ",
+        "WHERE g.biotype = :biotype AND %(data_subtype)s = 'true' AND g.species = :species ",
+        "GROUP BY %(entity_name)s",
         ") mut ",
         "ON mut.%(entity_name)s = a.%(entity_name)s"
       ],
-      "arguments": ["biotype", "species"],
-      "replacements": ["schema", "entity_name", "data_subtype"]
+      "arguments": [
+        "biotype",
+        "species"
+      ],
+      "replacements": [
+        "schema",
+        "entity_name",
+        "data_subtype"
+      ]
     },
     "mutation_frequency_inverted_all": {
       "idType": "Ensembl",
       "query": [
         "SELECT a.%(entity_name)s as id, (coalesce(mut.mutated,0)+0.0) as count, a.total ",
         "FROM ( ",
-          "SELECT COUNT(*) as total, %(entity_name)s ",
-          "FROM %(schema)s.targid_mutation m ",
-          "INNER JOIN ${targid_bioinfodb.schema_public}_gene g ON g.ensg = m.ensg ",
-          "WHERE g.species = :species ",
-          "GROUP BY %(entity_name)s ",
+        "SELECT COUNT(*) as total, %(entity_name)s ",
+        "FROM %(schema)s.targid_mutation m ",
+        "INNER JOIN ${targid_bioinfodb.schema_public}_gene g ON g.ensg = m.ensg ",
+        "WHERE g.species = :species ",
+        "GROUP BY %(entity_name)s ",
         ") a ",
         "LEFT JOIN ( ",
-          "SELECT COUNT(*) as mutated, %(entity_name)s ",
-          "FROM %(schema)s.targid_mutation m ",
-          "INNER JOIN ${targid_bioinfodb.schema_public}_gene g ON g.ensg = m.ensg ",
-          "WHERE %(data_subtype)s = 'true' AND g.species = :species ",
-          "GROUP BY %(entity_name)s",
+        "SELECT COUNT(*) as mutated, %(entity_name)s ",
+        "FROM %(schema)s.targid_mutation m ",
+        "INNER JOIN ${targid_bioinfodb.schema_public}_gene g ON g.ensg = m.ensg ",
+        "WHERE %(data_subtype)s = 'true' AND g.species = :species ",
+        "GROUP BY %(entity_name)s",
         ") mut ",
         "ON mut.%(entity_name)s = a.%(entity_name)s"
       ],
-      "arguments": ["species"],
-      "replacements": ["schema", "entity_name", "data_subtype"]
+      "arguments": [
+        "species"
+      ],
+      "replacements": [
+        "schema",
+        "entity_name",
+        "data_subtype"
+      ]
     },
     "single_entity_lookup": {
       "query": "SELECT targidid as _id, %(id_column)s as id, %(query_column)s as text FROM %(schema)s.targid_%(table_name)s WHERE species = :species AND LOWER(%(query_column)s) LIKE :query ORDER BY %(query_column)s ASC LIMIT %(limit)s OFFSET %(offset)s",
       "count": "SELECT COUNT(*) as total_count FROM %(schema)s.targid_%(table_name)s WHERE species = :species AND LOWER(%(query_column)s) LIKE :query",
-      "replacements": ["schema", "table_name", "query_column", "id_column", "limit", "offset"],
-      "arguments": ["query", "species"]
+      "replacements": [
+        "schema",
+        "table_name",
+        "query_column",
+        "id_column",
+        "limit",
+        "offset"
+      ],
+      "arguments": [
+        "query",
+        "species"
+      ]
     },
     "single_entity_score": {
       "idType": "Ensembl",
@@ -594,8 +908,15 @@
         "FROM %(schema)s.targid_%(table_name)s ",
         "WHERE %(entity_name)s = :entity_value"
       ],
-      "replacements": ["schema", "entity_name", "table_name", "data_subtype"],
-      "arguments": ["entity_value"]
+      "replacements": [
+        "schema",
+        "entity_name",
+        "table_name",
+        "data_subtype"
+      ],
+      "arguments": [
+        "entity_value"
+      ]
     },
     "single_entity_score_inverted": {
       "idType": "Cellline",
@@ -604,8 +925,15 @@
         "FROM %(schema)s.targid_%(table_name)s ",
         "WHERE ensg = :entity_value"
       ],
-      "replacements": ["schema", "entity_name", "table_name", "data_subtype"],
-      "arguments": ["entity_value"]
+      "replacements": [
+        "schema",
+        "entity_name",
+        "table_name",
+        "data_subtype"
+      ],
+      "arguments": [
+        "entity_value"
+      ]
     }
   },
   "mappings": {
