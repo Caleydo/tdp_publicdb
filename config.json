@@ -554,30 +554,6 @@
         "species"
       ]
     },
-    "boxplot": {
-      "idType": "Ensembl",
-      "query": [
-        "SELECT ensg as id, min(%(agg_score)s) as min, max(%(agg_score)s) as max",
-        "percentile_cont(0.5) within group (order by %(agg_score)s) as median",
-        "percentile_cont(0.25) within group (order by %(agg_score)s) as q1",
-        "percentile_cont(0.75) within group (order by %(agg_score)s) as q3",
-        "FROM %(schema)s.targid_%(table_name)s ",
-        "WHERE %(entity_name)s = ANY(ARRAY(SELECT %(entity_name)s FROM %(schema)s.targid_%(schema)s WHERE tumortype = :tumortype AND species = :species))",
-        "GROUP BY ensg"
-      ],
-      "replacements": [
-        "schema",
-        "entity_name",
-        "table_name",
-        "data_subtype",
-        "agg",
-        "agg_score"
-      ],
-      "arguments": [
-        "tumortype",
-        "species"
-      ]
-    },
     "aggregated_score_panel": {
       "idType": "Ensembl",
       "query": [
@@ -603,7 +579,7 @@
       "query": [
         "SELECT ensg as id, %(agg_score)s as score ",
         "FROM %(schema)s.targid_%(table_name)s ",
-        "WHERE %(entity_name)s = ANY(ARRAY(SELECT %(entity_name)s FROM %(schema)s.targid_%(schema)s WHERE species = :species))",
+        "WHERE %(entity_name)s = ANY(ARRAY(SELECT %(entity_name)s FROM %(schema)s.targid_%(schema)s WHERE species = :species)) ",
         "GROUP BY ensg"
       ],
       "replacements": [
@@ -618,6 +594,78 @@
         "species"
       ]
     },
+    "aggregated_score_boxplot": {
+      "idType": "Ensembl",
+      "query": [
+        "SELECT ensg as id, min(%(data_subtype)s) as min, max(%(data_subtype)s) as max, ",
+        "percentile_cont(0.5) within group (order by %(data_subtype)s) as median, ",
+        "percentile_cont(0.25) within group (order by %(data_subtype)s) as q1, ",
+        "percentile_cont(0.75) within group (order by %(data_subtype)s) as q3 ",
+        "FROM %(schema)s.targid_%(table_name)s ",
+        "WHERE %(entity_name)s = ANY(ARRAY(SELECT %(entity_name)s FROM %(schema)s.targid_%(schema)s WHERE tumortype = :tumortype AND species = :species)) ",
+        "GROUP BY ensg"
+      ],
+      "replacements": [
+        "schema",
+        "entity_name",
+        "table_name",
+        "data_subtype",
+        "agg",
+        "agg_score"
+      ],
+      "arguments": [
+        "tumortype",
+        "species"
+      ]
+    },
+
+    "aggregated_score_boxplot_all": {
+      "idType": "Ensembl",
+      "query": [
+        "SELECT ensg as id, min(%(data_subtype)s) as min, max(%(data_subtype)s) as max, ",
+        "percentile_cont(0.5) within group (order by %(data_subtype)s) as median, ",
+        "percentile_cont(0.25) within group (order by %(data_subtype)s) as q1, ",
+        "percentile_cont(0.75) within group (order by %(data_subtype)s) as q3 ",
+        "FROM %(schema)s.targid_%(table_name)s ",
+        "WHERE %(entity_name)s = ANY(ARRAY(SELECT %(entity_name)s FROM %(schema)s.targid_%(schema)s WHERE species = :species)) ",
+        "GROUP BY ensg"
+      ],
+       "replacements": [
+        "schema",
+        "entity_name",
+        "table_name",
+        "data_subtype",
+        "agg",
+        "agg_score"
+      ],
+      "arguments": [
+        "species"
+      ]
+    },
+    "aggregated_score_boxplot_panel": {
+      "idType": "Ensembl",
+      "query": [
+        "SELECT ensg as id, min(%(data_subtype)s) as min, max(%(data_subtype)s) as max, ",
+        "percentile_cont(0.5) within group (order by %(data_subtype)s) as median, ",
+        "percentile_cont(0.25) within group (order by %(data_subtype)s) as q1, ",
+        "percentile_cont(0.75) within group (order by %(data_subtype)s) as q3 ",
+        "FROM %(schema)s.targid_%(table_name)s ",
+        "WHERE %(entity_name)s = ANY(ARRAY(SELECT %(entity_name)s FROM %(schema)s.targid_panelassignment WHERE panel = :panel)) ",
+        "GROUP BY ensg"
+      ],
+      "replacements": [
+        "schema",
+        "entity_name",
+        "table_name",
+        "data_subtype",
+        "agg",
+        "agg_score"
+      ],
+      "arguments": [
+        "panel"
+      ]
+    },
+
     "aggregated_score_inverted": {
       "idType": "Tissue",
       "query": [
