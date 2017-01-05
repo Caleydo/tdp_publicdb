@@ -5,8 +5,7 @@
     "author": "The Caleydo Team",
     "githubAccount": "caleydo",
     "modules": [
-      "phovea_data_sql",
-      "targid2"
+      "phovea_data_sql"
     ],
     "extensions": [],
     "sextensions": [
@@ -22,10 +21,9 @@
     "libraries": [],
     "unknown": {
       "requirements": [],
-      "debianPackages": [
+      "dockerPackages": [
         "python-psycopg2"
-      ],
-      "redhatPackages": []
+      ]
     },
     "today": "Sun, 06 Nov 2016 23:21:43 GMT"
   }
