@@ -10,7 +10,9 @@ services:
     environment:
        POSTGRES_USER: bioinfodb
        POSTGRES_PASSWORD: bioinfodb
+       POSTGRES_DB: bioinfo
     volumes_from:
     - db_bioinfodb_data
   db_bioinfodb_data:
     image: postgres:9.6-alpine
+    entrypoint: echo data only
