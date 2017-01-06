@@ -4,9 +4,7 @@
     "name": "targid_bioinfodb",
     "author": "The Caleydo Team",
     "githubAccount": "caleydo",
-    "modules": [
-      "phovea_data_sql"
-    ],
+    "modules": [],
     "extensions": [],
     "sextensions": [
       {
