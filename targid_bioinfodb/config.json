@@ -1,5 +1,5 @@
 {
-  "dburl": "postgresql+psycopg2://bioinfodb:bioinfodb@172.17.0.1:5432/bioinfo",
+  "dburl": "postgresql://bioinfodb:bioinfodb@bioinfodb:5432/bioinfo",
   "schema_tissue": "tissue.targid",
   "schema_public": "public.targid",
   "schema_cellline": "cellline.targid",
