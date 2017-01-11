@@ -10,7 +10,7 @@ services:
     environment:
        POSTGRES_USER: bioinfodb
        POSTGRES_PASSWORD: bioinfodb
-       POSTGRES_DB: bioinfo
+       POSTGRES_DB: bioinfodb
     volumes_from:
     - db_bioinfodb_data
   db_bioinfodb_data:
