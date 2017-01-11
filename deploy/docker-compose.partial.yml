@@ -12,6 +12,6 @@ services:
        POSTGRES_PASSWORD: bioinfodb
        POSTGRES_DB: bioinfodb
     volumes:
-    - db_bioinfodb_data:/dbdata
+    - db_bioinfodb_data:/var/lib/postgresql/data
 volumes:
   db_bioinfodb_data:
