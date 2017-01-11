@@ -1,0 +1,18 @@
+version: '2.0'
+services:
+  _host:
+    depends_on:
+    - db_bioinfodb
+    links:
+    - db_bioinfodb:bioinfodb
+  db_bioinfodb:
+    image: postgres:9.6-alpine
+    environment:
+       POSTGRES_USER: bioinfodb
+       POSTGRES_PASSWORD: bioinfodb
+       POSTGRES_DB: bioinfo
+    volumes_from:
+    - db_bioinfodb_data
+  db_bioinfodb_data:
+    image: postgres:9.6-alpine
+    entrypoint: echo data only
