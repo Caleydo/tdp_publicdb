@@ -11,8 +11,7 @@ services:
        POSTGRES_USER: bioinfodb
        POSTGRES_PASSWORD: bioinfodb
        POSTGRES_DB: bioinfodb
-    volumes_from:
-    - db_bioinfodb_data
+    volumes:
+    - db_bioinfodb_data:/dbdata
+volumes:
   db_bioinfodb_data:
-    image: postgres:9.6-alpine
-    entrypoint: echo data only
