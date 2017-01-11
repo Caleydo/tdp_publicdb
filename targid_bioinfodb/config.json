@@ -9,7 +9,10 @@
   "agg_score": {
     "query": "%(agg)s(%(data_subtype)s)",
     "query_median": "percentile_cont(0.5) WITHIN GROUP (ORDER BY %(data_subtype)s)",
-    "replacements": ["agg", "data_subtype"]
+    "replacements": [
+      "agg",
+      "data_subtype"
+    ]
   },
   "views": {
     "cellline": {
@@ -73,7 +76,9 @@
         "SELECT ${targid_bioinfodb.index_cellline}, ${targid_bioinfodb.views.cellline.column_query} ",
         "FROM ${targid_bioinfodb.schema_cellline}_panelassignment s JOIN ${targid_bioinfodb.schema_cellline}_cellline t ON s.celllinename = t.celllinename WHERE s.panel = :panel"
       ],
-      "arguments": ["panel"]
+      "arguments": [
+        "panel"
+      ]
     },
     "tissue": {
       "idType": "Tissue",
@@ -134,7 +139,9 @@
         "SELECT ${targid_bioinfodb.index_tissue}, ${targid_bioinfodb.views.tissue.column_query} ",
         "FROM ${targid_bioinfodb.schema_tissue}_panelassignment s JOIN ${targid_bioinfodb.schema_tissue}_tissue t ON s.tissuename = t.tissuename WHERE s.panel = :panel"
       ],
-      "arguments": ["panel"]
+      "arguments": [
+        "panel"
+      ]
     },
     "gene": {
       "idType": "Ensembl",
@@ -197,7 +204,9 @@
     "gene_filtered_panel": {
       "idType": "Ensembl",
       "query": "SELECT ${targid_bioinfodb.index_gene}, ${targid_bioinfodb.views.gene.column_query} FROM ${targid_bioinfodb.schema_public}_geneassignment s JOIN ${targid_bioinfodb.schema_public}_gene t ON s.ensg = t.ensg WHERE s.genesetname = :panel ORDER BY symbol ASC",
-      "arguments": ["panel"]
+      "arguments": [
+        "panel"
+      ]
     },
     "gene_map_ensgs": {
       "idType": "Ensembl",
@@ -532,8 +541,18 @@
         "WHERE %(entity_name)s = ANY(ARRAY(SELECT %(entity_name)s FROM %(schema)s.targid_%(schema)s WHERE tumortype = :tumortype AND species = :species))",
         "GROUP BY ensg"
       ],
-      "replacements": ["schema", "entity_name", "table_name", "data_subtype", "agg", "agg_score"],
-      "arguments": ["tumortype", "species"]
+      "replacements": [
+        "schema",
+        "entity_name",
+        "table_name",
+        "data_subtype",
+        "agg",
+        "agg_score"
+      ],
+      "arguments": [
+        "tumortype",
+        "species"
+      ]
     },
     "aggregated_score_panel": {
       "idType": "Ensembl",
@@ -543,20 +562,110 @@
         "WHERE %(entity_name)s = ANY(ARRAY(SELECT %(entity_name)s FROM %(schema)s.targid_panelassignment WHERE panel = :panel))",
         "GROUP BY ensg"
       ],
-      "replacements": ["schema", "entity_name", "table_name", "data_subtype", "agg", "agg_score"],
-      "arguments": ["panel"]
+      "replacements": [
+        "schema",
+        "entity_name",
+        "table_name",
+        "data_subtype",
+        "agg",
+        "agg_score"
+      ],
+      "arguments": [
+        "panel"
+      ]
     },
     "aggregated_score_all": {
       "idType": "Ensembl",
       "query": [
         "SELECT ensg as id, %(agg_score)s as score ",
         "FROM %(schema)s.targid_%(table_name)s ",
-        "WHERE %(entity_name)s = ANY(ARRAY(SELECT %(entity_name)s FROM %(schema)s.targid_%(schema)s WHERE species = :species))",
+        "WHERE %(entity_name)s = ANY(ARRAY(SELECT %(entity_name)s FROM %(schema)s.targid_%(schema)s WHERE species = :species)) ",
         "GROUP BY ensg"
       ],
-      "replacements": ["schema", "entity_name", "table_name", "data_subtype", "agg", "agg_score"],
-      "arguments": ["species"]
+      "replacements": [
+        "schema",
+        "entity_name",
+        "table_name",
+        "data_subtype",
+        "agg",
+        "agg_score"
+      ],
+      "arguments": [
+        "species"
+      ]
     },
+    "aggregated_score_boxplot": {
+      "idType": "Ensembl",
+      "query": [
+        "SELECT ensg as id, min(%(data_subtype)s) as min, max(%(data_subtype)s) as max, ",
+        "percentile_cont(0.5) within group (order by %(data_subtype)s) as median, ",
+        "percentile_cont(0.25) within group (order by %(data_subtype)s) as q1, ",
+        "percentile_cont(0.75) within group (order by %(data_subtype)s) as q3 ",
+        "FROM %(schema)s.targid_%(table_name)s ",
+        "WHERE %(entity_name)s = ANY(ARRAY(SELECT %(entity_name)s FROM %(schema)s.targid_%(schema)s WHERE tumortype = :tumortype AND species = :species)) ",
+        "GROUP BY ensg"
+      ],
+      "replacements": [
+        "schema",
+        "entity_name",
+        "table_name",
+        "data_subtype",
+        "agg",
+        "agg_score"
+      ],
+      "arguments": [
+        "tumortype",
+        "species"
+      ]
+    },
+
+    "aggregated_score_boxplot_all": {
+      "idType": "Ensembl",
+      "query": [
+        "SELECT ensg as id, min(%(data_subtype)s) as min, max(%(data_subtype)s) as max, ",
+        "percentile_cont(0.5) within group (order by %(data_subtype)s) as median, ",
+        "percentile_cont(0.25) within group (order by %(data_subtype)s) as q1, ",
+        "percentile_cont(0.75) within group (order by %(data_subtype)s) as q3 ",
+        "FROM %(schema)s.targid_%(table_name)s ",
+        "WHERE %(entity_name)s = ANY(ARRAY(SELECT %(entity_name)s FROM %(schema)s.targid_%(schema)s WHERE species = :species)) ",
+        "GROUP BY ensg"
+      ],
+       "replacements": [
+        "schema",
+        "entity_name",
+        "table_name",
+        "data_subtype",
+        "agg",
+        "agg_score"
+      ],
+      "arguments": [
+        "species"
+      ]
+    },
+    "aggregated_score_boxplot_panel": {
+      "idType": "Ensembl",
+      "query": [
+        "SELECT ensg as id, min(%(data_subtype)s) as min, max(%(data_subtype)s) as max, ",
+        "percentile_cont(0.5) within group (order by %(data_subtype)s) as median, ",
+        "percentile_cont(0.25) within group (order by %(data_subtype)s) as q1, ",
+        "percentile_cont(0.75) within group (order by %(data_subtype)s) as q3 ",
+        "FROM %(schema)s.targid_%(table_name)s ",
+        "WHERE %(entity_name)s = ANY(ARRAY(SELECT %(entity_name)s FROM %(schema)s.targid_panelassignment WHERE panel = :panel)) ",
+        "GROUP BY ensg"
+      ],
+      "replacements": [
+        "schema",
+        "entity_name",
+        "table_name",
+        "data_subtype",
+        "agg",
+        "agg_score"
+      ],
+      "arguments": [
+        "panel"
+      ]
+    },
+
     "aggregated_score_inverted": {
       "idType": "Tissue",
       "query": [
@@ -566,8 +675,18 @@
         "WHERE b.biotype = :biotype AND b.species = :species ",
         "GROUP BY ab.%(entity_name)s"
       ],
-      "replacements": ["schema", "entity_name", "table_name", "data_subtype", "agg", "agg_score"],
-      "arguments": ["biotype", "species"]
+      "replacements": [
+        "schema",
+        "entity_name",
+        "table_name",
+        "data_subtype",
+        "agg",
+        "agg_score"
+      ],
+      "arguments": [
+        "biotype",
+        "species"
+      ]
     },
     "aggregated_score_inverted_all": {
       "idType": "Tissue",
@@ -578,8 +697,17 @@
         "WHERE b.species = :species ",
         "GROUP BY ab.%(entity_name)s"
       ],
-      "replacements": ["schema", "entity_name", "table_name", "data_subtype", "agg", "agg_score"],
-      "arguments": ["species"]
+      "replacements": [
+        "schema",
+        "entity_name",
+        "table_name",
+        "data_subtype",
+        "agg",
+        "agg_score"
+      ],
+      "arguments": [
+        "species"
+      ]
     },
     "frequency_score": {
       "idType": "Ensembl",
