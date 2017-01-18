@@ -21,8 +21,7 @@
       "requirements": [
         "psycopg2==2.6.2"
       ],
-      "dockerPackages": [
-      ]
+      "dockerPackages": []
     },
     "today": "Sun, 06 Nov 2016 23:21:43 GMT"
   }
