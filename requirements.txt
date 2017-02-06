@@ -1,2 +1,2 @@
--e git+https://github.com/Caleydo/ordino.git@develop#egg=ordino
+-e git+https://github.com/Caleydo/ordino.git@master#egg=ordino
 psycopg2==2.6.2
