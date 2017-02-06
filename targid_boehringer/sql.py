@@ -47,12 +47,12 @@ def create_sample(result, basename, idtype, primary):
   result[basename + '_filtered'] = DBViewBuilder().idtype(idtype).query("""
   SELECT {index}, {columns}
   FROM {base}.targid_{base} t
-  WHERE species = :species""".format(index=index, columns=column_query, base=basename)).arg('species').build(),
+  WHERE species = :species""".format(index=index, columns=column_query, base=basename)).arg('species').build()
 
   result[basename + '_filtered_namedset'] = DBViewBuilder().idtype(idtype).query("""
   SELECT {index}, {columns}
   FROM {base}.targid_{base} t
-  WHERE targidid IN (:ids)""".format(index=index, columns=column_query, base=basename)).replace('ids').build(),
+  WHERE targidid IN (:ids)""".format(index=index, columns=column_query, base=basename)).replace('ids').build()
 
   result[basename + '_filtered_panel'] = DBViewBuilder().idtype(idtype).query("""
   SELECT {index}, {columns}
