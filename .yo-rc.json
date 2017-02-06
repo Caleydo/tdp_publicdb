@@ -1,7 +1,7 @@
 {
   "generator-phovea": {
     "type": "slib",
-    "name": "targid_bioinfodb",
+    "name": "targid_boehringer",
     "author": "The Caleydo Team",
     "githubAccount": "caleydo",
     "modules": [],
@@ -12,7 +12,7 @@
         "id": "bioinfodb",
         "module": "",
         "extras": {
-          "configKey": "targid_bioinfodb"
+          "configKey": "targid_boehringer"
         }
       }
     ],
