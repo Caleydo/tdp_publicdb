@@ -1,5 +1,5 @@
 from phovea_server.config import view
-from targid2.dbview import DBViewBuilder, DBConnector
+from ordino.dbview import DBViewBuilder, DBConnector
 
 __author__ = 'Samuel Gratzl'
 cc = view('targid_dummy')
