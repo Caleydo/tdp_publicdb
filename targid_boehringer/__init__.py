@@ -11,7 +11,7 @@ def phovea(registry):
   :param registry:
   """
   # generator-phovea:begin
-  registry.append('targid-sql-database-definition', 'bioinfodb', 'targid_bioinfodb.sql', dict(configKey='targid_bioinfodb'))
+  registry.append('targid-sql-database-definition', 'bioinfodb', 'targid_boehringer.sql', dict(configKey='targid_boehringer'))
   # generator-phovea:end
   pass
 

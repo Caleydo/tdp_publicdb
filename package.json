@@ -1,5 +1,5 @@
 {
-  "name": "targid_bioinfodb",
+  "name": "targid_boehringer",
   "description": "",
   "homepage": "https://phovea.caleydo.org",
   "version": "1.0.1-SNAPSHOT",
@@ -10,14 +10,14 @@
   },
   "license": "BSD-3-Clause",
   "bugs": {
-    "url": "https://github.com/caleydo/targid_bioinfodb/issues"
+    "url": "https://github.com/caleydo/targid_boehringer/issues"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/caleydo/targid_bioinfodb.git"
+    "url": "https://github.com/caleydo/targid_boehringer.git"
   },
   "files": [
-    "targid_bioinfodb",
+    "targid_boehringer",
     "__init__.py",
     "__main__.py",
     "build",
@@ -34,6 +34,6 @@
     "dist": "python setup.py bdist_egg",
     "docs": "echo todo creating docs...",
     "prebuild": "node -e \"process.exit(process.env.PHOVEA_SKIP_TESTS === undefined?1:0)\" || npm run test",
-    "build": "python -c \"from distutils.dir_util import mkpath ; mkpath('./build/source')\" && (tar -c ./targid_bioinfodb --exclude '*.pyc' | tar -xC build/source)"
+    "build": "python -c \"from distutils.dir_util import mkpath ; mkpath('./build/source')\" && (tar -c ./targid_boehringer --exclude '*.pyc' | tar -xC build/source)"
   }
 }
