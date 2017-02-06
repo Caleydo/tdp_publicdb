@@ -1,3 +1,4 @@
+# flake8: noqa
 from ordino.dbview import DBViewBuilder, DBConnector
 
 __author__ = 'Samuel Gratzl'
@@ -13,32 +14,29 @@ _primary_gene = 'ensg'
 _index_gene = "row_number() OVER(ORDER BY t.ensg ASC) as _index"
 _column_query_gene = 'targidid as _id, t.ensg as id, symbol, species, chromosome, strand, biotype, seqregionstart, seqregionend'
 
-agg_score = DBViewBuilder() \
-  .query('%(agg)s(%(data_subtype)s)') \
-  .query('median', 'percentile_cont(0.5) WITHIN GROUP (ORDER BY %(data_subtype)s)') \
-  .replace('agg').replace('data_subtype').build()
+agg_score = DBViewBuilder().query('%(agg)s(%(data_subtype)s)') \
+    .query('median', 'percentile_cont(0.5) WITHIN GROUP (ORDER BY %(data_subtype)s)') \
+    .replace('agg').replace('data_subtype').build()
 
 
 def create_sample(result, basename, idtype, primary):
   index = 'row_number() OVER(ORDER BY t.{primary} ASC) as _index'.format(primary=primary)
   column_query = 'targidid as _id, t.{primary} as id, species, tumortype, organ, gender'.format(primary=primary)
 
-  result[basename] = DBViewBuilder() \
-    .idtype(idtype) \
-    .query("""
-  SELECT {index}, {columns}
-  FROM {base}.targid_{base} t
-  ORDER BY celllinename ASC""".format(index=index, columns=column_query, base=basename)) \
-    .query_categories("""
-    SELECT distinct %(col)s as cat
-    FROM {base}.targid_{base}
-    WHERE %(col)s is not null AND %(col)s <> ''""".format(base=basename)) \
-    .column(primary, label='id', type='string') \
-    .column('species', type='categorical') \
+  base = DBViewBuilder().idtype(idtype).column(primary, label='id', type='string')\
+   .column('species', type='categorical') \
     .column('tumortype', type='categorical') \
     .column('organ', type='categorical') \
     .column('gender', type='categorical') \
-    .build()
+    .query("""
+      SELECT {index}, {columns}
+      FROM {base}.targid_{base} t
+      ORDER BY celllinename ASC""".format(index=index, columns=column_query, base=basename)) \
+    .query_categories("""
+      SELECT distinct %(col)s as cat
+      FROM {base}.targid_{base}
+      WHERE %(col)s is not null AND %(col)s <> ''""".format(base=basename)).build()
+  result[basename] = base
 
   result[basename + '_panel'] = DBViewBuilder().query("""
   SELECT panel as id, paneldescription as description
@@ -142,9 +140,10 @@ views = dict(
   onco_print_sample_list=DBViewBuilder().idtype(idtype_tissue).query("""
     SELECT d.targidid AS _id, d.%(entity_name)s AS id
     FROM %(schema)s.targid_%(table_name)s d
-    WHERE D.tumortype = :tumortype AND D.species = :species""").arg("tumortype").arg("species").replace(
-    "schema")
-    .replace("table_name").replace("entity_name").build(),
+    WHERE D.tumortype = :tumortype AND D.species = :species""")
+    .arg("tumortype").arg("species")
+    .replace("schema").replace("table_name").replace("entity_name")
+    .build(),
 
   onco_print_sample_list_all=DBViewBuilder().idtype(idtype_tissue).query("""
    SELECT d.targidid AS _id, d.%(entity_name)s AS id
