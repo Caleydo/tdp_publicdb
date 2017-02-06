@@ -1,10 +1,12 @@
 {
   "generator-phovea": {
-    "type": "slib",
+    "type": "app-slib",
     "name": "targid_boehringer",
     "author": "The Caleydo Team",
     "githubAccount": "caleydo",
-    "modules": [],
+    "modules": [
+      "ordino"
+    ],
     "extensions": [],
     "sextensions": [
       {
@@ -23,6 +25,17 @@
       ],
       "dockerPackages": []
     },
-    "today": "Sun, 06 Nov 2016 23:21:43 GMT"
+    "today": "Sun, 06 Nov 2016 23:21:43 GMT",
+    "app": "",
+    "clientOnly": false,
+    "entries": {
+      "app": "./src/index.ts"
+    },
+    "libraryAliases": {
+      "d3": "d3/d3",
+      "scrollTo": "jquery.scrollto/jquery.scrollTo.js"
+    },
+    "libraryExternals": [],
+    "ignores": []
   }
 }
