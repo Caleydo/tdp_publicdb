@@ -1,34 +1,39 @@
 {
+  "files": [
+    "targid_bioinfodb",
+    "__init__.py",
+    "__main__.py",
+    "build",
+    "requirements.txt",
+    "requirements_dev.txt",
+    "docker_packages.txt",
+    "redhat_packages.txt"
+  ],
+  "scripts": {
+    "check": "flake8",
+    "pretest": "npm run check",
+    "test": "test ! -d tests || python setup.py test",
+    "predist": "npm run build && npm run docs",
+    "dist": "python setup.py bdist_egg",
+    "docs": "echo todo creating docs...",
+    "prebuild": "node -e \"process.exit(process.env.PHOVEA_SKIP_TESTS === undefined?1:0)\" || npm run test",
+    "build": "python -c \"from distutils.dir_util import mkpath ; mkpath('./build/source')\" && (tar -c ./targid_bioinfodb --exclude '*.pyc' | tar -xC build/source)"
+  },
   "name": "targid_bioinfodb",
-  "version": "0.0.1",
-  "license" : "SEE LICENSE IN LICENSE",
-  "repository": "Caleydo/targid_bioinfodb",
-  "dependencies": {
+  "description": "",
+  "homepage": "https://phovea.caleydo.org",
+  "version": "1.0.1-SNAPSHOT",
+  "author": {
+    "name": "The Caleydo Team",
+    "email": "contact@caleydo.org",
+    "url": "https://caleydo.org"
   },
-  "peerDependencies": {
-    "caleydo_data_sql": "*",
-    "targid2": "*"
+  "license": "BSD-3-Clause",
+  "bugs": {
+    "url": "https://github.com/caleydo/targid_bioinfodb/issues"
   },
-  "caleydo": {
-    "plugins": {
-      "web": [],
-      "python": [
-        {
-          "type": "targid-sql-database-definition",
-          "id": "bioinfodb",
-          "configKey": "targid_bioinfodb"
-        }
-      ]
-    },
-    "dependencies": {
-      "python": {
-      },
-      "debian": {
-        "python-psycopg2": ""
-      }
-    }
-  },
-  "publishConfig": {
-    "registry": "http://registry.caleydo.org/"
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/caleydo/targid_bioinfodb.git"
   }
 }

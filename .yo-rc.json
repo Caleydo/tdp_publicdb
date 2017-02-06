@@ -1,0 +1,28 @@
+{
+  "generator-phovea": {
+    "type": "slib",
+    "name": "targid_bioinfodb",
+    "author": "The Caleydo Team",
+    "githubAccount": "caleydo",
+    "modules": [],
+    "extensions": [],
+    "sextensions": [
+      {
+        "type": "targid-sql-database-definition",
+        "id": "bioinfodb",
+        "module": "",
+        "extras": {
+          "configKey": "targid_bioinfodb"
+        }
+      }
+    ],
+    "libraries": [],
+    "unknown": {
+      "requirements": [
+        "psycopg2==2.6.2"
+      ],
+      "dockerPackages": []
+    },
+    "today": "Sun, 06 Nov 2016 23:21:43 GMT"
+  }
+}
