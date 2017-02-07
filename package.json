@@ -73,7 +73,7 @@
     "node": ">= 6"
   },
   "dependencies": {
-    "ordino": "github:Caleydo/ordino#master"
+    "ordino": "github:Caleydo/ordino#develop"
   },
   "devDependencies": {
     "@types/jasmine": "2.5.41",
@@ -99,6 +99,7 @@
     "raw-loader": "0.5.1",
     "sass-loader": "5.0.0",
     "style-loader": "0.13.1",
+    "tslib": "1.5.0",
     "tslint": "4.4.2",
     "typedoc": "0.5.5",
     "typescript": "2.2.0",
