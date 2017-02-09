@@ -525,12 +525,12 @@ views = dict(
 
   single_entity_lookup=DBViewBuilder().idtype(idtype_tissue).query("""
       SELECT targidid AS _id, %(id_column)s AS id, %(query_column)s AS TEXT
-      FROM %(schema)s.targid_%(table_name)s WHERE species = :species AND LOWER(%(query_column)s) LIKE :QUERY
+      FROM %(schema)s.targid_%(table_name)s WHERE species = :species AND LOWER(%(query_column)s) LIKE :query
       ORDER BY %(query_column)s ASC LIMIT %(limit)s OFFSET %(offset)s""")
     .query('count', """
       SELECT COUNT(*) AS total_count
       FROM %(schema)s.targid_%(table_name)s
-      WHERE species = :species AND LOWER(%(query_column)s) LIKE :QUERY""")
+      WHERE species = :species AND LOWER(%(query_column)s) LIKE :query""")
     .replace("schema").replace("table_name").replace("query_column").replace("id_column").replace("limit").replace("offset")
     .arg("query").arg("species")
     .build(),
