@@ -39,7 +39,7 @@ const elems = template.create(document.body, {
   provVisCollapsed: true,
   thumbnails: false,
   headerOptions: {
-    showReportBugLink: false
+    showReportBugLink: true
   },
   loginForm: String(loginForm)
 });
