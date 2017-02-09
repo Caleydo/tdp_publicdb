@@ -31,7 +31,10 @@
     "entries": {
       "app": "./src/index.ts"
     },
-    "libraryAliases": {},
+    "libraryAliases": {
+      "d3": "d3/d3",
+      "scrollTo": "jquery.scrollto/jquery.scrollTo.js"
+    },
     "libraryExternals": [],
     "ignores": []
   }
