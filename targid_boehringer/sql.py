@@ -50,7 +50,7 @@ def create_sample(result, basename, idtype, primary):
   result[basename + '_filtered_namedset'] = DBViewBuilder().idtype(idtype).query("""
   SELECT {index}, {columns}
   FROM {base}.targid_{base} t
-  WHERE targidid IN (:ids)""".format(index=index, columns=column_query, base=basename)).replace('ids').build()
+  WHERE targidid IN (%(ids)s)""".format(index=index, columns=column_query, base=basename)).replace('ids').build()
 
   result[basename + '_filtered_panel'] = DBViewBuilder().idtype(idtype).query("""
   SELECT {index}, {columns}
@@ -91,7 +91,7 @@ views = dict(
   gene_filtered_namedset=DBViewBuilder().idtype(idtype_gene).query("""
     SELECT {index}, {columns}
     FROM public.targid_gene t
-    WHERE targidid IN (:ids)""".format(index=_index_gene, columns=_column_query_gene))
+    WHERE targidid IN (%(ids)s)""".format(index=_index_gene, columns=_column_query_gene))
     .replace('ids')
     .build(),
 
