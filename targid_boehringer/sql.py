@@ -231,7 +231,7 @@ views = dict(
     .build(),
 
   co_expression=DBViewBuilder().idtype(idtype_gene).query("""
-     SELECT c.targidid AS _id, a.ensg AS id, g.symbol, c.%(entity_name)s, a.%(expression_subtype)s AS expression
+     SELECT c.targidid AS _id, a.ensg AS id, g.symbol, c.%(entity_name)s as samplename, a.%(expression_subtype)s AS expression
      FROM %(schema)s.targid_expression AS a
      INNER JOIN PUBLIC.targid_gene g ON a.ensg = g.ensg
      INNER JOIN %(schema)s.targid_%(schema)s C ON a.%(entity_name)s = C.%(entity_name)s
@@ -241,7 +241,7 @@ views = dict(
     .build(),
 
   co_expression_all=DBViewBuilder().idtype(idtype_gene).query("""
-     SELECT c.targidid AS _id, a.ensg AS id, g.symbol, c.%(entity_name)s, a.%(expression_subtype)s AS expression
+     SELECT c.targidid AS _id, a.ensg AS id, g.symbol, c.%(entity_name)s as samplename, a.%(expression_subtype)s AS expression
      FROM %(schema)s.targid_expression AS a
      INNER JOIN PUBLIC.targid_gene g ON a.ensg = g.ensg
      INNER JOIN %(schema)s.targid_%(schema)s C ON a.%(entity_name)s = C.%(entity_name)s
