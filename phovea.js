@@ -30,6 +30,16 @@ module.exports = function(registry) {
     'selection': 'small_multiple'
   });
 
+  registry.push('targidView', 'celllinedb_co_expression', function () {
+    return System.import('./src/views/CoExpression');
+  }, {
+    'name': 'Co-Expression',
+    'category': 'dynamic',
+    'factory': 'create',
+    'idtype': 'Ensembl',
+    'selection': 'small_multiple'
+  });
+
   // generator-phovea:end
 };
 
