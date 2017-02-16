@@ -19,6 +19,17 @@ module.exports = function(registry) {
     'idtype': 'Ensembl',
     'selection': 'some'
   });
+
+  registry.push('targidView', 'celllinedb_expression_vs_copynumber', function () {
+    return System.import('./src/views/ExpressionVsCopyNumber');
+  }, {
+    'name': 'Expression vs. Copy Number',
+    'category': 'dynamic',
+    'factory': 'create',
+    'idtype': 'Ensembl',
+    'selection': 'small_multiple'
+  });
+
   // generator-phovea:end
 };
 
