@@ -9,6 +9,16 @@ module.exports = function(registry) {
   //registry.push('extension-type', 'extension-id', function() { return System.import('./src/extension_impl'); }, {});
   // generator-phovea:begin
 
+
+  registry.push('targidView', 'celllinedb_onco_print', function () {
+    return System.import('./src/views/OncoPrint');
+  }, {
+    'name': 'OncoPrint',
+    'category': 'dynamic',
+    'factory': 'create',
+    'idtype': 'Ensembl',
+    'selection': 'some'
+  });
   // generator-phovea:end
 };
 
