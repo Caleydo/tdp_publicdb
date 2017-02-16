@@ -81,6 +81,26 @@ def create_sample(result, basename, idtype, primary):
   result[basename + '_expression_vs_copynumber'] = DBViewBuilder().clone(expression_vs_copynumber)\
     .append(' AND C.tumortype = :tumortype').arg("tumortype").build()
 
+  onco_print = DBViewBuilder().idtype(idtype_gene).query("""
+     SELECT g.targidid AS _id, d.ensg AS id, d.{primary} AS name, copynumberclass AS cn, D.tpm AS expr, D.aa_mutated, g.symbol
+       FROM {base}.targid_data D
+       INNER JOIN {base}.targid_{base} C ON D.{primary} = C.{primary}
+       INNER JOIN PUBLIC.targid_gene g ON D.ensg = g.ensg
+       WHERE D.ensg IN (%(ensgs)s) AND C.species = :species""".format(primary=primary, base=base)).replace("ensgs").arg("species").build()
+
+  result[basename + '_onco_print_all'] = onco_print
+  result[basename + '_onco_print'] = DBViewBuilder().clone(onco_print) \
+    .append(' AND C.tumortype = :tumortype').arg("tumortype").build()
+
+  onco_print_sample_list = DBViewBuilder().idtype(idtype).query("""
+       SELECT d.targidid AS _id, d.{primary} AS id
+     FROM {base}.targid_{base} D
+     WHERE D.species = :species""".format(primary=primary, base=base)).arg("species").build()
+
+  result[basename + '_onco_print_sample_list_all'] = onco_print_sample_list
+  result[basename + '_onco_print_sample_list'] = DBViewBuilder().clone(onco_print_sample_list) \
+    .append(' AND C.tumortype = :tumortype').arg("tumortype").build()
+
 
 views = dict(
   gene=DBViewBuilder().idtype(idtype_gene).query("""
@@ -161,41 +181,6 @@ views = dict(
     .replace('schema').replace('table_name').replace('entity_name')
     .build(),
 
-  onco_print_sample_list=DBViewBuilder().idtype(idtype_tissue).query("""
-    SELECT d.targidid AS _id, d.%(entity_name)s AS id
-    FROM %(schema)s.targid_%(table_name)s d
-    WHERE D.tumortype = :tumortype AND D.species = :species""")
-    .arg("tumortype").arg("species")
-    .replace("schema").replace("table_name").replace("entity_name")
-    .build(),
-
-  onco_print_sample_list_all=DBViewBuilder().idtype(idtype_tissue).query("""
-   SELECT d.targidid AS _id, d.%(entity_name)s AS id
-   FROM %(schema)s.targid_%(table_name)s D
-   WHERE D.species = :species""")
-    .arg("species")
-    .replace("schema").replace("table_name").replace("entity_name")
-    .build(),
-
-  onco_print=DBViewBuilder().idtype(idtype_tissue).query("""
-     SELECT g.targidid AS _id, d.ensg AS id, d.%(entity_name)s AS name, copynumberclass AS cn, D.tpm AS expr, D.aa_mutated, g.symbol
-     FROM %(schema)s.targid_data D
-     INNER JOIN %(schema)s.targid_%(table_name)s C ON D.%(entity_name)s = C.%(entity_name)s
-     INNER JOIN PUBLIC.targid_gene g ON D.ensg = g.ensg
-     WHERE C.tumortype = :tumortype AND D.ensg IN (%(ensgs)s) AND C.species = :species""")
-    .replace("schema").replace("table_name").replace("entity_name").replace("ensgs")
-    .arg("tumortype").arg("species")
-    .build(),
-
-  onco_print_all=DBViewBuilder().idtype(idtype_tissue).query("""
-     SELECT g.targidid AS _id, d.ensg AS id, d.%(entity_name)s AS name, copynumberclass AS cn, D.tpm AS expr, D.aa_mutated, g.symbol
-     FROM %(schema)s.targid_data D
-     INNER JOIN %(schema)s.targid_%(table_name)s C ON D.%(entity_name)s = C.%(entity_name)s
-     INNER JOIN PUBLIC.targid_gene g ON D.ensg = g.ensg
-     WHERE D.ensg IN (%(ensgs)s) AND C.species = :species""")
-    .arg("species")
-    .replace("schema").replace("table_name").replace("entity_name").replace("ensgs")
-    .build(),
 
   row=DBViewBuilder().idtype(idtype_tissue).query("""
      SELECT b.targidid AS _id, b.%(entity_name)s AS id, *

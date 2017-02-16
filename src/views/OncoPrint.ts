@@ -40,30 +40,21 @@ export class OncoPrint extends AOncoPrint {
     ];
   }
 
-   protected loadSampleList() {
+   protected async loadSampleList(): Promise<string[]> {
     const ds = this.getParameter(ParameterFormIds.DATA_SOURCE);
-    const tumorType = this.getParameter(ParameterFormIds.TUMOR_TYPE);
-    const url = `/targid/db/${ds.db}/onco_print_sample_list${tumorType === allTypes ? '_all' : ''}`;
-    const param = {
-      schema: ds.schema,
-      entity_name: ds.entityName,
-      table_name: ds.tableName,
-      tumortype : tumorType,
+    const tumortype = this.getParameter(ParameterFormIds.TUMOR_TYPE);
+    const rows = await getAPIJSON(`/targid/db/${ds.db}/${ds.schema}_onco_print_sample_list${tumortype === allTypes ? '_all' : ''}`, {
+      tumortype,
       species: getSelectedSpecies()
-    };
-
-    return getAPIJSON(url, param)
-      .then((rows) => rows.map((r) => r.id));
+    });
+    return rows.map((r) => r.id);
   }
 
   protected loadRows(ensg: string): Promise<IDataFormatRow[]> {
-    const ds = this.getParameter(ParameterFormIds.DATA_SOURCE);
+    const ds= this.getParameter(ParameterFormIds.DATA_SOURCE);
     const tumorType = this.getParameter(ParameterFormIds.TUMOR_TYPE);
-    return getAPIJSON(`/targid/db/${ds.db}/onco_print${tumorType === allTypes ? '_all' : ''}`, {
+    return getAPIJSON(`/targid/db/${ds.db}/${ds.schema}_onco_print${tumorType === allTypes ? '_all' : ''}`, {
       ensgs: '\'' + ensg + '\'',
-      schema: ds.schema,
-      entity_name: ds.entityName,
-      table_name: ds.tableName,
       tumortype: tumorType,
       species: getSelectedSpecies()
     });
