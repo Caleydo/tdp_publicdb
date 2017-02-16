@@ -251,7 +251,7 @@ views = dict(
     .build(),
 
   expression_vs_copynumber=DBViewBuilder().idtype(idtype_gene).query("""
-     SELECT c.targidid AS _id, a.ensg AS id, g.symbol, c.%(entity_name)s, a.%(expression_subtype)s AS expression, b.%(copynumber_subtype)s AS cn
+     SELECT c.targidid AS _id, a.ensg AS id, g.symbol, c.%(entity_name)s as samplename, a.%(expression_subtype)s AS expression, b.%(copynumber_subtype)s AS cn
      FROM %(schema)s.targid_expression AS a
      INNER JOIN %(schema)s.targid_copynumber AS b ON a.ensg = b.ensg AND a.%(entity_name)s = b.%(entity_name)s
      INNER JOIN PUBLIC.targid_gene g ON a.ensg = g.ensg
@@ -262,7 +262,7 @@ views = dict(
     .build(),
 
   expression_vs_copynumber_all=DBViewBuilder().idtype(idtype_gene).query("""
-     SELECT c.targidid AS _id, a.ensg AS id, g.symbol, c.%(entity_name)s, a.%(expression_subtype)s AS expression, b.%(copynumber_subtype)s AS cn
+     SELECT c.targidid AS _id, a.ensg AS id, g.symbol, c.%(entity_name)s as samplename, a.%(expression_subtype)s AS expression, b.%(copynumber_subtype)s AS cn
      FROM %(schema)s.targid_expression AS a
      INNER JOIN %(schema)s.targid_copynumber AS b ON a.ensg = b.ensg AND a.%(entity_name)s = b.%(entity_name)s
      INNER JOIN PUBLIC.targid_gene g ON a.ensg = g.ensg
