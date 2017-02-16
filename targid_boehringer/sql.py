@@ -57,6 +57,17 @@ def create_sample(result, basename, idtype, primary):
   FROM {base}.targid_panelassignment s JOIN {base}.targid_{base} t ON s.{primary} = t.{primary}
   WHERE s.panel = :panel""".format(index=index, columns=column_query, base=basename, primary=primary)).arg('panel').build()
 
+  co_expression = DBViewBuilder().idtype(idtype_gene).query("""
+   SELECT c.targidid AS _id, a.ensg AS id, g.symbol, c.%(primary)s as samplename, a.%(expression_subtype)s AS expression
+      FROM {base}.targid_expression AS a
+      INNER JOIN PUBLIC.targid_gene g ON a.ensg = g.ensg
+      INNER JOIN {base}.targid_{base} C ON a.%(primary)s = C.%(primary)s
+      WHERE a.ensg = :ensg""".format(primary=primary, base=base)).arg("ensg").replace("expression_subtype").build()
+
+  result[basename + '_co_expression_all'] = co_expression
+  result[basename + '_co_expression'] = DBViewBuilder().clone(co_expression)\
+    .append(' AND C.tumortype = :tumortype').arg("tumortype").build()
+
 
 views = dict(
   gene=DBViewBuilder().idtype(idtype_gene).query("""
@@ -228,26 +239,6 @@ views = dict(
      WHERE ab.%(entity_name)s = :entity_value""")
     .replace("schema").replace("table_name").replace("entity_name").replace("data_subtype")
     .arg("entity_value")
-    .build(),
-
-  co_expression=DBViewBuilder().idtype(idtype_gene).query("""
-     SELECT c.targidid AS _id, a.ensg AS id, g.symbol, c.%(entity_name)s as samplename, a.%(expression_subtype)s AS expression
-     FROM %(schema)s.targid_expression AS a
-     INNER JOIN PUBLIC.targid_gene g ON a.ensg = g.ensg
-     INNER JOIN %(schema)s.targid_%(schema)s C ON a.%(entity_name)s = C.%(entity_name)s
-     WHERE C.tumortype = :tumortype AND a.ensg = :ensg""")
-    .arg("ensg").arg("tumortype")
-    .replace("schema").replace("entity_name").replace("expression_subtype")
-    .build(),
-
-  co_expression_all=DBViewBuilder().idtype(idtype_gene).query("""
-     SELECT c.targidid AS _id, a.ensg AS id, g.symbol, c.%(entity_name)s as samplename, a.%(expression_subtype)s AS expression
-     FROM %(schema)s.targid_expression AS a
-     INNER JOIN PUBLIC.targid_gene g ON a.ensg = g.ensg
-     INNER JOIN %(schema)s.targid_%(schema)s C ON a.%(entity_name)s = C.%(entity_name)s
-     WHERE a.ensg = :ensg""")
-    .arg("ensg")
-    .replace("schema").replace("entity_name").replace("expression_subtype")
     .build(),
 
   expression_vs_copynumber=DBViewBuilder().idtype(idtype_gene).query("""

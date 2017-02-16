@@ -43,10 +43,9 @@ export class CoExpression extends ACoExpression {
   }
 
   loadData(ensg: string): Promise<IDataFormatRow[]> {
-    return getAPIJSON(`/targid/db/${this.getParameter(ParameterFormIds.DATA_SOURCE).db}/co_expression${this.getParameter(ParameterFormIds.TUMOR_TYPE) === allTypes ? '_all' : ''}`, {
+    const schema = this.getParameter(ParameterFormIds.DATA_SOURCE).schema;
+    return getAPIJSON(`/targid/db/${this.getParameter(ParameterFormIds.DATA_SOURCE).db}/${schema}_co_expression${this.getParameter(ParameterFormIds.TUMOR_TYPE) === allTypes ? '_all' : ''}`, {
       ensg,
-      schema: this.getParameter(ParameterFormIds.DATA_SOURCE).schema,
-      entity_name: this.getParameter(ParameterFormIds.DATA_SOURCE).entityName,
       expression_subtype: this.getParameter(ParameterFormIds.EXPRESSION_SUBTYPE).id,
       tumortype : this.getParameter(ParameterFormIds.TUMOR_TYPE),
       species: getSelectedSpecies()
