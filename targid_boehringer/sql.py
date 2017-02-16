@@ -23,7 +23,7 @@ def create_sample(result, basename, idtype, primary):
   index = 'row_number() OVER(ORDER BY t.{primary} ASC) as _index'.format(primary=primary)
   column_query = 'targidid as _id, t.{primary} as id, species, tumortype, organ, gender'.format(primary=primary)
 
-  base = DBViewBuilder().idtype(idtype).column(primary, label='id', type='string')\
+  result[basename] = DBViewBuilder().idtype(idtype).column(primary, label='id', type='string')\
    .column('species', type='categorical') \
     .column('tumortype', type='categorical') \
     .column('organ', type='categorical') \
@@ -36,7 +36,6 @@ def create_sample(result, basename, idtype, primary):
       SELECT distinct %(col)s as cat
       FROM {base}.targid_{base}
       WHERE %(col)s is not null AND %(col)s <> ''""".format(base=basename)).build()
-  result[basename] = base
 
   result[basename + '_panel'] = DBViewBuilder().query("""
   SELECT panel as id, paneldescription as description
@@ -63,7 +62,7 @@ def create_sample(result, basename, idtype, primary):
         FROM {base}.targid_expression AS a
         INNER JOIN PUBLIC.targid_gene g ON a.ensg = g.ensg
         INNER JOIN {base}.targid_{base} C ON a.%(primary)s = C.%(primary)s
-        WHERE a.ensg = :ensg""".format(primary=primary, base=base)).arg("ensg").replace("expression_subtype").build()
+        WHERE a.ensg = :ensg""".format(primary=primary, base=basename)).arg("ensg").replace("expression_subtype").build()
 
   result[basename + '_co_expression_all'] = co_expression
   result[basename + '_co_expression'] = DBViewBuilder().clone(co_expression) \
@@ -75,7 +74,7 @@ def create_sample(result, basename, idtype, primary):
        INNER JOIN {base}.targid_copynumber AS b ON a.ensg = b.ensg AND a.{primary} = b.{primary}
        INNER JOIN PUBLIC.targid_gene g ON a.ensg = g.ensg
        INNER JOIN {base}.targid_{base} C ON a.{primary} = C.{primary}
-       WHERE a.ensg = :ensg""".format(primary=primary, base=base)).arg("ensg").replace("expression_subtype").replace("copynumber_subtype").build()
+       WHERE a.ensg = :ensg""".format(primary=primary, base=basename)).arg("ensg").replace("expression_subtype").replace("copynumber_subtype").build()
 
   result[basename + '_expression_vs_copynumber_all'] = expression_vs_copynumber
   result[basename + '_expression_vs_copynumber'] = DBViewBuilder().clone(expression_vs_copynumber)\
@@ -86,7 +85,7 @@ def create_sample(result, basename, idtype, primary):
        FROM {base}.targid_data D
        INNER JOIN {base}.targid_{base} C ON D.{primary} = C.{primary}
        INNER JOIN PUBLIC.targid_gene g ON D.ensg = g.ensg
-       WHERE D.ensg IN (%(ensgs)s) AND C.species = :species""".format(primary=primary, base=base)).replace("ensgs").arg("species").build()
+       WHERE D.ensg IN (%(ensgs)s) AND C.species = :species""".format(primary=primary, base=basename)).replace("ensgs").arg("species").build()
 
   result[basename + '_onco_print_all'] = onco_print
   result[basename + '_onco_print'] = DBViewBuilder().clone(onco_print) \
@@ -95,7 +94,7 @@ def create_sample(result, basename, idtype, primary):
   onco_print_sample_list = DBViewBuilder().idtype(idtype).query("""
        SELECT d.targidid AS _id, d.{primary} AS id
      FROM {base}.targid_{base} D
-     WHERE D.species = :species""".format(primary=primary, base=base)).arg("species").build()
+     WHERE D.species = :species""".format(primary=primary, base=basename)).arg("species").build()
 
   result[basename + '_onco_print_sample_list_all'] = onco_print_sample_list
   result[basename + '_onco_print_sample_list'] = DBViewBuilder().clone(onco_print_sample_list) \
