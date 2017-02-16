@@ -5,10 +5,11 @@ __author__ = 'Samuel Gratzl'
 
 idtype_celline = 'Cellline'
 _primary_cellline = 'celllinename'
-_column_query_cellline = 'organ, gender, tumortype'
 
 idtype_tissue = 'Tissue'
 _primary_tissue = 'tissuename'
+
+_column_query_cellline_tissue = 'organ, gender, tumortype'
 
 idtype_gene = 'Ensembl'
 _primary_gene = 'ensg'
@@ -99,7 +100,14 @@ views = dict(
   cellline_single_row=DBViewBuilder().idtype(idtype_celline).query("""
     SELECT {index} as id, {columns}
     FROM %(schema)s.targid_%(table_name)s t
-    WHERE species = :species AND %(entity_name)s = :name """.format(index=_primary_cellline, columns=_column_query_cellline))
+    WHERE species = :species AND %(entity_name)s = :name """.format(index=_primary_cellline, columns=_column_query_cellline_tissue))
+    .replace('schema').replace('table_name').replace('entity_name').arg('species').arg('name')
+    .build(),
+
+  tissue_single_row=DBViewBuilder().idtype(idtype_tissue).query("""
+    SELECT {index} as id, {columns}
+    FROM %(schema)s.targid_%(table_name)s t
+    WHERE species = :species AND %(entity_name)s = :name """.format(index=_primary_tissue, columns=_column_query_cellline_tissue))
     .replace('schema').replace('table_name').replace('entity_name').arg('species').arg('name')
     .build(),
 
