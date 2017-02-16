@@ -8,6 +8,7 @@ import {IViewContext, ISelection} from 'ordino/src/View';
 import AOncoPrint,{IDataFormatRow} from 'targid_common/src/views/AOncoPrint';
 import {ParameterFormIds, dataSources, getSelectedSpecies, allTypes} from 'targid_common/src/Common';
 import {getAPIJSON} from 'phovea_core/src/ajax';
+import {loadFirstName} from './utils';
 
 export class OncoPrint extends AOncoPrint {
 
@@ -69,11 +70,7 @@ export class OncoPrint extends AOncoPrint {
   }
 
   protected loadFirstName(ensg: string): Promise<string> {
-    const ds = this.getParameter(ParameterFormIds.DATA_SOURCE);
-    return getAPIJSON(`/targid/db/${ds.db}/gene_map_ensgs`, {
-      ensgs: '\'' + ensg + '\'',
-      species: getSelectedSpecies()
-    }).then((r) => r[0].symbol);
+    return loadFirstName(ensg);
   }
 }
 
