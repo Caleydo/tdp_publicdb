@@ -65,6 +65,10 @@ export class CoExpression extends ACoExpression {
   loadFirstName(ensg: string) {
     return loadFirstName(ensg);
   }
+
+  protected getAttributeName() {
+    return this.getParameter(ParameterFormIds.EXPRESSION_SUBTYPE).name;
+  }
 }
 
 export function create(context:IViewContext, selection: ISelection, parent:Element, options?) {
