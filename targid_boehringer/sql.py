@@ -572,7 +572,12 @@ views = dict(
         WHERE ensg = :entity_value""")
     .replace("schema").replace("entity_name").replace("table_name").replace("data_subtype")
     .arg("entity_value")
-    .build()
+    .build(),
+
+  check_id_types=DBViewBuilder().query("""
+    SELECT COUNT(*) AS matches FROM %(schema)s.targid_%(table_name)s WHERE %(entity_name)s IN (%(query)s)
+  """).replace("entity_name").replace("schema").replace("table_name").replace("query")
+  .build()
 )
 create_sample(views, 'cellline', idtype_celline, _primary_cellline)
 create_sample(views, 'tissue', idtype_tissue, _primary_tissue)
