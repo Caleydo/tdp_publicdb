@@ -5,7 +5,7 @@
 import {FormElementType, IFormSelectDesc} from 'ordino/src/FormBuilder';
 import {IViewContext, ISelection} from 'ordino/src/View';
 import ACoExpression, {IDataFormatRow} from 'targid_common/src/views/ACoExpression';
-import {ParameterFormIds, dataSources, getSelectedSpecies, allTypes} from 'targid_common/src/Common';
+import {ParameterFormIds, dataSources, getSelectedSpecies, allTypes, expression} from 'targid_common/src/Common';
 import {getAPIJSON} from 'phovea_core/src/ajax';
 import {loadGeneList, loadFirstName} from './utils';
 
@@ -25,6 +25,16 @@ export class CoExpression extends ACoExpression {
       useSession: true
     });
     base.push({
+      type: FormElementType.SELECT,
+      label: 'Expression',
+      id: ParameterFormIds.EXPRESSION_SUBTYPE,
+      options: {
+        optionsData: expression.dataSubtypes.map((ds) => {
+          return {name: ds.name, value: ds.name, data: ds};
+        })
+      },
+      useSession: false
+    },{
       type: FormElementType.SELECT,
       label: 'Tumor Type',
       id: ParameterFormIds.TUMOR_TYPE,
