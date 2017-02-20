@@ -73,7 +73,7 @@
     "node": ">= 6"
   },
   "dependencies": {
-    "ordino": "github:Caleydo/ordino#master"
+    "ordino": "github:Caleydo/ordino#develop"
   },
   "devDependencies": {
     "@types/jasmine": "2.5.41",
