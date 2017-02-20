@@ -73,7 +73,7 @@
     "node": ">= 6"
   },
   "dependencies": {
-    "ordino": "github:Caleydo/ordino#master",
+    "ordino": "github:Caleydo/ordino#develop",
     "targid_common": "github:Caleydo/targid_common#refactor"
   },
   "devDependencies": {
