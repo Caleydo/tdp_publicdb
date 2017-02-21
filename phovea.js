@@ -9,6 +9,13 @@ module.exports = function(registry) {
   //registry.push('extension-type', 'extension-id', function() { return System.import('./src/extension_impl'); }, {});
   // generator-phovea:begin
 
+  registry.push('idTypeDetector', 'cellLineIDTypeDetector', function () {
+    return System.import('./src/CellLineIDTypeDetector');
+  }, {
+    'factory': 'cellLineIDTypeDetector',
+    'name': 'Cell Line IDType Detector'
+  });
+
   // generator-phovea:end
 };
 
