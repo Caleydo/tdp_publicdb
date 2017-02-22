@@ -13,7 +13,8 @@ module.exports = function(registry) {
     return System.import('./src/CellLineIDTypeDetector');
   }, {
     'factory': 'cellLineIDTypeDetector',
-    'name': 'Cell Line IDType Detector'
+    'name': 'Cell Line IDType Detector',
+    'idType': 'Cellline'
   });
 
   // generator-phovea:end
