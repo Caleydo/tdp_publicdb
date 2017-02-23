@@ -1,5 +1,4 @@
-import {getAPIJSON, api2absURL} from 'phovea_core/src/ajax';
-import {IIDTypeDetector} from 'ordino/src/GeneIDTypeDetector';
+import {getAPIJSON} from 'phovea_core/src/ajax';
 
 async function detectIDType(data: any[], accessor: (row: any) => string, sampleSize: number) : Promise<number> {
   const testSize = Math.min(data.length, sampleSize);
@@ -29,7 +28,7 @@ async function detectIDType(data: any[], accessor: (row: any) => string, sampleS
   return result[0].matches / validSize;
 }
 
-export function cellLineIDTypeDetector(): IIDTypeDetector {
+export function cellLineIDTypeDetector() {
   return {
     detectIDType
   };
