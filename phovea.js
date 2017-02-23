@@ -10,11 +10,29 @@ module.exports = function(registry) {
   // generator-phovea:begin
 
   registry.push('idTypeDetector', 'cellLineIDTypeDetector', function () {
-    return System.import('./src/CellLineIDTypeDetector');
+    return System.import('./src/IDTypeDetector');
   }, {
-    'factory': 'cellLineIDTypeDetector',
+    'factory': 'create',
     'name': 'Cell Line IDType Detector',
-    'idType': 'Cellline'
+    'idType': 'Cellline',
+    'options': {
+      'entity_name': 'celllinename',
+      'schema': 'cellline',
+      'table_name': 'cellline'
+    }
+  });
+
+  registry.push('idTypeDetector', 'tissueIDTypeDetector', function () {
+    return System.import('./src/IDTypeDetector');
+  }, {
+    'factory': 'create',
+    'name': 'Tissue IDType Detector',
+    'idType': 'Tissue',
+    'options': {
+      'entity_name': 'tissuename',
+      'schema': 'tissue',
+      'table_name': 'tissue'
+    }
   });
 
   // generator-phovea:end
