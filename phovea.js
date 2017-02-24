@@ -32,7 +32,9 @@ module.exports = function(registry) {
       'entity_name': 'tissuename',
       'schema': 'tissue',
       'table_name': 'tissue'
-    
+    }
+  });
+
 
   registry.push('targidView', 'celllinedb_onco_print', function () {
     return System.import('./src/views/OncoPrint');
