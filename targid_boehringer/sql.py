@@ -9,7 +9,7 @@ _primary_cellline = 'celllinename'
 idtype_tissue = 'Tissue'
 _primary_tissue = 'tissuename'
 
-_column_query_cellline_tissue = 'organ, gender, tumortype'
+_column_query_cellline_tissue = 'targidid as _id, organ, gender, tumortype'
 
 idtype_gene = 'Ensembl'
 _primary_gene = 'ensg'
