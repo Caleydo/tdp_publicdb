@@ -9,6 +9,8 @@ _primary_cellline = 'celllinename'
 idtype_tissue = 'Tissue'
 _primary_tissue = 'tissuename'
 
+_column_query_cellline_tissue = 'organ, gender, tumortype'
+
 idtype_gene = 'Ensembl'
 _primary_gene = 'ensg'
 _index_gene = "row_number() OVER(ORDER BY t.ensg ASC) as _index"
@@ -129,6 +131,27 @@ views = dict(
     FROM public.targid_gene t
     WHERE species = :species""".format(index=_index_gene, columns=_column_query_gene))
     .arg('species')
+    .build(),
+
+  gene_single_row=DBViewBuilder().idtype(idtype_gene).query("""
+    SELECT {index}, {columns}
+    FROM %(schema)s.targid_%(table_name)s t
+    WHERE species = :species AND %(entity_name)s = :name """.format(index=_index_gene, columns=_column_query_gene))
+    .replace('schema').replace('table_name').replace('entity_name').arg('species').arg('name')
+    .build(),
+
+  cellline_single_row=DBViewBuilder().idtype(idtype_celline).query("""
+    SELECT {index} as id, {columns}
+    FROM %(schema)s.targid_%(table_name)s t
+    WHERE species = :species AND %(entity_name)s = :name """.format(index=_primary_cellline, columns=_column_query_cellline_tissue))
+    .replace('schema').replace('table_name').replace('entity_name').arg('species').arg('name')
+    .build(),
+
+  tissue_single_row=DBViewBuilder().idtype(idtype_tissue).query("""
+    SELECT {index} as id, {columns}
+    FROM %(schema)s.targid_%(table_name)s t
+    WHERE species = :species AND %(entity_name)s = :name """.format(index=_primary_tissue, columns=_column_query_cellline_tissue))
+    .replace('schema').replace('table_name').replace('entity_name').arg('species').arg('name')
     .build(),
 
   gene_filtered_namedset=DBViewBuilder().idtype(idtype_gene).query("""
@@ -515,7 +538,12 @@ views = dict(
         WHERE ensg = :entity_value""")
     .replace("schema").replace("entity_name").replace("table_name").replace("data_subtype")
     .arg("entity_value")
-    .build()
+    .build(),
+
+  check_id_types=DBViewBuilder().query("""
+    SELECT COUNT(*) AS matches FROM %(schema)s.targid_%(table_name)s WHERE %(entity_name)s IN (%(query)s)
+  """).replace("entity_name").replace("schema").replace("table_name").replace("query")
+  .build()
 )
 create_sample(views, 'cellline', idtype_celline, _primary_cellline)
 create_sample(views, 'tissue', idtype_tissue, _primary_tissue)

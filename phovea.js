@@ -9,6 +9,30 @@ module.exports = function(registry) {
   //registry.push('extension-type', 'extension-id', function() { return System.import('./src/extension_impl'); }, {});
   // generator-phovea:begin
 
+  registry.push('idTypeDetector', 'cellLineIDTypeDetector', function () {
+    return System.import('./src/IDTypeDetector');
+  }, {
+    'factory': 'create',
+    'name': 'Cell Line IDType Detector',
+    'idType': 'Cellline',
+    'options': {
+      'entity_name': 'celllinename',
+      'schema': 'cellline',
+      'table_name': 'cellline'
+    }
+  });
+
+  registry.push('idTypeDetector', 'tissueIDTypeDetector', function () {
+    return System.import('./src/IDTypeDetector');
+  }, {
+    'factory': 'create',
+    'name': 'Tissue IDType Detector',
+    'idType': 'Tissue',
+    'options': {
+      'entity_name': 'tissuename',
+      'schema': 'tissue',
+      'table_name': 'tissue'
+    
 
   registry.push('targidView', 'celllinedb_onco_print', function () {
     return System.import('./src/views/OncoPrint');
