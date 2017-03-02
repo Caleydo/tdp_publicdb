@@ -133,25 +133,18 @@ views = dict(
     .arg('species')
     .build(),
 
-  gene_single_row=DBViewBuilder().idtype(idtype_gene).query("""
+  genes_by_names=DBViewBuilder().idtype(idtype_gene).query("""
     SELECT {index}, {columns}
     FROM %(schema)s.targid_%(table_name)s t
-    WHERE species = :species AND %(entity_name)s = :name """.format(index=_index_gene, columns=_column_query_gene))
-    .replace('schema').replace('table_name').replace('entity_name').arg('species').arg('name')
+    WHERE species = :species AND %(entity_name)s IN (%(names)s) """.format(index=_index_gene, columns=_column_query_gene))
+    .replace('schema').replace('table_name').replace('entity_name').replace('names').arg('species')
     .build(),
 
-  cellline_single_row=DBViewBuilder().idtype(idtype_celline).query("""
+  celllines_tissues_by_names=DBViewBuilder().query("""
     SELECT {index} as id, {columns}
     FROM %(schema)s.targid_%(table_name)s t
-    WHERE species = :species AND %(entity_name)s = :name """.format(index=_primary_cellline, columns=_column_query_cellline_tissue))
-    .replace('schema').replace('table_name').replace('entity_name').arg('species').arg('name')
-    .build(),
-
-  tissue_single_row=DBViewBuilder().idtype(idtype_tissue).query("""
-    SELECT {index} as id, {columns}
-    FROM %(schema)s.targid_%(table_name)s t
-    WHERE species = :species AND %(entity_name)s = :name """.format(index=_primary_tissue, columns=_column_query_cellline_tissue))
-    .replace('schema').replace('table_name').replace('entity_name').arg('species').arg('name')
+    WHERE species = :species AND %(entity_name)s IN (%(names)s) """.format(index=_primary_cellline, columns=_column_query_cellline_tissue))
+    .replace('schema').replace('table_name').replace('entity_name').replace('names').arg('species')
     .build(),
 
   gene_filtered_namedset=DBViewBuilder().idtype(idtype_gene).query("""
