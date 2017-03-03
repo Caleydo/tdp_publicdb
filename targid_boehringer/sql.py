@@ -135,9 +135,9 @@ views = dict(
 
   genes_by_names=DBViewBuilder().idtype(idtype_gene).query("""
     SELECT {index}, {columns}
-    FROM %(schema)s.targid_%(table_name)s t
+    FROM public.targid_gene t
     WHERE species = :species AND %(entity_name)s IN (%(entities)s) """.format(index=_index_gene, columns=_column_query_gene))
-    .replace('schema').replace('table_name').replace('entity_name').replace('entities').arg('species')
+    .replace('entity_name').replace('entities').arg('species')
     .build(),
 
   gene_filtered_namedset=DBViewBuilder().idtype(idtype_gene).query("""
