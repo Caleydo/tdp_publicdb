@@ -14,7 +14,7 @@ import {
 import {IScore} from 'ordino/src/LineUpView';
 import {FormBuilder, FormElementType, IFormElementDesc} from 'ordino/src/FormBuilder';
 import {api2absURL} from 'phovea_core/src/ajax';
-import {createDesc} from './AggregatedScore';
+import {createDesc} from './AggregatedGeneScore'; 
 import {select} from 'd3';
 
 interface ICommonScoreParam {

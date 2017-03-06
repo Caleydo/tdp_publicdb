@@ -223,24 +223,23 @@ module.exports = function(registry) {
   //scores
 
   registry.push('targidScore', 'tissue_inverted_aggregated_score', function () {
-    return System.import('./src/scores/InvertedAggregatedScore');
+    return System.import('./src/scores/AggregatedSampleScore');
   }, {
     'name': 'Score',
     'idtype': 'Tissue',
     'sampleType': 'Tissue'
   });
-
-  registry.push('targidScore', 'gene_aggregated_score', function () {
-    return System.import('./src/scores/AggregatedScore');
-  }, {
-    'name': 'Score',
-    'idtype': 'Ensembl'
-  });
   registry.push('targidScore', 'cellline_inverted_aggregated_score', function () {
-    return System.import('./src/scores/InvertedAggregatedScore');
+    return System.import('./src/scores/AggregatedSampleScore');
   }, {
     'name': 'Score',
     'idtype': 'Cellline'
+  });
+  registry.push('targidScore', 'gene_aggregated_score', function () {
+    return System.import('./src/scores/AggregatedGeneScore');
+  }, {
+    'name': 'Score',
+    'idtype': 'Ensembl'
   });
   // generator-phovea:end
 };
