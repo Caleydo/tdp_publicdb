@@ -126,7 +126,7 @@ module.exports = function(registry) {
   //views
 
   registry.push('__targidView__backup', 'celllinedb_enrichment', function () {
-    return System.import('targid_common/src/Enrichment');
+    return System.import('./src/views/Enrichment');
   }, {
     'name': 'Enrichment',
     'category': 'dynamic',
@@ -137,7 +137,7 @@ module.exports = function(registry) {
 
 
   registry.push('targidView', 'expressiontable', function () {
-    return System.import('targid_common/src/RawDataTable');
+    return System.import('./src/views/DepdendentSampleTable');
   }, {
     'name': 'Expression',
     'factory': 'createExpressionTable',
@@ -146,7 +146,7 @@ module.exports = function(registry) {
   });
 
   registry.push('targidView', 'copynumbertable', function () {
-    return System.import('targid_common/src/RawDataTable');
+    return System.import('./src/views/DepdendentSampleTable');
   }, {
     'name': 'Copy Number',
     'factory': 'createCopyNumberTable',
@@ -155,7 +155,7 @@ module.exports = function(registry) {
   });
 
   registry.push('targidView', 'mutationtable', function () {
-    return System.import('targid_common/src/RawDataTable');
+    return System.import('./src/views/DepdendentSampleTable');
   }, {
     'name': 'Mutation',
     'factory': 'createMutationTable',
@@ -164,7 +164,7 @@ module.exports = function(registry) {
   });
 
   registry.push('targidView', 'celllline_inverted_expressiontable', function () {
-    return System.import('targid_commonsrc/InvertedRawDataTable');
+    return System.import('./src/views/DependentGeneTable');
   }, {
     'name': 'Expression',
     'factory': 'createExpressionTable',
@@ -173,7 +173,7 @@ module.exports = function(registry) {
   });
 
   registry.push('targidView', 'celllline_inverted_copynumbertable', function () {
-    return System.import('targid_common/src/InvertedRawDataTable');
+    return System.import('./src/views/DependentGeneTable');
   }, {
     'name': 'Copy Number',
     'factory': 'createCopyNumberTable',
@@ -182,7 +182,7 @@ module.exports = function(registry) {
   });
 
   registry.push('targidView', 'celllline_inverted_mutationtable', function () {
-    return System.import('targid_common/src/InvertedRawDataTable');
+    return System.import('./src/views/DependentGeneTable');
   }, {
     'name': 'Mutation',
     'factory': 'createMutationTable',
@@ -191,7 +191,7 @@ module.exports = function(registry) {
   });
 
   registry.push('targidView', 'tissue_inverted_expressiontable', function () {
-    return System.import('targid_common/src/InvertedRawDataTable');
+    return System.import('./src/views/DependentGeneTable');
   }, {
     'name': 'Expression',
     'factory': 'createExpressionTable',
@@ -201,7 +201,7 @@ module.exports = function(registry) {
   });
 
   registry.push('targidView', 'tissue_inverted_copynumbertable', function () {
-    return System.import('targid_common/src/InvertedRawDataTable');
+    return System.import('./src/views/DependentGeneTable');
   }, {
     'name': 'Copy Number',
     'factory': 'createCopyNumberTable',
@@ -211,7 +211,7 @@ module.exports = function(registry) {
   });
 
   registry.push('targidView', 'tissue_inverted_mutationtable', function () {
-    return System.import('targid_common/src/InvertedRawDataTable');
+    return System.import('./src/views/DependentGeneTable');
   }, {
     'name': 'Mutation',
     'factory': 'createMutationTable',
