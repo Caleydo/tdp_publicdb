@@ -63,7 +63,7 @@ def create_sample(result, basename, idtype, primary):
      SELECT c.targidid AS _id, a.ensg AS id, g.symbol, c.{primary} as samplename, a.%(expression_subtype)s AS expression
         FROM {base}.targid_expression AS a
         INNER JOIN PUBLIC.targid_gene g ON a.ensg = g.ensg
-        INNER JOIN {base}.targid_{base} C ON a.%(primary)s = C.%(primary)s
+        INNER JOIN {base}.targid_{base} C ON a.{primary} = C.{primary}
         WHERE a.ensg = :ensg""".format(primary=primary, base=basename)).arg("ensg").replace("expression_subtype").build()
 
   result[basename + '_co_expression_all'] = co_expression
