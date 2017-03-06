@@ -496,28 +496,8 @@ export async function create(desc: IPluginDesc) {
 
     dialog.onSubmit(() => {
       const data = form.getElementData();
-
-      let score: IScore<number>;
-
-      switch (data[ParameterFormIds.FILTER_BY]) {
-        case 'single_cellline':
-          data.entity_value = data[ParameterFormIds.CELLLINE_NAME];
-          score = createSingleEntityScore(data);
-          break;
-
-        case 'single_tissue':
-          data.entity_value = data[ParameterFormIds.TISSUE_NAME];
-          score = createSingleEntityScore(data);
-          break;
-
-        default:
-          score = createAggregatedScore(data);
-      }
-
-      //console.log(score, data);
-
       dialog.hide();
-      resolve(score);
+      resolve(data);
       return false;
     });
 
@@ -551,3 +531,15 @@ function createAggregatedScore(data): IScore<number|IBoxPlotData> {
   return new AggregatedScore(data, data[ParameterFormIds.DATA_SOURCE]);
 }
 
+export function createScore(data: any) {
+  switch (data[ParameterFormIds.FILTER_BY]) {
+    case 'single_cellline':
+      data.entity_value = data[ParameterFormIds.CELLLINE_NAME];
+      return createSingleEntityScore(data);
+    case 'single_tissue':
+      data.entity_value = data[ParameterFormIds.TISSUE_NAME];
+      return createSingleEntityScore(data);
+    default:
+      return createAggregatedScore(data);
+  }
+}

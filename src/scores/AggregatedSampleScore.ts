@@ -14,7 +14,7 @@ import {
 import {IScore} from 'ordino/src/LineUpView';
 import {FormBuilder, FormElementType, IFormElementDesc} from 'ordino/src/FormBuilder';
 import {api2absURL} from 'phovea_core/src/ajax';
-import {createDesc} from './AggregatedGeneScore'; 
+import {createDesc} from './AggregatedGeneScore';
 import {select} from 'd3';
 
 interface ICommonScoreParam {
@@ -340,22 +340,8 @@ export function create(desc: IPluginDesc, dataSource:IDataSourceConfig = gene) {
     dialog.onSubmit(() => {
       const data = form.getElementData();
 
-      let score:IScore<number>;
-
-      switch(data[ParameterFormIds.FILTER_BY]) {
-        case 'single_entity':
-          data.entity_value = data[ParameterFormIds.GENE_SYMBOL];
-          score = createInvertedSingleGeneScore(data);
-          break;
-
-        default:
-          score = createInvertedAggregatedScore(data);
-      }
-
-      //console.log(score, data);
-
       dialog.hide();
-      resolve(score);
+      resolve(data);
       return false;
     });
 
@@ -384,4 +370,14 @@ function createInvertedAggregatedScore(data):IScore<number> {
     }
   }
   return new InvertedAggregatedScore(data, data[ParameterFormIds.DATA_SOURCE]);
+}
+
+export function createScore(data): IScore<number> {
+  switch(data[ParameterFormIds.FILTER_BY]) {
+    case 'single_entity':
+      data.entity_value = data[ParameterFormIds.GENE_SYMBOL];
+      return createInvertedSingleGeneScore(data);
+    default:
+      return createInvertedAggregatedScore(data);
+  }
 }
