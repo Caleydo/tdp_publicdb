@@ -28,3 +28,26 @@ export class ParameterFormIds {
   static COMPARISON_OPERATOR = 'comparison_operator';
   static COMPARISON_VALUE = 'comparison_value';
 }
+
+export const COMPARISON_OPERATORS = [
+  {name: '&lt; less than', value: '<', data: '<'},
+  {name: '&lt;= less equal', value: '<=', data: '<='},
+  {name: 'not equal to', value: '<>', data: '<>'},
+  {name: '&gt;= greater equal', value: '>=', data: '>='},
+  {name: '&gt; greater than', value: '>', data: '>'}
+];
+
+export const MUTATION_AGGREGATION = [
+  {name: 'Frequency', value: 'frequency', data: 'frequency'},
+  {name: 'Count', value: 'count', data: 'count'}
+];
+
+export const NUMERIC_AGGREGATION = [
+  {name: 'Average', value: 'avg', data: 'avg'},
+  {name: 'Median', value: 'median', data: 'median'},
+  {name: 'Min', value: 'min', data: 'min'},
+  {name: 'Max', value: 'max', data: 'max'},
+  {name: 'Frequency', value: 'frequency', data: 'frequency'},
+  {name: 'Count', value: 'count', data: 'count'},
+  {name: 'Boxplot', value: 'boxplot', data: 'boxplot'}
+];

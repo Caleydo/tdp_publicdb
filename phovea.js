@@ -226,14 +226,14 @@ module.exports = function(registry) {
   //scores
 
   registry.push('ordinoScore', 'gene_aggregated_score', function () {
-    return System.import('./src/scores/AggregatedGeneScore');
+    return System.import('./src/scores/gene');
   }, {
     'name': 'Score',
     'idtype': 'Ensembl'
   });
 
   registry.push('ordinoScoreImpl', 'gene_aggregated_score', function () {
-    return System.import('./src/scores/AggregatedGeneScore');
+    return System.import('./src/scores/gene');
   }, {
     'factory': 'createScore'
   });

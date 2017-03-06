@@ -13,11 +13,11 @@ import {
   expression, copyNumber, mutation, dataSubtypes, gene, allBioTypes
 } from '../config';
 import {convertLog2ToLinear} from '../utils';
-import {ParameterFormIds} from '../forms';
+import {ParameterFormIds, COMPARISON_OPERATORS, MUTATION_AGGREGATION} from '../forms';
 import {IScore} from 'ordino/src/LineUpView';
 import {FormBuilder, FormElementType, IFormElementDesc} from 'ordino/src/FormBuilder';
 import {api2absURL} from 'phovea_core/src/ajax';
-import {createDesc} from './AggregatedGeneScore';
+import {createDesc} from './utils';
 import {select} from 'd3';
 
 interface ICommonScoreParam {
@@ -277,23 +277,17 @@ export function create(desc: IPluginDesc, dataSource:IDataSourceConfig = gene) {
         showIf: (dependantValues) => (dependantValues[0].value === 'bio_type'),
         options: {
           optionsFnc: (selection) => {
-            let r = [];
             if(selection[1].data === mutation) {
-              r = [
-                {name: 'Frequency', value: 'frequency', data: 'frequency'},
-                {name: 'Count', value: 'count', data: 'count'}
-              ];
-
+              return MUTATION_AGGREGATION;
             } else if(selection[2].name === allBioTypes) {
-              r = [
+              return [
                 {name: 'Count', value: 'count', data: 'count'},
                 {name: 'Frequency', value: 'frequency', data: 'frequency'},
                 {name: 'Min', value: 'min', data: 'min'},
                 {name: 'Max', value: 'max', data: 'max'}
               ];
-
             } else {
-              r = [
+              return [
                 {name: 'Count', value: 'count', data: 'count'},
                 {name: 'Frequency', value: 'frequency', data: 'frequency'},
                 {name: 'Average', value: 'avg', data: 'avg'},
@@ -302,8 +296,6 @@ export function create(desc: IPluginDesc, dataSource:IDataSourceConfig = gene) {
                 {name: 'Max', value: 'max', data: 'max'}
               ];
             }
-
-            return r;
           },
           optionsData: []
         },
@@ -317,13 +309,7 @@ export function create(desc: IPluginDesc, dataSource:IDataSourceConfig = gene) {
         showIf: (dependantValues) => // show form element for expression and copy number frequencies
           (dependantValues[2].value === 'bio_type' && (dependantValues[1].value === 'frequency' || dependantValues[1].value === 'count')  && (dependantValues[0].data === expression || dependantValues[0].data === copyNumber)),
         options: {
-          optionsData: [
-            {name: '&lt; less than', value: '<', data: '<'},
-            {name: '&lt;= less equal', value: '<=', data: '<='},
-            {name: 'not equal to', value: '<>', data: '<>'},
-            {name: '&gt;= greater equal', value: '>=', data: '>='},
-            {name: '&gt; greater than', value: '>', data: '>'}
-          ]
+          optionsData: COMPARISON_OPERATORS
         },
         useSession: true
       },
