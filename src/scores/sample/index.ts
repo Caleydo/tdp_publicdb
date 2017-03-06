@@ -2,167 +2,22 @@
  * Created by Samuel Gratzl on 27.04.2016.
  */
 
-import * as ajax from 'phovea_core/src/ajax';
-import * as ranges from 'phovea_core/src/range';
 import * as dialogs from 'phovea_ui/src/dialogs';
 import {IPluginDesc} from 'phovea_core/src/plugin';
-import * as idtypes from 'phovea_core/src/idtype';
 import {getSelectedSpecies} from 'targid_common/src/Common';
 import {
-  dataTypes, IDataSourceConfig, IDataTypeConfig, IDataSubtypeConfig,
-  expression, copyNumber, mutation, dataSubtypes, gene, allBioTypes
-} from '../config';
-import {convertLog2ToLinear} from '../utils';
-import {ParameterFormIds, COMPARISON_OPERATORS, MUTATION_AGGREGATION} from '../forms';
+  dataTypes, IDataSourceConfig, IDataTypeConfig, expression, copyNumber, mutation, gene, allBioTypes
+} from '../../config';
+import {ParameterFormIds, COMPARISON_OPERATORS, MUTATION_AGGREGATION} from '../../forms';
 import {IScore} from 'ordino/src/LineUpView';
 import {FormBuilder, FormElementType, IFormElementDesc} from 'ordino/src/FormBuilder';
 import {api2absURL} from 'phovea_core/src/ajax';
-import {createDesc} from './utils';
 import {select} from 'd3';
+import InvertedAggregatedScore from './AggregatedScore';
+import InvertedFrequencyScore from './FrequencyScore';
+import InvertedMutationFrequencyScore from './MutationFrequencyScore';
+import InvertedSingleGeneScore from './SingleScore';
 
-interface ICommonScoreParam {
-  data_subtype: IDataSubtypeConfig;
-  bio_type: string;
-}
-
-interface IInvertedAggregatedScoreParam extends ICommonScoreParam {
-  data_source: IDataSourceConfig;
-  data_type: IDataTypeConfig;
-  aggregation: string;
-}
-
-class InvertedAggregatedScore implements IScore<number> {
-  constructor(private parameter: IInvertedAggregatedScoreParam, private dataSource: IDataSourceConfig) {
-  }
-
-  createDesc() {
-    return createDesc(dataSubtypes.number, `${this.parameter.aggregation} ${this.parameter.data_subtype.name} @ ${this.parameter.bio_type}`, this.parameter.data_subtype);
-  }
-
-  async compute(ids: ranges.Range, idtype: idtypes.IDType): Promise<any[]> {
-    const p = this.parameter;
-    const ds = this.dataSource;
-    const url = `/targid/db/${ds.db}/aggregated_score_inverted${p.bio_type === allBioTypes ? '_all' : ''}`;
-    const param = {
-      schema: ds.schema,
-      entity_name: ds.entityName,
-      table_name: p.data_type.tableName,
-      data_subtype: p.data_subtype.useForAggregation,
-      biotype: p.bio_type,
-      agg: p.aggregation,
-      species: getSelectedSpecies()
-    };
-
-    const rows: any[] = await ajax.getAPIJSON(url, param);
-    if (this.parameter.data_subtype.useForAggregation.indexOf('log2') !== -1) {
-      return convertLog2ToLinear(rows, 'score');
-    }
-    return rows;
-  }
-}
-
-interface IInvertedMutationFrequencyScoreParam extends ICommonScoreParam {
-  comparison_operator: string;
-  comparison_value: number;
-}
-
-class InvertedMutationFrequencyScore implements IScore<number> {
-  constructor(private parameter: IInvertedMutationFrequencyScoreParam, private dataSource: IDataSourceConfig, private countOnly) {
-
-  }
-
-  createDesc() {
-    const subtype = this.parameter.data_subtype;
-    return createDesc(dataSubtypes.number, `${subtype.name} ${this.countOnly ? 'Count' : 'Frequency'} ${this.parameter.bio_type === allBioTypes ? '' : '@ '+this.parameter.bio_type}`, subtype);
-  }
-
-  async compute(ids:ranges.Range, idtype:idtypes.IDType):Promise<any[]> {
-    const url = `/targid/db/${this.dataSource.db}/mutation_frequency_inverted${this.parameter.bio_type===allBioTypes ? '_all' : ''}`;
-    const param = {
-        schema: this.dataSource.schema,
-        entity_name: this.dataSource.entityName,
-        data_subtype: this.parameter.data_subtype.useForAggregation,
-        biotype: this.parameter.bio_type,
-        species: getSelectedSpecies()
-      };
-
-    const rows = await ajax.getAPIJSON(url, param);
-    rows.forEach((row) => this.countOnly ? row.count : row.count / row.total);
-    return rows;
-  }
-}
-
-interface IInvertedFrequencyScoreParam extends ICommonScoreParam {
-  data_type:IDataTypeConfig;
-  comparison_operator: string;
-  comparison_value: number;
-}
-
-class InvertedFrequencyScore implements IScore<number> {
-  constructor(private parameter: IInvertedFrequencyScoreParam, private dataSource: IDataSourceConfig, private countOnly) {
-
-  }
-
-  createDesc() {
-    const subtype = this.parameter.data_subtype;
-    return createDesc(dataSubtypes.number, `${subtype.name} ${this.parameter.comparison_operator} ${this.parameter.comparison_value} ${this.countOnly ? 'Count' : 'Frequency'}  ${this.parameter.bio_type === allBioTypes ? '' : '@ '+this.parameter.bio_type}`, subtype);
-  }
-
-  async compute(ids:ranges.Range, idtype:idtypes.IDType):Promise<any[]> {
-    const url = `/targid/db/${this.dataSource.db}/frequency_score_inverted${this.parameter.bio_type===allBioTypes ? '_all' : ''}`;
-    const param = {
-        schema: this.dataSource.schema,
-        entity_name: this.dataSource.entityName,
-        table_name: this.parameter.data_type.tableName,
-        data_subtype: this.parameter.data_subtype.useForAggregation,
-        biotype: this.parameter.bio_type,
-        operator: this.parameter.comparison_operator,
-        value: this.parameter.comparison_value,
-        species: getSelectedSpecies()
-      };
-
-    const rows = await ajax.getAPIJSON(url, param);
-    rows.forEach((row) => row.score = this.countOnly ? row.count : row.count / row.total);
-    return rows;
-  }
-}
-
-interface IInvertedSingleGeneScore extends ICommonScoreParam {
-  data_type:IDataTypeConfig;
-  data_source: IDataSourceConfig;
-  tumor_type: string;
-  aggregation: string;
-  entity_value: {id: string, text: string};
-}
-
-class InvertedSingleGeneScore implements IScore<any> {
-  constructor(private parameter: IInvertedSingleGeneScore, private dataSource: IDataSourceConfig) {
-
-  }
-
-  createDesc(): any {
-    const subtype = this.parameter.data_subtype;
-    return createDesc(subtype.type, `${this.parameter.data_subtype.name} of ${this.parameter.entity_value.text}`, subtype);
-  }
-
-  async compute(ids:ranges.Range, idtype:idtypes.IDType):Promise<any[]> {
-    const url = `/targid/db/${this.dataSource.db}/single_entity_score_inverted`;
-    const param = {
-        schema: this.dataSource.schema,
-        entity_name: this.dataSource.entityName,
-        table_name: this.parameter.data_type.tableName,
-        data_subtype: this.parameter.data_subtype.id,
-        entity_value: this.parameter.entity_value.id,
-        species: getSelectedSpecies()
-      };
-
-    const rows: any[] = await ajax.getAPIJSON(url, param);
-    if (this.parameter.data_subtype.useForAggregation.indexOf('log2') !== -1) {
-      return convertLog2ToLinear(rows, 'score');
-    }
-    return rows;
-  }
-}
 
 export function create(desc: IPluginDesc, dataSource:IDataSourceConfig = gene) {
   // resolve promise when closing or submitting the modal dialog

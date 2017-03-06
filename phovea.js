@@ -239,13 +239,13 @@ module.exports = function(registry) {
   });
 
   registry.push('ordinoScore', 'cellline_inverted_aggregated_score', function () {
-    return System.import('./src/scores/AggregatedSampleScore');
+    return System.import('./src/scores/sample');
   }, {
     'name': 'Score',
     'idtype': 'Cellline'
   });
   registry.push('ordinoScore', 'tissue_inverted_aggregated_score', function () {
-    return System.import('./src/scores/AggregatedSampleScore');
+    return System.import('./src/scores/sample');
   }, {
     'name': 'Score',
     'idtype': 'Tissue',
@@ -253,13 +253,13 @@ module.exports = function(registry) {
   });
 
   registry.push('ordinoScoreImpl', 'tissue_inverted_aggregated_score', function () {
-    return System.import('./src/scores/AggregatedSampleScore');
+    return System.import('./src/scores/sample');
   }, {
     'factory': 'createScore'
   });
 
   registry.push('ordinoScoreImpl', 'cellline_inverted_aggregated_score', function () {
-    return System.import('./src/scores/AggregatedSampleScore');
+    return System.import('./src/scores/sample');
   }, {
     'factory': 'createScore'
   });
