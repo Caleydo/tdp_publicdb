@@ -66,6 +66,182 @@ module.exports = function(registry) {
     'selection': 'small_multiple'
   });
 
+  registry.push('targidStartEntryPoint', 'celllinedb_genes_start', function () {
+    return System.import('targid_common/src/GeneEntryPoint');
+  }, {
+    'name': 'Genes',
+    'factory': 'createStartFactory',
+    'viewId': 'celllinedb_start',
+    'idtype': 'Ensembl',
+    'selection': 'none'
+  });
+  registry.push('targidView', 'celllinedb_start', function () {
+    return System.import('targid_common/src/GeneEntryPoint');
+  }, {
+    'name': 'Genes',
+    'factory': 'createStart',
+    'idtype': 'Ensembl',
+    'selection': 'none'
+  });
+
+  registry.push('targidStartEntryPoint', 'bioinfodb_tissue_start', function () {
+    return System.import('targid_common/src/CellLineEntryPoint');
+  }, {
+    'name': 'Tissues',
+    'factory': 'createStartFactory',
+    'viewId': 'bioinfodb_tissue_start',
+    "idtype": "Tissue",
+    "selection": "none",
+    "sampleType": "Tissue"
+  });
+  registry.push('targidView', 'bioinfodb_tissue_start', function () {
+    return System.import('targid_common/src/CellLineEntryPoint');
+  }, {
+    'name': 'Tissues',
+    'factory': 'createStart',
+    "idtype": "Tissue",
+    "selection": "none",
+    "sampleType": "Tissue"
+  });
+
+
+  registry.push('targidStartEntryPoint', 'celllinedb_cellline_start', function () {
+    return System.import('targid_common/src/CellLineEntryPoint');
+  }, {
+    'name': 'Cell Lines',
+    'factory': 'createStartFactory',
+    'viewId': 'celllinedb_cellline',
+    'idtype': 'Cellline',
+    'selection': 'none'
+  });
+  registry.push('targidView', 'celllinedb_cellline', function () {
+    return System.import('targid_common/src/CellLineEntryPoint');
+  }, {
+    'name': 'Cell Lines',
+    'factory': 'createStart',
+    'idtype': 'Cellline',
+    'selection': 'none'
+  });
+
+  //views
+
+  registry.push('__targidView__backup', 'celllinedb_enrichment', function () {
+    return System.import('targid_common/src/Enrichment');
+  }, {
+    'name': 'Enrichment',
+    'category': 'dynamic',
+    'idtype': 'Ensembl',
+    'selection': 'single',
+    'mockup': true
+  });
+
+
+  registry.push('targidView', 'expressiontable', function () {
+    return System.import('targid_common/src/RawDataTable');
+  }, {
+    'name': 'Expression',
+    'factory': 'createExpressionTable',
+    'idtype': 'Ensembl',
+    'selection': 'some'
+  });
+
+  registry.push('targidView', 'copynumbertable', function () {
+    return System.import('targid_common/src/RawDataTable');
+  }, {
+    'name': 'Copy Number',
+    'factory': 'createCopyNumberTable',
+    'idtype': 'Ensembl',
+    'selection': 'some'
+  });
+
+  registry.push('targidView', 'mutationtable', function () {
+    return System.import('targid_common/src/RawDataTable');
+  }, {
+    'name': 'Mutation',
+    'factory': 'createMutationTable',
+    'idtype': 'Ensembl',
+    'selection': 'some'
+  });
+
+  registry.push('targidView', 'celllline_inverted_expressiontable', function () {
+    return System.import('targid_commonsrc/InvertedRawDataTable');
+  }, {
+    'name': 'Expression',
+    'factory': 'createExpressionTable',
+    'idtype': 'Cellline',
+    'selection': 'some'
+  });
+
+  registry.push('targidView', 'celllline_inverted_copynumbertable', function () {
+    return System.import('targid_common/src/InvertedRawDataTable');
+  }, {
+    'name': 'Copy Number',
+    'factory': 'createCopyNumberTable',
+    'idtype': 'Cellline',
+    'selection': 'some'
+  });
+
+  registry.push('targidView', 'celllline_inverted_mutationtable', function () {
+    return System.import('targid_common/src/InvertedRawDataTable');
+  }, {
+    'name': 'Mutation',
+    'factory': 'createMutationTable',
+    'idtype': 'Cellline',
+    'selection': 'some'
+  });
+
+  registry.push('targidView', 'tissue_inverted_expressiontable', function () {
+    return System.import('targid_common/src/InvertedRawDataTable');
+  }, {
+    'name': 'Expression',
+    'factory': 'createExpressionTable',
+    'idtype': 'Tissue',
+    'sampleType': 'Tissue',
+    'selection': 'some'
+  });
+
+  registry.push('targidView', 'tissue_inverted_copynumbertable', function () {
+    return System.import('targid_common/src/InvertedRawDataTable');
+  }, {
+    'name': 'Copy Number',
+    'factory': 'createCopyNumberTable',
+    'idtype': 'Tissue',
+    'sampleType': 'Tissue',
+    'selection': 'some'
+  });
+
+  registry.push('targidView', 'tissue_inverted_mutationtable', function () {
+    return System.import('targid_common/src/InvertedRawDataTable');
+  }, {
+    'name': 'Mutation',
+    'factory': 'createMutationTable',
+    'idtype': 'Tissue',
+    'sampleType': 'Tissue',
+    'selection': 'some'
+  });
+
+  //scores
+
+  registry.push('targidScore', 'tissue_inverted_aggregated_score', function () {
+    return System.import('targid_common/src/InvertedAggregatedScore');
+  }, {
+    'name': 'Score',
+    'idtype': 'Tissue',
+    'sampleType': 'Tissue'
+  });
+
+  registry.push('targidScore', 'gene_aggregated_score', function () {
+    return System.import('targid_common/src/AggregatedScore');
+  }, {
+    'name': 'Score',
+    'idtype': 'Ensembl'
+  });
+  registry.push('targidScore', 'cellline_inverted_aggregated_score', function () {
+    return System.import('targid_common/src/InvertedAggregatedScore');
+  }, {
+    'name': 'Score',
+    'idtype': 'Cellline'
+  });
   // generator-phovea:end
 };
 
