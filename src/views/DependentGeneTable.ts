@@ -8,10 +8,12 @@ import {
   stringCol, numberCol2, categoricalCol,
   ALineUpView2, IScoreRow
 } from 'ordino/src/LineUpView';
-import {
-  allBioTypes, gene, expression, copyNumber, mutation, mutationCat, IDataTypeConfig,
-  chooseDataSource, ParameterFormIds, convertLog2ToLinear, getSelectedSpecies, IDataSourceConfig
-} from 'targid_common/src/Common';
+import {getSelectedSpecies} from 'targid_common/src/Common';
+import {mutationCat} from 'targid_common/src/constants';
+import {allBioTypes, gene, expression, copyNumber, mutation, IDataTypeConfig, chooseDataSource, IDataSourceConfig} from '../config';
+import {ParameterFormIds} from '../forms';
+import {convertLog2ToLinear} from '../utils';
+
 import {FormBuilder, FormElementType, IFormSelectDesc} from 'ordino/src/FormBuilder';
 
 class InvertedRawDataTable extends ALineUpView2 {

@@ -7,7 +7,10 @@ import * as ajax from 'phovea_core/src/ajax';
 import * as idtypes from 'phovea_core/src/idtype';
 import {IViewContext, ISelection} from 'ordino/src/View';
 import {ALineUpView, stringCol, numberCol2, useDefaultLayout} from 'ordino/src/LineUpView';
-import {dataSources, allTypes, copyNumberCat, ParameterFormIds, getSelectedSpecies} from 'targid_common/src/Common';
+import {getSelectedSpecies} from 'targid_common/src/Common';
+import {copyNumberCat} from 'targid_common/src/constants';
+import {dataSources, allTypes} from '../config';
+import {ParameterFormIds} from '../forms';
 import {FormBuilder, FormElementType, IFormSelectDesc} from 'ordino/src/FormBuilder';
 import {showErrorModalDialog} from 'ordino/src/Dialogs';
 

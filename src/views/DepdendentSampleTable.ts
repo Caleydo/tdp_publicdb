@@ -8,10 +8,10 @@ import {
   stringCol, numberCol2, categoricalCol,
   ALineUpView2, IScoreRow
 } from 'ordino/src/LineUpView';
-import {
-  dataSources, allTypes, expression, copyNumber, mutation, ParameterFormIds, IDataTypeConfig, convertLog2ToLinear,
-  getSelectedSpecies
-} from 'targid_common/src/Common';
+import {getSelectedSpecies} from 'targid_common/src/Common';
+import {dataSources, allTypes, expression, copyNumber, mutation, IDataTypeConfig} from '../config';
+import {convertLog2ToLinear} from '../utils';
+import {ParameterFormIds} from '../forms';
 import {FormBuilder, FormElementType, IFormSelectDesc} from 'ordino/src/FormBuilder';
 
 class RawDataTable extends ALineUpView2 {

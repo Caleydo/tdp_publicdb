@@ -4,7 +4,9 @@
 
 import {IPluginDesc} from 'phovea_core/src/plugin';
 import {AEntryPointList, IEntryPointOptions} from 'ordino/src/StartMenu';
-import {ParameterFormIds, defaultSpecies, IDataSourceConfig, getSelectedSpecies} from 'phovea_common/src/Common';
+import {defaultSpecies, getSelectedSpecies} from 'targid_common/src/Common';
+import {IDataSourceConfig} from '../config';
+import {ParameterFormIds} from '../forms';
 import {INamedSet, ENamedSetType} from 'ordino/src/storage';
 import {getAPIJSON, api2absURL} from 'phovea_core/src/ajax';
 import * as session from 'phovea_core/src/session';

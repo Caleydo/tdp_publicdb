@@ -7,10 +7,13 @@ import * as ranges from 'phovea_core/src/range';
 import * as dialogs from 'phovea_ui/src/dialogs';
 import {IPluginDesc} from 'phovea_core/src/plugin';
 import * as idtypes from 'phovea_core/src/idtype';
+import {getSelectedSpecies} from 'targid_common/src/Common';
 import {
-  allBioTypes, dataTypes, IDataSourceConfig, IDataTypeConfig, IDataSubtypeConfig, ParameterFormIds,
-  expression, copyNumber, mutation, gene, convertLog2ToLinear, dataSubtypes, getSelectedSpecies
-} from 'targid_common/src/Common';
+  dataTypes, IDataSourceConfig, IDataTypeConfig, IDataSubtypeConfig,
+  expression, copyNumber, mutation, dataSubtypes, gene, allBioTypes
+} from '../config';
+import {convertLog2ToLinear} from '../utils';
+import {ParameterFormIds} from '../forms';
 import {IScore} from 'ordino/src/LineUpView';
 import {FormBuilder, FormElementType, IFormElementDesc} from 'ordino/src/FormBuilder';
 import {api2absURL} from 'phovea_core/src/ajax';

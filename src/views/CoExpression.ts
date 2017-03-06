@@ -5,7 +5,9 @@
 import {FormElementType, IFormSelectDesc} from 'ordino/src/FormBuilder';
 import {IViewContext, ISelection} from 'ordino/src/View';
 import ACoExpression, {IDataFormatRow} from 'targid_common/src/views/ACoExpression';
-import {ParameterFormIds, dataSources, getSelectedSpecies, allTypes, expression} from 'targid_common/src/Common';
+import {getSelectedSpecies} from 'targid_common/src/Common';
+import {dataSources, allTypes, expression} from '../config';
+import {ParameterFormIds} from '../forms';
 import {getAPIJSON} from 'phovea_core/src/ajax';
 import {loadGeneList, loadFirstName} from './utils';
 
