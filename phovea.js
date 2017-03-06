@@ -67,7 +67,7 @@ module.exports = function(registry) {
   });
 
   registry.push('targidStartEntryPoint', 'celllinedb_genes_start', function () {
-    return System.import('targid_common/src/GeneEntryPoint');
+    return System.import('./src/entries/GeneEntryPoint');
   }, {
     'name': 'Genes',
     'factory': 'createStartFactory',
@@ -76,7 +76,7 @@ module.exports = function(registry) {
     'selection': 'none'
   });
   registry.push('targidView', 'celllinedb_start', function () {
-    return System.import('targid_common/src/GeneEntryPoint');
+    return System.import('./src/entries/GeneEntryPoint');
   }, {
     'name': 'Genes',
     'factory': 'createStart',
@@ -85,7 +85,7 @@ module.exports = function(registry) {
   });
 
   registry.push('targidStartEntryPoint', 'bioinfodb_tissue_start', function () {
-    return System.import('targid_common/src/CellLineEntryPoint');
+    return System.import('./src/entries/CellLineEntryPoint');
   }, {
     'name': 'Tissues',
     'factory': 'createStartFactory',
@@ -95,7 +95,7 @@ module.exports = function(registry) {
     "sampleType": "Tissue"
   });
   registry.push('targidView', 'bioinfodb_tissue_start', function () {
-    return System.import('targid_common/src/CellLineEntryPoint');
+    return System.import('./src/entries/CellLineEntryPoint');
   }, {
     'name': 'Tissues',
     'factory': 'createStart',
@@ -106,7 +106,7 @@ module.exports = function(registry) {
 
 
   registry.push('targidStartEntryPoint', 'celllinedb_cellline_start', function () {
-    return System.import('targid_common/src/CellLineEntryPoint');
+    return System.import('./src/entries/CellLineEntryPoint');
   }, {
     'name': 'Cell Lines',
     'factory': 'createStartFactory',
@@ -115,7 +115,7 @@ module.exports = function(registry) {
     'selection': 'none'
   });
   registry.push('targidView', 'celllinedb_cellline', function () {
-    return System.import('targid_common/src/CellLineEntryPoint');
+    return System.import('./src/entries/CellLineEntryPoint');
   }, {
     'name': 'Cell Lines',
     'factory': 'createStart',
