@@ -263,6 +263,41 @@ module.exports = function(registry) {
   }, {
     'factory': 'createScore'
   });
+
+
+
+  registry.push('targidView', 'clip', function () {
+    return System.import('./src/views/GeneProxyView');
+  }, {
+    'name': 'CLIP',
+    'category': 'static',
+    'site': '//vie-toolbox/clip/multiViewGene.php?ensg={gene}',
+    'argument': 'gene',
+    'idtype': 'Ensembl',
+    'selection': 'multiple'
+  });
+
+  registry.push('targidView', 'clip_cellline', function () {
+    return System.import('ordino/src/ProxyView');
+  }, {
+    'name': 'CLIP',
+    'category': 'static',
+    'site': '///vie-toolbox/clip/multiViewCellline.php?celllinename={cellline}',
+    'argument': 'cellline',
+    'idtype': 'Cellline',
+    'selection': 'multiple'
+  });
+
+  registry.push('targidView', 'shiny_cellline', function () {
+    return System.import('ordino/src/ProxyView');
+  }, {
+    'name': 'CN Cell Line Details',
+    'category': 'static',
+    'site': '///vie-bio-shiny.eu.boehringer.com:3838/copynumberpercellline/?celllinename{cellline}',
+    'argument': 'cellline',
+    'idtype': 'Cellline',
+    'selection': 'multiple'
+  });
   // generator-phovea:end
 };
 
