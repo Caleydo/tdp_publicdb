@@ -2,6 +2,8 @@
  * Created by sam on 06.03.2017.
  */
 
+import {IDataSubtypeConfig, dataSubtypes} from '../config';
+import {IBoxPlotData} from 'lineupjs/src/model/BoxPlotColumn';
 
 /**
  * creates a lineup config out of a IDataSubtypeConfig
