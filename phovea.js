@@ -267,7 +267,7 @@ module.exports = function(registry) {
 
 
   registry.push('targidView', 'clip', function () {
-    return System.import('./src/views/GeneProxyView');
+    return System.import('targid_common/src/views/GeneProxyView');
   }, {
     'name': 'CLIP',
     'category': 'static',
