@@ -223,7 +223,7 @@ module.exports = function(registry) {
   //scores
 
   registry.push('targidScore', 'tissue_inverted_aggregated_score', function () {
-    return System.import('targid_common/src/InvertedAggregatedScore');
+    return System.import('./src/scores/InvertedAggregatedScore');
   }, {
     'name': 'Score',
     'idtype': 'Tissue',
@@ -231,13 +231,13 @@ module.exports = function(registry) {
   });
 
   registry.push('targidScore', 'gene_aggregated_score', function () {
-    return System.import('targid_common/src/AggregatedScore');
+    return System.import('./src/scores/AggregatedScore');
   }, {
     'name': 'Score',
     'idtype': 'Ensembl'
   });
   registry.push('targidScore', 'cellline_inverted_aggregated_score', function () {
-    return System.import('targid_common/src/InvertedAggregatedScore');
+    return System.import('./src/scores/InvertedAggregatedScore');
   }, {
     'name': 'Score',
     'idtype': 'Cellline'
