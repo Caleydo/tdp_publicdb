@@ -5,21 +5,29 @@
 import * as dialogs from 'phovea_ui/src/dialogs';
 import {IPluginDesc} from 'phovea_core/src/plugin';
 import {getSelectedSpecies} from 'targid_common/src/Common';
-import {
-  dataTypes, IDataSourceConfig, IDataTypeConfig, expression, copyNumber, mutation, gene, allBioTypes
-} from '../../config';
+import {dataTypes, IDataTypeConfig, expression, copyNumber, mutation, gene, IDataSourceConfig} from '../../config';
 import {ParameterFormIds, COMPARISON_OPERATORS, MUTATION_AGGREGATION} from '../../forms';
 import {IScore} from 'ordino/src/LineUpView';
 import {FormBuilder, FormElementType, IFormElementDesc} from 'ordino/src/FormBuilder';
-import {api2absURL} from 'phovea_core/src/ajax';
+import {api2absURL, getAPIJSON} from 'phovea_core/src/ajax';
 import {select} from 'd3';
 import InvertedAggregatedScore from './AggregatedScore';
 import InvertedFrequencyScore from './FrequencyScore';
 import InvertedMutationFrequencyScore from './MutationFrequencyScore';
 import InvertedSingleGeneScore from './SingleScore';
+import cached from 'ordino/src/cached';
+import {listNamedSets} from 'ordino/src/storage';
+import {convertRow2MultiMap} from 'ordino/src/form/internal/FormMap';
 
+function buildPredefinedNamedSets(ds: IDataSourceConfig) {
+  return getAPIJSON(`/targid/db/${ds.db}/${ds.base}_panel`).then((panels: {id: string}[]) => panels.map((p) => p.id));
+}
 
-export function create(desc: IPluginDesc, dataSource:IDataSourceConfig = gene) {
+function buildMyNamedSets(ds: IDataSourceConfig) {
+  return listNamedSets(ds.idType).then((namedSets) => namedSets.map((d) => ({name: d.name, value: d.ids})));
+}
+
+export function create() {
   // resolve promise when closing or submitting the modal dialog
   return new Promise((resolve) => {
     const dialog = dialogs.generateDialog('Add Score Column', 'Add Score Column');
@@ -27,72 +35,56 @@ export function create(desc: IPluginDesc, dataSource:IDataSourceConfig = gene) {
     const form:FormBuilder = new FormBuilder(select(dialog.body));
     const formDesc:IFormElementDesc[] = [
       {
-        type: FormElementType.SELECT,
-        label: 'Data Source',
-        id: ParameterFormIds.DATA_SOURCE,
-        visible: false,
-        options: {
-          optionsData: [dataSource].map((ds) => {
-            return {name: ds.name, value: ds.name, data: ds};
-          })
-        },
-        useSession: true
-      },
-      {
-        type: FormElementType.SELECT,
+        type: FormElementType.MAP,
         label: `Filter By`,
-        id: ParameterFormIds.FILTER_BY,
+        id: 'filter',
         options: {
-          optionsData: [
-            {name: 'Bio Type', value:'bio_type', data:'bio_type'},
-            {name: 'Single Gene', value:'single_entity', data:'single_entity'}
-          ]
-        },
-        useSession: true
-      },
-      {
-        type: FormElementType.SELECT2,
-        label: 'Gene Symbol',
-        id: ParameterFormIds.GENE_SYMBOL,
-        dependsOn: [ParameterFormIds.FILTER_BY],
-        showIf: (dependantValues) => (dependantValues[0].value === 'single_entity'),
-        attributes: {
-          style: 'width:100%'
-        },
-        options: {
-          optionsData: [],
-          ajax: {
-            url: api2absURL(`/targid/db/${dataSource.db}/single_entity_lookup/lookup`),
-            data: (params:any) => {
-              return {
-                schema: gene.schema, // use `gene` explicitly as datasource
-                table_name: gene.tableName,
-                id_column: gene.entityName,
-                species: getSelectedSpecies(),
-                query_column: 'symbol',
-                query: params.term,
-                page: params.page
-              };
-            }
-          },
-          templateResult: (item:any) => (item.id) ? `${item.text} <span class="ensg">${item.id}</span>` : item.text,
-          templateSelection: (item:any) => (item.id) ? `${item.text} <span class="ensg">${item.id}</span>` : item.text
-        },
-        useSession: true
-      },
-      {
-        type: FormElementType.SELECT,
-        label: 'Bio Type',
-        id: ParameterFormIds.BIO_TYPE,
-        dependsOn: [ParameterFormIds.FILTER_BY, ParameterFormIds.DATA_SOURCE],
-        showIf: (dependantValues) => (dependantValues[0].value === 'bio_type'),
-        options: {
-          optionsFnc: (selection) => gene.bioTypesWithAll.map((d) => {
-            return {name: d, value: d, data: d};
-          }),
-          optionsData: []
-        },
-        useSession: true
+          entries: [{
+            name: 'Bio Type',
+            value: 'biotype',
+            type: FormElementType.SELECT,
+            optionsData: cached('gene_biotypes', () => getAPIJSON(`/targid/db/${gene.db}/gene_unique_all`, {
+              column: 'biotype',
+              species: getSelectedSpecies()
+            }).then((r) => r.map((d) => d.text)))
+          }, {
+            name: 'Strand',
+            value: 'strand',
+            type: FormElementType.SELECT,
+            optionsData: cached('gene_strands', () => getAPIJSON(`/targid/db/${gene.db}/gene_unique_all`, {
+              column: 'strand',
+              species: getSelectedSpecies()
+            }).then((r) => r.map((d) => ({name: `${d.text === -1 ? 'reverse': 'forward'} strand`, value: d.text}))))
+          }, {
+            name: 'Predefined Named Sets',
+            value: 'panel',
+            type: FormElementType.SELECT,
+            optionsData: cached('gene_predefined_namedsets', buildPredefinedNamedSets.bind(null, gene))
+          }, {
+            name: 'My Named Sets',
+            value: 'ids',
+            type: FormElementType.SELECT,
+            optionsData: buildMyNamedSets.bind(null, gene)
+          }, {
+            name: 'Gene Symbol',
+            value: 'id',
+            type: FormElementType.SELECT2,
+            return: 'id',
+            ajax: {
+              url: api2absURL(`/targid/db/${gene.db}/gene_items/lookup`),
+              data: (params: any) => {
+                return {
+                  column: 'symbol',
+                  species: getSelectedSpecies(),
+                  query: params.term,
+                  page: params.page
+                };
+              }
+            },
+            templateResult: (item: any) => (item.id) ? `${item.text} <span class="ensg">${item.id}</span>` : item.text,
+            templateSelection: (item: any) => (item.id) ? `${item.text} <span class="ensg">${item.id}</span>` : item.text
+          }]
+        }
       },
       {
         type: FormElementType.SELECT,
@@ -109,13 +101,14 @@ export function create(desc: IPluginDesc, dataSource:IDataSourceConfig = gene) {
         type: FormElementType.SELECT,
         label: 'Data Subtype',
         id: ParameterFormIds.DATA_SUBTYPE,
-        dependsOn: [ParameterFormIds.FILTER_BY, ParameterFormIds.DATA_TYPE],
+        dependsOn: [ParameterFormIds.DATA_TYPE],
         options: {
           optionsFnc: (selection) => {
-            let r = (<IDataTypeConfig>selection[1].data).dataSubtypes;
-            if(selection[0].value === 'bio_type') {
-              r = r.filter((d)=>d.type !== ('string'));
-            }
+            const r = (<IDataTypeConfig>selection[0].data).dataSubtypes;
+            // TODO why -> can't aggregate strings
+            //if(selection[0].value === 'bio_type') {
+            //  r = r.filter((d)=>d.type !== ('string'));
+            //}
             return r.map((ds) => {
               return {name: ds.name, value: ds.id, data: ds};
             });
@@ -128,19 +121,18 @@ export function create(desc: IPluginDesc, dataSource:IDataSourceConfig = gene) {
         type: FormElementType.SELECT,
         label: 'Aggregation',
         id: ParameterFormIds.AGGREGATION,
-        dependsOn: [ParameterFormIds.FILTER_BY, ParameterFormIds.DATA_TYPE, ParameterFormIds.BIO_TYPE],
-        showIf: (dependantValues) => (dependantValues[0].value === 'bio_type'),
+        dependsOn: [ParameterFormIds.DATA_TYPE],
         options: {
           optionsFnc: (selection) => {
-            if(selection[1].data === mutation) {
+            if(selection[0].data === mutation) {
               return MUTATION_AGGREGATION;
-            } else if(selection[2].name === allBioTypes) {
-              return [
-                {name: 'Count', value: 'count', data: 'count'},
-                {name: 'Frequency', value: 'frequency', data: 'frequency'},
-                {name: 'Min', value: 'min', data: 'min'},
-                {name: 'Max', value: 'max', data: 'max'}
-              ];
+            //} else if(selection[2].name === allBioTypes) { // TODO don't get this restriction
+              //return [
+              //  {name: 'Count', value: 'count', data: 'count'},
+              //  {name: 'Frequency', value: 'frequency', data: 'frequency'},
+              //  {name: 'Min', value: 'min', data: 'min'},
+              //  {name: 'Max', value: 'max', data: 'max'}
+              //];
             } else {
               return [
                 {name: 'Count', value: 'count', data: 'count'},
@@ -160,9 +152,9 @@ export function create(desc: IPluginDesc, dataSource:IDataSourceConfig = gene) {
         type: FormElementType.SELECT,
         label: 'Comparison Operator',
         id: ParameterFormIds.COMPARISON_OPERATOR,
-        dependsOn: [ParameterFormIds.DATA_TYPE, ParameterFormIds.AGGREGATION, ParameterFormIds.FILTER_BY],
+        dependsOn: [ParameterFormIds.DATA_TYPE, ParameterFormIds.AGGREGATION],
         showIf: (dependantValues) => // show form element for expression and copy number frequencies
-          (dependantValues[2].value === 'bio_type' && (dependantValues[1].value === 'frequency' || dependantValues[1].value === 'count')  && (dependantValues[0].data === expression || dependantValues[0].data === copyNumber)),
+          ((dependantValues[1].value === 'frequency' || dependantValues[1].value === 'count')  && (dependantValues[0].data === expression || dependantValues[0].data === copyNumber)),
         options: {
           optionsData: COMPARISON_OPERATORS
         },
@@ -172,9 +164,9 @@ export function create(desc: IPluginDesc, dataSource:IDataSourceConfig = gene) {
         type: FormElementType.INPUT_TEXT,
         label: 'Comparison Value',
         id: ParameterFormIds.COMPARISON_VALUE,
-        dependsOn: [ParameterFormIds.DATA_TYPE, ParameterFormIds.AGGREGATION, ParameterFormIds.FILTER_BY],
+        dependsOn: [ParameterFormIds.DATA_TYPE, ParameterFormIds.AGGREGATION],
         showIf: (dependantValues) => // show form element for expression and copy number frequencies
-          (dependantValues[2].value === 'bio_type' && (dependantValues[1].value === 'frequency' || dependantValues[1].value === 'count') && (dependantValues[0].data === expression || dependantValues[0].data === copyNumber)),
+          ((dependantValues[1].value === 'frequency' || dependantValues[1].value === 'count') && (dependantValues[0].data === expression || dependantValues[0].data === copyNumber)),
         useSession: true
       }
     ];
@@ -183,6 +175,7 @@ export function create(desc: IPluginDesc, dataSource:IDataSourceConfig = gene) {
 
     dialog.onSubmit(() => {
       const data = form.getElementData();
+      data.filter =  convertRow2MultiMap(data.filter);
 
       dialog.hide();
       resolve(data);
@@ -197,30 +190,26 @@ export function create(desc: IPluginDesc, dataSource:IDataSourceConfig = gene) {
   });
 }
 
-function createInvertedSingleGeneScore(data):IScore<number> {
-  return new InvertedSingleGeneScore(data, data[ParameterFormIds.DATA_SOURCE]);
-}
-
 function createInvertedAggregatedScore(data):IScore<number> {
   if(data[ParameterFormIds.AGGREGATION] === 'frequency' || data[ParameterFormIds.AGGREGATION] === 'count') {
     // boolean to indicate that the resulting score does not need to be divided by the total count
     const countOnly = data[ParameterFormIds.AGGREGATION] === 'count';
     switch(data[ParameterFormIds.DATA_TYPE]) {
       case mutation:
-        return new InvertedMutationFrequencyScore(data, data[ParameterFormIds.DATA_SOURCE], countOnly);
+        return new InvertedMutationFrequencyScore(data, gene, countOnly);
       case copyNumber:
       case expression:
-        return new InvertedFrequencyScore(data, data[ParameterFormIds.DATA_SOURCE], countOnly);
+        return new InvertedFrequencyScore(data, gene, countOnly);
     }
   }
-  return new InvertedAggregatedScore(data, data[ParameterFormIds.DATA_SOURCE]);
+  return new InvertedAggregatedScore(data, gene);
 }
 
 export function createScore(data): IScore<number> {
   switch(data[ParameterFormIds.FILTER_BY]) {
     case 'single_entity':
       data.entity_value = data[ParameterFormIds.GENE_SYMBOL];
-      return createInvertedSingleGeneScore(data);
+      return new InvertedSingleGeneScore(data, gene);
     default:
       return createInvertedAggregatedScore(data);
   }

@@ -20,8 +20,37 @@ agg_score = DBViewBuilder().query('%(agg)s(%(data_subtype)s)') \
     .query('median', 'percentile_cont(0.5) WITHIN GROUP (ORDER BY %(data_subtype)s)') \
     .replace('agg').replace('data_subtype').build()
 
+def _create_common(result, prefix, table, primary, idtype):
+  # lookup for the id and primary names the table
+  result[prefix + '_items'] = DBViewBuilder().idtype(idtype).query("""
+      SELECT {primary} as id, %(column)s AS text
+      FROM {table} WHERE LOWER(%(column)s) LIKE :query AND species = :species
+      ORDER BY %(column)s ASC LIMIT %(limit)s OFFSET %(offset)s""".format(table=table, primary=primary)) \
+    .query('count', """
+      SELECT COUNT(*) AS total_count
+      FROM {table} WHERE LOWER(%(column)s) LIKE :query AND species = :species""".format(table=table)) \
+    .replace("column").replace("limit").replace("offset") \
+    .arg("query").arg('species').build()
+
+  # lookup for unique / distinct categorical values in a table
+  result[prefix + '_unique'] = DBViewBuilder().query("""
+        SELECT distinct %(column)s AS text
+        FROM {table} WHERE LOWER(%(column)s) LIKE :query AND species = :species
+        ORDER BY %(column)s ASC LIMIT %(limit)s OFFSET %(offset)s""".format(table=table)) \
+    .query('count', """
+        SELECT COUNT(distinct %(column)s) AS total_count
+        FROM {table} WHERE LOWER(%(column)s) LIKE :query AND species = :species""".format(table=table)) \
+    .replace("column").replace("limit").replace("offset") \
+    .arg("query").arg('species').build()
+  # lookup for unique / distinct categorical values in a table
+  result[prefix + '_unique_all'] = DBViewBuilder().query("""
+        SELECT distinct %(column)s AS text
+        FROM {table} WHERE species = :species
+        ORDER BY %(column)s ASC""".format(table=table)) \
+    .replace('column').arg('species').build()
 
 def create_sample(result, basename, idtype, primary):
+  _create_common(result, basename, '{base}.targid_{base}'.format(base=basename), primary, idtype)
   index = 'row_number() OVER(ORDER BY t.{primary} ASC) as _index'.format(primary=primary)
   column_query = 'targidid as _id, t.{primary} as id, species, tumortype, organ, gender'.format(primary=primary)
 
@@ -545,6 +574,7 @@ views = dict(
   """).replace("entity_name").replace("schema").replace("table_name").replace("query")
   .build()
 )
+_create_common(views, 'gene', 'public.targid_gene', _primary_gene, idtype_gene)
 create_sample(views, 'cellline', idtype_celline, _primary_cellline)
 create_sample(views, 'tissue', idtype_tissue, _primary_tissue)
 
