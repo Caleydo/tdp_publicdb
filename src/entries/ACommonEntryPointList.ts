@@ -10,7 +10,7 @@ import {ParameterFormIds} from '../forms';
 import {INamedSet, ENamedSetType} from 'ordino/src/storage';
 import {getAPIJSON, api2absURL} from 'phovea_core/src/ajax';
 import * as session from 'phovea_core/src/session';
-import {FormBuilder, FormElementType} from 'ordino/src/FormBuilder';
+import {FormBuilder, FormElementType, IFormSelect2Element} from 'ordino/src/FormBuilder';
 import {TargidConstants} from 'ordino/src/Targid';
 
 export abstract class ACommonEntryPointList extends AEntryPointList {
