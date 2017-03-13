@@ -89,7 +89,7 @@ def create_sample(result, basename, idtype, primary):
 
 
   co_expression = DBViewBuilder().idtype(idtype_gene).query("""
-     SELECT c.targidid AS _id, a.ensg AS id, g.symbol, c.{primary} as samplename, a.%(expression_subtype)s AS expression
+     SELECT c.targidid AS _id, a.ensg AS id, g.symbol, C.{primary} as samplename, a.%(expression_subtype)s AS expression
         FROM {base}.targid_expression AS a
         INNER JOIN PUBLIC.targid_gene g ON a.ensg = g.ensg
         INNER JOIN {base}.targid_{base} C ON a.{primary} = C.{primary}
@@ -97,7 +97,7 @@ def create_sample(result, basename, idtype, primary):
 
   result[basename + '_co_expression_all'] = co_expression
   result[basename + '_co_expression'] = DBViewBuilder().clone(co_expression) \
-    .append(' AND C.tumortype = :tumortype').arg("tumortype").build()
+    .append(' AND c.tumortype = :tumortype').arg("tumortype").build()
 
   expression_vs_copynumber = DBViewBuilder().idtype(idtype_gene).query("""
    SELECT c.targidid AS _id, a.ensg AS id, g.symbol, c.{primary} as samplename, a.%(expression_subtype)s AS expression, b.%(copynumber_subtype)s AS cn
@@ -123,9 +123,9 @@ def create_sample(result, basename, idtype, primary):
     .append(' AND C.tumortype = :tumortype').arg("tumortype").build()
 
   onco_print_sample_list = DBViewBuilder().idtype(idtype).query("""
-       SELECT d.targidid AS _id, d.{primary} AS id
-     FROM {base}.targid_{base} D
-     WHERE D.species = :species""".format(primary=primary, base=basename)).arg("species").build()
+       SELECT C.targidid AS _id, C.{primary} AS id
+     FROM {base}.targid_{base} C
+     WHERE C.species = :species""".format(primary=primary, base=basename)).arg("species").build()
 
   result[basename + '_onco_print_sample_list_all'] = onco_print_sample_list
   result[basename + '_onco_print_sample_list'] = DBViewBuilder().clone(onco_print_sample_list) \
@@ -162,25 +162,11 @@ views = dict(
     .arg('species')
     .build(),
 
-  gene_single_row=DBViewBuilder().idtype(idtype_gene).query("""
+  genes_by_names=DBViewBuilder().idtype(idtype_gene).query("""
     SELECT {index}, {columns}
-    FROM %(schema)s.targid_%(table_name)s t
-    WHERE species = :species AND %(entity_name)s = :name """.format(index=_index_gene, columns=_column_query_gene))
-    .replace('schema').replace('table_name').replace('entity_name').arg('species').arg('name')
-    .build(),
-
-  cellline_single_row=DBViewBuilder().idtype(idtype_celline).query("""
-    SELECT {index} as id, {columns}
-    FROM %(schema)s.targid_%(table_name)s t
-    WHERE species = :species AND %(entity_name)s = :name """.format(index=_primary_cellline, columns=_column_query_cellline_tissue))
-    .replace('schema').replace('table_name').replace('entity_name').arg('species').arg('name')
-    .build(),
-
-  tissue_single_row=DBViewBuilder().idtype(idtype_tissue).query("""
-    SELECT {index} as id, {columns}
-    FROM %(schema)s.targid_%(table_name)s t
-    WHERE species = :species AND %(entity_name)s = :name """.format(index=_primary_tissue, columns=_column_query_cellline_tissue))
-    .replace('schema').replace('table_name').replace('entity_name').arg('species').arg('name')
+    FROM public.targid_gene t
+    WHERE species = :species AND %(entity_name)s IN (%(entities)s) """.format(index=_index_gene, columns=_column_query_gene))
+    .replace('entity_name').replace('entities').arg('species')
     .build(),
 
   gene_filtered_namedset=DBViewBuilder().idtype(idtype_gene).query("""
