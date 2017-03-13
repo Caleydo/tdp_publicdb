@@ -60,15 +60,15 @@ def create_sample(result, basename, idtype, primary):
 
 
   co_expression = DBViewBuilder().idtype(idtype_gene).query("""
-     SELECT c.targidid AS _id, a.ensg AS id, g.symbol, c.{primary} as samplename, a.%(expression_subtype)s AS expression
+     SELECT c.targidid AS _id, a.ensg AS id, g.symbol, C.{primary} as samplename, a.%(expression_subtype)s AS expression
         FROM {base}.targid_expression AS a
         INNER JOIN PUBLIC.targid_gene g ON a.ensg = g.ensg
-        INNER JOIN {base}.targid_{base} C ON a.%(primary)s = C.%(primary)s
+        INNER JOIN {base}.targid_{base} C ON a.{primary} = C.{primary}
         WHERE a.ensg = :ensg""".format(primary=primary, base=basename)).arg("ensg").replace("expression_subtype").build()
 
   result[basename + '_co_expression_all'] = co_expression
   result[basename + '_co_expression'] = DBViewBuilder().clone(co_expression) \
-    .append(' AND C.tumortype = :tumortype').arg("tumortype").build()
+    .append(' AND c.tumortype = :tumortype').arg("tumortype").build()
 
   expression_vs_copynumber = DBViewBuilder().idtype(idtype_gene).query("""
    SELECT c.targidid AS _id, a.ensg AS id, g.symbol, c.{primary} as samplename, a.%(expression_subtype)s AS expression, b.%(copynumber_subtype)s AS cn
@@ -94,9 +94,9 @@ def create_sample(result, basename, idtype, primary):
     .append(' AND C.tumortype = :tumortype').arg("tumortype").build()
 
   onco_print_sample_list = DBViewBuilder().idtype(idtype).query("""
-       SELECT d.targidid AS _id, d.{primary} AS id
-     FROM {base}.targid_{base} D
-     WHERE D.species = :species""".format(primary=primary, base=basename)).arg("species").build()
+       SELECT C.targidid AS _id, C.{primary} AS id
+     FROM {base}.targid_{base} C
+     WHERE C.species = :species""".format(primary=primary, base=basename)).arg("species").build()
 
   result[basename + '_onco_print_sample_list_all'] = onco_print_sample_list
   result[basename + '_onco_print_sample_list'] = DBViewBuilder().clone(onco_print_sample_list) \
