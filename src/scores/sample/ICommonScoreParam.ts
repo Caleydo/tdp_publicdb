@@ -4,8 +4,14 @@
 
 import {IDataSubtypeConfig} from '../../config';
 
+export interface IScoreFilter {
+  name: string | string[]; // including named set special handling
+  panel: string | string[]; //ids
+  strand: string |string[];
+  biotype: string|string[];
+}
+
 export interface ICommonScoreParam {
-  data_subtype: IDataSubtypeConfig;
-  bio_type: string;
+  filter: IScoreFilter;
 }
 export default ICommonScoreParam;

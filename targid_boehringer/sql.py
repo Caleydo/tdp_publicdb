@@ -34,8 +34,9 @@ def _create_common(result, prefix, table, primary, idtype):
 
   # lookup for unique / distinct categorical values in a table
   result[prefix + '_unique'] = DBViewBuilder().query("""
-        SELECT distinct %(column)s AS text
-        FROM {table} WHERE LOWER(%(column)s) LIKE :query AND species = :species
+        SELECT s as id, s as text
+        FROM (SELECT distinct %(column)s AS s
+              FROM {table} WHERE LOWER(%(column)s) LIKE :query AND species = :species)
         ORDER BY %(column)s ASC LIMIT %(limit)s OFFSET %(offset)s""".format(table=table)) \
     .query('count', """
         SELECT COUNT(distinct %(column)s) AS total_count
@@ -130,6 +131,14 @@ def create_sample(result, basename, idtype, primary):
   result[basename + '_onco_print_sample_list_all'] = onco_print_sample_list
   result[basename + '_onco_print_sample_list'] = DBViewBuilder().clone(onco_print_sample_list) \
     .append(' AND C.tumortype = :tumortype').arg("tumortype").build()
+
+
+  result[basename + '_single_score'] = DBViewBuilder().idtype(idtype).query("""
+        SELECT D.{primary} AS id, D.%(attribute)s AS score
+        FROM {base}.targid_%(table)s D
+        INNER JOIN {base}.targid_{base} C ON D.{primary} = C.{primary}
+        WHERE C.species = :species AND ensg = :name""".format(primary=primary, base=basename)) \
+    .replace('table').replace('attribute').arg('name').arg('species').build()
 
 
 views = dict(
@@ -537,22 +546,6 @@ views = dict(
       WHERE species = :species AND LOWER(%(query_column)s) LIKE :query""")
     .replace("schema").replace("table_name").replace("query_column").replace("id_column").replace("limit").replace("offset")
     .arg("query").arg("species")
-    .build(),
-
-  single_entity_score=DBViewBuilder().idtype(idtype_gene).query("""
-        SELECT ensg AS id, %(data_subtype)s AS score
-        FROM %(schema)s.targid_%(table_name)s
-       WHERE %(entity_name)s = :entity_value""")
-    .replace("schema").replace("entity_name").replace("table_name").replace("data_subtype")
-    .arg("entity_value")
-    .build(),
-
-  single_entity_score_inverted=DBViewBuilder().idtype(idtype_celline).query("""
-        SELECT %(entity_name)s AS id, %(data_subtype)s AS score
-        FROM %(schema)s.targid_%(table_name)s
-        WHERE ensg = :entity_value""")
-    .replace("schema").replace("entity_name").replace("table_name").replace("data_subtype")
-    .arg("entity_value")
     .build(),
 
   check_id_types=DBViewBuilder().query("""

@@ -264,6 +264,35 @@ module.exports = function(registry) {
     'factory': 'createScore'
   });
 
+  /**
+   * single scores for celllines and tissues
+   */
+  registry.push('ordinoScore', 'cellline_gene_single_score', function () {
+    return System.import('./src/scores/sample/SingleScore');
+  }, {
+    'name': 'Single Gene Score',
+    'idtype': 'Cellline',
+    'sampleType': 'Cellline'
+  });
+  registry.push('ordinoScoreImpl', 'cellline_gene_single_score', function () {
+    return System.import('./src/scores/sample/SingleScore');
+  }, {
+    'factory': 'createScore'
+  });
+
+  registry.push('ordinoScore', 'tissue_gene_single_score', function () {
+    return System.import('./src/scores/sample/SingleScore');
+  }, {
+    'name': 'Single Gene Score',
+    'idtype': 'Tissue',
+    'sampleType': 'Tissue'
+  });
+  registry.push('ordinoScoreImpl', 'tissue_gene_single_score', function () {
+    return System.import('./src/scores/sample/SingleScore');
+  }, {
+    'factory': 'createScore'
+  });
+
 
 
   registry.push('targidView', 'clip', function () {

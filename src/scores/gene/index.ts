@@ -19,6 +19,7 @@ import BoxScore from './BoxScore';
 import MutationFrequencyScore from './MutationFrequencyScore';
 import AggregatedScore from './AggregatedScore';
 import FrequencyScore from './FrequencyScore';
+import {IPluginDesc} from 'phovea_core/src/plugin';
 
 
 function listTissuePanels(): Promise<{id: string}[]> {
@@ -27,47 +28,69 @@ function listTissuePanels(): Promise<{id: string}[]> {
   return ajax.getAPIJSON(baseURL);
 }
 
-export async function create() {
-  // resolve promise when closing or submitting the modal dialog
-  const tissuePanels: {id: string}[] = await listTissuePanels();
+function choose(desc: IPluginDesc) {
+  // TODO
+  return dataSources[0];
+}
+
+export async function create(desc: IPluginDesc) {
+  const ds = choose(desc);
   return new Promise((resolve) => {
     const dialog = dialogs.generateDialog('Add Score Column', 'Add Score Column');
 
     const form: FormBuilder = new FormBuilder(select(dialog.body));
     const formDesc: IFormElementDesc[] = [
       {
-        type: FormElementType.SELECT,
-        label: 'Data Source',
-        id: ParameterFormIds.DATA_SOURCE,
-        options: {
-          optionsData: dataSources.map((ds) => {
-            return {name: ds.name, value: ds.name, data: ds};
-          })
-        },
-        useSession: true
-      },
-      {
-        type: FormElementType.SELECT,
+        type: FormElementType.MAP,
         label: `Filter By`,
-        id: ParameterFormIds.FILTER_BY,
-        dependsOn: [ParameterFormIds.DATA_SOURCE],
+        id: 'filter',
         options: {
-          optionsFnc: (selection) => {
-            if (selection[0].data === cellline) {
-              return [
-                {name: 'Tumor Type', value: 'tumor_type', data: 'tumor_type'},
-                {name: `Single ${selection[0].data.name}`, value: `single_cellline`, data: `single_cellline`}
-              ];
-            }
-            return [
-              {name: 'Tumor Type', value: 'tumor_type', data: 'tumor_type'},
-              {name: 'Panel', value: 'tissue_panel', data: 'tissue_panel'},
-              {name: `Single ${selection[0].data.name}`, value: `single_tissue`, data: `single_tissue`}
-            ];
-          },
-          optionsData: [],
-        },
-        useSession: true
+          entries: [{
+            name: 'Bio Type',
+            value: 'biotype',
+            type: FormElementType.SELECT,
+            optionsData: cachedLazy('gene_biotypes', () => getAPIJSON(`/targid/db/${gene.db}/gene_unique_all`, {
+              column: 'biotype',
+              species: getSelectedSpecies()
+            }).then((r) => r.map((d) => d.text)))
+          }, {
+            name: 'Strand',
+            value: 'strand',
+            type: FormElementType.SELECT,
+            optionsData: cachedLazy('gene_strands', () => getAPIJSON(`/targid/db/${gene.db}/gene_unique_all`, {
+              column: 'strand',
+              species: getSelectedSpecies()
+            }).then((r) => r.map((d) => ({name: `${d.text === -1 ? 'reverse': 'forward'} strand`, value: d.text}))))
+          }, {
+            name: 'Predefined Named Sets',
+            value: 'panel',
+            type: FormElementType.SELECT,
+            optionsData: cachedLazy('gene_predefined_namedsets', buildPredefinedNamedSets.bind(null, gene))
+          }, {
+            name: 'My Named Sets',
+            value: 'ids',
+            type: FormElementType.SELECT,
+            optionsData: buildMyNamedSets.bind(null, gene)
+          }, {
+            name: 'Gene Symbol',
+            value: 'id',
+            type: FormElementType.SELECT2,
+            return: 'id',
+            ajax: {
+              url: api2absURL(`/targid/db/${gene.db}/gene_items/lookup`),
+              data: (params: any) => {
+                return {
+                  column: 'symbol',
+                  species: getSelectedSpecies(),
+                  query: params.term,
+                  page: params.page
+                };
+              }
+            },
+            templateResult: (item: any) => (item.id) ? `${item.text} <span class="ensg">${item.id}</span>` : item.text,
+            templateSelection: (item: any) => (item.id) ? `${item.text} <span class="ensg">${item.id}</span>` : item.text
+          }]
+        }
       },
       {
         type: FormElementType.SELECT2,

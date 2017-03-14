@@ -2,49 +2,148 @@
  * Created by sam on 06.03.2017.
  */
 
-import * as ajax from 'phovea_core/src/ajax';
-import * as ranges from 'phovea_core/src/range';
-import * as idtypes from 'phovea_core/src/idtype';
+import {generateDialog} from 'phovea_ui/src/dialogs';
+import {getAPIJSON, api2absURL} from 'phovea_core/src/ajax';
+import {Range} from 'phovea_core/src/range';
+import {IDType} from 'phovea_core/src/idtype';
+import {select} from 'd3';
 import {getSelectedSpecies} from 'targid_common/src/Common';
-import {IDataSourceConfig, IDataTypeConfig} from '../../config';
+import {IDataSourceConfig, IDataTypeConfig, dataTypes, IDataSubtypeConfig, gene, chooseDataSource} from '../../config';
 import {convertLog2ToLinear} from '../../utils';
 import {IScore} from 'ordino/src/LineUpView';
 import {createDesc} from '../utils';
-import {ICommonScoreParam} from './ICommonScoreParam';
+import {IFormElementDesc, FormElementType} from 'ordino/src/form';
+import FormBuilder from 'ordino/src/form/FormBuilder';
+import {ParameterFormIds} from 'targid_boehringer/src/forms';
+import {IPluginDesc} from 'phovea_core/src/plugin';
 
-interface IInvertedSingleGeneScore extends ICommonScoreParam {
-  data_type:IDataTypeConfig;
-  data_source: IDataSourceConfig;
-  tumor_type: string;
-  aggregation: string;
-  entity_value: {id: string, text: string};
+interface ISingleScoreParam {
+  sampleType: string;
+  gene_symbol: {id: string, text: string};
+  data_type: string;
+  data_subtype: string;
 }
 
-export default class InvertedSingleGeneScore implements IScore<any> {
-  constructor(private parameter: IInvertedSingleGeneScore, private dataSource: IDataSourceConfig) {
+function split(dataTypeId: string, dataSubTypeId: string) {
+  const dataType = dataTypes.find((d) => d.id === dataTypeId);
+  const dataSubType = dataType.dataSubtypes.find((d) => d.id === dataSubTypeId);
+  return {dataType, dataSubType};
+}
 
+export default class SingleScore implements IScore<any> {
+  private readonly dataType: IDataTypeConfig;
+  private readonly dataSubType: IDataSubtypeConfig;
+
+  constructor(private parameter: ISingleScoreParam, private readonly ds: IDataSourceConfig) {
+    const {dataType, dataSubType} = split(this.parameter.data_type, this.parameter.data_subtype);
+    this.dataType = dataType;
+    this.dataSubType = dataSubType;
   }
 
   createDesc(): any {
-    const subtype = this.parameter.data_subtype;
-    return createDesc(subtype.type, `${this.parameter.data_subtype.name} of ${this.parameter.entity_value.text}`, subtype);
+    return createDesc(this.dataSubType.type, `${this.dataSubType.name} of ${this.parameter.gene_symbol.text}`, this.dataSubType);
   }
 
-  async compute(ids:ranges.Range, idtype:idtypes.IDType):Promise<any[]> {
-    const url = `/targid/db/${this.dataSource.db}/single_entity_score_inverted`;
+  async compute(ids:Range, idtype:IDType):Promise<any[]> {
+    const url = `/targid/db/${this.ds.db}/${this.ds.base}_single_score`;
     const param = {
-        schema: this.dataSource.schema,
-        entity_name: this.dataSource.entityName,
-        table_name: this.parameter.data_type.tableName,
-        data_subtype: this.parameter.data_subtype.id,
-        entity_value: this.parameter.entity_value.id,
-        species: getSelectedSpecies()
-      };
+      table: this.dataType.tableName,
+      attribute: this.dataSubType.id,
+      name: this.parameter.gene_symbol.id,
+      species: getSelectedSpecies()
+    };
 
-    const rows: any[] = await ajax.getAPIJSON(url, param);
-    if (this.parameter.data_subtype.useForAggregation.indexOf('log2') !== -1) {
+    const rows: any[] = await getAPIJSON(url, param);
+    if (this.dataSubType.useForAggregation.indexOf('log2') !== -1) {
       return convertLog2ToLinear(rows, 'score');
     }
     return rows;
   }
+}
+
+export function create(pluginDesc: IPluginDesc) {
+  const ds = chooseDataSource(pluginDesc);
+  // resolve promise when closing or submitting the modal dialog
+  return new Promise<ISingleScoreParam>((resolve) => {
+    const dialog = generateDialog('Add Single Score Column', 'Add Single Score Column');
+
+    const form:FormBuilder = new FormBuilder(select(dialog.body));
+    const formDesc:IFormElementDesc[] = [
+      {
+        type: FormElementType.SELECT2,
+        label: 'Gene Symbol',
+        id: ParameterFormIds.GENE_SYMBOL,
+        attributes: {
+          style: 'width:100%'
+        },
+        options: {
+          optionsData: [],
+          ajax: {
+            url: api2absURL(`/targid/db/${gene.db}/gene_items/lookup`),
+            data: (params:any) => {
+              return {
+                column: 'symbol',
+                species: getSelectedSpecies(),
+                query: params.term,
+                page: params.page
+              };
+            }
+          },
+          templateResult: (item:any) => (item.id) ? `${item.text} <span class="ensg">${item.id}</span>` : item.text,
+          templateSelection: (item:any) => (item.id) ? `${item.text} <span class="ensg">${item.id}</span>` : item.text
+        },
+        useSession: true
+      },
+      {
+        type: FormElementType.SELECT,
+        label: 'Data Type',
+        id: ParameterFormIds.DATA_TYPE,
+        options: {
+          optionsData: dataTypes.map((ds) => {
+            return {name: ds.name, value: ds.id, data: ds.id};
+          })
+        },
+        useSession: true
+      },
+      {
+        type: FormElementType.SELECT,
+        label: 'Data Subtype',
+        id: ParameterFormIds.DATA_SUBTYPE,
+        dependsOn: [ParameterFormIds.DATA_TYPE],
+        options: {
+          optionsFnc: (selection) => {
+            const id = selection[0].data;
+            const r = dataTypes.find((d) => d.id === id).dataSubtypes;
+            return r.map((ds) => {
+              return {name: ds.name, value: ds.id, data: ds.id};
+            });
+          },
+          optionsData: []
+        },
+        useSession: true
+      }
+    ];
+
+    form.build(formDesc);
+
+    dialog.onSubmit(() => {
+      const data = <ISingleScoreParam>form.getElementData();
+      data.sampleType = ds.idType;
+      dialog.hide();
+      resolve(data);
+      return false;
+    });
+
+    dialog.onHide(() => {
+      dialog.destroy();
+    });
+
+    dialog.show();
+  });
+}
+
+
+export function createScore(data: ISingleScoreParam): IScore<number> {
+  const ds = chooseDataSource(data);
+  return new SingleScore(data, ds);
 }

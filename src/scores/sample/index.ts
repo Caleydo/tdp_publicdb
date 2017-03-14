@@ -15,16 +15,12 @@ import InvertedAggregatedScore from './AggregatedScore';
 import InvertedFrequencyScore from './FrequencyScore';
 import InvertedMutationFrequencyScore from './MutationFrequencyScore';
 import InvertedSingleGeneScore from './SingleScore';
-import cached from 'ordino/src/cached';
-import {listNamedSets} from 'ordino/src/storage';
+import {cachedLazy} from 'ordino/src/cached';
+import {listNamedSets, listNamedSetsAsOptions} from 'ordino/src/storage';
 import {convertRow2MultiMap} from 'ordino/src/form/internal/FormMap';
 
 function buildPredefinedNamedSets(ds: IDataSourceConfig) {
   return getAPIJSON(`/targid/db/${ds.db}/${ds.base}_panel`).then((panels: {id: string}[]) => panels.map((p) => p.id));
-}
-
-function buildMyNamedSets(ds: IDataSourceConfig) {
-  return listNamedSets(ds.idType).then((namedSets) => namedSets.map((d) => ({name: d.name, value: d.ids})));
 }
 
 export function create() {
@@ -43,7 +39,7 @@ export function create() {
             name: 'Bio Type',
             value: 'biotype',
             type: FormElementType.SELECT,
-            optionsData: cached('gene_biotypes', () => getAPIJSON(`/targid/db/${gene.db}/gene_unique_all`, {
+            optionsData: cachedLazy('gene_biotypes', () => getAPIJSON(`/targid/db/${gene.db}/gene_unique_all`, {
               column: 'biotype',
               species: getSelectedSpecies()
             }).then((r) => r.map((d) => d.text)))
@@ -51,7 +47,7 @@ export function create() {
             name: 'Strand',
             value: 'strand',
             type: FormElementType.SELECT,
-            optionsData: cached('gene_strands', () => getAPIJSON(`/targid/db/${gene.db}/gene_unique_all`, {
+            optionsData: cachedLazy('gene_strands', () => getAPIJSON(`/targid/db/${gene.db}/gene_unique_all`, {
               column: 'strand',
               species: getSelectedSpecies()
             }).then((r) => r.map((d) => ({name: `${d.text === -1 ? 'reverse': 'forward'} strand`, value: d.text}))))
@@ -59,15 +55,15 @@ export function create() {
             name: 'Predefined Named Sets',
             value: 'panel',
             type: FormElementType.SELECT,
-            optionsData: cached('gene_predefined_namedsets', buildPredefinedNamedSets.bind(null, gene))
+            optionsData: cachedLazy('gene_predefined_namedsets', buildPredefinedNamedSets.bind(null, gene))
           }, {
             name: 'My Named Sets',
-            value: 'ids',
+            value: 'names',
             type: FormElementType.SELECT,
-            optionsData: buildMyNamedSets.bind(null, gene)
+            optionsData: listNamedSetsAsOptions.bind(null, gene.idType)
           }, {
             name: 'Gene Symbol',
-            value: 'id',
+            value: 'name',
             type: FormElementType.SELECT2,
             return: 'id',
             ajax: {
