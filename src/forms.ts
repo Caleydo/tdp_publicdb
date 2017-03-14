@@ -90,12 +90,12 @@ export const FORM_GENE_FILTER = {
       optionsData: cachedLazy('gene_predefined_namedsets', buildPredefinedNamedSets.bind(null, gene))
     }, {
       name: 'My Named Sets',
-      value: 'names',
+      value: 'namedset4c.ensg',
       type: FormElementType.SELECT,
       optionsData: listNamedSetsAsOptions.bind(null, gene.idType)
     }, {
       name: 'Gene Symbol',
-      value: 'name',
+      value: 'c.ensg',
       type: FormElementType.SELECT2,
       return: 'id',
       ajax: {
