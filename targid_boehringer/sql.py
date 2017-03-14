@@ -136,9 +136,55 @@ def create_sample(result, basename, idtype, primary):
   result[basename + '_single_score'] = DBViewBuilder().idtype(idtype).query("""
         SELECT D.{primary} AS id, D.%(attribute)s AS score
         FROM {base}.targid_%(table)s D
-        INNER JOIN {base}.targid_{base} C ON D.{primary} = C.{primary}
+        INNER JOIN public.targid_gene C ON D.ensg = C.ensg
         WHERE C.species = :species AND ensg = :name""".format(primary=primary, base=basename)) \
     .replace('table').replace('attribute').arg('name').arg('species').build()
+
+  result[basename + '_frequency_score'] = DBViewBuilder().idtype(idtype).query("""
+         SELECT a.{primary} AS id, (COALESCE(freq.count,0)+0.0) AS count, a.total
+         FROM (
+         SELECT COUNT(*) AS total, {primary}
+         FROM {base}.targid_%(table)s m
+         INNER JOIN public.targid_gene g ON g.ensg = m.ensg
+         WHERE g.species = :species %{and_where}s
+         GROUP BY {primary}
+         ) a
+         LEFT JOIN (
+         SELECT COUNT(*) AS count, {primary}
+         FROM {base}.targid_%(table)s M
+         INNER JOIN PUBLIC.targid_gene g ON g.ensg = M.ensg
+         WHERE g.species = :species %{and_where}s AND %(attribute)s %(operator)s :value AND
+         GROUP BY {primary}
+         ) freq
+         ON freq.{primary} = a.{primary}""") \
+    .replace("table").replace('and_where').replace("attribute").replace("operator") \
+    .arg("species").arg("value").build()
+
+  result[basename + '_mutation_frequency_score'] = DBViewBuilder().idtype(idtype).query("""
+         SELECT a.{primary} AS id, (COALESCE(freq.count,0)+0.0) AS count, a.total
+         FROM (
+         SELECT COUNT(*) AS total, {primary}
+         FROM {base}.targid_mutation m
+         INNER JOIN public.targid_gene g ON g.ensg = m.ensg
+         WHERE g.species = :species %{and_where}s
+         GROUP BY {primary}
+         ) a
+         LEFT JOIN (
+         SELECT COUNT(*) AS count, {primary}
+         FROM {base}.targid_mutation M
+         INNER JOIN PUBLIC.targid_gene g ON g.ensg = M.ensg
+         WHERE g.species = :species %{and_where}s AND %(attribute)s = 'true' AND
+         GROUP BY {primary}
+         ) freq
+         ON freq.{primary} = a.{primary}""") \
+    .replace('and_where').replace("attribute").arg("species").build()
+
+  result[basename + '_score'] = DBViewBuilder().idtype(idtype).query("""
+          SELECT D.{primary} AS id, D.%(agg_score)s AS score
+          FROM {base}.targid_%(table)s D
+          INNER JOIN public.targid_gene C ON D.ensg = C.ensg
+          WHERE C.species = :species %{and_where}s""".format(primary=primary, base=basename)) \
+    .replace('table').replace('agg_score').replace('and_where').arg('species').build()
 
 
 views = dict(
@@ -348,15 +394,6 @@ views = dict(
     .arg("panel")
     .build(),
 
-  aggregated_score_inverted=DBViewBuilder().idtype(idtype_tissue).query("""
-     SELECT %(entity_name)s AS id, %(agg_score)s AS score
-     FROM %(schema)s.targid_%(table_name)s ab
-     INNER JOIN PUBLIC.targid_gene b ON b.ensg = ab.ensg
-     WHERE b.biotype = :biotype AND b.species = :species
-     GROUP BY ab.%(entity_name)s""")
-    .replace("schema").replace("entity_name").replace("table_name").replace("data_subtype").replace("agg").replace("agg_score")
-    .arg("biotype").arg("species")
-    .build(),
 
   aggregated_score_inverted_all=DBViewBuilder().idtype(idtype_tissue).query("""
      SELECT %(entity_name)s AS id, %(agg_score)s AS score

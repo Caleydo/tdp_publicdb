@@ -2,48 +2,47 @@
  * Created by sam on 06.03.2017.
  */
 
-import * as ajax from 'phovea_core/src/ajax';
-import * as ranges from 'phovea_core/src/range';
-import * as idtypes from 'phovea_core/src/idtype';
+import {getAPIJSON} from 'phovea_core/src/ajax';
+import Range from 'phovea_core/src/range/Range';
+import IDType from 'phovea_core/src/idtype/IDType';
 import {getSelectedSpecies} from 'targid_common/src/Common';
-import {
-  IDataSourceConfig, IDataTypeConfig, dataSubtypes, allBioTypes
-} from '../../config';
+import {IDataSourceConfig, IDataTypeConfig, dataSubtypes, allBioTypes, IDataSubtypeConfig, mutation} from '../../config';
 import {IScore} from 'ordino/src/LineUpView';
 import {createDesc} from '../utils';
-import {ICommonScoreParam} from './ICommonScoreParam';
+import AScore, {ICommonScoreParam} from './AScore';
+import {toFilter} from '../../utils';
 
-
-interface IInvertedFrequencyScoreParam extends ICommonScoreParam {
-  data_type:IDataTypeConfig;
+interface IFrequencyScoreParam extends ICommonScoreParam {
   comparison_operator: string;
   comparison_value: number;
 }
 
-export default class InvertedFrequencyScore implements IScore<number> {
-  constructor(private parameter: IInvertedFrequencyScoreParam, private dataSource: IDataSourceConfig, private countOnly) {
+export default class FrequencyScore extends AScore implements IScore<number> {
 
+  constructor(private readonly parameter: IFrequencyScoreParam, private readonly ds: IDataSourceConfig, private readonly countOnly: boolean) {
+    super(parameter);
   }
 
   createDesc() {
-    const subtype = this.parameter.data_subtype;
-    return createDesc(dataSubtypes.number, `${subtype.name} ${this.parameter.comparison_operator} ${this.parameter.comparison_value} ${this.countOnly ? 'Count' : 'Frequency'}  ${this.parameter.bio_type === allBioTypes ? '' : '@ '+this.parameter.bio_type}`, subtype);
+    const subtype = this.dataSubType;
+    return createDesc(dataSubtypes.number, `${subtype.name} ${this.parameter.comparison_operator} ${this.parameter.comparison_value} ${this.countOnly ? 'Count' : 'Frequency'}`, subtype);
   }
 
-  async compute(ids:ranges.Range, idtype:idtypes.IDType):Promise<any[]> {
-    const url = `/targid/db/${this.dataSource.db}/frequency_score_inverted${this.parameter.bio_type===allBioTypes ? '_all' : ''}`;
-    const param = {
-        schema: this.dataSource.schema,
-        entity_name: this.dataSource.entityName,
-        table_name: this.parameter.data_type.tableName,
-        data_subtype: this.parameter.data_subtype.useForAggregation,
-        biotype: this.parameter.bio_type,
-        operator: this.parameter.comparison_operator,
-        value: this.parameter.comparison_value,
-        species: getSelectedSpecies()
-      };
+  async compute(ids: Range, idtype: IDType): Promise<any[]> {
+    const isMutation = this.dataType === mutation;
+    const url = `/targid/db/${this.ds.db}/${this.ds.base}${isMutation ? '_mutation': ''}_frequency_score`;
+    const param: any = {
+      attribute: this.dataSubType.useForAggregation,
+      species: getSelectedSpecies()
+    };
+    if (!isMutation) {
+      param.table = this.dataType.tableName;
+      param.operator = this.parameter.comparison_operator;
+      param.value = this.parameter.comparison_value;
+    }
+    toFilter(param, this.parameter.filter);
 
-    const rows = await ajax.getAPIJSON(url, param);
+    const rows = await getAPIJSON(url, param);
     rows.forEach((row) => row.score = this.countOnly ? row.count : row.count / row.total);
     return rows;
   }

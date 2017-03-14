@@ -16,6 +16,7 @@ import {IFormElementDesc, FormElementType} from 'ordino/src/form';
 import FormBuilder from 'ordino/src/form/FormBuilder';
 import {ParameterFormIds} from 'targid_boehringer/src/forms';
 import {IPluginDesc} from 'phovea_core/src/plugin';
+import AScore from './AScore';
 
 interface ISingleScoreParam {
   sampleType: string;
@@ -24,20 +25,9 @@ interface ISingleScoreParam {
   data_subtype: string;
 }
 
-function split(dataTypeId: string, dataSubTypeId: string) {
-  const dataType = dataTypes.find((d) => d.id === dataTypeId);
-  const dataSubType = dataType.dataSubtypes.find((d) => d.id === dataSubTypeId);
-  return {dataType, dataSubType};
-}
-
-export default class SingleScore implements IScore<any> {
-  private readonly dataType: IDataTypeConfig;
-  private readonly dataSubType: IDataSubtypeConfig;
-
+export default class SingleScore extends AScore implements IScore<any> {
   constructor(private parameter: ISingleScoreParam, private readonly ds: IDataSourceConfig) {
-    const {dataType, dataSubType} = split(this.parameter.data_type, this.parameter.data_subtype);
-    this.dataType = dataType;
-    this.dataSubType = dataSubType;
+    super(parameter);
   }
 
   createDesc(): any {

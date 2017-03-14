@@ -10,38 +10,37 @@ import {IDataSourceConfig, IDataTypeConfig, dataSubtypes, allBioTypes} from '../
 import {convertLog2ToLinear} from '../../utils';
 import {IScore} from 'ordino/src/LineUpView';
 import {createDesc} from '../utils';
-import {ICommonScoreParam} from './ICommonScoreParam';
+import AScore, {ICommonScoreParam} from './AScore';
+import {toFilter} from '../../utils';
 
-interface IInvertedAggregatedScoreParam extends ICommonScoreParam {
-  data_source: IDataSourceConfig;
-  data_type: IDataTypeConfig;
+interface IAggregatedScoreParam extends ICommonScoreParam {
   aggregation: string;
 }
 
-export default class InvertedAggregatedScore implements IScore<number> {
-  constructor(private parameter: IInvertedAggregatedScoreParam, private dataSource: IDataSourceConfig) {
+export default class AggregatedScore extends AScore implements IScore<number> {
+
+  constructor(private readonly parameter: IAggregatedScoreParam, private readonly ds: IDataSourceConfig) {
+    super(parameter);
   }
 
   createDesc() {
-    return createDesc(dataSubtypes.number, `${this.parameter.aggregation} ${this.parameter.data_subtype.name} @ ${this.parameter.bio_type}`, this.parameter.data_subtype);
+    return createDesc(dataSubtypes.number, `${this.parameter.aggregation} ${this.dataSubType.name}`, this.dataSubType);
   }
 
   async compute(ids: ranges.Range, idtype: idtypes.IDType): Promise<any[]> {
-    const p = this.parameter;
-    const ds = this.dataSource;
-    const url = `/targid/db/${ds.db}/aggregated_score_inverted${p.bio_type === allBioTypes ? '_all' : ''}`;
+    const url = `/targid/db/${this.ds.db}/${this.ds.base}_score`;
+
     const param = {
-      schema: ds.schema,
-      entity_name: ds.entityName,
-      table_name: p.data_type.tableName,
-      data_subtype: p.data_subtype.useForAggregation,
-      biotype: p.bio_type,
-      agg: p.aggregation,
+      table: this.dataType.tableName,
+      // by convention for the aggregation to do its magic, it has to be called `data_subtype`
+      data_subtype: this.dataSubType.useForAggregation,
+      agg: this.parameter.aggregation,
       species: getSelectedSpecies()
     };
+    toFilter(param, this.parameter.filter);
 
     const rows: any[] = await ajax.getAPIJSON(url, param);
-    if (this.parameter.data_subtype.useForAggregation.indexOf('log2') !== -1) {
+    if (this.dataSubType.useForAggregation.indexOf('log2') !== -1) {
       return convertLog2ToLinear(rows, 'score');
     }
     return rows;
