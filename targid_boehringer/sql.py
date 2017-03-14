@@ -132,6 +132,7 @@ def create_sample(result, basename, idtype, primary):
   result[basename + '_onco_print_sample_list'] = DBViewBuilder().clone(onco_print_sample_list) \
     .append(' AND C.tumortype = :tumortype').arg("tumortype").build()
 
+  filter_panel = 'c.ensg = ANY(SELECT ensg FROM public.targid_geneassignment WHERE genesetname %(operator)s %(value)s)'
 
   result[basename + '_single_score'] = DBViewBuilder().idtype(idtype).query("""
         SELECT D.{primary} AS id, D.%(attribute)s AS score
@@ -158,6 +159,7 @@ def create_sample(result, basename, idtype, primary):
          ) freq
          ON freq.{primary} = a.{primary}""") \
     .replace("table").replace('and_where').replace("attribute").replace("operator") \
+    .query('filter_panel', filter_panel)\
     .arg("species").arg("value").build()
 
   result[basename + '_score'] = DBViewBuilder().idtype(idtype).query("""
@@ -166,6 +168,7 @@ def create_sample(result, basename, idtype, primary):
           INNER JOIN public.targid_gene C ON D.ensg = C.ensg
           WHERE C.species = :species %(and_where)s
           GROUP BY D.{primary}""".format(primary=primary, base=basename)) \
+    .query('filter_panel', filter_panel)\
     .replace('table').replace('agg_score').replace('and_where').arg('species').build()
 
 
