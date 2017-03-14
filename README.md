@@ -10,6 +10,7 @@ URLs to test the deployed version
 - Ordino Dev: http://vieas00083.eu.boehringer.com:30180/
 - Ordino Stable: http://vieas00083.eu.boehringer.com:30181/
 - Ordino Biberach Dev: http://vieas00083.eu.boehringer.com:30182/
+- Ordino Public DB Test: http://vieas00084.eu.boehringer.com:30183
 
 Installation
 ------------
