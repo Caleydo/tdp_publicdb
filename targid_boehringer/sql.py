@@ -180,10 +180,11 @@ def create_sample(result, basename, idtype, primary):
     .replace('and_where').replace("attribute").arg("species").build()
 
   result[basename + '_score'] = DBViewBuilder().idtype(idtype).query("""
-          SELECT D.{primary} AS id, D.%(agg_score)s AS score
+          SELECT D.{primary} AS id, %(agg_score)s AS score
           FROM {base}.targid_%(table)s D
           INNER JOIN public.targid_gene C ON D.ensg = C.ensg
-          WHERE C.species = :species %{and_where}s""".format(primary=primary, base=basename)) \
+          WHERE C.species = :species %(and_where)s
+          GROUP BY D.{primary}""".format(primary=primary, base=basename)) \
     .replace('table').replace('agg_score').replace('and_where').arg('species').build()
 
 

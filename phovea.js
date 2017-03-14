@@ -241,13 +241,14 @@ module.exports = function(registry) {
   registry.push('ordinoScore', 'cellline_inverted_aggregated_score', function () {
     return System.import('./src/scores/sample');
   }, {
-    'name': 'Score',
-    'idtype': 'Cellline'
+    'name': 'Aggregated Score',
+    'idtype': 'Cellline',
+    'sampleType': 'Cellline'
   });
   registry.push('ordinoScore', 'tissue_inverted_aggregated_score', function () {
     return System.import('./src/scores/sample');
   }, {
-    'name': 'Score',
+    'name': 'Aggregated Score',
     'idtype': 'Tissue',
     'sampleType': 'Tissue'
   });

@@ -28,7 +28,7 @@ export default class AggregatedScore extends AScore implements IScore<number> {
   }
 
   async compute(ids: ranges.Range, idtype: idtypes.IDType): Promise<any[]> {
-    const url = `/targid/db/${this.ds.db}/${this.ds.base}_score`;
+    const url = `/targid/db/${this.ds.db}/${this.ds.base}_score/filter`;
 
     const param = {
       table: this.dataType.tableName,
