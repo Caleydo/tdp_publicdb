@@ -160,25 +160,6 @@ def create_sample(result, basename, idtype, primary):
     .replace("table").replace('and_where').replace("attribute").replace("operator") \
     .arg("species").arg("value").build()
 
-  result[basename + '_mutation_frequency_score'] = DBViewBuilder().idtype(idtype).query("""
-         SELECT a.{primary} AS id, (COALESCE(freq.count,0)+0.0) AS count, a.total
-         FROM (
-         SELECT COUNT(*) AS total, {primary}
-         FROM {base}.targid_mutation m
-         INNER JOIN public.targid_gene g ON g.ensg = m.ensg
-         WHERE g.species = :species %{and_where}s
-         GROUP BY {primary}
-         ) a
-         LEFT JOIN (
-         SELECT COUNT(*) AS count, {primary}
-         FROM {base}.targid_mutation M
-         INNER JOIN PUBLIC.targid_gene g ON g.ensg = M.ensg
-         WHERE g.species = :species %{and_where}s AND %(attribute)s = 'true' AND
-         GROUP BY {primary}
-         ) freq
-         ON freq.{primary} = a.{primary}""") \
-    .replace('and_where').replace("attribute").arg("species").build()
-
   result[basename + '_score'] = DBViewBuilder().idtype(idtype).query("""
           SELECT D.{primary} AS id, %(agg_score)s AS score
           FROM {base}.targid_%(table)s D

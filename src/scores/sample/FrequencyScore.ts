@@ -30,15 +30,18 @@ export default class FrequencyScore extends AScore implements IScore<number> {
 
   async compute(ids: Range, idtype: IDType): Promise<any[]> {
     const isMutation = this.dataType === mutation;
-    const url = `/targid/db/${this.ds.db}/${this.ds.base}${isMutation ? '_mutation': ''}_frequency_score/filter`;
+    const url = `/targid/db/${this.ds.db}/${this.ds.base}_frequency_score/filter`;
     const param: any = {
       attribute: this.dataSubType.useForAggregation,
-      species: getSelectedSpecies()
+      species: getSelectedSpecies(),
+      table: this.dataType.tableName
     };
     if (!isMutation) {
-      param.table = this.dataType.tableName;
       param.operator = this.parameter.comparison_operator;
       param.value = this.parameter.comparison_value;
+    } else {
+      param.operator = '=';
+      param.value = 'true';
     }
     toFilter(param, this.parameter.filter);
 
