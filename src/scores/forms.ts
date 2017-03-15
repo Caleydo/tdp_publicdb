@@ -42,7 +42,7 @@ export const FORM_AGGREGATED_SCORE = [
     dependsOn: [ParameterFormIds.DATA_TYPE],
     options: {
       optionsFnc: (selection) => {
-        if (selection[0].data === mutation) {
+        if (selection[0].data === mutation.id) {
           return MUTATION_AGGREGATION;
         } else {
           return NUMERIC_AGGREGATION;

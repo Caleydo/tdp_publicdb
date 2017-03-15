@@ -68,17 +68,17 @@ def create_gene_score(result, other_prefix, other_primary):
   result[basename + '_frequency_score'] = DBViewBuilder().idtype(idtype_gene).query("""
            SELECT a.ensg AS id, (COALESCE(freq.count,0)+0.0) AS count, a.total
            FROM (
-           SELECT COUNT(*) AS total, {primary}
+           SELECT COUNT(*) AS total, ensg
            FROM {base}.targid_%(table)s m
-           INNER JOIN {base}.targid_{base} C ON D.{primary} = C.{primary}
-           WHERE g.species = :species %(and_where)s
+           INNER JOIN {base}.targid_{base} c ON c.{primary} = m.{primary}
+           WHERE c.species = :species %(and_where)s
            GROUP BY ensg
            ) a
            LEFT JOIN (
-           SELECT COUNT(*) AS count, {primary}
+           SELECT COUNT(*) AS count, ensg
            FROM {base}.targid_%(table)s m
-           INNER JOIN {base}.targid_{base} g ON g.{primary} = m.{primary}
-           WHERE g.species = :species %(and_where)s AND %(attribute)s %(operator)s :value AND
+           INNER JOIN {base}.targid_{base} c ON c.{primary} = m.{primary}
+           WHERE c.species = :species %(and_where)s AND %(attribute)s %(operator)s :value
            GROUP BY ensg
            ) freq
            ON freq.ensg = a.ensg""".format(primary=other_primary, base=other_prefix)) \
@@ -193,18 +193,18 @@ def create_sample(result, basename, idtype, primary):
   result[basename + '_gene_frequency_score'] = DBViewBuilder().idtype(idtype).query("""
          SELECT a.{primary} AS id, (COALESCE(freq.count,0)+0.0) AS count, a.total
          FROM (
-         SELECT COUNT(*) AS total, {primary}
+         SELECT COUNT(*) AS total, m.{primary}
          FROM {base}.targid_%(table)s m
          INNER JOIN public.targid_gene g ON g.ensg = m.ensg
          WHERE g.species = :species %(and_where)s
-         GROUP BY {primary}
+         GROUP BY m.{primary}
          ) a
          LEFT JOIN (
-         SELECT COUNT(*) AS count, {primary}
-         FROM {base}.targid_%(table)s M
-         INNER JOIN PUBLIC.targid_gene g ON g.ensg = M.ensg
-         WHERE g.species = :species %(and_where)s AND %(attribute)s %(operator)s :value AND
-         GROUP BY {primary}
+         SELECT COUNT(*) AS count, m.{primary}
+         FROM {base}.targid_%(table)s m
+         INNER JOIN PUBLIC.targid_gene g ON g.ensg = m.ensg
+         WHERE g.species = :species %(and_where)s AND %(attribute)s %(operator)s :value
+         GROUP BY m.{primary}
          ) freq
          ON freq.{primary} = a.{primary}""".format(primary=primary, base=basename)) \
     .replace("table").replace('and_where').replace("attribute").replace("operator") \
