@@ -54,7 +54,7 @@ export default class SingleScore extends AScore implements IScore<any> {
 }
 
 export function create(pluginDesc: IPluginDesc) {
-  const {primary} = selectDataSources(pluginDesc);
+  const {opposite} = selectDataSources(pluginDesc);
   // resolve promise when closing or submitting the modal dialog
   return new Promise<ISingleScoreParam>((resolve) => {
     const dialog = generateDialog('Add Single Score Column', 'Add Single Score Column');
@@ -62,7 +62,7 @@ export function create(pluginDesc: IPluginDesc) {
     const form:FormBuilder = new FormBuilder(select(dialog.body));
     const formDesc:IFormElementDesc[] = FORM_SINGLE_SCORE.slice();
 
-    switch(primary) {
+    switch(opposite) {
       case gene:
         formDesc.unshift(FORM_GENE_NAME);
         break;
@@ -79,7 +79,7 @@ export function create(pluginDesc: IPluginDesc) {
     dialog.onSubmit(() => {
       const data = <ISingleScoreParam>form.getElementData();
 
-      switch (primary) {
+      switch (opposite) {
         case gene:
           data.name = data[ParameterFormIds.GENE_SYMBOL];
           delete data[ParameterFormIds.GENE_SYMBOL];

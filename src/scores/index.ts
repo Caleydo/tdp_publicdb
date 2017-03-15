@@ -19,14 +19,14 @@ import {selectDataSources} from './utils';
 
 
 export function create(pluginDesc: IPluginDesc) {
-  const {primary} = selectDataSources(pluginDesc);
+  const {opposite} = selectDataSources(pluginDesc);
   // resolve promise when closing or submitting the modal dialog
   return new Promise((resolve) => {
     const dialog = dialogs.generateDialog('Add Aggregated Score Column', 'Add Aggregated Score Column');
 
     const form: FormBuilder = new FormBuilder(select(dialog.body));
     const formDesc: IFormElementDesc[] = FORM_AGGREGATED_SCORE.slice();
-    switch(primary) {
+    switch(opposite) {
       case gene:
         formDesc.unshift(FORM_GENE_FILTER);
         break;

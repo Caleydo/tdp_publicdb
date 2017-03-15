@@ -60,6 +60,6 @@ function select(idType: string) {
 
 export function selectDataSources(pluginDesc: IPluginDesc) {
   const primary = select(pluginDesc.primaryType);
-  const opposite = select(pluginDesc.oppositeIDType);
+  const opposite = select(pluginDesc.oppositeType);
   return {primary, opposite};
 }

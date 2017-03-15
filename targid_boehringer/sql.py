@@ -48,7 +48,7 @@ def _create_common(result, prefix, table, primary, idtype):
   # lookup for unique / distinct categorical values in a table
   result[prefix + '_unique_all'] = DBViewBuilder().query("""
         SELECT distinct %(column)s AS text
-        FROM {table} WHERE species = :species
+        FROM {table} WHERE species = :species AND %(column)s is not null
         ORDER BY %(column)s ASC""".format(table=table)) \
     .replace('column').arg('species').build()
 
@@ -62,7 +62,7 @@ def create_gene_score(result, other_prefix, other_primary):
           SELECT D.ensg AS id, D.%(attribute)s AS score
           FROM {base}.targid_%(table)s D
           INNER JOIN {base}.targid_{base} C ON D.{primary} = C.{primary}
-          WHERE C.species = :species AND {primary} = :name""".format(primary=other_primary, base=other_prefix)) \
+          WHERE C.species = :species AND C.{primary} = :name""".format(primary=other_primary, base=other_prefix)) \
     .replace('table').replace('attribute').arg('name').arg('species').build()
 
   result[basename + '_frequency_score'] = DBViewBuilder().idtype(idtype_gene).query("""
