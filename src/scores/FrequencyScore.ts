@@ -6,11 +6,11 @@ import {getAPIJSON} from 'phovea_core/src/ajax';
 import Range from 'phovea_core/src/range/Range';
 import IDType from 'phovea_core/src/idtype/IDType';
 import {getSelectedSpecies} from 'targid_common/src/Common';
-import {IDataSourceConfig, IDataTypeConfig, dataSubtypes, allBioTypes, IDataSubtypeConfig, mutation} from '../../config';
+import {IDataSourceConfig, IDataTypeConfig, dataSubtypes, allBioTypes, IDataSubtypeConfig, mutation} from '../config';
 import {IScore} from 'ordino/src/LineUpView';
-import {createDesc} from '../utils';
+import {createDesc} from './utils';
 import AScore, {ICommonScoreParam} from './AScore';
-import {toFilter} from '../../utils';
+import {toFilter} from '../utils';
 
 interface IFrequencyScoreParam extends ICommonScoreParam {
   comparison_operator: string;
@@ -19,7 +19,7 @@ interface IFrequencyScoreParam extends ICommonScoreParam {
 
 export default class FrequencyScore extends AScore implements IScore<number> {
 
-  constructor(private readonly parameter: IFrequencyScoreParam, private readonly ds: IDataSourceConfig, private readonly countOnly: boolean) {
+  constructor(private readonly parameter: IFrequencyScoreParam,private readonly dataSource: IDataSourceConfig, private readonly oppositeDataSource: IDataSourceConfig, private readonly countOnly: boolean) {
     super(parameter);
   }
 
@@ -30,7 +30,7 @@ export default class FrequencyScore extends AScore implements IScore<number> {
 
   async compute(ids: Range, idtype: IDType): Promise<any[]> {
     const isMutation = this.dataType === mutation;
-    const url = `/targid/db/${this.ds.db}/${this.ds.base}_frequency_score/filter`;
+    const url = `/targid/db/${this.dataSource.db}/${this.dataSource.base}_${this.oppositeDataSource.base}_frequency_score/filter`;
     const param: any = {
       attribute: this.dataSubType.useForAggregation,
       species: getSelectedSpecies(),

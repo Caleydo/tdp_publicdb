@@ -7,7 +7,7 @@ import {FORM_EXPRESSION_SUBTYPE_ID, FORM_COPYNUMBER_SUBTYPE_ID} from 'targid_com
 import {FormElementType} from 'ordino/src/form';
 import {cachedLazy} from 'ordino/src/cached';
 import {getAPIJSON, api2absURL} from 'phovea_core/src/ajax';
-import {gene, IDataSourceConfig} from './config';
+import {gene, IDataSourceConfig, tissue, cellline} from './config';
 import {listNamedSetsAsOptions} from 'ordino/src/storage';
 
 /**
@@ -62,6 +62,61 @@ function buildPredefinedNamedSets(ds: IDataSourceConfig) {
   return getAPIJSON(`/targid/db/${ds.db}/${ds.base}_panel`).then((panels: {id: string}[]) => panels.map((p) => p.id));
 }
 
+export const FORM_GENE_NAME = {
+  type: FormElementType.SELECT2,
+  label: 'Gene Symbol',
+  id: ParameterFormIds.GENE_SYMBOL,
+  attributes: {
+    style: 'width:100%'
+  },
+  options: {
+    optionsData: [],
+    ajax: {
+      url: api2absURL(`/targid/db/${gene.db}/${gene.base}_items/lookup`),
+      data: (params: any) => {
+        return {
+          column: 'symbol',
+          species: getSelectedSpecies(),
+          query: params.term,
+          page: params.page
+        };
+      }
+    },
+    templateResult: (item: any) => (item.id) ? `${item.text} <span class="ensg">${item.id}</span>` : item.text,
+    templateSelection: (item: any) => (item.id) ? `${item.text} <span class="ensg">${item.id}</span>` : item.text
+  },
+  useSession: true
+};
+
+function generateNameLookup(d: IDataSourceConfig, field: string) {
+  return {
+    type: FormElementType.SELECT2,
+    label: d.name,
+    id: field,
+    attributes: {
+      style: 'width:100%'
+    },
+    options: {
+      optionsData: [],
+      ajax: {
+        url: api2absURL(`/targid/db/${d.db}/${d.base}_items/lookup`),
+        data: (params: any) => {
+          return {
+            column: d.entityName,
+            species: getSelectedSpecies(),
+            query: params.term,
+            page: params.page
+          };
+        }
+      }
+    },
+    useSession: true
+  };
+}
+
+export const FORM_TISSUE_NAME = generateNameLookup(tissue, ParameterFormIds.TISSUE_NAME);
+export const FORM_CELLLINE_NAME = generateNameLookup(cellline, ParameterFormIds.CELLLINE_NAME);
+
 export const FORM_GENE_FILTER = {
   type: FormElementType.MAP,
   label: `Filter By`,
@@ -114,3 +169,68 @@ export const FORM_GENE_FILTER = {
     }]
   }
 };
+
+function generateFilter(d: IDataSourceConfig) {
+  return {
+    type: FormElementType.MAP,
+    label: `Filter By`,
+    id: 'filter',
+    options: {
+      entries: [{
+        name: 'Tumor Type',
+        value: 'tumortype',
+        type: FormElementType.SELECT,
+        optionsData: cachedLazy(d.base + '_tumortypes', () => getAPIJSON(`/targid/db/${d.db}/${d.base}_unique_all`, {
+          column: 'tumortype',
+          species: getSelectedSpecies()
+        }).then((r) => r.map((d) => d.text)))
+      }, {
+        name: 'Organ',
+        value: 'organ',
+        type: FormElementType.SELECT,
+        optionsData: cachedLazy(d.base + '_organs', () => getAPIJSON(`/targid/db/${d.db}/${d.base}_unique_all`, {
+          column: 'organ',
+          species: getSelectedSpecies()
+        }).then((r) => r.map((d) => d.text)))
+      }, {
+        name: 'Gender',
+        value: 'gender',
+        type: FormElementType.SELECT,
+        optionsData: cachedLazy(d.base + '_gender', () => getAPIJSON(`/targid/db/${d.db}/${d.base}_unique_all`, {
+          column: 'gender',
+          species: getSelectedSpecies()
+        }).then((r) => r.map((d) => d.text)))
+      }, {
+        name: 'Predefined Named Sets',
+        value: 'panel',
+        type: FormElementType.SELECT,
+        optionsData: cachedLazy('gene_predefined_namedsets', buildPredefinedNamedSets.bind(null, d))
+      }, {
+        name: 'My Named Sets',
+        value: 'namedset4c.' + d.entityName,
+        type: FormElementType.SELECT,
+        optionsData: listNamedSetsAsOptions.bind(null, d.idType)
+      }, {
+        name: d.name,
+        value: 'c.' + d.entityName,
+        type: FormElementType.SELECT2,
+        return: 'id',
+        ajax: {
+          url: api2absURL(`/targid/db/${gene.db}/${d.base}_items/lookup`),
+          data: (params: any) => {
+            return {
+              column: d.entityName,
+              species: getSelectedSpecies(),
+              query: params.term,
+              page: params.page
+            };
+          }
+        }
+      }]
+    }
+  };
+}
+
+
+export const FORM_TISSUE_FILTER = generateFilter(tissue);
+export const FORM_CELLLINE_FILTER = generateFilter(cellline);

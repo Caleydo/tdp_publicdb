@@ -2,8 +2,9 @@
  * Created by sam on 06.03.2017.
  */
 
-import {IDataSubtypeConfig, dataSubtypes} from '../config';
+import {IDataSubtypeConfig, dataSubtypes, cellline, tissue, gene} from '../config';
 import {IBoxPlotData} from 'lineupjs/src/model/BoxPlotColumn';
+import {IPluginDesc} from 'phovea_core/src/plugin';
 
 /**
  * creates a lineup config out of a IDataSubtypeConfig
@@ -51,4 +52,14 @@ export function createDesc(type: string, label: string, subtype: IDataSubtypeCon
         lazyLoaded: true
       };
   }
+}
+
+function select(idType: string) {
+  return [gene, cellline, tissue].find((d) => d.idType === idType);
+}
+
+export function selectDataSources(pluginDesc: IPluginDesc) {
+  const primary = select(pluginDesc.primaryType);
+  const opposite = select(pluginDesc.oppositeIDType);
+  return {primary, opposite};
 }

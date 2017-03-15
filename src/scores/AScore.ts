@@ -2,7 +2,7 @@
  * Created by sam on 06.03.2017.
  */
 
-import {dataTypes, IDataTypeConfig, IDataSubtypeConfig} from '../../config';
+import {dataTypes, IDataTypeConfig, IDataSubtypeConfig} from '../config';
 
 export interface IScoreFilter {
   name: string | string[]; // including named set special handling
@@ -13,7 +13,6 @@ export interface IScoreFilter {
 }
 
 export interface ICommonScoreParam {
-  sampleType: string;
   data_type: string;
   data_subtype: string;
   filter: IScoreFilter;
