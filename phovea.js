@@ -260,51 +260,6 @@ module.exports = function(registry) {
     });
   });
 
-  registry.push('ordinoScore', 'gene_aggregated_score', function () {
-    return System.import('./src/scores/gene');
-  }, {
-    'name': 'Score',
-    'idtype': 'Ensembl'
-  });
-
-  registry.push('ordinoScoreImpl', 'gene_aggregated_score', function () {
-    return System.import('./src/scores/gene');
-  }, {
-    'factory': 'createScore'
-  });
-
-  registry.push('ordinoScore', 'cellline_inverted_aggregated_score', function () {
-    return System.import('./src/scores/sample');
-  }, {
-    'name': 'Aggregated Score',
-    'idtype': 'Cellline',
-    'primaryType': 'Cellline',
-    'oppositeType': 'Gene'
-  });
-
-  registry.push('ordinoScoreImpl', 'tissue_inverted_aggregated_score', function () {
-    return System.import('./src/scores/sample');
-  }, {
-    'factory': 'createScore',
-    'primaryType': 'Cellline',
-    'oppositeType': 'Gene'
-  });
-  registry.push('ordinoScore', 'cellline_gene_single_score', function () {
-    return System.import('./src/scores/sample/SingleScore');
-  }, {
-    'name': 'Single Gene Score',
-    'idtype': 'Cellline',
-    'primaryType': 'Cellline',
-    'oppositeType': 'Gene'
-  });
-  registry.push('ordinoScoreImpl', 'cellline_gene_single_score', function () {
-    return System.import('./src/scores/sample/SingleScore');
-  }, {
-    'factory': 'createScore',
-    'primaryType': 'Cellline',
-    'oppositeType': 'Gene'
-  });
-
   //(Tissue|Celline)_gene scores
   ['Tissue', 'Cellline'].forEach(function(idType)  {
     prefix = idType.toLowerCase()+'_gene';
