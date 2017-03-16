@@ -308,7 +308,7 @@ module.exports = function(registry) {
   registry.push('targidView', 'gene_generic_detail_view', function () {
     return System.import('./src/views/InfoTable.ts');
   }, {
-    'name': 'Info',
+    'name': 'Database Info',
     'factory': 'createGeneInfoTable',
     'idtype': 'Ensembl',
     'selection': 'multiple'
@@ -317,7 +317,7 @@ module.exports = function(registry) {
   registry.push('targidView', 'cellline_generic_detail_view', function () {
     return System.import('./src/views/InfoTable.ts');
   }, {
-    'name': 'Info',
+    'name': 'Database Info',
     'factory': 'createCelllineInfoTable',
     'idtype': 'Cellline',
     'selection': 'multiple'
@@ -326,7 +326,7 @@ module.exports = function(registry) {
   registry.push('targidView', 'tissue_generic_detail_view', function () {
     return System.import('./src/views/InfoTable.ts');
   }, {
-    'name': 'Info',
+    'name': 'Database Info',
     'factory': 'createTissueInfoTable',
     'idtype': 'Tissue',
     'selection': 'multiple'
