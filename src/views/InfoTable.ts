@@ -145,7 +145,7 @@ export abstract class AInfoTable extends AView {
     const tuples = [];
     for(const key in data) {
       if(key === '_id') {
-        continue
+        continue;
       }
       if(data.hasOwnProperty(key)) {
         tuples.push([key, data[key]]);
