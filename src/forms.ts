@@ -7,7 +7,7 @@ import {FORM_EXPRESSION_SUBTYPE_ID, FORM_COPYNUMBER_SUBTYPE_ID} from 'targid_com
 import {FormElementType, IFormElement} from 'ordino/src/form';
 import {cachedLazy} from 'ordino/src/cached';
 import {getAPIJSON, api2absURL} from 'phovea_core/src/ajax';
-import {gene, IDataSourceConfig, tissue, cellline} from './config';
+import {gene, IDataSourceConfig, tissue, cellline, dataSources} from './config';
 import {listNamedSetsAsOptions} from 'ordino/src/storage';
 
 /**
@@ -233,6 +233,17 @@ function generateFilter(d: IDataSourceConfig) {
   };
 }
 
+export const FORM_DATA_SOURCE = {
+  type: FormElementType.SELECT,
+  label: 'Data Source',
+  id: ParameterFormIds.DATA_SOURCE,
+  options: {
+    optionsData: dataSources.map((ds) => {
+      return {name: ds.name, value: ds.name, data: ds};
+    })
+  },
+  useSession: true
+};
 
 export const FORM_TISSUE_FILTER = generateFilter(tissue);
 export const FORM_CELLLINE_FILTER = generateFilter(cellline);

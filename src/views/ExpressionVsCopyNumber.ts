@@ -2,13 +2,13 @@
  * Created by sam on 16.02.2017.
  */
 
-import {FormElementType, IFormSelectDesc} from 'ordino/src/FormBuilder';
+import {IFormSelectDesc} from 'ordino/src/FormBuilder';
 import {IViewContext, ISelection} from 'ordino/src/View';
 import AExpressionVsCopyNumber, {IDataFormatRow} from 'targid_common/src/views/AExpressionVsCopyNumber';
 import {getSelectedSpecies} from 'targid_common/src/Common';
 import Range from 'phovea_core/src/range/Range';
-import {dataSources, expression, copyNumber} from '../config';
-import {ParameterFormIds, FORM_TISSUE_OR_CELLLINE_FILTER} from '../forms';
+import {expression, copyNumber} from '../config';
+import {ParameterFormIds, FORM_TISSUE_OR_CELLLINE_FILTER, FORM_DATA_SOURCE} from '../forms';
 import {getAPIJSON} from 'phovea_core/src/ajax';
 import {resolve} from 'phovea_core/src/idtype';
 import {loadFirstName} from './utils';
@@ -19,17 +19,7 @@ export class ExpressionVsCopyNumber extends AExpressionVsCopyNumber {
 
   protected buildParameterDescs(): IFormSelectDesc[] {
     const base = super.buildParameterDescs();
-    base.unshift({
-      type: FormElementType.SELECT,
-      label: 'Data Source',
-      id: ParameterFormIds.DATA_SOURCE,
-      options: {
-        optionsData: dataSources.map((ds) => {
-          return {name: ds.name, value: ds.name, data: ds};
-        })
-      },
-      useSession: true
-    });
+    base.unshift(FORM_DATA_SOURCE);
     base.push(FORM_TISSUE_OR_CELLLINE_FILTER);
     return base;
   }
