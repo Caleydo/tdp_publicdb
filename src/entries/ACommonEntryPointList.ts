@@ -10,7 +10,7 @@ import {ParameterFormIds} from '../forms';
 import {INamedSet, ENamedSetType} from 'ordino/src/storage';
 import {getAPIJSON, api2absURL} from 'phovea_core/src/ajax';
 import * as session from 'phovea_core/src/session';
-import {FormBuilder, FormElementType} from 'ordino/src/FormBuilder';
+import {FormBuilder, FormElementType, IFormSelect2Element} from 'ordino/src/FormBuilder';
 import {TargidConstants} from 'ordino/src/Targid';
 
 export abstract class ACommonEntryPointList extends AEntryPointList {
@@ -87,6 +87,9 @@ export abstract class ACommonEntryPointList extends AEntryPointList {
       options: {
         optionsData: [],
         placeholder: `Search ${this.dataSource.name}`,
+        multiple: true,
+        tags: true,
+        tokenSeparators: [',', ' ', ';', '\t'],
         ajax: {
           url: api2absURL(`/targid/db/${this.dataSource.db}/single_entity_lookup/lookup`),
           data: (params: any) => {
@@ -104,13 +107,15 @@ export abstract class ACommonEntryPointList extends AEntryPointList {
       }
     });
 
+    const $searchButton = $searchWrapper.append('div').append('button').classed('btn btn-primary', true).text('Go');
+
     const searchField = formBuilder.getElementById(`search-${this.dataSource.entityName}`);
-    searchField.on('change', (data) => {
+    $searchButton.on('click', () => {
       session.store(TargidConstants.NEW_ENTRY_POINT, {
         view: (<any>this.desc).viewId,
         options: {
           search: {
-            id: data.args['0'].id,
+            ids: (<IFormSelect2Element>searchField).values.map((d) => d.id),
             type: this.dataSource.tableName
           }
         }
@@ -121,4 +126,3 @@ export abstract class ACommonEntryPointList extends AEntryPointList {
     });
   }
 }
-

@@ -151,11 +151,7 @@ class InvertedRawDataTable extends ALineUpView2 {
     } else if (dataSubType.type === 'string') {
       return stringCol(this.getSelectionColumnId(id), label, true, 50, id);
     } else if (dataSubType.type === 'cat') {
-      if (this.dataType === mutation) {
-        return categoricalCol(this.getSelectionColumnId(id), mutationCat.map((d) => d.value), label, true, 50, id);
-      } else {
-        return categoricalCol(this.getSelectionColumnId(id), dataSubType.categories, label, true, 50, id);
-      }
+      return categoricalCol(this.getSelectionColumnId(id), dataSubType.categories, label, true, 50, id);
     }
     return numberCol2(this.getSelectionColumnId(id), dataSubType.domain[0], dataSubType.domain[1], label, true, 50, id);
   }
@@ -181,10 +177,6 @@ class InvertedRawDataTable extends ALineUpView2 {
   protected mapSelectionRows(rows:IScoreRow<any>[]) {
     if(this.getParameter(ParameterFormIds.DATA_SUBTYPE).useForAggregation.indexOf('log2') !== -1) {
       rows = convertLog2ToLinear(rows, 'score');
-    }
-
-    if(this.getParameter(ParameterFormIds.DATA_SUBTYPE).type === 'cat') {
-      rows = this.getParameter(ParameterFormIds.DATA_SUBTYPE).mapCategoryRows(rows, 'score');
     }
 
     return rows;

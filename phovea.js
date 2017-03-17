@@ -74,7 +74,8 @@ module.exports = function(registry) {
     'viewId': 'celllinedb_start',
     'idtype': 'Ensembl',
     'selection': 'none',
-    'description': 'Gene Sets'
+    'description': 'Gene Sets',
+    'cssClass': 'gene-entry-point'
   });
   registry.push('targidView', 'celllinedb_start', function () {
     return System.import('./src/entries/GeneEntryPoint');
@@ -82,7 +83,8 @@ module.exports = function(registry) {
     'name': 'Genes',
     'factory': 'createStart',
     'idtype': 'Ensembl',
-    'selection': 'none'
+    'selection': 'none',
+    'dbPath': 'genes_by_names'
   });
 
   registry.push('targidStartEntryPoint', 'bioinfodb_tissue_start', function () {
@@ -94,7 +96,8 @@ module.exports = function(registry) {
     "idtype": "Tissue",
     "selection": "none",
     "sampleType": "Tissue",
-    'description': 'Tissue Panels'
+    'description': 'Tissue Panels',
+    'cssClass': 'tissue-entry-point'
   });
   registry.push('targidView', 'bioinfodb_tissue_start', function () {
     return System.import('./src/entries/CellLineEntryPoint');
@@ -103,7 +106,8 @@ module.exports = function(registry) {
     'factory': 'createStart',
     "idtype": "Tissue",
     "selection": "none",
-    "sampleType": "Tissue"
+    "sampleType": "Tissue",
+    'dbPath': 'row'
   });
 
 
@@ -115,7 +119,8 @@ module.exports = function(registry) {
     'viewId': 'celllinedb_cellline',
     'idtype': 'Cellline',
     'selection': 'none',
-    'description': 'Cell Line Panels'
+    'description': 'Cell Line Panels',
+    'cssClass': 'cellline-entry-point'
   });
   registry.push('targidView', 'celllinedb_cellline', function () {
     return System.import('./src/entries/CellLineEntryPoint');
@@ -123,7 +128,8 @@ module.exports = function(registry) {
     'name': 'Cell Lines',
     'factory': 'createStart',
     'idtype': 'Cellline',
-    'selection': 'none'
+    'selection': 'none',
+    'dbPath': 'row'
   });
 
   //views
@@ -140,7 +146,7 @@ module.exports = function(registry) {
 
 
   registry.push('targidView', 'expressiontable', function () {
-    return System.import('./src/views/DepdendentSampleTable');
+    return System.import('./src/views/DependentSampleTable');
   }, {
     'name': 'Expression',
     'factory': 'createExpressionTable',
@@ -149,7 +155,7 @@ module.exports = function(registry) {
   });
 
   registry.push('targidView', 'copynumbertable', function () {
-    return System.import('./src/views/DepdendentSampleTable');
+    return System.import('./src/views/DependentSampleTable');
   }, {
     'name': 'Copy Number',
     'factory': 'createCopyNumberTable',
@@ -158,7 +164,7 @@ module.exports = function(registry) {
   });
 
   registry.push('targidView', 'mutationtable', function () {
-    return System.import('./src/views/DepdendentSampleTable');
+    return System.import('./src/views/DependentSampleTable');
   }, {
     'name': 'Mutation',
     'factory': 'createMutationTable',
