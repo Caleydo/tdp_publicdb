@@ -4,7 +4,7 @@
 
 import {SPECIES_SESSION_KEY, getSelectedSpecies} from 'targid_common/src/Common';
 import {FORM_EXPRESSION_SUBTYPE_ID, FORM_COPYNUMBER_SUBTYPE_ID} from 'targid_common/src/forms';
-import {FormElementType} from 'ordino/src/form';
+import {FormElementType, IFormElement} from 'ordino/src/form';
 import {cachedLazy} from 'ordino/src/cached';
 import {getAPIJSON, api2absURL} from 'phovea_core/src/ajax';
 import {gene, IDataSourceConfig, tissue, cellline} from './config';
@@ -236,3 +236,21 @@ function generateFilter(d: IDataSourceConfig) {
 
 export const FORM_TISSUE_FILTER = generateFilter(tissue);
 export const FORM_CELLLINE_FILTER = generateFilter(cellline);
+export const FORM_TISSUE_OR_CELLLINE_FILTER = {
+  type: FormElementType.MAP,
+  label: `Filter By`,
+  id: 'filter',
+  useSession: true,
+  dependsOn: [ParameterFormIds.DATA_SOURCE],
+  options: {
+    entries: (dataSource: IFormElement) => {
+      const value = dataSource.value.data;
+      if (value === tissue || value === tissue.id) {
+        return FORM_TISSUE_FILTER.options.entries;
+      } else if (value === cellline || value === cellline.id) {
+        return FORM_CELLLINE_FILTER.options.entries;
+      }
+      return [];
+    }
+  }
+};

@@ -135,30 +135,31 @@ def create_sample(result, basename, idtype, primary):
   WHERE s.panel = :panel""".format(index=index, columns=column_query, base=basename, primary=primary)).arg(
     'panel').build()
 
+
+  filter_panel = 'c.{primary} = ANY(SELECT {primary} FROM {base}.targid_panelassignment WHERE panel %(operator)s %(value)s)'.format(
+    primary=primary, base=basename)
+
   co_expression = DBViewBuilder().idtype(idtype_gene).query("""
-     SELECT c.targidid AS _id, a.ensg AS id, g.symbol, C.{primary} as samplename, a.%(expression_subtype)s AS expression
+     SELECT c.targidid AS _id, a.ensg AS id, g.symbol, C.{primary} as samplename, a.%(attribute)s AS expression
         FROM {base}.targid_expression AS a
         INNER JOIN PUBLIC.targid_gene g ON a.ensg = g.ensg
         INNER JOIN {base}.targid_{base} C ON a.{primary} = C.{primary}
-        WHERE a.ensg = :ensg""".format(primary=primary, base=basename)).arg("ensg").replace(
-    "expression_subtype").build()
+        WHERE a.ensg = :ensg %(and_where)s""".format(primary=primary, base=basename)).arg("ensg").replace('and_where').replace(
+    "attribute") \
+    .query('filter_panel', filter_panel).build()
 
-  result[basename + '_co_expression_all'] = co_expression
-  result[basename + '_co_expression'] = DBViewBuilder().clone(co_expression) \
-    .append(' AND c.tumortype = :tumortype').arg("tumortype").build()
-
+  result[basename + '_co_expression'] = co_expression
   expression_vs_copynumber = DBViewBuilder().idtype(idtype_gene).query("""
    SELECT c.targidid AS _id, a.ensg AS id, g.symbol, c.{primary} as samplename, a.%(expression_subtype)s AS expression, b.%(copynumber_subtype)s AS cn
        FROM {base}.targid_expression AS a
        INNER JOIN {base}.targid_copynumber AS b ON a.ensg = b.ensg AND a.{primary} = b.{primary}
        INNER JOIN PUBLIC.targid_gene g ON a.ensg = g.ensg
        INNER JOIN {base}.targid_{base} C ON a.{primary} = C.{primary}
-       WHERE a.ensg = :ensg""".format(primary=primary, base=basename)).arg("ensg").replace(
-    "expression_subtype").replace("copynumber_subtype").build()
+       WHERE a.ensg = :ensg %(and_where)s""".format(primary=primary, base=basename)).arg("ensg").replace('and_where').replace(
+    "expression_subtype").replace("copynumber_subtype") \
+    .query('filter_panel', filter_panel).build()
 
-  result[basename + '_expression_vs_copynumber_all'] = expression_vs_copynumber
-  result[basename + '_expression_vs_copynumber'] = DBViewBuilder().clone(expression_vs_copynumber) \
-    .append(' AND C.tumortype = :tumortype').arg("tumortype").build()
+  result[basename + '_expression_vs_copynumber'] = expression_vs_copynumber
 
   onco_print = DBViewBuilder().idtype(idtype_gene).query("""
      SELECT g.targidid AS _id, d.ensg AS id, d.{primary} AS name, copynumberclass AS cn, D.tpm AS expr, D.aa_mutated, g.symbol
@@ -181,7 +182,7 @@ def create_sample(result, basename, idtype, primary):
   result[basename + '_onco_print_sample_list'] = DBViewBuilder().clone(onco_print_sample_list) \
     .append(' AND C.tumortype = :tumortype').arg("tumortype").build()
 
-  filter_panel = 'c.ensg = ANY(SELECT ensg FROM public.targid_geneassignment WHERE genesetname %(operator)s %(value)s)'
+  filter_gene_panel = 'c.ensg = ANY(SELECT ensg FROM public.targid_geneassignment WHERE genesetname %(operator)s %(value)s)'
 
   result[basename + '_gene_single_score'] = DBViewBuilder().idtype(idtype).query("""
         SELECT D.{primary} AS id, D.%(attribute)s AS score
@@ -208,7 +209,7 @@ def create_sample(result, basename, idtype, primary):
          ) freq
          ON freq.{primary} = a.{primary}""".format(primary=primary, base=basename)) \
     .replace("table").replace('and_where').replace("attribute").replace("operator") \
-    .query('filter_panel', filter_panel) \
+    .query('filter_panel', filter_gene_panel) \
     .arg("species").arg("value").build()
 
   result[basename + '_gene_score'] = DBViewBuilder().idtype(idtype).query("""
@@ -217,7 +218,7 @@ def create_sample(result, basename, idtype, primary):
           INNER JOIN public.targid_gene C ON D.ensg = C.ensg
           WHERE C.species = :species %(and_where)s
           GROUP BY D.{primary}""".format(primary=primary, base=basename)) \
-    .query('filter_panel', filter_panel) \
+    .query('filter_panel', filter_gene_panel) \
     .replace('table').replace('agg_score').replace('and_where').arg('species').build()
 
 

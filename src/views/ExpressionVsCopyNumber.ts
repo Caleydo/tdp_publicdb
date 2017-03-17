@@ -7,11 +7,13 @@ import {IViewContext, ISelection} from 'ordino/src/View';
 import AExpressionVsCopyNumber, {IDataFormatRow} from 'targid_common/src/views/AExpressionVsCopyNumber';
 import {getSelectedSpecies} from 'targid_common/src/Common';
 import Range from 'phovea_core/src/range/Range';
-import {dataSources, allTypes, expression, copyNumber} from '../config';
-import {ParameterFormIds} from '../forms';
+import {dataSources, expression, copyNumber} from '../config';
+import {ParameterFormIds, FORM_TISSUE_OR_CELLLINE_FILTER} from '../forms';
 import {getAPIJSON} from 'phovea_core/src/ajax';
 import {resolve} from 'phovea_core/src/idtype';
 import {loadFirstName} from './utils';
+import {convertRow2MultiMap} from 'ordino/src/form/internal/FormMap';
+import {toFilter} from '../utils';
 
 export class ExpressionVsCopyNumber extends AExpressionVsCopyNumber {
 
@@ -28,17 +30,7 @@ export class ExpressionVsCopyNumber extends AExpressionVsCopyNumber {
       },
       useSession: true
     });
-    base.push({
-      type: FormElementType.SELECT,
-      label: 'Tumor Type',
-      id: ParameterFormIds.TUMOR_TYPE,
-      dependsOn: [ParameterFormIds.DATA_SOURCE],
-      options: {
-        optionsFnc: (selection) => selection[0].data.tumorTypesWithAll,
-        optionsData: []
-      },
-      useSession: true
-    });
+    base.push(FORM_TISSUE_OR_CELLLINE_FILTER);
     return base;
   }
 
@@ -47,14 +39,15 @@ export class ExpressionVsCopyNumber extends AExpressionVsCopyNumber {
   }
 
   loadData(ensg: string): Promise<IDataFormatRow[]> {
-    const schema = this.getParameter(ParameterFormIds.DATA_SOURCE).schema;
-    return getAPIJSON(`/targid/db/${this.getParameter(ParameterFormIds.DATA_SOURCE).db}/${schema}_expression_vs_copynumber${this.getParameter(ParameterFormIds.TUMOR_TYPE) === allTypes ? '_all' : ''}`, {
+    const ds = this.getParameter(ParameterFormIds.DATA_SOURCE);
+    const param: any = {
       ensg,
       expression_subtype: this.getParameter(ParameterFormIds.EXPRESSION_SUBTYPE).id,
       copynumber_subtype: this.getParameter(ParameterFormIds.COPYNUMBER_SUBTYPE).id,
-      tumortype: this.getParameter(ParameterFormIds.TUMOR_TYPE),
       species: getSelectedSpecies()
-    });
+    };
+    toFilter(param, convertRow2MultiMap(this.getParameter('filter')));
+    return getAPIJSON(`/targid/db/${ds.db}/${ds.base}_expression_vs_copynumber/filter`, param);
   }
 
   protected getExpressionValues() {
