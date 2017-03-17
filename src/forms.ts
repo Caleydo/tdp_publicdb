@@ -121,6 +121,7 @@ export const FORM_GENE_FILTER = {
   type: FormElementType.MAP,
   label: `Filter By`,
   id: 'filter',
+  useSession: true,
   options: {
     entries: [{
       name: 'Bio Type',
@@ -175,6 +176,7 @@ function generateFilter(d: IDataSourceConfig) {
     type: FormElementType.MAP,
     label: `Filter By`,
     id: 'filter',
+    useSession: true,
     options: {
       entries: [{
         name: 'Tumor Type',
