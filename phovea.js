@@ -146,7 +146,7 @@ module.exports = function(registry) {
 
 
   registry.push('targidView', 'expressiontable', function () {
-    return System.import('./src/views/DepdendentSampleTable');
+    return System.import('./src/views/DependentSampleTable');
   }, {
     'name': 'Expression',
     'factory': 'createExpressionTable',
@@ -155,7 +155,7 @@ module.exports = function(registry) {
   });
 
   registry.push('targidView', 'copynumbertable', function () {
-    return System.import('./src/views/DepdendentSampleTable');
+    return System.import('./src/views/DependentSampleTable');
   }, {
     'name': 'Copy Number',
     'factory': 'createCopyNumberTable',
@@ -164,7 +164,7 @@ module.exports = function(registry) {
   });
 
   registry.push('targidView', 'mutationtable', function () {
-    return System.import('./src/views/DepdendentSampleTable');
+    return System.import('./src/views/DependentSampleTable');
   }, {
     'name': 'Mutation',
     'factory': 'createMutationTable',
