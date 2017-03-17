@@ -11,12 +11,14 @@ import {
 import {getSelectedSpecies} from 'targid_common/src/Common';
 import {dataSources, allTypes, expression, copyNumber, mutation, IDataTypeConfig} from '../config';
 import {convertLog2ToLinear} from '../utils';
-import {ParameterFormIds} from '../forms';
+import {ParameterFormIds, FORM_DATA_SOURCE, FORM_TISSUE_OR_CELLLINE_FILTER} from '../forms';
 import {FormBuilder, FormElementType, IFormSelectDesc} from 'ordino/src/FormBuilder';
+import {convertRow2MultiMap} from 'ordino/src/form/internal/FormMap';
+import {toFilter} from '../utils';
 
 class RawDataTable extends ALineUpView2 {
 
-  private dataType:IDataTypeConfig;
+  private readonly dataType:IDataTypeConfig;
 
   /**
    * Parameter UI form
@@ -32,17 +34,7 @@ class RawDataTable extends ALineUpView2 {
     this.paramForm = new FormBuilder($parent);
 
     const paramDesc:IFormSelectDesc[] = [
-      {
-        type: FormElementType.SELECT,
-        label: 'Data Source',
-        id: ParameterFormIds.DATA_SOURCE,
-        options: {
-          optionsData: dataSources.map((ds) => {
-            return {name: ds.name, value: ds.name, data: ds};
-          })
-        },
-        useSession: true
-      },
+      FORM_DATA_SOURCE,
       {
         type: FormElementType.SELECT,
         label: 'Data Subtype',
@@ -54,17 +46,7 @@ class RawDataTable extends ALineUpView2 {
         },
         useSession: true
       },
-      {
-        type: FormElementType.SELECT,
-        label: 'Tumor Type',
-        id: ParameterFormIds.TUMOR_TYPE,
-        dependsOn: [ParameterFormIds.DATA_SOURCE],
-        options: {
-          optionsFnc: (selection) => selection[0].data.tumorTypesWithAll,
-          optionsData: []
-        },
-        useSession: true
-      }
+      FORM_TISSUE_OR_CELLLINE_FILTER
     ];
 
     // map FormElement change function to provenance graph onChange function
@@ -119,15 +101,11 @@ class RawDataTable extends ALineUpView2 {
 
   protected loadRows() {
     const dataSource = this.getParameter(ParameterFormIds.DATA_SOURCE);
-    const url = `/targid/db/${dataSource.db}/raw_data_table${this.getParameter(ParameterFormIds.TUMOR_TYPE) === allTypes ? '_all' : ''}`;
+    const url = `/targid/db/${dataSource.db}/${dataSource.base}/filter`;
     const param = {
-      schema: dataSource.schema,
-      entity_name: dataSource.entityName,
-      table_name: this.dataType.tableName,
-      data_subtype: this.getParameter(ParameterFormIds.DATA_SUBTYPE).id,
-      tumortype: this.getParameter(ParameterFormIds.TUMOR_TYPE),
       species: getSelectedSpecies()
     };
+    toFilter(param, convertRow2MultiMap(this.getParameter('filter')));
     return ajax.getAPIJSON(url, param);
   }
 
@@ -161,13 +139,14 @@ class RawDataTable extends ALineUpView2 {
     const dataSource = this.getParameter(ParameterFormIds.DATA_SOURCE);
     // TODO When playing the provenance graph, the RawDataTable is loaded before the GeneList has finished loading, i.e. that the local idType cache is not build yet and it will send an unmap request to the server
     const ensg = await this.resolveId(this.selection.idtype, id);
-    return ajax.getAPIJSON(`/targid/db/${dataSource.db}/raw_data_table_column`, {
-        ensg,
-        schema: dataSource.schema,
-        entity_name: dataSource.entityName,
-        table_name: this.dataType.tableName,
-        data_subtype: this.getParameter(ParameterFormIds.DATA_SUBTYPE).id
-      });
+    const url = `/targid/db/${dataSource.db}/${dataSource.base}_gene_single_score`;
+    const param = {
+      table: this.dataType.tableName,
+      attribute: this.getParameter(ParameterFormIds.DATA_SUBTYPE).id,
+      name: ensg,
+      species: getSelectedSpecies()
+    };
+    return ajax.getAPIJSON(url, param);
   }
 
   protected mapSelectionRows(rows:IScoreRow<any>[]) {

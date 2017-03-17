@@ -98,8 +98,11 @@ def create_gene_score(result, other_prefix, other_primary):
 
 def create_sample(result, basename, idtype, primary):
   _create_common(result, basename, '{base}.targid_{base}'.format(base=basename), primary, idtype)
-  index = 'row_number() OVER(ORDER BY t.{primary} ASC) as _index'.format(primary=primary)
-  column_query = 'targidid as _id, t.{primary} as id, species, tumortype, organ, gender'.format(primary=primary)
+  index = 'row_number() OVER(ORDER BY c.{primary} ASC) as _index'.format(primary=primary)
+  column_query = 'targidid as _id, c.{primary} as id, species, tumortype, organ, gender'.format(primary=primary)
+
+  filter_panel = 'c.{primary} = ANY(SELECT {primary} FROM {base}.targid_panelassignment WHERE panel %(operator)s %(value)s)'.format(
+    primary=primary, base=basename)
 
   result[basename] = DBViewBuilder().idtype(idtype).column(primary, label='id', type='string') \
     .column('species', type='categorical') \
@@ -108,12 +111,14 @@ def create_sample(result, basename, idtype, primary):
     .column('gender', type='categorical') \
     .query("""
       SELECT {index}, {columns}
-      FROM {base}.targid_{base} t
-      ORDER BY celllinename ASC""".format(index=index, columns=column_query, base=basename)) \
+      FROM {base}.targid_{base} c
+      %(where)s
+      ORDER BY {primary} ASC""".format(index=index, columns=column_query, base=basename, primary=primary)) \
     .query_categories("""
       SELECT distinct %(col)s as cat
       FROM {base}.targid_{base}
-      WHERE %(col)s is not null AND %(col)s <> ''""".format(base=basename)).build()
+      WHERE %(col)s is not null AND %(col)s <> ''""".format(base=basename)) \
+    .replace('where').query('filter_panel', filter_panel).build()
 
   result[basename + '_panel'] = DBViewBuilder().query("""
   SELECT panel as id, paneldescription as description
@@ -121,23 +126,19 @@ def create_sample(result, basename, idtype, primary):
 
   result[basename + '_filtered'] = DBViewBuilder().idtype(idtype).query("""
   SELECT {index}, {columns}
-  FROM {base}.targid_{base} t
+  FROM {base}.targid_{base} c
   WHERE species = :species""".format(index=index, columns=column_query, base=basename)).arg('species').build()
 
   result[basename + '_filtered_namedset'] = DBViewBuilder().idtype(idtype).query("""
   SELECT {index}, {columns}
-  FROM {base}.targid_{base} t
+  FROM {base}.targid_{base} c
   WHERE targidid IN (%(ids)s)""".format(index=index, columns=column_query, base=basename)).replace('ids').build()
 
   result[basename + '_filtered_panel'] = DBViewBuilder().idtype(idtype).query("""
   SELECT {index}, {columns}
-  FROM {base}.targid_panelassignment s JOIN {base}.targid_{base} t ON s.{primary} = t.{primary}
+  FROM {base}.targid_panelassignment s JOIN {base}.targid_{base} c ON s.{primary} = c.{primary}
   WHERE s.panel = :panel""".format(index=index, columns=column_query, base=basename, primary=primary)).arg(
     'panel').build()
-
-
-  filter_panel = 'c.{primary} = ANY(SELECT {primary} FROM {base}.targid_panelassignment WHERE panel %(operator)s %(value)s)'.format(
-    primary=primary, base=basename)
 
   co_expression = DBViewBuilder().idtype(idtype_gene).query("""
      SELECT c.targidid AS _id, a.ensg AS id, g.symbol, C.{primary} as samplename, a.%(attribute)s AS expression
@@ -186,7 +187,7 @@ def create_sample(result, basename, idtype, primary):
         SELECT D.{primary} AS id, D.%(attribute)s AS score
         FROM {base}.targid_%(table)s D
         INNER JOIN public.targid_gene C ON D.ensg = C.ensg
-        WHERE C.species = :species AND ensg = :name""".format(primary=primary, base=basename)) \
+        WHERE C.species = :species AND c.ensg = :name""".format(primary=primary, base=basename)) \
     .replace('table').replace('attribute').arg('name').arg('species').build()
 
   result[basename + '_gene_frequency_score'] = DBViewBuilder().idtype(idtype).query("""
@@ -285,31 +286,6 @@ views = dict(
      FROM %(schema)s.targid_%(table_name)s b
      WHERE b.%(entity_name)s IN (%(entities)s)""")
     .replace("schema").replace("table_name").replace("entity_name").replace("entities")
-    .build(),
-
-  raw_data_table=DBViewBuilder().idtype(idtype_tissue).query("""
-       SELECT b.targidid AS _id, b.%(entity_name)s AS id, b.species, b.organ, b.tumortype, b.gender
-       FROM %(schema)s.targid_%(schema)s b
-       WHERE b.tumortype = :tumortype AND b.species = :species""")
-    .replace("schema").replace("table_name").replace("entity_name").replace("data_subtype")
-    .arg("tumortype").arg("species")
-    .build(),
-
-  raw_data_table_all=DBViewBuilder().idtype(idtype_tissue).query("""
-     SELECT b.targidid AS _id, b.%(entity_name)s AS id, b.species, b.organ, b.tumortype, b.gender
-     FROM %(schema)s.targid_%(schema)s b
-     WHERE b.species = :species""")
-    .replace("schema").replace("table_name").replace("entity_name").replace("data_subtype")
-    .arg("species")
-    .build(),
-
-  raw_data_table_column=DBViewBuilder().idtype(idtype_tissue).query("""
-     SELECT b.targidid AS _id, b.%(entity_name)s AS id, %(data_subtype)s AS score
-     FROM %(schema)s.targid_%(schema)s b
-     INNER JOIN %(schema)s.targid_%(table_name)s ab ON b.%(entity_name)s = ab.%(entity_name)s
-     WHERE ab.ensg = :ensg""")
-    .replace("schema").replace("table_name").replace("entity_name").replace("data_subtype")
-    .arg("ensg")
     .build(),
 
   raw_data_table_inverted=DBViewBuilder().idtype(idtype_gene).query("""
