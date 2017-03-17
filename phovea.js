@@ -275,14 +275,14 @@ module.exports = function(registry) {
       'name': 'Aggregated Score',
       'idtype': idType,
       'primaryType': idType,
-      'oppositeType': 'Gene'
+      'oppositeType': 'Ensembl'
     });
     registry.push('ordinoScoreImpl', prefix + '_aggregated_score', function () {
       return System.import('./src/scores');
     }, {
       'factory': 'createScore',
       'primaryType': idType,
-      'oppositeType': 'Gene'
+      'oppositeType': 'Ensembl'
     });
     registry.push('ordinoScore', prefix + '_single_score', function () {
       return System.import('./src/scores/SingleScore');
@@ -290,14 +290,14 @@ module.exports = function(registry) {
       'name': 'Single Gene Score',
       'idtype': idType,
       'primaryType': idType,
-      'oppositeType': 'Gene'
+      'oppositeType': 'Ensembl'
     });
     registry.push('ordinoScoreImpl', prefix + '_single_score', function () {
       return System.import('./src/scores/SingleScore');
     }, {
       'factory': 'createScore',
       'primaryType': idType,
-      'oppositeType': 'Gene'
+      'oppositeType': 'Ensembl'
     });
   });
 
