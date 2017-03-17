@@ -134,17 +134,6 @@ module.exports = function(registry) {
 
   //views
 
-  registry.push('__targidView__backup', 'celllinedb_enrichment', function () {
-    return System.import('./src/views/Enrichment');
-  }, {
-    'name': 'Enrichment',
-    'category': 'dynamic',
-    'idtype': 'Ensembl',
-    'selection': 'single',
-    'mockup': true
-  });
-
-
   registry.push('targidView', 'expressiontable', function () {
     return System.import('./src/views/DependentSampleTable');
   }, {

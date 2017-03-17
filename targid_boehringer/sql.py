@@ -166,21 +166,19 @@ def create_sample(result, basename, idtype, primary):
        FROM {base}.targid_data D
        INNER JOIN {base}.targid_{base} C ON D.{primary} = C.{primary}
        INNER JOIN PUBLIC.targid_gene g ON D.ensg = g.ensg
-       WHERE D.ensg IN (%(ensgs)s) AND C.species = :species""".format(primary=primary, base=basename)).replace(
-    "ensgs").arg("species").build()
+       WHERE D.ensg = :ensg AND C.species = :species %(and_where)s""".format(primary=primary, base=basename)).arg(
+    "ensg").arg("species").replace('and_where') \
+    .query('filter_panel', filter_panel).build()
 
-  result[basename + '_onco_print_all'] = onco_print
-  result[basename + '_onco_print'] = DBViewBuilder().clone(onco_print) \
-    .append(' AND C.tumortype = :tumortype').arg("tumortype").build()
+  result[basename + '_onco_print'] = onco_print
 
   onco_print_sample_list = DBViewBuilder().idtype(idtype).query("""
        SELECT C.targidid AS _id, C.{primary} AS id
      FROM {base}.targid_{base} C
-     WHERE C.species = :species""".format(primary=primary, base=basename)).arg("species").build()
+     WHERE C.species = :species %(and_where)s""".format(primary=primary, base=basename)).arg("species").replace('and_where') \
+    .query('filter_panel', filter_panel).build()
 
-  result[basename + '_onco_print_sample_list_all'] = onco_print_sample_list
-  result[basename + '_onco_print_sample_list'] = DBViewBuilder().clone(onco_print_sample_list) \
-    .append(' AND C.tumortype = :tumortype').arg("tumortype").build()
+  result[basename + '_onco_print_sample_list'] = onco_print_sample_list
 
   filter_gene_panel = 'c.ensg = ANY(SELECT ensg FROM public.targid_geneassignment WHERE genesetname %(operator)s %(value)s)'
 
@@ -280,33 +278,6 @@ views = dict(
     ORDER BY symbol ASC""")
     .arg('species')
     .replace('ensgs')
-    .build(),
-
-  enrichment=DBViewBuilder().idtype(idtype_gene).query("""
-    SELECT cn.targidid AS _id, cn.ensg AS id, symbol, 2*pow(2, max(cnv)) AS score
-    FROM %(schema)s.targid_copynumber copynumberclass
-    JOIN PUBLIC.targid_gene g ON g.ensg = cn.ensg
-    WHERE cnv > (
-      SELECT max(cnv) FROM %(schema)s.targid_copynumber ab
-      INNER JOIN %(schema)s.targid_%(table_name)s b ON b.%(entity_name)s = ab.%(entity_name)s
-        WHERE ab.cn = :cn AND b.tumortype = :tumortype AND ab.ensg = :ensg
-      )
-    GROUP BY cn.ensg, symbol""")
-    .arg('ensg').arg('cn').arg('tumortype')
-    .replace('schema').replace('table_name').replace('entity_name')
-    .build(),
-
-  enrichment_all=DBViewBuilder().idtype(idtype_gene).query("""
-    SELECT cn.targidid AS _id, cn.ensg AS id, symbol, 2*pow(2, max(cnv)) AS score
-    FROM %(schema)s.targid_copynumber copynumberclass
-    JOIN PUBLIC.targid_gene g ON g.ensg = cn.ensg
-    WHERE cnv > (
-    SELECT max(cnv) FROM %(schema)s.targid_copynumber ab
-    INNER JOIN %(schema)s.targid_%(table_name)s b ON b.%(entity_name)s = ab.%(entity_name)s
-    WHERE ab.cn = :cn AND ab.ensg = :ensg
-    ) GROUP BY cn.ensg, symbol""")
-    .arg('ensg').arg('cn')
-    .replace('schema').replace('table_name').replace('entity_name')
     .build(),
 
   row=DBViewBuilder().idtype(idtype_tissue).query("""
