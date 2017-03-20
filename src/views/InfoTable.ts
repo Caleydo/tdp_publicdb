@@ -100,7 +100,7 @@ export abstract class AInfoTable extends AView {
 
     this.$thead = this.$table.append('thead');
     this.$thead.append('tr');
-    this.$thead.append('th').text('Column');
+    this.$thead.append('th').text('Field Name');
     this.$thead.append('th').text('Data');
 
     this.$tbody = this.$table.append('tbody');
