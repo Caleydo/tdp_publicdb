@@ -297,9 +297,9 @@ module.exports = function(registry) {
   registry.push('targidView', 'shiny_cellline', function () {
     return System.import('ordino/src/ProxyView');
   }, {
-    'name': 'CN Cell Line Details',
+    'name': 'Copy Number Plots',
     'category': 'static',
-    'site': '///vie-bio-shiny.eu.boehringer.com:3838/copynumberpercellline/?celllinename{cellline}',
+    'site': '///vie-bio-shiny.eu.boehringer.com/copynumberoverview/?celllinename={cellline}',
     'argument': 'cellline',
     'idtype': 'Cellline',
     'selection': 'multiple'
