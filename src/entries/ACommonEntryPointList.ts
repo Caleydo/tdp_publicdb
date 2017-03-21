@@ -12,6 +12,9 @@ import {getAPIJSON, api2absURL} from 'phovea_core/src/ajax';
 import * as session from 'phovea_core/src/session';
 import {FormBuilder, FormElementType, IFormSelect2Element} from 'ordino/src/FormBuilder';
 import {TargidConstants} from 'ordino/src/Targid';
+import {generateDialog} from 'phovea_ui/src/dialogs';
+import {saveNamedSet} from 'ordino/src/storage';
+import {resolve} from 'phovea_core/src/idtype/manager';
 
 export abstract class ACommonEntryPointList extends AEntryPointList {
 
@@ -108,6 +111,7 @@ export abstract class ACommonEntryPointList extends AEntryPointList {
     });
 
     const $searchButton = $searchWrapper.append('div').append('button').classed('btn btn-primary', true).text('Go');
+    const $saveSetButton = $searchWrapper.append('div').append('button').classed('btn btn-primary', true).text('Save');
 
     const searchField = formBuilder.getElementById(`search-${this.dataSource.entityName}`);
     $searchButton.on('click', () => {
@@ -123,6 +127,41 @@ export abstract class ACommonEntryPointList extends AEntryPointList {
 
       // create new graph and apply new view after window.reload (@see targid.checkForNewEntryPoint())
       this.options.targid.graphManager.newRemoteGraph();
+    });
+
+    $saveSetButton.on('click', () => {
+      const dialog = generateDialog('Save Named Set', 'Save');
+
+      const form = document.createElement('form');
+
+      form.innerHTML = `
+        <form id="namedset_form">
+        <div class="form-group">
+          <label for="namedset_name">Name</label>
+          <input type="text" class="form-control" id="namedset_name" placeholder="Name" required="required">
+        </div>
+        <div class="form-group">
+          <label for="namedset_description">Description</label>
+          <textarea class="form-control" id="namedset_description" rows="5" placeholder="Description"></textarea>
+        </div>
+      </form>
+      `;
+
+      dialog.onSubmit(async () => {
+        const name = (<HTMLInputElement>document.getElementById('namedset_name')).value;
+        const description = (<HTMLInputElement>document.getElementById('namedset_description')).value;
+        const idStrings = (<IFormSelect2Element>searchField).values.map((d) => d.id);
+
+        const idType = resolve(this.dataSource.idType);
+        const ids = await idType.map(idStrings);
+
+        const response = await saveNamedSet(name, idType, ids, {key: ParameterFormIds.SPECIES, value: defaultSpecies}, description);
+        super.addNamedSet(response);
+        dialog.hide();
+      });
+
+      dialog.body.appendChild(form);
+      dialog.show();
     });
   }
 }
