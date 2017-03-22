@@ -9,31 +9,32 @@ import {
   ALineUpView2, IScoreRow
 } from 'ordino/src/LineUpView';
 import {getSelectedSpecies} from 'targid_common/src/Common';
-import {dataSources, allTypes, expression, copyNumber, mutation, IDataTypeConfig} from '../config';
+import {expression, copyNumber, mutation, IDataTypeConfig} from '../config';
 import {convertLog2ToLinear} from '../utils';
 import {ParameterFormIds, FORM_DATA_SOURCE, FORM_TISSUE_OR_CELLLINE_FILTER} from '../forms';
-import {FormBuilder, FormElementType, IFormSelectDesc} from 'ordino/src/FormBuilder';
+import {FormBuilder, IFormSelectDesc} from 'ordino/src/FormBuilder';
 import {convertRow2MultiMap} from 'ordino/src/form/internal/FormMap';
 import {toFilter} from '../utils';
+import {FormElementType} from 'ordino/src/form';
 
 class RawDataTable extends ALineUpView2 {
 
-  private readonly dataType:IDataTypeConfig;
+  private readonly dataType: IDataTypeConfig;
 
   /**
    * Parameter UI form
    */
-  private paramForm:FormBuilder;
+  private paramForm: FormBuilder;
 
-  constructor(context:IViewContext, selection:ISelection, parent:Element, dataType:IDataTypeConfig, options?) {
+  constructor(context: IViewContext, selection: ISelection, parent: Element, dataType: IDataTypeConfig, options?) {
     super(context, selection, parent, options);
     this.dataType = dataType;
   }
 
-  buildParameterUI($parent: d3.Selection<any>, onChange: (name: string, value: any)=>Promise<any>) {
+  buildParameterUI($parent: d3.Selection<any>, onChange: (name: string, value: any) => Promise<any>) {
     this.paramForm = new FormBuilder($parent);
 
-    const paramDesc:IFormSelectDesc[] = [
+    const paramDesc: IFormSelectDesc[] = [
       FORM_DATA_SOURCE,
       {
         type: FormElementType.SELECT,
@@ -129,9 +130,9 @@ class RawDataTable extends ALineUpView2 {
     // TODO When playing the provenance graph, the RawDataTable is loaded before the GeneList has finished loading, i.e. that the local idType cache is not build yet and it will send an unmap request to the server
     const ensg = await this.resolveId(this.selection.idtype, id);
     const mapping: {symbol: string}[] = await ajax.getAPIJSON(`/targid/db/${dataSource.db}/gene_map_ensgs`, {
-            ensgs: `'${ensg}'`,
-            species: getSelectedSpecies()
-          });
+      ensgs: `'${ensg}'`,
+      species: getSelectedSpecies()
+    });
     return mapping[0].symbol;
   }
 
@@ -139,22 +140,23 @@ class RawDataTable extends ALineUpView2 {
     const dataSource = this.getParameter(ParameterFormIds.DATA_SOURCE);
     // TODO When playing the provenance graph, the RawDataTable is loaded before the GeneList has finished loading, i.e. that the local idType cache is not build yet and it will send an unmap request to the server
     const ensg = await this.resolveId(this.selection.idtype, id);
-    const url = `/targid/db/${dataSource.db}/${dataSource.base}_gene_single_score`;
+    const url = `/targid/db/${dataSource.db}/${dataSource.base}_gene_single_score/filter`;
     const param = {
       table: this.dataType.tableName,
       attribute: this.getParameter(ParameterFormIds.DATA_SUBTYPE).id,
       name: ensg,
       species: getSelectedSpecies()
     };
+    toFilter(param, convertRow2MultiMap(this.getParameter('filter')));
     return ajax.getAPIJSON(url, param);
   }
 
-  protected mapSelectionRows(rows:IScoreRow<any>[]) {
-    if(this.getParameter(ParameterFormIds.DATA_SUBTYPE).useForAggregation.indexOf('log2') !== -1) {
+  protected mapSelectionRows(rows: IScoreRow<any>[]) {
+    if (this.getParameter(ParameterFormIds.DATA_SUBTYPE).useForAggregation.indexOf('log2') !== -1) {
       rows = convertLog2ToLinear(rows, 'score');
     }
 
-    if(this.getParameter(ParameterFormIds.DATA_SUBTYPE).type === 'cat') {
+    if (this.getParameter(ParameterFormIds.DATA_SUBTYPE).type === 'cat') {
       rows = rows
         .filter((row) => row.score !== null)
         .map((row) => {
@@ -173,15 +175,14 @@ class RawDataTable extends ALineUpView2 {
 }
 
 
-
-export function createExpressionTable(context:IViewContext, selection:ISelection, parent:Element, options?) {
+export function createExpressionTable(context: IViewContext, selection: ISelection, parent: Element, options?) {
   return new RawDataTable(context, selection, parent, expression, options);
 }
 
-export function createCopyNumberTable(context:IViewContext, selection:ISelection, parent:Element, options?) {
+export function createCopyNumberTable(context: IViewContext, selection: ISelection, parent: Element, options?) {
   return new RawDataTable(context, selection, parent, copyNumber, options);
 }
 
-export function createMutationTable(context:IViewContext, selection:ISelection, parent:Element, options?) {
+export function createMutationTable(context: IViewContext, selection: ISelection, parent: Element, options?) {
   return new RawDataTable(context, selection, parent, mutation, options);
 }
