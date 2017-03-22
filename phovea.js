@@ -84,7 +84,11 @@ module.exports = function(registry) {
     'factory': 'createStart',
     'idtype': 'Ensembl',
     'selection': 'none',
-    'dbPath': 'genes_by_names'
+    'dbPath': 'genes_by_names',
+    'chooserHeaders': {
+      'internal': 'Internal Views',
+      'external': 'External Views'
+    }
   });
 
   registry.push('targidStartEntryPoint', 'bioinfodb_tissue_start', function () {
@@ -97,7 +101,11 @@ module.exports = function(registry) {
     "selection": "none",
     "sampleType": "Tissue",
     'description': 'Tissue Panels',
-    'cssClass': 'tissue-entry-point'
+    'cssClass': 'tissue-entry-point',
+    'chooserHeaders': {
+      'internal': 'Internal Views',
+      'external': 'External Views'
+    }
   });
   registry.push('targidView', 'bioinfodb_tissue_start', function () {
     return System.import('./src/entries/CellLineEntryPoint');
@@ -120,7 +128,11 @@ module.exports = function(registry) {
     'idtype': 'Cellline',
     'selection': 'none',
     'description': 'Cell Line Panels',
-    'cssClass': 'cellline-entry-point'
+    'cssClass': 'cellline-entry-point',
+    'chooserHeaders': {
+      'internal': 'Internal Views',
+      'external': 'External Views'
+    }
   });
   registry.push('targidView', 'celllinedb_cellline', function () {
     return System.import('./src/entries/CellLineEntryPoint');
@@ -315,9 +327,9 @@ module.exports = function(registry) {
   registry.push('targidView', 'shiny_cellline', function () {
     return System.import('ordino/src/ProxyView');
   }, {
-    'name': 'CN Cell Line Details',
+    'name': 'Copy Number Plots',
     'category': 'static',
-    'site': '///vie-bio-shiny.eu.boehringer.com:3838/copynumberpercellline/?celllinename{cellline}',
+    'site': '///vie-bio-shiny.eu.boehringer.com/copynumberoverview/?celllinename={cellline}',
     'argument': 'cellline',
     'idtype': 'Cellline',
     'selection': 'multiple'

@@ -3,6 +3,15 @@ targid_boehringer [![Phovea][phovea-image]][phovea-url] [![NPM version][npm-imag
 
 This repository contains the database connector for the BI-internal bioinfoDB.hg19 database and the respective SQL queries to drive the [tagid_common](https://github.com/Caleydo/targid_common/) views and visualizations.
 
+URLs to test the deployed version
+---
+
+- Kubernetes Logs: http://vieas00082.eu.boehringer.com:31373/
+- Ordino Dev: http://vieas00083.eu.boehringer.com:30180/
+- Ordino Stable: http://vieas00083.eu.boehringer.com:30181/
+- Ordino Biberach Dev: http://vieas00083.eu.boehringer.com:30182/
+- Ordino Public DB Test: http://vieas00084.eu.boehringer.com:30183
+
 Installation
 ------------
 
