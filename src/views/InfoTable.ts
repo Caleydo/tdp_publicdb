@@ -17,7 +17,7 @@ export abstract class AInfoTable extends AView {
   private $tbody;
 
   private selectedItems: string[];
-  private data: any;
+  private data: Promise<any>;
 
   /**
    * Parameter UI form
@@ -143,14 +143,14 @@ export abstract class AInfoTable extends AView {
 
   private updateInfoTable(data: {[key: string]: string}) {
     const tuples = [];
-    for(const key in data) {
+    Object.keys(data).forEach((key) => {
       if(key === '_id') {
-        continue;
+        return;
       }
       if(data.hasOwnProperty(key)) {
         tuples.push([key, data[key]]);
       }
-    }
+    });
 
     const $tr = this.$tbody.selectAll('tr').data(tuples);
 
