@@ -87,11 +87,7 @@ module.exports = function(registry) {
     'factory': 'createStart',
     'idtype': 'Ensembl',
     'selection': 'none',
-    'dbPath': 'genes_by_names',
-    'chooserHeaders': {
-      'internal': 'Internal Views',
-      'external': 'External Views'
-    }
+    'dbPath': 'genes_by_names'
   });
 
   registry.push('targidStartEntryPoint', 'bioinfodb_tissue_start', function () {
@@ -104,11 +100,7 @@ module.exports = function(registry) {
     "selection": "none",
     "sampleType": "Tissue",
     'description': 'Tissue Panels',
-    'cssClass': 'tissue-entry-point',
-    'chooserHeaders': {
-      'internal': 'Internal Views',
-      'external': 'External Views'
-    }
+    'cssClass': 'tissue-entry-point'
   });
   registry.push('targidView', 'bioinfodb_tissue_start', function () {
     return System.import('./src/entries/CellLineEntryPoint');
@@ -131,11 +123,7 @@ module.exports = function(registry) {
     'idtype': 'Cellline',
     'selection': 'none',
     'description': 'Cell Line Panels',
-    'cssClass': 'cellline-entry-point',
-    'chooserHeaders': {
-      'internal': 'Internal Views',
-      'external': 'External Views'
-    }
+    'cssClass': 'cellline-entry-point'
   });
   registry.push('targidView', 'celllinedb_cellline', function () {
     return System.import('./src/entries/CellLineEntryPoint');
@@ -227,7 +215,8 @@ module.exports = function(registry) {
     'factory': 'createExpressionTable',
     'idtype': 'Tissue',
     'sampleType': 'Tissue',
-    'selection': 'some'
+    'selection': 'some',
+    'group': 'Gene overview'
   });
 
   registry.push('targidView', 'tissue_inverted_copynumbertable', function () {
@@ -237,7 +226,8 @@ module.exports = function(registry) {
     'factory': 'createCopyNumberTable',
     'idtype': 'Tissue',
     'sampleType': 'Tissue',
-    'selection': 'some'
+    'selection': 'some',
+    'group': 'Gene overview'
   });
 
   registry.push('targidView', 'tissue_inverted_mutationtable', function () {
@@ -247,7 +237,8 @@ module.exports = function(registry) {
     'factory': 'createMutationTable',
     'idtype': 'Tissue',
     'sampleType': 'Tissue',
-    'selection': 'some'
+    'selection': 'some',
+    'group': 'Gene overview'
   });
 
   //scores
