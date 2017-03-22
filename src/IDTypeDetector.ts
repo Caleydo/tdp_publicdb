@@ -1,10 +1,8 @@
 import {getAPIJSON} from 'phovea_core/src/ajax';
+import {chooseDataSource} from 'targid_boehringer/src/config';
 
 interface IIDTypeDetectorOptions {
-  entity_name: string;
-  schema: string;
-  table_name: string;
-  query?: string;
+  sampleType: string;
 }
 
 async function detectIDType(data: any[], accessor: (row: any) => string, sampleSize: number, options: IIDTypeDetectorOptions) : Promise<number> {
@@ -25,14 +23,10 @@ async function detectIDType(data: any[], accessor: (row: any) => string, sampleS
     ++validSize;
   }
 
-  const param: IIDTypeDetectorOptions = {
-    entity_name: options.entity_name,
-    schema: options.schema,
-    table_name: options.table_name,
-    query: `'${values.join('\',\'')}'`
-  };
-
-  const result = await getAPIJSON('/targid/db/bioinfodb/check_id_types', param);
+  const ds = chooseDataSource(options);
+  const result = await getAPIJSON(`/targid/db/${ds.db}/${ds.base}_check_ids/filter`, {
+    ['filter_'+ds.entityName]: values
+  });
   return result[0].matches / validSize;
 }
 

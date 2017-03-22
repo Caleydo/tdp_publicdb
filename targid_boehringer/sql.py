@@ -204,6 +204,10 @@ def create_sample(result, basename, idtype, primary):
     .query('filter_panel', filter_gene_panel) \
     .replace('table').replace('agg_score').replace('and_where').arg('species').build()
 
+  result[basename + '_check_ids'] = DBViewBuilder().query("""
+    SELECT COUNT(*) AS matches FROM {base}.targid_{base} %(where)s
+  """.format(primary=primary, base=basename)).replace('where').build()
+
 
 views = dict(
   gene=DBViewBuilder().idtype(idtype_gene).query("""
@@ -236,31 +240,6 @@ views = dict(
     ORDER BY symbol ASC""")
     .arg('species')
     .replace('ensgs')
-    .build(),
-
-  row=DBViewBuilder().idtype(idtype_tissue).query("""
-     SELECT b.targidid AS _id, b.%(entity_name)s AS id, *
-     FROM %(schema)s.targid_%(table_name)s b
-     WHERE b.%(entity_name)s IN (%(entities)s)""")
-    .replace("schema").replace("table_name").replace("entity_name").replace("entities")
-    .build(),
-
-  single_entity_lookup=DBViewBuilder().idtype(idtype_tissue).query("""
-      SELECT targidid AS _id, %(id_column)s AS id, %(query_column)s AS TEXT
-      FROM %(schema)s.targid_%(table_name)s WHERE species = :species AND LOWER(%(query_column)s) LIKE :query
-      ORDER BY %(query_column)s ASC LIMIT %(limit)s OFFSET %(offset)s""")
-    .query('count', """
-      SELECT COUNT(*) AS total_count
-      FROM %(schema)s.targid_%(table_name)s
-      WHERE species = :species AND LOWER(%(query_column)s) LIKE :query""")
-    .replace("schema").replace("table_name").replace("query_column").replace("id_column").replace("limit").replace(
-    "offset")
-    .arg("query").arg("species")
-    .build(),
-
-  check_id_types=DBViewBuilder().query("""
-    SELECT COUNT(*) AS matches FROM %(schema)s.targid_%(table_name)s WHERE %(entity_name)s IN (%(query)s)
-  """).replace("entity_name").replace("schema").replace("table_name").replace("query")
     .build()
 )
 _create_common(views, 'gene', 'public.targid_gene', _primary_gene, idtype_gene)

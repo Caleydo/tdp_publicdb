@@ -16,9 +16,7 @@ module.exports = function(registry) {
     'name': 'Cell Line IDType Detector',
     'idType': 'Cellline',
     'options': {
-      'entity_name': 'celllinename',
-      'schema': 'cellline',
-      'table_name': 'cellline'
+      'sampleType': 'Cellline'
     }
   });
 
@@ -29,9 +27,7 @@ module.exports = function(registry) {
     'name': 'Tissue IDType Detector',
     'idType': 'Tissue',
     'options': {
-      'entity_name': 'tissuename',
-      'schema': 'tissue',
-      'table_name': 'tissue'
+      'sampleType': 'Tissue'
     }
   });
 
@@ -84,7 +80,6 @@ module.exports = function(registry) {
     'factory': 'createStart',
     'idtype': 'Ensembl',
     'selection': 'none',
-    'dbPath': 'genes_by_names',
     'chooserHeaders': {
       'internal': 'Internal Views',
       'external': 'External Views'
@@ -114,8 +109,7 @@ module.exports = function(registry) {
     'factory': 'createStart',
     "idtype": "Tissue",
     "selection": "none",
-    "sampleType": "Tissue",
-    'dbPath': 'row'
+    "sampleType": "Tissue"
   });
 
 
@@ -140,8 +134,7 @@ module.exports = function(registry) {
     'name': 'Cell Lines',
     'factory': 'createStart',
     'idtype': 'Cellline',
-    'selection': 'none',
-    'dbPath': 'row'
+    'selection': 'none'
   });
 
   //views
