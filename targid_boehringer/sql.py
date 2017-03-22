@@ -124,22 +124,6 @@ def create_sample(result, basename, idtype, primary):
   SELECT panel as id, paneldescription as description
   FROM {base}.targid_panel ORDER BY panel ASC""".format(base=basename)).build()
 
-  result[basename + '_filtered'] = DBViewBuilder().idtype(idtype).query("""
-  SELECT {index}, {columns}
-  FROM {base}.targid_{base} c
-  WHERE species = :species""".format(index=index, columns=column_query, base=basename)).arg('species').build()
-
-  result[basename + '_filtered_namedset'] = DBViewBuilder().idtype(idtype).query("""
-  SELECT {index}, {columns}
-  FROM {base}.targid_{base} c
-  WHERE targidid IN (%(ids)s)""".format(index=index, columns=column_query, base=basename)).replace('ids').build()
-
-  result[basename + '_filtered_panel'] = DBViewBuilder().idtype(idtype).query("""
-  SELECT {index}, {columns}
-  FROM {base}.targid_panelassignment s JOIN {base}.targid_{base} c ON s.{primary} = c.{primary}
-  WHERE s.panel = :panel""".format(index=index, columns=column_query, base=basename, primary=primary)).arg(
-    'panel').build()
-
   co_expression = DBViewBuilder().idtype(idtype_gene).query("""
      SELECT c.targidid AS _id, a.ensg AS id, g.symbol, C.{primary} as samplename, a.%(attribute)s AS expression
         FROM {base}.targid_expression AS a
@@ -225,6 +209,7 @@ views = dict(
   gene=DBViewBuilder().idtype(idtype_gene).query("""
   SELECT {index}, {columns}
   FROM public.targid_gene t
+  %(where)s
   ORDER BY t.symbol ASC""".format(index=_index_gene, columns=_column_query_gene))
     .query_stats("""
   SELECT min(strand) AS strand_min, max(strand) AS strand_max, min(seqregionstart) AS seqregionstart_min, max(seqregionstart) AS seqregionstart_max,
@@ -240,37 +225,9 @@ views = dict(
     .column('biotype', type='categorical')
     .column('seqregionstart', type='number')
     .column('seqregionend', type='number')
-    .build(),
+    .replace('where').query('filter_panel', 'ensg = ANY(SELECT ensg FROM public.targid_geneassignment WHERE genesetname %(operator)s %(value)s)').build(),
   gene_panel=DBViewBuilder().query("""
     SELECT genesetname AS id, species AS description FROM public.targid_geneset ORDER BY genesetname ASC""")
-    .build(),
-  gene_filtered=DBViewBuilder().idtype(idtype_gene).query("""
-    SELECT {index}, {columns}
-    FROM public.targid_gene t
-    WHERE species = :species""".format(index=_index_gene, columns=_column_query_gene))
-    .arg('species')
-    .build(),
-
-  genes_by_names=DBViewBuilder().idtype(idtype_gene).query("""
-    SELECT {index}, {columns}
-    FROM public.targid_gene t
-    WHERE species = :species AND %(entity_name)s IN (%(entities)s) """.format(index=_index_gene,
-                                                                              columns=_column_query_gene))
-    .replace('entity_name').replace('entities').arg('species')
-    .build(),
-
-  gene_filtered_namedset=DBViewBuilder().idtype(idtype_gene).query("""
-    SELECT {index}, {columns}
-    FROM public.targid_gene t
-    WHERE targidid IN (%(ids)s)""".format(index=_index_gene, columns=_column_query_gene))
-    .replace('ids')
-    .build(),
-
-  gene_filtered_panel=DBViewBuilder().idtype(idtype_gene).query("""
-    SELECT {index}, {columns}
-    FROM public.targid_geneassignment s JOIN public.targid_gene t ON s.ensg = t.ensg
-    WHERE s.genesetname = :panel""".format(index=_index_gene, columns=_column_query_gene))
-    .arg('panel')
     .build(),
 
   gene_map_ensgs=DBViewBuilder().idtype(idtype_gene).query("""
