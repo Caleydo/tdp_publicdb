@@ -29,7 +29,7 @@ export class OncoPrint extends AOncoPrint {
       species: getSelectedSpecies()
     };
     toFilter(param, convertRow2MultiMap(this.getParameter('filter')));
-    const rows = await getAPIJSON(`/targid/db/${ds.db}/${ds.base}_onco_print_sample_list`, param);
+    const rows = await getAPIJSON(`/targid/db/${ds.db}/${ds.base}_onco_print_sample_list/filter`, param);
     return rows.map((r) => r.id);
   }
 
@@ -40,7 +40,7 @@ export class OncoPrint extends AOncoPrint {
       species: getSelectedSpecies()
     };
     toFilter(param, convertRow2MultiMap(this.getParameter('filter')));
-    return getAPIJSON(`/targid/db/${ds.db}/${ds.base}_onco_print`, param);
+    return getAPIJSON(`/targid/db/${ds.db}/${ds.base}_onco_print/filter`, param);
   }
 
   protected loadFirstName(ensg: string): Promise<string> {
