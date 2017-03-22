@@ -245,31 +245,6 @@ views = dict(
     .replace("schema").replace("table_name").replace("entity_name").replace("entities")
     .build(),
 
-  raw_data_table_inverted=DBViewBuilder().idtype(idtype_gene).query("""
-     SELECT b.targidid AS _id, b.ensg AS id, b.symbol, b.species, b.strand, b.chromosome, b.biotype, b.seqregionstart, b.seqregionend
-     FROM public.targid_gene b
-     WHERE b.biotype = :biotype AND b.species = :species""")
-    .replace("schema").replace("table_name").replace("entity_name").replace("data_subtype")
-    .arg("biotype").arg("species")
-    .build(),
-
-  raw_data_table_inverted_all=DBViewBuilder().idtype(idtype_gene).query("""
-     SELECT b.targidid AS _id, b.ensg AS id, b.symbol, b.species, b.strand, b.chromosome, b.biotype, b.seqregionstart, b.seqregionend
-     FROM public.targid_gene b
-     WHERE b.species = :species""")
-    .replace("schema").replace("table_name").replace("entity_name").replace("data_subtype")
-    .arg("species")
-    .build(),
-
-  raw_data_table_inverted_column=DBViewBuilder().idtype(idtype_gene).query("""
-     SELECT b.targidid AS _id, b.ensg AS id, %(data_subtype)s AS score
-     FROM PUBLIC.targid_gene b
-     INNER JOIN %(schema)s.targid_%(table_name)s ab ON ab.ensg = b.ensg
-     WHERE ab.%(entity_name)s = :entity_value""")
-    .replace("schema").replace("table_name").replace("entity_name").replace("data_subtype")
-    .arg("entity_value")
-    .build(),
-
   single_entity_lookup=DBViewBuilder().idtype(idtype_tissue).query("""
       SELECT targidid AS _id, %(id_column)s AS id, %(query_column)s AS TEXT
       FROM %(schema)s.targid_%(table_name)s WHERE species = :species AND LOWER(%(query_column)s) LIKE :query
