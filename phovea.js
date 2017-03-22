@@ -44,7 +44,10 @@ module.exports = function(registry) {
     'factory': 'create',
     'idtype': 'Ensembl',
     'selection': 'some',
-    'group': 'Sample overview'
+    'group': {
+      'name': 'Sample overview',
+      'order': 40
+    }
   });
 
   registry.push('targidView', 'celllinedb_expression_vs_copynumber', function () {
@@ -55,7 +58,10 @@ module.exports = function(registry) {
     'factory': 'create',
     'idtype': 'Ensembl',
     'selection': 'small_multiple',
-    'group': 'Visualization'
+    'group': {
+      'name': 'Visualization',
+      'order': 10
+    }
   });
 
   registry.push('targidView', 'celllinedb_co_expression', function () {
@@ -66,7 +72,10 @@ module.exports = function(registry) {
     'factory': 'create',
     'idtype': 'Ensembl',
     'selection': 'small_multiple',
-    'group': 'Visualization'
+    'group': {
+      'name': 'Visualization',
+      'order': 0
+    }
   });
 
   registry.push('targidStartEntryPoint', 'celllinedb_genes_start', function () {
@@ -155,7 +164,10 @@ module.exports = function(registry) {
     'factory': 'createExpressionTable',
     'idtype': 'Ensembl',
     'selection': 'some',
-    'group': 'Sample overview'
+    'group': {
+      'name': 'Sample overview',
+      'order': 10
+    }
   });
 
   registry.push('targidView', 'copynumbertable', function () {
@@ -165,7 +177,10 @@ module.exports = function(registry) {
     'factory': 'createCopyNumberTable',
     'idtype': 'Ensembl',
     'selection': 'some',
-    'group': 'Sample overview'
+    'group': {
+      'name': 'Sample overview',
+      'order': 0
+    }
   });
 
   registry.push('targidView', 'mutationtable', function () {
@@ -175,7 +190,10 @@ module.exports = function(registry) {
     'factory': 'createMutationTable',
     'idtype': 'Ensembl',
     'selection': 'some',
-    'group': 'Sample overview'
+    'group': {
+      'name': 'Sample overview',
+      'order': 20
+    }
   });
 
   registry.push('targidView', 'celllline_inverted_expressiontable', function () {
@@ -185,7 +203,10 @@ module.exports = function(registry) {
     'factory': 'createExpressionTable',
     'idtype': 'Cellline',
     'selection': 'some',
-    'group': 'Gene overview'
+    'group': {
+      'name': 'Gene overview',
+      'order': 10
+    }
   });
 
   registry.push('targidView', 'celllline_inverted_copynumbertable', function () {
@@ -195,7 +216,10 @@ module.exports = function(registry) {
     'factory': 'createCopyNumberTable',
     'idtype': 'Cellline',
     'selection': 'some',
-    'group': 'Gene overview'
+    'group': {
+      'name': 'Gene overview',
+      'order': 0
+    }
   });
 
   registry.push('targidView', 'celllline_inverted_mutationtable', function () {
@@ -205,7 +229,10 @@ module.exports = function(registry) {
     'factory': 'createMutationTable',
     'idtype': 'Cellline',
     'selection': 'some',
-    'group': 'Gene overview'
+    'group': {
+      'name': 'Gene overview',
+      'order': 20
+    }
   });
 
   registry.push('targidView', 'tissue_inverted_expressiontable', function () {
@@ -216,7 +243,10 @@ module.exports = function(registry) {
     'idtype': 'Tissue',
     'sampleType': 'Tissue',
     'selection': 'some',
-    'group': 'Gene overview'
+    'group': {
+      'name': 'Gene overview',
+      'order': 20
+    }
   });
 
   registry.push('targidView', 'tissue_inverted_copynumbertable', function () {
@@ -227,7 +257,10 @@ module.exports = function(registry) {
     'idtype': 'Tissue',
     'sampleType': 'Tissue',
     'selection': 'some',
-    'group': 'Gene overview'
+    'group': {
+      'name': 'Gene overview',
+      'order': 0
+    }
   });
 
   registry.push('targidView', 'tissue_inverted_mutationtable', function () {
@@ -238,7 +271,10 @@ module.exports = function(registry) {
     'idtype': 'Tissue',
     'sampleType': 'Tissue',
     'selection': 'some',
-    'group': 'Gene overview'
+    'group': {
+      'name': 'Gene overview',
+      'order': 20
+    }
   });
 
   //scores
@@ -293,7 +329,10 @@ module.exports = function(registry) {
     'argument': 'gene',
     'idtype': 'Ensembl',
     'selection': 'multiple',
-    'group': 'Internal resources'
+    'group': {
+      'name': 'Internal resources',
+      'order': 0
+    }
   });
 
   registry.push('targidView', 'clip_cellline', function () {
@@ -305,7 +344,10 @@ module.exports = function(registry) {
     'argument': 'cellline',
     'idtype': 'Cellline',
     'selection': 'multiple',
-    'group': 'Internal resources'
+    'group': {
+      'name': 'Internal resources',
+      'order': 0
+    }
   });
 
   registry.push('targidView', 'shiny_cellline', function () {
@@ -317,7 +359,10 @@ module.exports = function(registry) {
     'argument': 'cellline',
     'idtype': 'Cellline',
     'selection': 'multiple',
-    'group': 'Internal resources'
+    'group': {
+      'name': 'Internal resources',
+      'order': 10
+    }
   });
   // generator-phovea:end
 };
