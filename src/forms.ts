@@ -123,10 +123,13 @@ export const FORM_GENE_FILTER = {
   id: 'filter',
   useSession: true,
   options: {
+    uniqueKeys: true,
     entries: [{
       name: 'Bio Type',
       value: 'biotype',
-      type: FormElementType.SELECT,
+      type: FormElementType.SELECT2,
+      multiple: true,
+      return: 'id',
       optionsData: cachedLazy('gene_biotypes', () => getAPIJSON(`/targid/db/${gene.db}/gene_unique_all`, {
         column: 'biotype',
         species: getSelectedSpecies()
@@ -134,7 +137,9 @@ export const FORM_GENE_FILTER = {
     }, {
       name: 'Strand',
       value: 'strand',
-      type: FormElementType.SELECT,
+      type: FormElementType.SELECT2,
+      multiple: true,
+      return: 'id',
       optionsData: cachedLazy('gene_strands', () => getAPIJSON(`/targid/db/${gene.db}/gene_unique_all`, {
         column: 'strand',
         species: getSelectedSpecies()
@@ -142,17 +147,22 @@ export const FORM_GENE_FILTER = {
     }, {
       name: 'Predefined Named Sets',
       value: 'panel',
-      type: FormElementType.SELECT,
+      type: FormElementType.SELECT2,
+      multiple: true,
+      return: 'id',
       optionsData: cachedLazy('gene_predefined_namedsets', buildPredefinedNamedSets.bind(null, gene))
     }, {
       name: 'My Named Sets',
       value: 'namedset4c.ensg',
-      type: FormElementType.SELECT,
+      type: FormElementType.SELECT2,
+      multiple: true,
+      return: 'id',
       optionsData: listNamedSetsAsOptions.bind(null, gene.idType)
     }, {
       name: 'Gene Symbol',
       value: 'c.ensg',
       type: FormElementType.SELECT2,
+      multiple: true,
       return: 'id',
       ajax: {
         url: api2absURL(`/targid/db/${gene.db}/gene_items/lookup`),
@@ -178,10 +188,13 @@ function generateFilter(d: IDataSourceConfig) {
     id: 'filter',
     useSession: true,
     options: {
+      uniqueKeys: true,
       entries: [{
         name: 'Tumor Type',
         value: 'tumortype',
-        type: FormElementType.SELECT,
+        type: FormElementType.SELECT2,
+        multiple: true,
+        return: 'id',
         optionsData: cachedLazy(d.base + '_tumortypes', () => getAPIJSON(`/targid/db/${d.db}/${d.base}_unique_all`, {
           column: 'tumortype',
           species: getSelectedSpecies()
@@ -189,7 +202,9 @@ function generateFilter(d: IDataSourceConfig) {
       }, {
         name: 'Organ',
         value: 'organ',
-        type: FormElementType.SELECT,
+        type: FormElementType.SELECT2,
+        multiple: true,
+        return: 'id',
         optionsData: cachedLazy(d.base + '_organs', () => getAPIJSON(`/targid/db/${d.db}/${d.base}_unique_all`, {
           column: 'organ',
           species: getSelectedSpecies()
@@ -197,7 +212,9 @@ function generateFilter(d: IDataSourceConfig) {
       }, {
         name: 'Gender',
         value: 'gender',
-        type: FormElementType.SELECT,
+        type: FormElementType.SELECT2,
+        multiple: true,
+        return: 'id',
         optionsData: cachedLazy(d.base + '_gender', () => getAPIJSON(`/targid/db/${d.db}/${d.base}_unique_all`, {
           column: 'gender',
           species: getSelectedSpecies()
@@ -205,17 +222,22 @@ function generateFilter(d: IDataSourceConfig) {
       }, {
         name: 'Predefined Named Sets',
         value: 'panel',
-        type: FormElementType.SELECT,
+        type: FormElementType.SELECT2,
+        multiple: true,
+        return: 'id',
         optionsData: cachedLazy('gene_predefined_namedsets', buildPredefinedNamedSets.bind(null, d))
       }, {
         name: 'My Named Sets',
         value: 'namedset4c.' + d.entityName,
-        type: FormElementType.SELECT,
+        type: FormElementType.SELECT2,
+        multiple: true,
+        return: 'id',
         optionsData: listNamedSetsAsOptions.bind(null, d.idType)
       }, {
         name: d.name,
         value: 'c.' + d.entityName,
         type: FormElementType.SELECT2,
+        multiple: true,
         return: 'id',
         ajax: {
           url: api2absURL(`/targid/db/${gene.db}/${d.base}_items/lookup`),
