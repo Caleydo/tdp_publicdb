@@ -12,7 +12,7 @@ import {IScore} from 'ordino/src/LineUpView';
 import {createDesc} from './utils';
 import AScore, {ICommonScoreParam} from './AScore';
 import {toFilter} from '../utils';
-import {IBoxPlotData} from 'lineupjs/src/model/boxplotcolumn';
+import {IBoxPlotData} from 'lineupjs/src/model/BoxPlotColumn';
 
 interface IAggregatedScoreParam extends ICommonScoreParam {
   aggregation: string;
