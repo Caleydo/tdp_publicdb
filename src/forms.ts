@@ -153,14 +153,14 @@ export const FORM_GENE_FILTER = {
       optionsData: cachedLazy('gene_predefined_namedsets', buildPredefinedNamedSets.bind(null, gene))
     }, {
       name: 'My Named Sets',
-      value: 'namedset4c.ensg',
+      value: 'namedset4ensg',
       type: FormElementType.SELECT2,
       multiple: true,
       return: 'id',
       optionsData: listNamedSetsAsOptions.bind(null, gene.idType)
     }, {
       name: 'Gene Symbol',
-      value: 'c.ensg',
+      value: 'ensg',
       type: FormElementType.SELECT2,
       multiple: true,
       return: 'id',
@@ -228,14 +228,14 @@ function generateFilter(d: IDataSourceConfig) {
         optionsData: cachedLazy('gene_predefined_namedsets', buildPredefinedNamedSets.bind(null, d))
       }, {
         name: 'My Named Sets',
-        value: 'namedset4c.' + d.entityName,
+        value: 'namedset4' + d.entityName,
         type: FormElementType.SELECT2,
         multiple: true,
         return: 'id',
         optionsData: listNamedSetsAsOptions.bind(null, d.idType)
       }, {
         name: d.name,
-        value: 'c.' + d.entityName,
+        value: d.entityName,
         type: FormElementType.SELECT2,
         multiple: true,
         return: 'id',
