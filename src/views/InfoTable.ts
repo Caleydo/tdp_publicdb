@@ -7,8 +7,6 @@ import {getAPIJSON} from 'phovea_core/src/ajax';
 import {getSelectedSpecies} from 'targid_common/src/Common';
 import {IDataSourceConfig, cellline, tissue, gene} from '../config';
 import {FormBuilder, FormElementType, IFormSelectDesc, IFormSelectElement} from 'ordino/src/FormBuilder';
-import {ParameterFormIds} from '../forms';
-
 
 export abstract class AInfoTable extends AView {
 
@@ -37,7 +35,7 @@ export abstract class AInfoTable extends AView {
       {
         type: FormElementType.SELECT,
         label: 'Show',
-        id: ParameterFormIds.DATA_SOURCE,
+        id: 'item',
         options: {
           optionsData: []
         }
@@ -78,7 +76,7 @@ export abstract class AInfoTable extends AView {
       };
     });
 
-    const select = this.paramForm.getElementById(ParameterFormIds.DATA_SOURCE);
+    const select = this.paramForm.getElementById('item');
 
     // backup entry and restore the selectedIndex by value afterwards again,
     // because the position of the selected element might change
@@ -118,12 +116,9 @@ export abstract class AInfoTable extends AView {
   }
 
   private async fetchInformation() {
-    const selection: { name: string, value: string, data: string } = this.paramForm.getElementById(ParameterFormIds.DATA_SOURCE).value;
-    this.data = await getAPIJSON(`/targid/db/${this.dataSource.db}/row`, {
-        entities: `'${selection.value}'`,
-        schema: this.dataSource.schema,
-        table_name: this.dataSource.tableName,
-        entity_name: this.dataSource.entityName,
+    const selection: { name: string, value: string, data: string } = this.paramForm.getElementById('item').value;
+    this.data = await getAPIJSON(`/targid/db/${this.dataSource.db}/${this.dataSource.base}/filter`, {
+        ['filter_'+this.dataSource.entityName]: selection.value,
         species: getSelectedSpecies()
       });
   }
@@ -144,12 +139,10 @@ export abstract class AInfoTable extends AView {
   private updateInfoTable(data: {[key: string]: string}) {
     const tuples = [];
     Object.keys(data).forEach((key) => {
-      if(key === '_id') {
+      if(key.startsWith('_')) {
         return;
       }
-      if(data.hasOwnProperty(key)) {
-        tuples.push([key, data[key]]);
-      }
+      tuples.push([key, data[key]]);
     });
 
     const $tr = this.$tbody.selectAll('tr').data(tuples);
