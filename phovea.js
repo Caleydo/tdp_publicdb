@@ -343,6 +343,17 @@ module.exports = function(registry) {
     'idtype': 'Tissue',
     'selection': 'multiple'
   });
+
+  registry.push('targidView', 'pubmed', function () {
+    return System.import('./src/views/GeneSymbolProxyView');
+  }, {
+    'name': 'PubMed',
+    'category': 'static',
+    'site': '//www.ncbi.nlm.nih.gov/pubmed?term={gene}',
+    'argument': 'gene',
+    'idtype': 'Ensembl',
+    'selection': 'multiple'
+  });
   // generator-phovea:end
 };
 
