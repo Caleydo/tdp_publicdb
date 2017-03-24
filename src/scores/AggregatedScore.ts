@@ -6,7 +6,7 @@ import * as ajax from 'phovea_core/src/ajax';
 import * as ranges from 'phovea_core/src/range';
 import * as idtypes from 'phovea_core/src/idtype';
 import {getSelectedSpecies} from 'targid_common/src/Common';
-import {IDataSourceConfig, IDataTypeConfig, dataSubtypes, allBioTypes} from '../config';
+import {IDataSourceConfig, dataSubtypes} from '../config';
 import {convertLog2ToLinear} from '../utils';
 import {IScore} from 'ordino/src/LineUpView';
 import {createDesc} from './utils';
@@ -36,7 +36,7 @@ export default class AggregatedScore extends AScore implements IScore<number> {
   }
 
   createDesc() {
-    return createDesc(dataSubtypes.number, `${this.parameter.aggregation} ${this.dataSubType.name}`, this.dataSubType);
+    return createDesc(this.parameter.aggregation === 'boxplot' ? 'boxplot' : dataSubtypes.number, `${this.parameter.aggregation} ${this.dataSubType.name}`, this.dataSubType);
   }
 
   async compute(ids: ranges.Range, idtype: idtypes.IDType): Promise<any[]> {
