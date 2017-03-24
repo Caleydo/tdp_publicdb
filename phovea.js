@@ -36,7 +36,6 @@ module.exports = function(registry) {
     return System.import('./src/views/OncoPrint');
   }, {
     'name': 'OncoPrint',
-    'category': 'dynamic',
     'factory': 'create',
     'idtype': 'Ensembl',
     'selection': 'some',
@@ -50,7 +49,6 @@ module.exports = function(registry) {
     return System.import('./src/views/ExpressionVsCopyNumber');
   }, {
     'name': 'Expression vs. Copy Number',
-    'category': 'dynamic',
     'factory': 'create',
     'idtype': 'Ensembl',
     'selection': 'small_multiple',
@@ -64,7 +62,6 @@ module.exports = function(registry) {
     return System.import('./src/views/CoExpression');
   }, {
     'name': 'Co-Expression',
-    'category': 'dynamic',
     'factory': 'create',
     'idtype': 'Ensembl',
     'selection': 'small_multiple',
@@ -335,7 +332,6 @@ module.exports = function(registry) {
     return System.import('targid_common/src/views/GeneProxyView');
   }, {
     'name': 'CLIP',
-    'category': 'static',
     'site': '//vie-toolbox/clip/multiViewGene.php?ensg={gene}',
     'argument': 'gene',
     'idtype': 'Ensembl',
@@ -350,7 +346,6 @@ module.exports = function(registry) {
     return System.import('ordino/src/ProxyView');
   }, {
     'name': 'CLIP',
-    'category': 'static',
     'site': '///vie-toolbox/clip/multiViewCellline.php?celllinename={cellline}',
     'argument': 'cellline',
     'idtype': 'Cellline',
@@ -365,7 +360,6 @@ module.exports = function(registry) {
     return System.import('ordino/src/ProxyView');
   }, {
     'name': 'Copy Number Plots',
-    'category': 'static',
     'site': '///vie-bio-shiny.eu.boehringer.com/copynumberoverview/?celllinename={cellline}',
     'argument': 'cellline',
     'idtype': 'Cellline',
@@ -420,7 +414,6 @@ module.exports = function(registry) {
     return System.import('./src/views/GeneSymbolProxyView');
   }, {
     'name': 'PubMed',
-    'category': 'static',
     'site': '//www.ncbi.nlm.nih.gov/pubmed?term={gene}',
     'argument': 'gene',
     'idtype': 'Ensembl',
