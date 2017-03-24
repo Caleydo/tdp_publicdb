@@ -35,6 +35,7 @@ export function createDesc(type: string, label: string, subtype: IDataSubtypeCon
         label,
         domain: [1, 100],
         lazyLoaded: true,
+        sort: 'median', // sort by default by median
         missingValue: <IBoxPlotData>{
           min: 0,
           max: 0,
