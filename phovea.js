@@ -364,6 +364,19 @@ module.exports = function(registry) {
       'order': 10
     }
   });
+
+  registry.push('chooserConfig', 'chooser_header_order', function() {
+
+  }, {
+    order: {
+      'Sample overview': 0,
+      'Gene overview': 1,
+      'Visualization': 10,
+      'Internal resources': 20,
+      'External resources': 30,
+      'Other': 100
+    }
+  });
   // generator-phovea:end
 };
 
