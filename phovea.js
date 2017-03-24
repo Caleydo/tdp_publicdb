@@ -16,9 +16,7 @@ module.exports = function(registry) {
     'name': 'Cell Line IDType Detector',
     'idType': 'Cellline',
     'options': {
-      'entity_name': 'celllinename',
-      'schema': 'cellline',
-      'table_name': 'cellline'
+      'sampleType': 'Cellline'
     }
   });
 
@@ -29,9 +27,7 @@ module.exports = function(registry) {
     'name': 'Tissue IDType Detector',
     'idType': 'Tissue',
     'options': {
-      'entity_name': 'tissuename',
-      'schema': 'tissue',
-      'table_name': 'tissue'
+      'sampleType': 'Tissue'
     }
   });
 
@@ -95,8 +91,7 @@ module.exports = function(registry) {
     'name': 'Genes',
     'factory': 'createStart',
     'idtype': 'Ensembl',
-    'selection': 'none',
-    'dbPath': 'genes_by_names'
+    'selection': 'none'
   });
 
   registry.push('targidStartEntryPoint', 'bioinfodb_tissue_start', function () {
@@ -118,8 +113,7 @@ module.exports = function(registry) {
     'factory': 'createStart',
     "idtype": "Tissue",
     "selection": "none",
-    "sampleType": "Tissue",
-    'dbPath': 'row'
+    "sampleType": "Tissue"
   });
 
 
@@ -140,22 +134,10 @@ module.exports = function(registry) {
     'name': 'Cell Lines',
     'factory': 'createStart',
     'idtype': 'Cellline',
-    'selection': 'none',
-    'dbPath': 'row'
+    'selection': 'none'
   });
 
   //views
-
-  registry.push('__targidView__backup', 'celllinedb_enrichment', function () {
-    return System.import('./src/views/Enrichment');
-  }, {
-    'name': 'Enrichment',
-    'category': 'dynamic',
-    'idtype': 'Ensembl',
-    'selection': 'single',
-    'mockup': true
-  });
-
 
   registry.push('targidView', 'expressiontable', function () {
     return System.import('./src/views/DependentSampleTable');
@@ -279,46 +261,75 @@ module.exports = function(registry) {
 
   //scores
 
-  registry.push('ordinoScore', 'gene_aggregated_score', function () {
-    return System.import('./src/scores/gene');
-  }, {
-    'name': 'Score',
-    'idtype': 'Ensembl'
+  //gene_(Tissue|Celline)
+  ['Tissue', 'Cellline'].forEach(function(oppositeIDType)  {
+    prefix = 'gene_' + oppositeIDType.toLowerCase();
+    registry.push('ordinoScore', prefix + '_aggregated_score', function () {
+      return System.import('./src/scores');
+    }, {
+      'name': 'Aggregated ' + oppositeIDType + ' Score',
+      'idtype': 'Ensembl',
+      'primaryType': 'Ensembl',
+      'oppositeType': oppositeIDType
+    });
+    registry.push('ordinoScoreImpl', prefix + '_aggregated_score', function () {
+      return System.import('./src/scores');
+    }, {
+      'factory': 'createScore',
+      'primaryType': 'Ensembl',
+      'oppositeType': oppositeIDType
+    });
+    registry.push('ordinoScore', prefix + '_single_score', function () {
+      return System.import('./src/scores/SingleScore');
+    }, {
+      'name': 'Single ' + oppositeIDType + ' Score',
+      'idtype': 'Ensembl',
+      'primaryType': 'Ensembl',
+      'oppositeType': oppositeIDType
+    });
+    registry.push('ordinoScoreImpl', prefix + '_single_score', function () {
+      return System.import('./src/scores/SingleScore');
+    }, {
+      'factory': 'createScore',
+      'primaryType': 'Ensembl',
+      'oppositeType': oppositeIDType
+    });
   });
 
-  registry.push('ordinoScoreImpl', 'gene_aggregated_score', function () {
-    return System.import('./src/scores/gene');
-  }, {
-    'factory': 'createScore'
+  //(Tissue|Celline)_gene scores
+  ['Tissue', 'Cellline'].forEach(function(idType)  {
+    prefix = idType.toLowerCase()+'_gene';
+    registry.push('ordinoScore', prefix + '_aggregated_score', function () {
+      return System.import('./src/scores');
+    }, {
+      'name': 'Aggregated Score',
+      'idtype': idType,
+      'primaryType': idType,
+      'oppositeType': 'Ensembl'
+    });
+    registry.push('ordinoScoreImpl', prefix + '_aggregated_score', function () {
+      return System.import('./src/scores');
+    }, {
+      'factory': 'createScore',
+      'primaryType': idType,
+      'oppositeType': 'Ensembl'
+    });
+    registry.push('ordinoScore', prefix + '_single_score', function () {
+      return System.import('./src/scores/SingleScore');
+    }, {
+      'name': 'Single Gene Score',
+      'idtype': idType,
+      'primaryType': idType,
+      'oppositeType': 'Ensembl'
+    });
+    registry.push('ordinoScoreImpl', prefix + '_single_score', function () {
+      return System.import('./src/scores/SingleScore');
+    }, {
+      'factory': 'createScore',
+      'primaryType': idType,
+      'oppositeType': 'Ensembl'
+    });
   });
-
-  registry.push('ordinoScore', 'cellline_inverted_aggregated_score', function () {
-    return System.import('./src/scores/sample');
-  }, {
-    'name': 'Score',
-    'idtype': 'Cellline'
-  });
-  registry.push('ordinoScore', 'tissue_inverted_aggregated_score', function () {
-    return System.import('./src/scores/sample');
-  }, {
-    'name': 'Score',
-    'idtype': 'Tissue',
-    'sampleType': 'Tissue'
-  });
-
-  registry.push('ordinoScoreImpl', 'tissue_inverted_aggregated_score', function () {
-    return System.import('./src/scores/sample');
-  }, {
-    'factory': 'createScore'
-  });
-
-  registry.push('ordinoScoreImpl', 'cellline_inverted_aggregated_score', function () {
-    return System.import('./src/scores/sample');
-  }, {
-    'factory': 'createScore'
-  });
-
-
 
   registry.push('targidView', 'clip', function () {
     return System.import('targid_common/src/views/GeneProxyView');
@@ -376,6 +387,44 @@ module.exports = function(registry) {
       'External resources': 30,
       'Other': 100
     }
+  });
+
+  registry.push('targidView', 'gene_generic_detail_view', function () {
+    return System.import('./src/views/InfoTable.ts');
+  }, {
+    'name': 'Database Info',
+    'factory': 'createGeneInfoTable',
+    'idtype': 'Ensembl',
+    'selection': 'multiple'
+  });
+
+  registry.push('targidView', 'cellline_generic_detail_view', function () {
+    return System.import('./src/views/InfoTable.ts');
+  }, {
+    'name': 'Database Info',
+    'factory': 'createCelllineInfoTable',
+    'idtype': 'Cellline',
+    'selection': 'multiple'
+  });
+
+  registry.push('targidView', 'tissue_generic_detail_view', function () {
+    return System.import('./src/views/InfoTable.ts');
+  }, {
+    'name': 'Database Info',
+    'factory': 'createTissueInfoTable',
+    'idtype': 'Tissue',
+    'selection': 'multiple'
+  });
+
+  registry.push('targidView', 'pubmed', function () {
+    return System.import('./src/views/GeneSymbolProxyView');
+  }, {
+    'name': 'PubMed',
+    'category': 'static',
+    'site': '//www.ncbi.nlm.nih.gov/pubmed?term={gene}',
+    'argument': 'gene',
+    'idtype': 'Ensembl',
+    'selection': 'multiple'
   });
   // generator-phovea:end
 };

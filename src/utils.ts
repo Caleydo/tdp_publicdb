@@ -9,3 +9,10 @@ export function convertLog2ToLinear(rows: any[], field: string) {
     return row;
   });
 }
+
+export function toFilter(param: any, filter: any) {
+  Object.keys(filter).forEach((k) => {
+    const v = filter[k];
+    param['filter_' + k] = filter[k];
+  });
+}

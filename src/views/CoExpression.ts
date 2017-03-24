@@ -6,26 +6,18 @@ import {FormElementType, IFormSelectDesc} from 'ordino/src/FormBuilder';
 import {IViewContext, ISelection} from 'ordino/src/View';
 import ACoExpression, {IDataFormatRow} from 'targid_common/src/views/ACoExpression';
 import {getSelectedSpecies} from 'targid_common/src/Common';
-import {dataSources, allTypes, expression} from '../config';
-import {ParameterFormIds} from '../forms';
+import {expression} from '../config';
+import {ParameterFormIds, FORM_TISSUE_OR_CELLLINE_FILTER, FORM_DATA_SOURCE} from '../forms';
 import {getAPIJSON} from 'phovea_core/src/ajax';
 import {loadGeneList, loadFirstName} from './utils';
+import {convertRow2MultiMap} from 'ordino/src/form/internal/FormMap';
+import {toFilter} from '../utils';
 
 export class CoExpression extends ACoExpression {
 
   protected buildParameterDescs(): IFormSelectDesc[] {
     const base = super.buildParameterDescs();
-    base.splice(1, 0, {
-      type: FormElementType.SELECT,
-      label: 'Data Source',
-      id: ParameterFormIds.DATA_SOURCE,
-      options: {
-        optionsData: dataSources.map((ds) => {
-          return {name: ds.name, value: ds.name, data: ds};
-        })
-      },
-      useSession: true
-    });
+    base.splice(1, 0, FORM_DATA_SOURCE);
     base.push({
       type: FormElementType.SELECT,
       label: 'Expression',
@@ -36,17 +28,7 @@ export class CoExpression extends ACoExpression {
         })
       },
       useSession: false
-    },{
-      type: FormElementType.SELECT,
-      label: 'Tumor Type',
-      id: ParameterFormIds.TUMOR_TYPE,
-      dependsOn: [ParameterFormIds.DATA_SOURCE],
-      options: {
-        optionsFnc: (selection) => selection[0].data.tumorTypesWithAll,
-        optionsData: []
-      },
-      useSession: true
-    });
+    },FORM_TISSUE_OR_CELLLINE_FILTER);
     return base;
   }
 
@@ -55,13 +37,14 @@ export class CoExpression extends ACoExpression {
   }
 
   loadData(ensg: string): Promise<IDataFormatRow[]> {
-    const schema = this.getParameter(ParameterFormIds.DATA_SOURCE).schema;
-    return getAPIJSON(`/targid/db/${this.getParameter(ParameterFormIds.DATA_SOURCE).db}/${schema}_co_expression${this.getParameter(ParameterFormIds.TUMOR_TYPE) === allTypes ? '_all' : ''}`, {
+    const ds = this.getParameter(ParameterFormIds.DATA_SOURCE);
+    const param: any = {
       ensg,
-      expression_subtype: this.getParameter(ParameterFormIds.EXPRESSION_SUBTYPE).id,
-      tumortype : this.getParameter(ParameterFormIds.TUMOR_TYPE),
+      attribute: this.getParameter(ParameterFormIds.EXPRESSION_SUBTYPE).id,
       species: getSelectedSpecies()
-    });
+    };
+    toFilter(param, convertRow2MultiMap(this.getParameter('filter')));
+    return getAPIJSON(`/targid/db/${ds.db}/${ds.base}_co_expression/filter`, param);
   }
 
   loadFirstName(ensg: string) {

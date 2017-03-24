@@ -113,50 +113,28 @@ export abstract class ACommonList extends ALineUpView2 {
 
   protected loadRows() {
     const dataSource = this.getParameter(ParameterFormIds.DATA_SOURCE);
-    let predefinedUrl: string;
     const param: any = {};
-
-    let baseURL: string;
 
     if(this.namedSet) {
       switch(this.namedSet.type) {
         case ENamedSetType.NAMEDSET:
-          predefinedUrl = `/namedset/${this.namedSet.id}`;
+          param['filter_namedset4' + this.dataSource.entityName] = this.namedSet.id;
           break;
         case ENamedSetType.PANEL:
-          predefinedUrl = '_panel';
-          param.panel = this.namedSet.id;
-          break;
-        default:
-          predefinedUrl = '';
+          param.filter_panel = this.namedSet.id;
           break;
       }
-
-        // add filtered options
-      let filteredUrl = '';
-
       if(this.namedSet.subTypeKey && this.namedSet.subTypeKey !== '' && this.namedSet.subTypeValue !== 'all') {
         if(this.namedSet.subTypeFromSession) {
-          param[this.namedSet.subTypeKey] = session.retrieve(this.namedSet.subTypeKey, this.namedSet.subTypeValue);
-
+          param['filter_' + this.namedSet.subTypeKey] = session.retrieve(this.namedSet.subTypeKey, this.namedSet.subTypeValue);
         } else {
-          param[this.namedSet.subTypeKey] = this.namedSet.subTypeValue;
+          param['filter_' + this.namedSet.subTypeKey] = this.namedSet.subTypeValue;
         }
-
-        filteredUrl = '_filtered';
       }
-      baseURL = `/targid/db/${dataSource.db}/${dataSource.base}${filteredUrl}${predefinedUrl}`;
     } else if(this.search) {
-      param.schema = dataSource.schema;
-      param.table_name = dataSource.tableName;
-      param.species = defaultSpecies;
-      param.entity_name = dataSource.entityName;
-      param.entities = `'${this.search.ids.join('\',\'')}'`;
-
-      baseURL = `/targid/db/${dataSource.db}/${this.context.desc.dbPath}`;
+      param['filter_' + dataSource.entityName] = this.search.ids;
     }
-
-    return getAPIJSON(baseURL, param);
+    return getAPIJSON(`/targid/db/${dataSource.db}/${dataSource.base}/filter`, param);
   }
 
   getItemName(count) {
