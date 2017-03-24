@@ -24,7 +24,7 @@ export abstract class ACommonEntryPointList extends AEntryPointList {
    * @param desc
    * @param options
    */
-  constructor(protected parent: HTMLElement, public desc: IPluginDesc, private dataSource: IDataSourceConfig, protected options: IEntryPointOptions) {
+  constructor(protected parent: HTMLElement, public desc: IPluginDesc, protected dataSource: IDataSourceConfig, protected options: IEntryPointOptions) {
     super(parent, desc, options);
 
     this.idType = dataSource.idType;
@@ -76,6 +76,27 @@ export abstract class ACommonEntryPointList extends AEntryPointList {
       .then((sets: INamedSet[][]) => [].concat(...sets));
   }
 
+  protected searchOptions(): any {
+    return {
+      optionsData: [],
+      placeholder: `Search ${this.dataSource.name}`,
+      multiple: true,
+      tags: true,
+      tokenSeparators: [',', ' ', ';', '\t'],
+      ajax: {
+        url: api2absURL(`/targid/db/${this.dataSource.db}/${this.dataSource.base}_items/lookup`),
+        data: (params: any) => {
+          return {
+            column: this.dataSource.entityName,
+            species: getSelectedSpecies(),
+            query: params.term,
+            page: params.page
+          };
+        }
+      }
+    };
+  }
+
   private addSearchField() {
     const $searchWrapper = this.$node.insert('div', ':first-child').attr('class', 'startMenuSearch');
 
@@ -87,24 +108,7 @@ export abstract class ACommonEntryPointList extends AEntryPointList {
       attributes: {
         style: 'width:100%',
       },
-      options: {
-        optionsData: [],
-        placeholder: `Search ${this.dataSource.name}`,
-        multiple: true,
-        tags: true,
-        tokenSeparators: [',', ' ', ';', '\t'],
-        ajax: {
-          url: api2absURL(`/targid/db/${this.dataSource.db}/${this.dataSource.base}_items/lookup`),
-          data: (params: any) => {
-            return {
-              column: this.dataSource.entityName,
-              species: getSelectedSpecies(),
-              query: params.term,
-              page: params.page
-            };
-          }
-        }
-      }
+      options: this.searchOptions()
     });
 
     const $searchButton = $searchWrapper.append('div').append('button').classed('btn btn-primary', true).text('Go');

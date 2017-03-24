@@ -9,6 +9,8 @@ import {ACommonEntryPointList} from './ACommonEntryPointList';
 import {IACommonListOptions, ACommonList} from './ACommonList';
 import {IViewContext, ISelection} from 'ordino/src/View';
 import {stringCol, categoricalCol} from 'ordino/src/LineUpView';
+import {api2absURL} from 'phovea_core/src/ajax';
+import {mixin} from 'phovea_core/src';
 
 /**
  * Entry point list from all species and LineUp named sets (aka stored LineUp sessions)
@@ -23,6 +25,17 @@ class GeneEntryPointList extends ACommonEntryPointList {
    */
   constructor(parent: HTMLElement, desc: IPluginDesc, options:IEntryPointOptions) {
     super(parent, desc, gene, options);
+  }
+
+  protected searchOptions() {
+    const base = super.searchOptions();
+    return mixin(base, {
+      ajax: {
+        url: api2absURL(`/targid/db/${this.dataSource.db}/${this.dataSource.base}_gene_items/lookup`),
+      },
+      templateResult: (item: any) => (item.id) ? `${item.text} <span class="ensg">${item.id}</span>` : item.text,
+      templateSelection: (item: any) => (item.id) ? `${item.text} <span class="ensg">${item.id}</span>` : item.text
+    });
   }
 }
 
