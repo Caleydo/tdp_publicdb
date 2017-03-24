@@ -84,6 +84,7 @@ def create_gene_score(result, other_prefix, other_primary):
            ON freq.ensg = a.ensg""".format(primary=other_primary, base=other_prefix)) \
     .replace("table").replace('and_where').replace("attribute").replace("operator") \
     .query('filter_panel', filter_panel) \
+    .query('filter_' + other_primary, 'c.'+ other_primary + ' %(operator)s %(value)s') \
     .arg("species").arg("value").build()
 
   result[basename + '_score'] = DBViewBuilder().idtype(idtype_gene).query("""
@@ -93,6 +94,7 @@ def create_gene_score(result, other_prefix, other_primary):
             WHERE C.species = :species %(and_where)s
             GROUP BY D.ensg""".format(primary=other_primary, base=other_prefix)) \
     .query('filter_panel', filter_panel) \
+    .query('filter_' + other_primary, 'c.'+ other_primary + ' %(operator)s %(value)s') \
     .replace('table').replace('agg_score').replace('and_where').arg('species').build()
 
 
@@ -118,7 +120,9 @@ def create_sample(result, basename, idtype, primary):
       SELECT distinct %(col)s as cat
       FROM {base}.targid_{base}
       WHERE %(col)s is not null AND %(col)s <> ''""".format(base=basename)) \
-    .replace('where').query('filter_panel', filter_panel).build()
+    .replace('where').query('filter_panel', filter_panel) \
+    .query('filter_' + primary, 'c.'+ primary + ' %(operator)s %(value)s') \
+    .build()
 
   result[basename + '_panel'] = DBViewBuilder().query("""
   SELECT panel as id, paneldescription as description
@@ -131,7 +135,9 @@ def create_sample(result, basename, idtype, primary):
         INNER JOIN {base}.targid_{base} C ON a.{primary} = C.{primary}
         WHERE a.ensg = :ensg %(and_where)s""".format(primary=primary, base=basename)).arg("ensg").replace('and_where').replace(
     "attribute") \
-    .query('filter_panel', filter_panel).build()
+    .query('filter_panel', filter_panel) \
+    .query('filter_' + primary, 'c.'+ primary + ' %(operator)s %(value)s') \
+    .build()
 
   result[basename + '_co_expression'] = co_expression
   expression_vs_copynumber = DBViewBuilder().idtype(idtype_gene).query("""
@@ -142,7 +148,9 @@ def create_sample(result, basename, idtype, primary):
        INNER JOIN {base}.targid_{base} C ON a.{primary} = C.{primary}
        WHERE a.ensg = :ensg %(and_where)s""".format(primary=primary, base=basename)).arg("ensg").replace('and_where').replace(
     "expression_subtype").replace("copynumber_subtype") \
-    .query('filter_panel', filter_panel).build()
+    .query('filter_panel', filter_panel) \
+    .query('filter_' + primary, 'c.'+ primary + ' %(operator)s %(value)s') \
+    .build()
 
   result[basename + '_expression_vs_copynumber'] = expression_vs_copynumber
 
@@ -153,7 +161,9 @@ def create_sample(result, basename, idtype, primary):
        INNER JOIN PUBLIC.targid_gene g ON D.ensg = g.ensg
        WHERE D.ensg = :ensg AND C.species = :species %(and_where)s""".format(primary=primary, base=basename)).arg(
     "ensg").arg("species").replace('and_where') \
-    .query('filter_panel', filter_panel).build()
+    .query('filter_panel', filter_panel) \
+    .query('filter_' + primary, 'c.'+ primary + ' %(operator)s %(value)s') \
+    .build()
 
   result[basename + '_onco_print'] = onco_print
 
@@ -161,7 +171,9 @@ def create_sample(result, basename, idtype, primary):
        SELECT C.targidid AS _id, C.{primary} AS id
      FROM {base}.targid_{base} C
      WHERE C.species = :species %(and_where)s""".format(primary=primary, base=basename)).arg("species").replace('and_where') \
-    .query('filter_panel', filter_panel).build()
+    .query('filter_panel', filter_panel) \
+    .query('filter_' + primary, 'c.'+ primary + ' %(operator)s %(value)s') \
+    .build()
 
   result[basename + '_onco_print_sample_list'] = onco_print_sample_list
 
@@ -193,6 +205,7 @@ def create_sample(result, basename, idtype, primary):
          ON freq.{primary} = a.{primary}""".format(primary=primary, base=basename)) \
     .replace("table").replace('and_where').replace("attribute").replace("operator") \
     .query('filter_panel', filter_gene_panel) \
+    .query('filter_' + primary, 'c.'+ primary + ' %(operator)s %(value)s') \
     .arg("species").arg("value").build()
 
   result[basename + '_gene_score'] = DBViewBuilder().idtype(idtype).query("""
@@ -202,6 +215,7 @@ def create_sample(result, basename, idtype, primary):
           WHERE C.species = :species %(and_where)s
           GROUP BY D.{primary}""".format(primary=primary, base=basename)) \
     .query('filter_panel', filter_gene_panel) \
+    .query('filter_' + primary, 'c.'+ primary + ' %(operator)s %(value)s') \
     .replace('table').replace('agg_score').replace('and_where').arg('species').build()
 
   result[basename + '_check_ids'] = DBViewBuilder().query("""
@@ -229,10 +243,23 @@ views = dict(
     .column('biotype', type='categorical')
     .column('seqregionstart', type='number')
     .column('seqregionend', type='number')
-    .replace('where').query('filter_panel', 'ensg = ANY(SELECT ensg FROM public.targid_geneassignment WHERE genesetname %(operator)s %(value)s)').build(),
+    .replace('where')
+    .query('filter_panel', 'ensg = ANY(SELECT ensg FROM public.targid_geneassignment WHERE genesetname %(operator)s %(value)s)')
+    .query('filter_ensg', 'c.ensg %(operator)s %(value)s')
+    .build(),
   gene_panel=DBViewBuilder().query("""
     SELECT genesetname AS id, species AS description FROM public.targid_geneset ORDER BY genesetname ASC""")
     .build(),
+
+  gene_gene_items=DBViewBuilder().idtype(idtype_gene).query("""
+      SELECT ensg as id, symbol AS text
+      FROM public.targid_gene WHERE (LOWER(symbol) LIKE :query OR LOWER(ensg) LIKE :query) AND species = :species
+      ORDER BY ensg ASC LIMIT %(limit)s OFFSET %(offset)s""") \
+    .query('count', """
+      SELECT COUNT(*) AS total_count
+      FROM public.targid_gene WHERE (LOWER(symbol) LIKE :query OR LOWER(ensg) LIKE :query) AND species = :species""") \
+    .replace("limit").replace("offset") \
+    .arg("query").arg('species').build(),
 
   gene_map_ensgs=DBViewBuilder().idtype(idtype_gene).query("""
     SELECT targidid AS _id, ensg AS id, symbol
