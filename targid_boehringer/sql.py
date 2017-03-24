@@ -245,7 +245,6 @@ views = dict(
     .column('seqregionend', type='number')
     .replace('where')
     .query('filter_panel', 'ensg = ANY(SELECT ensg FROM public.targid_geneassignment WHERE genesetname %(operator)s %(value)s)')
-    .query('filter_ensg', 'c.ensg %(operator)s %(value)s')
     .build(),
   gene_panel=DBViewBuilder().query("""
     SELECT genesetname AS id, species AS description FROM public.targid_geneset ORDER BY genesetname ASC""")
