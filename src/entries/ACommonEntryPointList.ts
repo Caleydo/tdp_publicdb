@@ -94,13 +94,10 @@ export abstract class ACommonEntryPointList extends AEntryPointList {
         tags: true,
         tokenSeparators: [',', ' ', ';', '\t'],
         ajax: {
-          url: api2absURL(`/targid/db/${this.dataSource.db}/single_entity_lookup/lookup`),
+          url: api2absURL(`/targid/db/${this.dataSource.db}/${this.dataSource.base}_items/lookup`),
           data: (params: any) => {
             return {
-              schema: this.dataSource.schema,
-              table_name: this.dataSource.tableName,
-              id_column: this.dataSource.entityName,
-              query_column: this.dataSource.entityName,
+              column: this.dataSource.entityName,
               species: getSelectedSpecies(),
               query: params.term,
               page: params.page
