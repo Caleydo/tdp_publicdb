@@ -2,20 +2,17 @@
  * Created by Samuel Gratzl on 27.04.2016.
  */
 
-import {AView, IViewContext, ISelection, IView} from 'ordino/src/View';
+import {ASmallMultipleView, IViewContext, ISelection, IView} from 'ordino/src/View';
 import {getAPIJSON} from 'phovea_core/src/ajax';
 import {getSelectedSpecies} from 'targid_common/src/Common';
 import {IDataSourceConfig, cellline, tissue, gene} from '../config';
 import {FormBuilder, FormElementType, IFormSelectDesc, IFormSelectElement} from 'ordino/src/FormBuilder';
+import {Primitive} from 'd3';
 
-export abstract class AInfoTable extends AView {
+export abstract class AInfoTable extends ASmallMultipleView {
 
-  private $table:d3.Selection<IView>;
-  private $thead;
-  private $tbody;
-
-  private selectedItems: string[];
-  private data: Promise<any>;
+  private data: {[key: string]: string}[];
+  private ids: string[];
 
   /**
    * Parameter UI form
@@ -23,7 +20,7 @@ export abstract class AInfoTable extends AView {
   private paramForm:FormBuilder;
 
   constructor(context: IViewContext, private selection: ISelection, parent: Element, private dataSource:IDataSourceConfig, options?) {
-    super(context, parent, options);
+    super(context, selection, parent, options);
 
     this.changeSelection(selection);
   }
@@ -68,7 +65,8 @@ export abstract class AInfoTable extends AView {
   }
 
   private async updateOptionsData() {
-    const optionsConfig = this.selectedItems.map((d) => {
+    this.ids = await this.resolveIds(this.selection.idtype, this.selection.range, this.dataSource.idType);
+    const optionsConfig = this.ids.map((d) => {
       return {
         value: d,
         name: d,
@@ -90,37 +88,22 @@ export abstract class AInfoTable extends AView {
 
   init() {
     super.init();
-
-    this.$node.classed('infoTable', true);
-
-    this.$table = this.$node
-      .append('table').classed('table table-striped table-hover table-bordered table-condensed', true);
-
-    this.$thead = this.$table.append('thead');
-    this.$thead.append('tr');
-    this.$thead.append('th').text('Field Name');
-    this.$thead.append('th').text('Data');
-
-    this.$tbody = this.$table.append('tbody');
+    this.$node
+      .classed('infoTable', true);
   }
 
   async changeSelection(selection: ISelection) {
     this.selection = selection;
-    await this.resolveSelectedItems();
     await this.updateOptionsData();
     return this.update();
   }
 
-  private async resolveSelectedItems() {
-    this.selectedItems = await this.resolveIds(this.selection.idtype, this.selection.range, this.dataSource.idType);
-  }
-
   private async fetchInformation() {
-    const selection: { name: string, value: string, data: string } = this.paramForm.getElementById('item').value;
+    const ids = await this.resolveIds(this.selection.idtype, this.selection.range, this.dataSource.idType);
     this.data = await getAPIJSON(`/targid/db/${this.dataSource.db}/${this.dataSource.base}/filter`, {
-        ['filter_'+this.dataSource.entityName]: selection.value,
-        species: getSelectedSpecies()
-      });
+      ['filter_'+this.dataSource.entityName]: ids,
+      species: getSelectedSpecies()
+    });
   }
 
   private async update() {
@@ -129,26 +112,44 @@ export abstract class AInfoTable extends AView {
     try {
       await this.fetchInformation();
       this.setBusy(false);
-      this.updateInfoTable(this.data[0]);
+      console.log(this.data);
+      this.updateInfoTable(this.data);
     } catch(error) {
       console.error(error);
       this.setBusy(false);
     }
   }
 
-  private updateInfoTable(data: {[key: string]: string}) {
-    const tuples = [];
-    Object.keys(data).forEach((key) => {
-      if(key.startsWith('_')) {
-        return;
-      }
-      tuples.push([key, data[key]]);
+  private updateInfoTable(data: {[key: string]: string}[]) {
+    const $tables = this.$node.selectAll('table').data(data);
+
+    const $table = $tables.enter()
+      .append('table')
+      .classed('table table-striped table-hover table-bordered table-condensed', true)
+      .attr('style', 'width: 30%; margin: 0 1% 10px 0');
+
+    $tables.exit().remove();
+
+    const $thead = $table.append('thead');
+    $thead.append('tr');
+    $thead.append('th').text('Field Name');
+    $thead.append('th').text('Data');
+
+    const $tbody = $table.append('tbody');
+
+    const $tr = $tbody.selectAll('tr').data((d) => {
+      const tuples = [];
+      Object.keys(d).forEach((key) => {
+        if(key.startsWith('_')) {
+          return;
+        }
+        tuples.push([key, d[key]]);
+      });
+      return tuples;
     });
 
-    const $tr = this.$tbody.selectAll('tr').data(tuples);
-
     // ENTER selection for table rows
-    $tr.enter().append('tr');
+    $tr.enter().append('tr').attr('style', 'width: 1%; white-space: nowrap');
 
     // append td elements for each tr using a nested D3 selection
     // UPDATE selection for table rows
@@ -158,7 +159,7 @@ export abstract class AInfoTable extends AView {
     $td.enter().append('td');
 
     // UPDATE selection for table data
-    $td.text((d) => d);
+    $td.text((d) => <Primitive>d);
 
     $tr.exit().remove();
   }

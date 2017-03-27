@@ -389,7 +389,7 @@ module.exports = function(registry) {
     'name': 'Database Info',
     'factory': 'createGeneInfoTable',
     'idtype': 'Ensembl',
-    'selection': 'multiple',
+    'selection': 'small_multiple',
     'group': {
       'name': 'Sample overview',
       'order': 50
