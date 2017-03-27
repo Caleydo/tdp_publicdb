@@ -62,8 +62,8 @@ def create_gene_score(result, other_prefix, other_primary):
           SELECT D.ensg AS id, D.%(attribute)s AS score
           FROM {base}.targid_%(table)s D
           INNER JOIN {base}.targid_{base} C ON D.{primary} = C.{primary}
-          WHERE C.species = :species AND C.{primary} = :name""".format(primary=other_primary, base=other_prefix)) \
-    .replace('table').replace('attribute').arg('name').arg('species').build()
+          WHERE C.species = :species AND C.{primary} = :name %(and_where)s""".format(primary=other_primary, base=other_prefix)) \
+    .replace('table').replace('attribute').replace('and_where').arg('name').arg('species').build()
 
   result[basename + '_frequency_score'] = DBViewBuilder().idtype(idtype_gene).query("""
            SELECT a.ensg AS id, (COALESCE(freq.count,0)+0.0) AS count, a.total
@@ -183,8 +183,8 @@ def create_sample(result, basename, idtype, primary):
         SELECT D.{primary} AS id, D.%(attribute)s AS score
         FROM {base}.targid_%(table)s D
         INNER JOIN public.targid_gene C ON D.ensg = C.ensg
-        WHERE C.species = :species AND c.ensg = :name""".format(primary=primary, base=basename)) \
-    .replace('table').replace('attribute').arg('name').arg('species').build()
+        WHERE C.species = :species AND c.ensg = :name %(and_where)s""".format(primary=primary, base=basename)) \
+    .replace('table').replace('attribute').replace('and_where').arg('name').arg('species').build()
 
   result[basename + '_gene_frequency_score'] = DBViewBuilder().idtype(idtype).query("""
          SELECT a.{primary} AS id, (COALESCE(freq.count,0)+0.0) AS count, a.total

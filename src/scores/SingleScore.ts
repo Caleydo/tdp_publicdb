@@ -3,13 +3,13 @@
  */
 
 import {generateDialog} from 'phovea_ui/src/dialogs';
-import {getAPIJSON, api2absURL} from 'phovea_core/src/ajax';
-import {Range} from 'phovea_core/src/range';
+import {getAPIJSON} from 'phovea_core/src/ajax';
+import {Range, RangeLike} from 'phovea_core/src/range';
 import {IDType} from 'phovea_core/src/idtype';
 import {select} from 'd3';
 import {getSelectedSpecies} from 'targid_common/src/Common';
 import {IDataSourceConfig, gene, tissue, cellline} from '../config';
-import {convertLog2ToLinear} from '../utils';
+import {convertLog2ToLinear, limitScoreRows} from '../utils';
 import {IScore} from 'ordino/src/LineUpView';
 import {createDesc} from './utils';
 import {IFormElementDesc} from 'ordino/src/form';
@@ -36,14 +36,15 @@ export default class SingleScore extends AScore implements IScore<any> {
     return createDesc(this.dataSubType.type, `${this.dataSubType.name} of ${this.parameter.name.text}`, this.dataSubType);
   }
 
-  async compute(ids:Range, idtype:IDType):Promise<any[]> {
-    const url = `/targid/db/${this.dataSource.db}/${this.dataSource.base}_${this.oppositeDataSource.base}_single_score`;
-    const param = {
+  async compute(ids:RangeLike, idtype:IDType):Promise<any[]> {
+    const url = `/targid/db/${this.dataSource.db}/${this.dataSource.base}_${this.oppositeDataSource.base}_single_score/filter`;
+    const param: any = {
       table: this.dataType.tableName,
       attribute: this.dataSubType.id,
       name: this.parameter.name.id,
       species: getSelectedSpecies()
     };
+    limitScoreRows(param, ids, this.dataSource);
 
     const rows: any[] = await getAPIJSON(url, param);
     if (this.dataSubType.useForAggregation.indexOf('log2') !== -1) {

@@ -11,7 +11,7 @@ import {convertLog2ToLinear} from '../utils';
 import {IScore} from 'ordino/src/LineUpView';
 import {createDesc} from './utils';
 import AScore, {ICommonScoreParam} from './AScore';
-import {toFilter} from '../utils';
+import {toFilter, limitScoreRows} from '../utils';
 import {IBoxPlotData} from 'lineupjs/src/model/BoxPlotColumn';
 
 interface IAggregatedScoreParam extends ICommonScoreParam {
@@ -39,7 +39,7 @@ export default class AggregatedScore extends AScore implements IScore<number> {
     return createDesc(this.parameter.aggregation === 'boxplot' ? 'boxplot' : dataSubtypes.number, `${this.parameter.aggregation} ${this.dataSubType.name}`, this.dataSubType);
   }
 
-  async compute(ids: ranges.Range, idtype: idtypes.IDType): Promise<any[]> {
+  async compute(ids: ranges.RangeLike, idtype: idtypes.IDType): Promise<any[]> {
     const url = `/targid/db/${this.dataSource.db}/${this.dataSource.base}_${this.oppositeDataSource.base}_score/filter`;
 
     const param = {
@@ -49,6 +49,7 @@ export default class AggregatedScore extends AScore implements IScore<number> {
       agg: this.parameter.aggregation,
       species: getSelectedSpecies()
     };
+    limitScoreRows(param, ids, this.dataSource);
     toFilter(param, this.parameter.filter);
 
     const rows: any[] = await ajax.getAPIJSON(url, param);

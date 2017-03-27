@@ -8,6 +8,12 @@ export const allTypes = 'All Tumor Types';
 export const allBioTypes = 'All Bio Types';
 //select distinct tumortype from cellline where tumortype is not null
 
+/**
+ * maximal number of rows in which just the subset if fetched instead of all
+ * @type {number}
+ */
+export const MAX_FILTER_SCORE_ROWS_BEFORE_ALL = 1000;
+
 
 export interface IDataSourceConfig {
   idType: string;
