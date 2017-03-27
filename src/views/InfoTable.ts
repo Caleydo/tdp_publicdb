@@ -16,6 +16,7 @@ export abstract class AInfoTable extends AView {
 
   private selectedItems: string[];
   private data: Promise<any>;
+  private fields = this.getFields();
 
   /**
    * Parameter UI form
@@ -142,7 +143,17 @@ export abstract class AInfoTable extends AView {
       if(key.startsWith('_')) {
         return;
       }
-      tuples.push([key, data[key]]);
+      const k = (key === 'id')? this.mapID() : key;
+      tuples.push([k, data[key]]);
+    });
+    tuples.sort((a, b) => {
+      const first = this.fields.find((f) => f.key === a[0]);
+      const second = this.fields.find((f) => f.key === b[0]);
+
+      if(!first || !second) {
+        return 0;
+      }
+      return first.order - second.order;
     });
 
     const $tr = this.$tbody.selectAll('tr').data(tuples);
@@ -162,11 +173,43 @@ export abstract class AInfoTable extends AView {
 
     $tr.exit().remove();
   }
+
+  protected abstract getFields();
+  protected abstract mapID();
 }
 
 class CelllineInfoTable extends AInfoTable {
   constructor(context, selection, parent, options) {
     super(context, selection, parent, cellline, options);
+  }
+
+  protected getFields() {
+    return [
+      {
+        key: 'celllinename',
+        order: 10
+      },
+      {
+        key: 'species',
+        order: 20
+      },
+      {
+        key: 'organ',
+        order: 30
+      },
+      {
+        key: 'tumortype',
+        order: 40
+      },
+      {
+        key: 'gender',
+        order: 50
+      }
+    ];
+  }
+
+  protected mapID() {
+    return 'celllinename';
   }
 }
 
@@ -174,11 +217,81 @@ class GeneInfoTable extends AInfoTable {
   constructor(context, selection, parent, options) {
     super(context, selection, parent, gene, options);
   }
+
+  protected getFields() {
+    return [
+      {
+        key: 'ensg',
+        order: 10
+      },
+      {
+        key: 'species',
+        order: 30
+      },
+      {
+        key: 'symbol',
+        order: 20
+      },
+      {
+        key: 'chromosome',
+        order: 40
+      },
+      {
+        key: 'strand',
+        order: 50
+      },
+      {
+        key: 'biotype',
+        order: 60
+      },
+      {
+        key: 'seqregionstart',
+        order: 70
+      },
+      {
+        key: 'seqregionend',
+        order: 80
+      }
+    ];
+  }
+
+  protected mapID() {
+    return 'ensg';
+  }
 }
 
 class TissueInfoTable extends AInfoTable {
   constructor(context, selection, parent, options) {
     super(context, selection, parent, tissue, options);
+  }
+
+  protected getFields() {
+    return [
+      {
+        key: 'tissuename',
+        order: 10
+      },
+      {
+        key: 'species',
+        order: 20
+      },
+      {
+        key: 'organ',
+        order: 30
+      },
+      {
+        key: 'tumortype',
+        order: 40
+      },
+      {
+        key: 'gender',
+        order: 50
+      }
+    ];
+  }
+
+  protected mapID() {
+    return 'tissuename';
   }
 }
 
