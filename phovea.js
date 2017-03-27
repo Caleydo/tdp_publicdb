@@ -389,7 +389,11 @@ module.exports = function(registry) {
     'name': 'Database Info',
     'factory': 'createGeneInfoTable',
     'idtype': 'Ensembl',
-    'selection': 'multiple'
+    'selection': 'multiple',
+    'group': {
+      'name': 'Sample overview',
+      'order': 50
+    }
   });
 
   registry.push('targidView', 'cellline_generic_detail_view', function () {
@@ -398,7 +402,11 @@ module.exports = function(registry) {
     'name': 'Database Info',
     'factory': 'createCelllineInfoTable',
     'idtype': 'Cellline',
-    'selection': 'multiple'
+    'selection': 'multiple',
+    'group': {
+      'name': 'Gene overview',
+      'order': 30
+    }
   });
 
   registry.push('targidView', 'tissue_generic_detail_view', function () {
@@ -407,7 +415,11 @@ module.exports = function(registry) {
     'name': 'Database Info',
     'factory': 'createTissueInfoTable',
     'idtype': 'Tissue',
-    'selection': 'multiple'
+    'selection': 'multiple',
+    'group': {
+      'name': 'Gene overview',
+      'order': 30
+    }
   });
 
   registry.push('targidView', 'pubmed', function () {
@@ -417,7 +429,11 @@ module.exports = function(registry) {
     'site': '//www.ncbi.nlm.nih.gov/pubmed?term={gene}',
     'argument': 'gene',
     'idtype': 'Ensembl',
-    'selection': 'multiple'
+    'selection': 'multiple',
+    'group': {
+      'name': 'External resources',
+      'order': 60
+    }
   });
   // generator-phovea:end
 };
