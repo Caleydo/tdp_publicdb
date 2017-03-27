@@ -25,32 +25,6 @@ export abstract class AInfoTable extends ASmallMultipleView {
     this.changeSelection(selection);
   }
 
-  buildParameterUI($parent: d3.Selection<any>, onChange: (name: string, value: any)=>Promise<any>) {
-    this.paramForm = new FormBuilder($parent);
-
-    const paramDesc:IFormSelectDesc[] = [
-      {
-        type: FormElementType.SELECT,
-        label: 'Show',
-        id: 'item',
-        options: {
-          optionsData: []
-        }
-      }
-    ];
-
-    // map FormElement change function to provenance graph onChange function
-    // the view's setParameter method is called with some indirections down the line
-    paramDesc.forEach((p) => {
-      p.options.onChange = (selection, formElement) => onChange(formElement.id, selection.value);
-    });
-
-    this.paramForm.build(paramDesc);
-
-    // add other fields
-    super.buildParameterUI($parent.select('form'), onChange);
-  }
-
   getParameter(name: string): any {
     if(this.paramForm.getElementById(name).value === null) {
       return '';
@@ -64,28 +38,6 @@ export abstract class AInfoTable extends ASmallMultipleView {
     this.update();
   }
 
-  private async updateOptionsData() {
-    this.ids = await this.resolveIds(this.selection.idtype, this.selection.range, this.dataSource.idType);
-    const optionsConfig = this.ids.map((d) => {
-      return {
-        value: d,
-        name: d,
-        data: d
-      };
-    });
-
-    const select = this.paramForm.getElementById('item');
-
-    // backup entry and restore the selectedIndex by value afterwards again,
-    // because the position of the selected element might change
-    const bak = select.value;
-    (<IFormSelectElement>select).updateOptionElements(optionsConfig);
-
-    if(bak !== null) {
-      select.value = bak;
-    }
-  }
-
   init() {
     super.init();
     this.$node
@@ -94,7 +46,6 @@ export abstract class AInfoTable extends ASmallMultipleView {
 
   async changeSelection(selection: ISelection) {
     this.selection = selection;
-    await this.updateOptionsData();
     return this.update();
   }
 
@@ -112,7 +63,6 @@ export abstract class AInfoTable extends ASmallMultipleView {
     try {
       await this.fetchInformation();
       this.setBusy(false);
-      console.log(this.data);
       this.updateInfoTable(this.data);
     } catch(error) {
       console.error(error);
