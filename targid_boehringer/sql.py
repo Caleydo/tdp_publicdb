@@ -234,6 +234,16 @@ views = dict(
     SELECT genesetname AS id, species AS description FROM public.targid_geneset ORDER BY genesetname ASC""")
     .build(),
 
+  gene_gene_items=DBViewBuilder().idtype(idtype_gene).query("""
+      SELECT ensg as id, symbol AS text
+      FROM public.targid_gene WHERE (LOWER(symbol) LIKE :query OR LOWER(ensg) LIKE :query) AND species = :species
+      ORDER BY ensg ASC LIMIT %(limit)s OFFSET %(offset)s""") \
+    .query('count', """
+      SELECT COUNT(*) AS total_count
+      FROM public.targid_gene WHERE (LOWER(symbol) LIKE :query OR LOWER(ensg) LIKE :query) AND species = :species""") \
+    .replace("limit").replace("offset") \
+    .arg("query").arg('species').build(),
+
   gene_map_ensgs=DBViewBuilder().idtype(idtype_gene).query("""
     SELECT targidid AS _id, ensg AS id, symbol
     FROM public.targid_gene WHERE ensg IN (%(ensgs)s) AND species = :species

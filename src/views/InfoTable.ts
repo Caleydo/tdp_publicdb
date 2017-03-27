@@ -11,8 +11,12 @@ import {Primitive} from 'd3';
 
 export abstract class AInfoTable extends ASmallMultipleView {
 
-  private data: {[key: string]: string}[];
-  private ids: string[];
+  private $table: d3.Selection<IView>;
+  private $thead;
+  private $tbody;
+
+  private data: string[][];
+  private fields: string[] = this.getFields();
 
   /**
    * Parameter UI form
@@ -21,6 +25,12 @@ export abstract class AInfoTable extends ASmallMultipleView {
 
   constructor(context: IViewContext, private selection: ISelection, parent: Element, private dataSource:IDataSourceConfig, options?) {
     super(context, selection, parent, options);
+
+    this.$table = this.$node
+      .append('table')
+      .classed('table table-striped table-hover table-bordered table-condensed', true);
+    this.$thead = this.$table.append('thead').append('tr');
+    this.$tbody = this.$table.append('tbody');
 
     this.changeSelection(selection);
   }
@@ -51,10 +61,11 @@ export abstract class AInfoTable extends ASmallMultipleView {
 
   private async fetchInformation() {
     const ids = await this.resolveIds(this.selection.idtype, this.selection.range, this.dataSource.idType);
-    this.data = await getAPIJSON(`/targid/db/${this.dataSource.db}/${this.dataSource.base}/filter`, {
+    const results = await getAPIJSON(`/targid/db/${this.dataSource.db}/${this.dataSource.base}/filter`, {
       ['filter_'+this.dataSource.entityName]: ids,
       species: getSelectedSpecies()
     });
+    this.data = this.transformData(results);
   }
 
   private async update() {
@@ -70,54 +81,108 @@ export abstract class AInfoTable extends ASmallMultipleView {
     }
   }
 
-  private updateInfoTable(data: {[key: string]: string}[]) {
-    const $tables = this.$node.selectAll('table').data(data);
+  private transformData(dbResults): string[][] {
+    const header = ['Field Name'].concat(dbResults.map((d) => d.symbol)); // default label for first column + names
 
-    const $table = $tables.enter()
-      .append('table')
-      .classed('table table-striped table-hover table-bordered table-condensed', true)
-      .attr('style', 'width: 30%; margin: 0 1% 10px 0');
-
-    $tables.exit().remove();
-
-    const $thead = $table.append('thead');
-    $thead.append('tr');
-    $thead.append('th').text('Field Name');
-    $thead.append('th').text('Data');
-
-    const $tbody = $table.append('tbody');
-
-    const $tr = $tbody.selectAll('tr').data((d) => {
-      const tuples = [];
-      Object.keys(d).forEach((key) => {
+    const dataMap = new Map();
+    dbResults.forEach((datum) => {
+      Object.keys(datum).forEach((key) => {
         if(key.startsWith('_')) {
           return;
         }
-        tuples.push([key, d[key]]);
+        const k = (key === 'id')? this.mapID() : key;
+        if(!dataMap.has(k)) {
+          dataMap.set(k, [datum[k]]);
+        } else {
+          dataMap.get(k).push(datum[k]);
+        }
       });
-      return tuples;
     });
-
-    // ENTER selection for table rows
-    $tr.enter().append('tr').attr('style', 'width: 1%; white-space: nowrap');
-
-    // append td elements for each tr using a nested D3 selection
-    // UPDATE selection for table rows
-    const $td = $tr.selectAll('td').data((d) => d);
-
-    // ENTER selection for table data
-    $td.enter().append('td');
-
-    // UPDATE selection for table data
-    $td.text((d) => <Primitive>d);
-
-    $tr.exit().remove();
+    const body = Array
+      .from(dataMap)
+      .map((d) => [d[0], ...d[1]]);
+    return [header, ...body];
   }
+
+  private updateInfoTable(data: string[][]) {
+    const $th = this.$thead.selectAll('th').data(data[0]);
+    $th.enter().append('th');
+    $th.text((d) => d);
+
+    $th.exit().remove();
+
+    // const $tr = $tbody.selectAll('tr').data((d) => {
+    //   const tuples = [];
+    //   Object.keys(d).forEach((key) => {
+    //     if(key.startsWith('_')) {
+    //       return;
+    //     }
+    //     const k = (key === 'id')? this.mapID() : key;
+    //     tuples.push([k, d[key]]);
+    //   });
+    //   tuples.sort((a, b) => {
+    //     const first = this.fields.find((f) => f.key === a[0]);
+    //     const second = this.fields.find((f) => f.key === b[0]);
+    //     if(!first || !second) {
+    //       return 0;
+    //     }
+    //     return first.order - second.order;
+    //   });
+    //   return tuples;
+    // });
+    //
+    // // ENTER selection for table rows
+    // $tr.enter().append('tr');
+    //
+    // // append td elements for each tr using a nested D3 selection
+    // // UPDATE selection for table rows
+    // const $td = $tr.selectAll('td').data((d) => d);
+    //
+    // // ENTER selection for table data
+    // $td.enter().append('td');
+    //
+    // // UPDATE selection for table data
+    // $td.text((d) => <Primitive>d);
+    //
+    // $tr.exit().remove();
+  }
+
+  protected abstract getFields();
+  protected abstract mapID();
 }
 
 class CelllineInfoTable extends AInfoTable {
   constructor(context, selection, parent, options) {
     super(context, selection, parent, cellline, options);
+  }
+
+  protected getFields() {
+    return [
+      {
+        key: 'celllinename',
+        order: 10
+      },
+      {
+        key: 'species',
+        order: 20
+      },
+      {
+        key: 'organ',
+        order: 30
+      },
+      {
+        key: 'tumortype',
+        order: 40
+      },
+      {
+        key: 'gender',
+        order: 50
+      }
+    ];
+  }
+
+  protected mapID() {
+    return 'celllinename';
   }
 }
 
@@ -125,11 +190,81 @@ class GeneInfoTable extends AInfoTable {
   constructor(context, selection, parent, options) {
     super(context, selection, parent, gene, options);
   }
+
+  protected getFields() {
+    return [
+      {
+        key: 'ensg',
+        order: 10
+      },
+      {
+        key: 'species',
+        order: 30
+      },
+      {
+        key: 'symbol',
+        order: 20
+      },
+      {
+        key: 'chromosome',
+        order: 40
+      },
+      {
+        key: 'strand',
+        order: 50
+      },
+      {
+        key: 'biotype',
+        order: 60
+      },
+      {
+        key: 'seqregionstart',
+        order: 70
+      },
+      {
+        key: 'seqregionend',
+        order: 80
+      }
+    ];
+  }
+
+  protected mapID() {
+    return 'ensg';
+  }
 }
 
 class TissueInfoTable extends AInfoTable {
   constructor(context, selection, parent, options) {
     super(context, selection, parent, tissue, options);
+  }
+
+  protected getFields() {
+    return [
+      {
+        key: 'tissuename',
+        order: 10
+      },
+      {
+        key: 'species',
+        order: 20
+      },
+      {
+        key: 'organ',
+        order: 30
+      },
+      {
+        key: 'tumortype',
+        order: 40
+      },
+      {
+        key: 'gender',
+        order: 50
+      }
+    ];
+  }
+
+  protected mapID() {
+    return 'tissuename';
   }
 }
 
