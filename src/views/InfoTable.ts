@@ -2,14 +2,13 @@
  * Created by Samuel Gratzl on 27.04.2016.
  */
 
-import {ASmallMultipleView, IViewContext, ISelection, IView} from 'ordino/src/View';
+import {AView, IViewContext, ISelection, IView} from 'ordino/src/View';
 import {getAPIJSON} from 'phovea_core/src/ajax';
 import {getSelectedSpecies} from 'targid_common/src/Common';
 import {IDataSourceConfig, cellline, tissue, gene} from '../config';
-import {FormBuilder, FormElementType, IFormSelectDesc, IFormSelectElement} from 'ordino/src/FormBuilder';
 import {Primitive} from 'd3';
 
-export abstract class AInfoTable extends ASmallMultipleView {
+export abstract class AInfoTable extends AView {
 
   private $table: d3.Selection<IView>;
   private $thead;
@@ -18,13 +17,8 @@ export abstract class AInfoTable extends ASmallMultipleView {
   private data: string[][];
   private fields: string[] = this.getFields();
 
-  /**
-   * Parameter UI form
-   */
-  private paramForm:FormBuilder;
-
   constructor(context: IViewContext, private selection: ISelection, parent: Element, private dataSource:IDataSourceConfig, options?) {
-    super(context, selection, parent, options);
+    super(context, parent, options);
 
     this.$table = this.$node
       .append('table')
@@ -33,19 +27,6 @@ export abstract class AInfoTable extends ASmallMultipleView {
     this.$tbody = this.$table.append('tbody');
 
     this.changeSelection(selection);
-  }
-
-  getParameter(name: string): any {
-    if(this.paramForm.getElementById(name).value === null) {
-      return '';
-    }
-
-    return this.paramForm.getElementById(name).value;
-  }
-
-  async setParameter(name: string, value: any) {
-    this.paramForm.getElementById(name).value = value;
-    this.update();
   }
 
   init() {
@@ -82,22 +63,25 @@ export abstract class AInfoTable extends ASmallMultipleView {
   }
 
   private transformData(dbResults): string[][] {
-    const header = ['Field Name'].concat(dbResults.map((d) => d.symbol)); // default label for first column + names
+    const header = ['Field Name'];
 
     const dataMap = new Map();
     dbResults.forEach((datum) => {
+      header.push(datum.symbol);
       Object.keys(datum).forEach((key) => {
         if(key.startsWith('_')) {
           return;
         }
         const k = (key === 'id')? this.mapID() : key;
         if(!dataMap.has(k)) {
-          dataMap.set(k, [datum[k]]);
+          dataMap.set(k, [datum[key]]);
         } else {
-          dataMap.get(k).push(datum[k]);
+          dataMap.get(k).push(datum[key]);
         }
       });
     });
+
+    // create a 2D array from where the first elements are the properties
     const body = Array
       .from(dataMap)
       .map((d) => [d[0], ...d[1]]);
@@ -109,42 +93,24 @@ export abstract class AInfoTable extends ASmallMultipleView {
     $th.enter().append('th');
     $th.text((d) => d);
 
-    $th.exit().remove();
-
-    // const $tr = $tbody.selectAll('tr').data((d) => {
-    //   const tuples = [];
-    //   Object.keys(d).forEach((key) => {
-    //     if(key.startsWith('_')) {
-    //       return;
-    //     }
-    //     const k = (key === 'id')? this.mapID() : key;
-    //     tuples.push([k, d[key]]);
-    //   });
-    //   tuples.sort((a, b) => {
-    //     const first = this.fields.find((f) => f.key === a[0]);
-    //     const second = this.fields.find((f) => f.key === b[0]);
-    //     if(!first || !second) {
-    //       return 0;
-    //     }
-    //     return first.order - second.order;
-    //   });
-    //   return tuples;
-    // });
+    const $tr = this.$tbody.selectAll('tr').data(data.slice(1));
     //
     // // ENTER selection for table rows
-    // $tr.enter().append('tr');
+    $tr.enter().append('tr');
     //
-    // // append td elements for each tr using a nested D3 selection
-    // // UPDATE selection for table rows
-    // const $td = $tr.selectAll('td').data((d) => d);
-    //
-    // // ENTER selection for table data
-    // $td.enter().append('td');
-    //
-    // // UPDATE selection for table data
-    // $td.text((d) => <Primitive>d);
-    //
-    // $tr.exit().remove();
+    // append td elements for each tr using a nested D3 selection
+    // UPDATE selection for table rows
+    const $td = $tr.selectAll('td').data((d) => d);
+
+    // ENTER selection for table data
+    $td.enter().append('td');
+
+    // UPDATE selection for table data
+    $td.text((d) => <Primitive>d);
+
+    $td.exit().remove();
+    $tr.exit().remove();
+    $th.exit().remove();
   }
 
   protected abstract getFields();
