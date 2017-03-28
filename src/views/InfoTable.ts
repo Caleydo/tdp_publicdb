@@ -99,13 +99,9 @@ export abstract class AInfoTable extends AView {
       });
 
     if(transposeTable) {
-      return this.transposeTable([header, ...body]);
+      return d3Transpose([header, ...body]);
     }
     return [header, ...body];
-  }
-
-  private transposeTable(data: Primitive[][]) {
-      return d3Transpose(data);
   }
 
   private updateInfoTable(data: Primitive[][]): void {
