@@ -14,8 +14,8 @@ export abstract class AInfoTable extends AView {
   private $thead;
   private $tbody;
 
-  private data: string[][];
-  private fields: string[] = this.getFields();
+  private data: Primitive[][];
+  private fields: {key: string, order: number}[] = this.getFields();
 
   constructor(context: IViewContext, private selection: ISelection, parent: Element, private dataSource:IDataSourceConfig, options?) {
     super(context, parent, options);
@@ -62,12 +62,17 @@ export abstract class AInfoTable extends AView {
     }
   }
 
-  private transformData(dbResults): string[][] {
+  /**
+   * creates a 2D Array with the Gene symbols or Cell Line name as headers and the dbResults' properties as first column
+   * @param dbResults Array of Objects
+   * @returns string[][]
+   */
+  private transformData(dbResults): Primitive[][] {
     const header = ['Field Name'];
 
     const dataMap = new Map();
     dbResults.forEach((datum) => {
-      header.push(datum.symbol);
+      header.push(datum.symbol || datum.id);
       Object.keys(datum).forEach((key) => {
         if(key.startsWith('_')) {
           return;
@@ -81,14 +86,20 @@ export abstract class AInfoTable extends AView {
       });
     });
 
-    // create a 2D array from where the first elements are the properties
+    // convert Map to Array and concatenate the first elements (keys) with their values to get a full row
+    // and sort the rows according to the defined weights
     const body = Array
       .from(dataMap)
-      .map((d) => [d[0], ...d[1]]);
+      .map((d) => [d[0], ...d[1]])
+      .sort((a, b) => {
+        const first = this.fields.find((f) => f.key === a[0]);
+        const second = this.fields.find((f) => f.key === b[0]);
+        return first.order - second.order;
+      });
     return [header, ...body];
   }
 
-  private updateInfoTable(data: string[][]) {
+  private updateInfoTable(data: Primitive[][]): void {
     const $th = this.$thead.selectAll('th').data(data[0]);
     $th.enter().append('th');
     $th.text((d) => d);
@@ -113,8 +124,8 @@ export abstract class AInfoTable extends AView {
     $th.exit().remove();
   }
 
-  protected abstract getFields();
-  protected abstract mapID();
+  protected abstract getFields(): {key: string, order: number}[];
+  protected abstract mapID(): string;
 }
 
 class CelllineInfoTable extends AInfoTable {
