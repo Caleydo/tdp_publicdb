@@ -6,7 +6,7 @@ import {getAPIJSON} from 'phovea_core/src/ajax';
 import Range from 'phovea_core/src/range/Range';
 import IDType from 'phovea_core/src/idtype/IDType';
 import {getSelectedSpecies} from 'targid_common/src/Common';
-import {IDataSourceConfig, IDataTypeConfig, dataSubtypes, allBioTypes, IDataSubtypeConfig, mutation} from '../config';
+import {IDataSourceConfig, dataSubtypes, mutation} from '../config';
 import {IScore} from 'ordino/src/LineUpView';
 import {createDesc} from './utils';
 import AScore, {ICommonScoreParam} from './AScore';
