@@ -68,7 +68,7 @@ export abstract class AInfoTable extends AView {
    * @param transposeTable
    * @returns string[][]
    */
-  private transformData(dbResults, transposeTable = true): Primitive[][] {
+  private transformData(dbResults, transposeTable = false): Primitive[][] {
     const header = ['Field Name'];
 
     const dataMap = new Map();
