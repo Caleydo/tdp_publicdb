@@ -6,7 +6,7 @@ import {AView, IViewContext, ISelection, IView} from 'ordino/src/View';
 import {getAPIJSON} from 'phovea_core/src/ajax';
 import {getSelectedSpecies} from 'targid_common/src/Common';
 import {IDataSourceConfig, cellline, tissue, gene} from '../config';
-import {Primitive} from 'd3';
+import {Primitive, transpose as d3Transpose} from 'd3';
 
 export abstract class AInfoTable extends AView {
 
@@ -65,9 +65,10 @@ export abstract class AInfoTable extends AView {
   /**
    * creates a 2D Array with the Gene symbols or Cell Line name as headers and the dbResults' properties as first column
    * @param dbResults Array of Objects
+   * @param transposeTable
    * @returns string[][]
    */
-  private transformData(dbResults): Primitive[][] {
+  private transformData(dbResults, transposeTable = true): Primitive[][] {
     const header = ['Field Name'];
 
     const dataMap = new Map();
@@ -96,7 +97,15 @@ export abstract class AInfoTable extends AView {
         const second = this.fields.find((f) => f.key === b[0]);
         return first.order - second.order;
       });
+
+    if(transposeTable) {
+      return this.transposeTable([header, ...body]);
+    }
     return [header, ...body];
+  }
+
+  private transposeTable(data: Primitive[][]) {
+      return d3Transpose(data);
   }
 
   private updateInfoTable(data: Primitive[][]): void {
