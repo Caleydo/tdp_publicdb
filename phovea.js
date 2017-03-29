@@ -374,11 +374,12 @@ module.exports = function(registry) {
 
   }, {
     order: {
-      'Sample overview': 0,
-      'Gene overview': 1,
-      'Visualization': 10,
-      'Internal resources': 20,
-      'External resources': 30,
+      'General': 5,
+      'Sample overview': 10,
+      'Gene overview': 20,
+      'Visualization': 30,
+      'Internal resources': 40,
+      'External resources': 50,
       'Other': 100
     }
   });
@@ -391,8 +392,8 @@ module.exports = function(registry) {
     'idtype': 'Ensembl',
     'selection': 'multiple',
     'group': {
-      'name': 'Sample overview',
-      'order': 50
+      'name': 'General',
+      'order': 0
     }
   });
 
@@ -404,8 +405,8 @@ module.exports = function(registry) {
     'idtype': 'Cellline',
     'selection': 'multiple',
     'group': {
-      'name': 'Gene overview',
-      'order': 30
+      'name': 'General',
+      'order': 0
     }
   });
 
@@ -417,8 +418,8 @@ module.exports = function(registry) {
     'idtype': 'Tissue',
     'selection': 'multiple',
     'group': {
-      'name': 'Gene overview',
-      'order': 30
+      'name': 'General',
+      'order': 0
     }
   });
 
