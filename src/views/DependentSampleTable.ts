@@ -16,6 +16,7 @@ import {FormBuilder, IFormSelectDesc} from 'ordino/src/FormBuilder';
 import {convertRow2MultiMap} from 'ordino/src/form/internal/FormMap';
 import {toFilter} from '../utils';
 import {FormElementType} from 'ordino/src/form';
+import {loadFirstName} from './utils';
 
 class RawDataTable extends ALineUpView2 {
 
@@ -129,11 +130,7 @@ class RawDataTable extends ALineUpView2 {
     // resolve `_id` (= `targidid`) to symbol (`ensg`)
     // TODO When playing the provenance graph, the RawDataTable is loaded before the GeneList has finished loading, i.e. that the local idType cache is not build yet and it will send an unmap request to the server
     const ensg = await this.resolveId(this.selection.idtype, id);
-    const mapping: {symbol: string}[] = await ajax.getAPIJSON(`/targid/db/${dataSource.db}/gene_map_ensgs`, {
-      ensgs: `'${ensg}'`,
-      species: getSelectedSpecies()
-    });
-    return mapping[0].symbol;
+    return await loadFirstName(ensg);
   }
 
   protected async loadSelectionColumnData(id: number): Promise<IScoreRow<any>[]> {
