@@ -1,0 +1,98 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: ordino-testdb-dev
+  labels:
+    app: ordino
+    environment: testdb-dev
+    release: daily
+spec:
+  type: NodePort
+  sessionAffinity: None
+  ports:
+  - name: ordino
+    port: 80
+    targetPort: 80
+    nodePort: 30183
+  selector:
+    app: ordino
+    environment: testdb-dev
+    release: daily
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: ordino-testdb-dev
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ordino
+      environment: testdb-dev
+      release: daily
+  template:
+    metadata:
+      name: ordino
+      labels:
+        app: ordino
+        environment: testdb-dev
+        release: daily
+    spec:
+      containers:
+        - name: ordino
+          image: '922145058410.dkr.ecr.eu-central-1.amazonaws.com/caleydo/targid_boehringer/targid:latest'
+          imagePullPolicy: Always
+          env:
+            - name: PHOVEA_API_SERVER
+              value: localhost:9000
+          ports:
+            - name: ordino
+              containerPort: 80
+        - name: ordino-server
+          image: 922145058410.dkr.ecr.eu-central-1.amazonaws.com/caleydo/targid_boehringer/targid_server:latest
+          imagePullPolicy: Always
+          ports:
+            - name: ordino-server
+              containerPort: 9000
+          volumeMounts:
+            - name: ordino-configuration-testdb-dev
+              mountPath: /phovea.config
+          env:
+            - name: PHOVEA_CONFIG_PATH
+              value: /phovea.config/config.json
+            - name: https_proxy
+              valueFrom:
+                secretKeyRef:
+                  name: internet-proxy-access
+                  key: HTTPS_PROXY
+            - name: http_proxy
+              valueFrom:
+                secretKeyRef:
+                  name: internet-proxy-access
+                  key: HTTP_PROXY
+        - name: db-mongo
+          image: mongo:3.2
+          imagePullPolicy: Always
+          volumeMounts:
+            - name: db-mongo-data
+              mountPath: /data/db
+        - name: db-redis
+          image: 922145058410.dkr.ecr.eu-central-1.amazonaws.com/caleydo/targid_boehringer/redis:latest
+          imagePullPolicy: Always
+          volumeMounts:
+            - name: db-redis-data
+              mountPath: /data
+      volumes:
+        - name: db-mongo-data
+          hostPath:
+          # directory location on host
+            path: /data_testdb_dev
+        - name: db-redis-data
+          hostPath:
+          # directory location on host
+            path: /data_testdb_dev
+        - name: ordino-configuration-testdb-dev
+          configMap:
+            name: ordino-configuration-testdb-dev
+      imagePullSecrets:
+       - name: ordino-eu-central-1-ecr-registry

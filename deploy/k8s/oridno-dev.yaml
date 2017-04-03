@@ -1,0 +1,79 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: ordino-dev
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ordino
+      environment: dev
+      release: daily
+  template:
+    metadata:
+      name: ordino-dev
+      labels:
+        app: ordino
+        environment: dev
+        release: daily
+    spec:
+      containers:
+        - name: targid
+          image: '922145058410.dkr.ecr.eu-central-1.amazonaws.com/caleydo/targid_boehringer/targid:daily'
+          imagePullPolicy: Always
+          env:
+            - name: PHOVEA_API_SERVER
+              value: localhost:9000
+          ports:
+            - name: targid
+              containerPort: 80
+        - name: targid-server
+          image: 922145058410.dkr.ecr.eu-central-1.amazonaws.com/caleydo/targid_boehringer/targid_server:daily
+          imagePullPolicy: Always
+          ports:
+            - name: targid-server
+              containerPort: 9000
+          volumeMounts:
+            - name: targid-configuration-dev
+              mountPath: /phovea.config
+          env:
+            - name: PHOVEA_CONFIG_PATH
+              value: /phovea.config/config.json
+            - name: https_proxy
+              valueFrom:
+                secretKeyRef:
+                  name: internet-proxy-access
+                  key: HTTPS_PROXY
+            - name: http_proxy
+              valueFrom:
+                secretKeyRef:
+                  name: internet-proxy-access
+                  key: HTTP_PROXY
+        - name: db-mongo
+          image: mongo:3.2
+          imagePullPolicy: IfNotPresent
+          volumeMounts:
+            - name: local-data
+              mountPath: /data/db
+        - name: db-redis
+          image: 922145058410.dkr.ecr.eu-central-1.amazonaws.com/caleydo/targid_boehringer/redis:latest
+          imagePullPolicy: Always
+          volumeMounts:
+            - name: persistent-data
+              mountPath: /data
+      volumes:
+        - name: persistent-data
+          nfs:
+            server: vievsafas03
+            path: /vol/v00vie_pr62/lineup2
+            readOnly: false
+        - name: local-data
+          hostPath:
+            #directory location on host
+            path: /data_dev
+        - name: targid-configuration-dev
+          configMap:
+            name: targid-configuration-dev
+      restartPolicy: Always
+      imagePullSecrets:
+       - name: ordino-eu-central-1-ecr-registry

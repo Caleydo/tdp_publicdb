@@ -1,0 +1,22 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: ordino-mongo-test
+spec:
+  template:
+    spec:
+      containers:
+      - name: ordino-mongo-test
+        image: mongo:3.4
+        volumeMounts:
+          - name: persistent-data
+            mountPath: /data/db
+        securityContext:
+          runAsUser: 0
+      volumes:
+        - name: persistent-data
+          nfs:
+            server: vievsafas05
+            path: /vol/v00vie_pr61/lineup1
+            readOnly: false
+      restartPolicy: OnFailure

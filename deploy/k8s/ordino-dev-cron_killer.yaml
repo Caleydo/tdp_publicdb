@@ -1,0 +1,30 @@
+apiVersion: batch/v2alpha1
+kind: CronJob
+metadata:
+  name: ordino-dev-nightly-killer
+spec:
+  # run every 8 hours
+  schedule: "15 3 * * *"
+  concurrencyPolicy: Forbid
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: ordino-dev-nightly-killer
+            image: 922145058410.dkr.ecr.eu-central-1.amazonaws.com/phovea/kubectl:latest
+            imagePullPolicy: IfNotPresent
+            volumeMounts:
+              - name: ordino-ecr-token-refresher-configuration
+                mountPath: /data
+            command:
+              - /bin/sh
+              - -c 
+              - '/data/refresh-ecr-token.sh && kubectl --kubeconfig /data/admin.conf delete $(kubectl --kubeconfig /data/admin.conf get pods -o name | grep -h "pod/ordino-dev*")'
+          volumes:
+            - name: ordino-ecr-token-refresher-configuration
+              configMap:
+                name: ordino-ecr-token-refresher-configuration
+          restartPolicy: OnFailure
+          imagePullSecrets:
+            - name: ordino-eu-central-1-ecr-registry
