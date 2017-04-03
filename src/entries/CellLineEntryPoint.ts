@@ -5,8 +5,8 @@
 import {IPluginDesc} from 'phovea_core/src/plugin';
 import {IEntryPointList, IEntryPointOptions} from 'ordino/src/StartMenu';
 import {chooseDataSource} from '../config';
-import {ACommonEntryPointList} from './ACommonEntryPointList';
-import {IACommonListOptions, ACommonList} from './ACommonList';
+import {ACommonEntryPointList} from 'targid_common/src/entries/ACommonEntryPointList';
+import {IACommonListOptions, ACommonList} from 'targid_common/src/entries/ACommonList';
 import {IViewContext, ISelection} from 'ordino/src/View';
 import {stringCol, categoricalCol} from 'ordino/src/LineUpView';
 
