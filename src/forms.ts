@@ -123,6 +123,7 @@ export const FORM_GENE_FILTER = {
   id: 'filter',
   useSession: true,
   options: {
+    sessionKeySuffix: '-gene',
     uniqueKeys: true,
     entries: [{
       name: 'Bio Type',
@@ -188,6 +189,7 @@ function generateFilter(d: IDataSourceConfig) {
     id: 'filter',
     useSession: true,
     options: {
+      sessionKeySuffix: '-' + d.base,
       uniqueKeys: true,
       entries: [{
         name: 'Tumor Type',
@@ -276,6 +278,7 @@ export const FORM_TISSUE_OR_CELLLINE_FILTER = {
   useSession: true,
   dependsOn: [ParameterFormIds.DATA_SOURCE],
   options: {
+    sessionKeySuffix: '-choose',
     entries: (dataSource: IFormElement) => {
       const value = dataSource.value.data;
       if (value === tissue || value === tissue.id) {
