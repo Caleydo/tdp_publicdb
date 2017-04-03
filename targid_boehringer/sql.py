@@ -163,6 +163,7 @@ def create_sample(result, basename, idtype, primary):
     "ensg").arg("species").replace('and_where') \
     .query('filter_panel', filter_panel) \
     .query('filter_' + primary, 'c.'+ primary + ' %(operator)s %(value)s') \
+    .query('filter_ensg', 'd.ensg %(operator)s %(value)s') \
     .build()
 
   result[basename + '_onco_print'] = onco_print
@@ -205,7 +206,8 @@ def create_sample(result, basename, idtype, primary):
          ON freq.{primary} = a.{primary}""".format(primary=primary, base=basename)) \
     .replace("table").replace('and_where').replace("attribute").replace("operator") \
     .query('filter_panel', filter_gene_panel) \
-    .query('filter_' + primary, 'c.'+ primary + ' %(operator)s %(value)s') \
+    .query('filter_' + primary, 'c.' + primary + ' %(operator)s %(value)s') \
+    .query('filter_ensg', 'g.ensg %(operator)s %(value)s') \
     .arg("species").arg("value").build()
 
   result[basename + '_gene_score'] = DBViewBuilder().idtype(idtype).query("""
@@ -215,7 +217,8 @@ def create_sample(result, basename, idtype, primary):
           WHERE C.species = :species %(and_where)s
           GROUP BY D.{primary}""".format(primary=primary, base=basename)) \
     .query('filter_panel', filter_gene_panel) \
-    .query('filter_' + primary, 'c.'+ primary + ' %(operator)s %(value)s') \
+    .query('filter_' + primary, 'c.' + primary + ' %(operator)s %(value)s') \
+    .query('filter_ensg', 'c.ensg %(operator)s %(value)s') \
     .replace('table').replace('agg_score').replace('and_where').arg('species').build()
 
   result[basename + '_check_ids'] = DBViewBuilder().query("""

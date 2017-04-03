@@ -33,7 +33,8 @@ class InvertedRawDataTable extends ALineUpView2 {
    * Parameter UI form
    */
   private paramForm: FormBuilder;
-  protected dataSource: IDataSourceConfig;
+
+  private dataSource: IDataSourceConfig;
 
   constructor(context: IViewContext, selection: ISelection, parent: Element, dataType: IDataTypeConfig, options?) {
     super(context, selection, parent, options);
@@ -46,7 +47,6 @@ class InvertedRawDataTable extends ALineUpView2 {
     this.paramForm = new FormBuilder($parent);
 
     const paramDesc: IFormSelectDesc[] = [
-      FORM_DATA_SOURCE,
       {
         type: FormElementType.SELECT,
         label: 'Data Subtype',
@@ -68,14 +68,8 @@ class InvertedRawDataTable extends ALineUpView2 {
 
     this.paramForm.build(paramDesc);
 
-    this.updateDataSource();
-
     // add other fields
     super.buildParameterUI($parent.select('form'), onChange);
-  }
-
-  private updateDataSource() {
-    this.dataSource = this.paramForm.getElementById(ParameterFormIds.DATA_SOURCE).value.data;
   }
 
   getParameter(name: string): any {
@@ -84,7 +78,6 @@ class InvertedRawDataTable extends ALineUpView2 {
 
   setParameter(name: string, value: any) {
     this.paramForm.getElementById(name).value = value;
-    this.updateDataSource();
     this.clear();
     return this.update();
   }
@@ -118,8 +111,7 @@ class InvertedRawDataTable extends ALineUpView2 {
   }
 
   protected loadRows() {
-    const dataSource = this.getParameter(ParameterFormIds.DATA_SOURCE);
-    const url = `/targid/db/${dataSource.db}/gene/filter`;
+    const url = `/targid/db/${this.dataSource.db}/gene/filter`;
     const param = {
       species: getSelectedSpecies()
     };
@@ -152,10 +144,9 @@ class InvertedRawDataTable extends ALineUpView2 {
   }
 
   protected async loadSelectionColumnData(id: number): Promise<IScoreRow<any>[]> {
-    const dataSource = this.getParameter(ParameterFormIds.DATA_SOURCE);
     // TODO When playing the provenance graph, the RawDataTable is loaded before the GeneList has finished loading, i.e. that the local idType cache is not build yet and it will send an unmap request to the server
     const name = await this.resolveId(this.selection.idtype, id);
-    const url = `/targid/db/${dataSource.db}/gene_${this.dataSource.base}_single_score/filter`;
+    const url = `/targid/db/${this.dataSource.db}/gene_${this.dataSource.base}_single_score/filter`;
     const param = {
       table: this.dataType.tableName,
       attribute: this.getParameter(ParameterFormIds.DATA_SUBTYPE).id,
@@ -175,8 +166,7 @@ class InvertedRawDataTable extends ALineUpView2 {
   }
 
   getItemName(count: number) {
-    const dataSource = this.getParameter(ParameterFormIds.DATA_SOURCE);
-    return (count === 1) ? dataSource.name.toLowerCase() : dataSource.name.toLowerCase() + 's';
+    return (count === 1) ? this.dataSource.name.toLowerCase() : this.dataSource.name.toLowerCase() + 's';
   }
 }
 
