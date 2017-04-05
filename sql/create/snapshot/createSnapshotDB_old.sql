@@ -1,5 +1,5 @@
 --
--- create script for targid db for Linz 
+-- create script for targid db for Linz
 --
 
 SELECT dblink_connect('myconn', 'dbname=bioinfo.hg19');
@@ -8,7 +8,7 @@ SELECT dblink_connect('myconn', 'dbname=bioinfo.hg19');
 
 DROP TABLE IF EXISTS public.targid_gene;
 
-CREATE TABLE public.targid_gene AS 
+CREATE TABLE public.targid_gene AS
   SELECT * FROM dblink('myconn', 'SELECT * FROM targid_gene') AS
   tt(targidid INT4, ensg TEXT, species TEXT, symbol TEXT, name TEXT, chromosome TEXT, strand INT2, biotype TEXT, seqregionstart INT4, seqregionend INT4);
 
@@ -47,8 +47,8 @@ CREATE INDEX ON cellline.targid_expression(tpm);
 --
 CREATE TABLE cellline.targid_mutation AS
   SELECT * FROM dblink('myconn', 'SELECT * FROM cellline.targid_mutation WHERE celllinename IN (SELECT celllinename FROM cellline.celllineassignment where celllinepanel = $$CCLE$$)') AS
-  tt( ensg TEXT, celllinename TEXT, dna_mutated boolean, dnamutation TEXT, aa_mutated boolean, 
-      aamutation TEXT, zygosity FLOAT4,  exonscomplete  FLOAT4, confirmeddetail boolean, numsources INT2); 
+  tt( ensg TEXT, celllinename TEXT, dna_mutated boolean, dnamutation TEXT, aa_mutated boolean,
+      aamutation TEXT, zygosity FLOAT4,  exonscomplete  FLOAT4, confirmeddetail boolean, numsources INT2);
 
 ALTER TABLE cellline.targid_mutation ADD PRIMARY KEY (ensg, celllinename);
 CREATE INDEX ON cellline.targid_mutation(celllinename);
