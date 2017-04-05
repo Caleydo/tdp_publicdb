@@ -225,6 +225,11 @@ def create_sample(result, basename, idtype, primary):
     SELECT COUNT(*) AS matches FROM {base}.targid_{base} %(where)s
   """.format(primary=primary, base=basename)).replace('where').build()
 
+  result[basename + '_all_columns'] = DBViewBuilder().query("""
+    SELECT * FROM {base}.targid_{base} %(where)s
+  """.format(base=basename)).replace('where').build()
+
+
 
 views = dict(
   gene=DBViewBuilder().idtype(idtype_gene).query("""
@@ -269,7 +274,11 @@ views = dict(
     ORDER BY symbol ASC""")
     .arg('species')
     .replace('ensgs')
-    .build()
+    .build(),
+
+  gene_all_columns=DBViewBuilder().query("""
+    SELECT * FROM public.targid_gene %(where)s
+  """).replace('where').build()
 )
 _create_common(views, 'gene', 'public.targid_gene', _primary_gene, idtype_gene)
 create_gene_score(views, 'cellline', _primary_cellline)

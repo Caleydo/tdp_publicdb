@@ -42,7 +42,7 @@ export abstract class AInfoTable extends AView {
 
   private async fetchInformation() {
     const ids = await this.resolveIds(this.selection.idtype, this.selection.range, this.dataSource.idType);
-    const results = await getAPIJSON(`/targid/db/${this.dataSource.db}/${this.dataSource.base}/filter`, {
+    const results = await getAPIJSON(`/targid/db/${this.dataSource.db}/${this.dataSource.base}_all_columns/filter`, {
       ['filter_'+this.dataSource.entityName]: ids,
       species: getSelectedSpecies()
     });
@@ -75,7 +75,7 @@ export abstract class AInfoTable extends AView {
     dbResults.forEach((datum) => {
       header.push(datum.symbol || datum.id);
       Object.keys(datum).forEach((key) => {
-        if(key.startsWith('_')) {
+        if(key.startsWith('_') || key === 'targidid') {
           return;
         }
         const k = (key === 'id')? this.mapID() : key;
@@ -95,6 +95,14 @@ export abstract class AInfoTable extends AView {
       .sort((a, b) => {
         const first = this.fields.find((f) => f.key === a[0]);
         const second = this.fields.find((f) => f.key === b[0]);
+
+        // show elements that have no defined order at the bottom by default
+        if(!first) {
+          return 1;
+        } else if(!second) {
+          return -1;
+        }
+
         return first.order - second.order;
       });
 
