@@ -132,7 +132,7 @@ CREATE TABLE cellline.targid_cellline AS Select * from _cellline.targid_cellline
 ALTER TABLE cellline.targid_cellline ADD CONSTRAINT pk_cellline PRIMARY KEY(celllinename);
 CREATE TABLE cellline.targid_panel AS Select * from _cellline.targid_panel;
 ALTER TABLE cellline.targid_panel ADD CONSTRAINT pk_celllinepanel PRIMARY KEY(panel);
-CREATE TABLE cellline.targid_panelassignment AS Select * from cellline.targid_panelassignment;
+CREATE TABLE cellline.targid_panelassignment AS Select * from _cellline.targid_panelassignment;
 ALTER TABLE cellline.targid_panelassignment ADD CONSTRAINT pk_celllineassignment PRIMARY KEY(panel, celllinename);
 CREATE TABLE cellline.targid_mutation AS Select * from _cellline.targid_mutation;
 ALTER TABLE cellline.targid_mutation ADD CONSTRAINT pk_mutation PRIMARY KEY(ensg, celllinename);
