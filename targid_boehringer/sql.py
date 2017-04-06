@@ -226,8 +226,8 @@ def create_sample(result, basename, idtype, primary):
   """.format(primary=primary, base=basename)).replace('where').build()
 
   result[basename + '_all_columns'] = DBViewBuilder().query("""
-    SELECT * FROM {base}.targid_{base} %(where)s
-  """.format(base=basename)).replace('where').build()
+    SELECT {primary} as header, * FROM {base}.targid_{base} %(where)s
+  """.format(base=basename, primary=primary)).replace('where').build()
 
 
 
@@ -277,7 +277,7 @@ views = dict(
     .build(),
 
   gene_all_columns=DBViewBuilder().query("""
-    SELECT * FROM public.targid_gene %(where)s
+    SELECT symbol as header, * FROM public.targid_gene %(where)s
   """).replace('where').build()
 )
 _create_common(views, 'gene', 'public.targid_gene', _primary_gene, idtype_gene)
