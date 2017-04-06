@@ -75,7 +75,7 @@ export abstract class AInfoTable extends AView {
     dbResults.forEach((datum) => {
       header.push(datum.header || 'Values');
       Object.keys(datum).forEach((key) => {
-        if(key === 'header') {
+        if(key === 'header' || key === 'targidid') {
           return;
         }
         if(!dataMap.has(key)) {
@@ -241,10 +241,6 @@ class CelllineInfoTable extends AInfoTable {
       {
         key: 'comment',
         order: 240
-      },
-      {
-        key: 'targidid',
-        order: 250
       }
     ];
   }
@@ -296,10 +292,6 @@ class GeneInfoTable extends AInfoTable {
       {
         key: 'gc_content',
         order: 100
-      },
-      {
-        key: 'targidid',
-        order: 110
       }
     ];
   }
@@ -379,10 +371,6 @@ class TissueInfoTable extends AInfoTable {
       {
         key: 'comment',
         order: 160
-      },
-      {
-        key: 'targidid',
-        order: 170
       }
     ];
   }
