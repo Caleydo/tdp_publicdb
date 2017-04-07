@@ -282,6 +282,7 @@ export const FORM_TISSUE_OR_CELLLINE_FILTER = {
   options: {
     sessionKeySuffix: '-choose',
     defaultSelection: false,
+    uniqueKeys: true,
     entries: (dataSource: IFormElement) => {
       const value = dataSource.value.data;
       if (value === tissue || value === tissue.id) {
