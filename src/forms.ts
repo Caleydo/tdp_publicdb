@@ -229,7 +229,7 @@ function generateFilter(d: IDataSourceConfig) {
         type: FormElementType.SELECT2,
         multiple: true,
         return: 'id',
-        optionsData: cachedLazy('gene_predefined_namedsets', buildPredefinedNamedSets.bind(null, d))
+        optionsData: cachedLazy(d.base + '_predefined_namedsets', buildPredefinedNamedSets.bind(null, d))
       }, {
         name: 'My Named Sets',
         value: 'namedset4' + d.entityName,
