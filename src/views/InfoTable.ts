@@ -73,9 +73,9 @@ export abstract class AInfoTable extends AView {
 
     const dataMap = new Map();
     dbResults.forEach((datum) => {
-      header.push(datum.header || 'Values');
+      header.push(datum.id || 'Values');
       Object.keys(datum).forEach((key) => {
-        if(key === 'header' || key === 'targidid') {
+        if(key === 'id' || key === 'targidid') {
           return;
         }
         if(!dataMap.has(key)) {
