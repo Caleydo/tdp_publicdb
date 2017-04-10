@@ -4,9 +4,6 @@
 
 import {mutationCat, copyNumberCat, unknownMutationValue, unknownCopyNumberValue, GENE_IDTYPE} from 'targid_common/src/constants';
 
-export const allTypes = 'All Tumor Types';
-export const allBioTypes = 'All Bio Types';
-//select distinct tumortype from cellline where tumortype is not null
 
 /**
  * maximal number of rows in which just the subset if fetched instead of all
@@ -26,173 +23,36 @@ export interface IDataSourceConfig {
   [key: string]: any;
 }
 
-export interface ITumorTypeDataSourceConfig extends IDataSourceConfig {
-  tumorTypes: string[];
-  tumorTypesWithAll: string[];
-}
-
-export interface IBioTypeDataSourceConfig extends IDataSourceConfig {
-  bioTypes: string[];
-  bioTypesWithAll: string[];
-}
-
-const celllinesTumorTypes = ['adrenal gland carcinoma', 'astrocytoma/glioblastoma', 'bladder carcinoma', 'bone sarcoma',
-  'breast carcinoma', 'cervix carcinoma', 'colon carcinoma', 'esophagus carcinoma', 'gallbladder carcinoma',
-  'gastric carcinoma', 'hematopoietic/leukemia', 'hematopoietic/lymphoma', 'hematopoietic/myeloma', 'HNSCC', 'liver carcinoma',
-  'medulloblastoma', 'melanoma ', 'melanoma', 'mesothelioma', 'neuroblastoma', 'normal', 'NSCLC', 'ovarian carcinoma', 'pancreas carcinoma',
-  'pancreatic insulinoma', 'placenta carcinoma', 'prostate benign hyperplasia', 'prostate carcinoma', 'renal cancer other', 'renal carcinoma',
-  'retinoblastoma', 'rhabdomyosarcoma', 'sarcoma/soft tissue', 'SCLC', 'SCLC/neuroendocrine', 'skin/SCC', 'thyroid carcinoma', 'uterus carcinoma', 'vulva carcinoma'];
-
-export const cellline:ITumorTypeDataSourceConfig = {
+export const cellline:IDataSourceConfig = {
   idType: 'Cellline',
   name: 'Cell Line',
   db: 'bioinfodb',
   schema: 'cellline',
   tableName: 'cellline',
   entityName: 'celllinename',
-  base: 'cellline',
-  tumorTypes: celllinesTumorTypes,
-  tumorTypesWithAll : [allTypes].concat(celllinesTumorTypes)
+  base: 'cellline'
 };
 
-const tissueTumorTypes = [
-  'Acute Myeloid Leukemia',
-  'Adrenal Gland',
-  'Adrenocortical carcinoma',
-  'Artery - Aorta',
-  'Bladder',
-  'Bladder Urothelial Carcinoma',
-  'Brain - Cerebellum',
-  'Brain - Cortex',
-  'Brain Lower Grade Glioma',
-  'Brain - Spinal cord (cervical c-1)',
-  'breast carcinoma',
-  'Breast invasive carcinoma',
-  'Cervical squamous cell carcinoma and endocervical adenocarcinoma',
-  'Cervix - Ectocervix',
-  'Cervix - Endocervix',
-  'Cholangiocarcinoma',
-  'Colon adenocarcinoma',
-  'colon carcinoma',
-  'Colon - Sigmoid',
-  'Colon - Transverse',
-  'Esophageal carcinoma',
-  'Esophagus - Gastroesophageal Junction',
-  'Esophagus - Mucosa',
-  'Esophagus - Muscularis',
-  'Fallopian Tube',
-  'Glioblastoma multiforme',
-  'Head and Neck squamous cell carcinoma',
-  'Heart - Atrial Appendage',
-  'Heart - Left Ventricle',
-  'Kidney Chromophobe',
-  'Kidney renal clear cell carcinoma',
-  'Kidney renal papillary cell carcinoma',
-  'large cell lung carcinoma',
-  'Liver',
-  'Liver hepatocellular carcinoma',
-  'lung adenocarcinoma',
-  'Lung adenocarcinoma',
-  'lung adenosquamous carcinoma',
-  'lung clear cell carcinoma, sarcomatoid carcinoma',
-  'lung large cell neuroendocrine carcinoma',
-  'lung squamous cell carcinoma',
-  'Lung squamous cell carcinoma',
-  'Lymphoid Neoplasm Diffuse Large B-cell Lymphoma',
-  'Mesothelioma',
-  'Minor Salivary Gland',
-  'Muscle - Skeletal',
-  'NEC',
-  'Nerve - Tibial',
-  'non small cell lung cancer',
-  'normal',
-  'Ovarian',
-  'Ovarian serous cystadenocarcinoma',
-  'Ovary',
-  'Pancreas',
-  'Pancreatic adenocarcinoma',
-  'Pheochromocytoma and Paraganglioma',
-  'Pituitary',
-  'PNET',
-  'Prostate adenocarcinoma',
-  'Rectum adenocarcinoma',
-  'Sarcoma',
-  'SCLC',
-  'SCLC, NEC',
-  'Skin Cutaneous Melanoma',
-  'Skin - Sun Exposed (Lower leg)',
-  'small cell lung cancer',
-  'Spleen',
-  'Stomach',
-  'Stomach adenocarcinoma',
-  'Testicular Germ Cell Tumors',
-  'Testis',
-  'Thymoma',
-  'Thyroid carcinoma',
-  'unclear',
-  'Uterine Carcinosarcoma',
-  'Uterine Corpus Endometrial Carcinoma',
-  'Uveal Melanoma'];
 
-
-export const tissue:ITumorTypeDataSourceConfig = {
+export const tissue:IDataSourceConfig = {
   idType: 'Tissue',
   name: 'Tissue',
   db: 'bioinfodb',
   schema: 'tissue',
   tableName: 'tissue',
   entityName: 'tissuename',
-  base: 'tissue',
-  tumorTypes: tissueTumorTypes,
-  tumorTypesWithAll : [allTypes].concat(tissueTumorTypes)
+  base: 'tissue'
 };
 
-const geneBioTypes = [
-  '3prime_overlapping_ncrna',
-  'antisense',
-  'IG_C_gene',
-  'IG_C_pseudogene',
-  'IG_D_gene',
-  'IG_J_gene',
-  'IG_J_pseudogene',
-  'IG_LV_gene',
-  'IG_V_gene',
-  'IG_V_pseudogene',
-  'lincRNA',
-  'LRG_gene',
-  'miRNA',
-  'misc_RNA',
-  'Mt_rRNA',
-  'Mt_tRNA',
-  'non_coding',
-  'polymorphic_pseudogene',
-  'processed_pseudogene',
-  'processed_transcript',
-  'protein_coding',
-  'pseudogene',
-  'rRNA',
-  'sense_intronic',
-  'sense_overlapping',
-  'snoRNA',
-  'snRNA',
-  'TR_C_gene',
-  'TR_D_gene',
-  'TR_J_gene',
-  'TR_J_pseudogene',
-  'TR_V_gene',
-  'TR_V_pseudogene'
-];
 
-export const gene:IBioTypeDataSourceConfig = {
+export const gene:IDataSourceConfig = {
   idType: GENE_IDTYPE,
   name: 'Gene',
   db: 'bioinfodb',
   schema: 'public',
   tableName: 'gene',
   entityName: 'ensg',
-  base: 'gene',
-  bioTypes: geneBioTypes,
-  bioTypesWithAll : [allBioTypes].concat(geneBioTypes)
+  base: 'gene'
 };
 
 export const dataSources = [cellline, tissue];
