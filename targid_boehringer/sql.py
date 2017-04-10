@@ -94,7 +94,7 @@ def create_gene_score(result, other_prefix, other_primary):
             WHERE C.species = :species %(and_where)s
             GROUP BY D.ensg""".format(primary=other_primary, base=other_prefix)) \
     .query('filter_panel', filter_panel) \
-    .query('filter_' + other_primary, 'c.'+ other_primary + ' %(operator)s %(value)s') \
+    .query('filter_' + other_primary, 'd.'+ other_primary + ' %(operator)s %(value)s') \
     .replace('table').replace('agg_score').replace('and_where').arg('species').build()
 
 
@@ -206,7 +206,7 @@ def create_sample(result, basename, idtype, primary):
          ON freq.{primary} = a.{primary}""".format(primary=primary, base=basename)) \
     .replace("table").replace('and_where').replace("attribute").replace("operator") \
     .query('filter_panel', filter_gene_panel) \
-    .query('filter_' + primary, 'c.' + primary + ' %(operator)s %(value)s') \
+    .query('filter_' + primary, 'm.' + primary + ' %(operator)s %(value)s') \
     .query('filter_ensg', 'g.ensg %(operator)s %(value)s') \
     .arg("species").arg("value").build()
 
@@ -217,7 +217,7 @@ def create_sample(result, basename, idtype, primary):
           WHERE C.species = :species %(and_where)s
           GROUP BY D.{primary}""".format(primary=primary, base=basename)) \
     .query('filter_panel', filter_gene_panel) \
-    .query('filter_' + primary, 'c.' + primary + ' %(operator)s %(value)s') \
+    .query('filter_' + primary, 'd.' + primary + ' %(operator)s %(value)s') \
     .query('filter_ensg', 'c.ensg %(operator)s %(value)s') \
     .replace('table').replace('agg_score').replace('and_where').arg('species').build()
 
