@@ -96,10 +96,12 @@ export abstract class AInfoTable extends AView {
         const second = this.fields.find((f) => f.key === b[0]);
 
         // show elements that have no defined order at the bottom by default
-        if(!first) {
-          return 1;
+        if(!first && !second) {
+          return 0; // both not found --> assume they are equal
+        } else if(!first) {
+          return 1; // order for a not defined --> sort b to lower index
         } else if(!second) {
-          return -1;
+          return -1; // order for b not defined --> sort a to lower index
         }
 
         return first.order - second.order;
