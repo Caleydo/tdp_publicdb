@@ -229,7 +229,7 @@ function generateFilter(d: IDataSourceConfig) {
         type: FormElementType.SELECT2,
         multiple: true,
         return: 'id',
-        optionsData: cachedLazy('gene_predefined_namedsets', buildPredefinedNamedSets.bind(null, d))
+        optionsData: cachedLazy(d.base + '_predefined_namedsets', buildPredefinedNamedSets.bind(null, d))
       }, {
         name: 'My Named Sets',
         value: 'namedset4' + d.entityName,
@@ -282,6 +282,7 @@ export const FORM_TISSUE_OR_CELLLINE_FILTER = {
   options: {
     sessionKeySuffix: '-choose',
     defaultSelection: false,
+    uniqueKeys: true,
     entries: (dataSource: IFormElement) => {
       const value = dataSource.value.data;
       if (value === tissue || value === tissue.id) {
