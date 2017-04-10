@@ -1,3 +1,5 @@
+import {IDataSourceConfig, MAX_FILTER_SCORE_ROWS_BEFORE_ALL} from './config';
+import {RangeLike, parse} from 'phovea_core/src/range';
 /**
  * Created by sam on 06.03.2017.
  */
@@ -15,4 +17,18 @@ export function toFilter(param: any, filter: any) {
     const v = filter[k];
     param['filter_' + k] = filter[k];
   });
+}
+
+
+/**
+ * limit the number of score rows if it doesn't exceed some criteria
+ * @param param
+ * @param ids
+ * @param dataSource
+ */
+export function limitScoreRows(param: any, ids: RangeLike, dataSource: IDataSourceConfig) {
+  const range = parse(ids);
+  if (range.dim(0).length < MAX_FILTER_SCORE_ROWS_BEFORE_ALL) {
+    param[`filter_rangeOf${dataSource.idType}4${dataSource.entityName}`] = range.toString();
+  }
 }

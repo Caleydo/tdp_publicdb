@@ -5,6 +5,13 @@
 import {mutationCat, copyNumberCat, unknownMutationValue, unknownCopyNumberValue, GENE_IDTYPE} from 'targid_common/src/constants';
 
 
+/**
+ * maximal number of rows in which just the subset if fetched instead of all
+ * @type {number}
+ */
+export const MAX_FILTER_SCORE_ROWS_BEFORE_ALL = 1000;
+
+
 export interface IDataSourceConfig {
   idType: string;
   name: string;

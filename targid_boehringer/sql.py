@@ -62,8 +62,8 @@ def create_gene_score(result, other_prefix, other_primary):
           SELECT D.ensg AS id, D.%(attribute)s AS score
           FROM {base}.targid_%(table)s D
           INNER JOIN {base}.targid_{base} C ON D.{primary} = C.{primary}
-          WHERE C.species = :species AND C.{primary} = :name""".format(primary=other_primary, base=other_prefix)) \
-    .replace('table').replace('attribute').arg('name').arg('species').build()
+          WHERE C.species = :species AND C.{primary} = :name %(and_where)s""".format(primary=other_primary, base=other_prefix)) \
+    .replace('table').replace('attribute').replace('and_where').arg('name').arg('species').build()
 
   result[basename + '_frequency_score'] = DBViewBuilder().idtype(idtype_gene).query("""
            SELECT a.ensg AS id, (COALESCE(freq.count,0)+0.0) AS count, a.total
@@ -94,7 +94,7 @@ def create_gene_score(result, other_prefix, other_primary):
             WHERE C.species = :species %(and_where)s
             GROUP BY D.ensg""".format(primary=other_primary, base=other_prefix)) \
     .query('filter_panel', filter_panel) \
-    .query('filter_' + other_primary, 'c.'+ other_primary + ' %(operator)s %(value)s') \
+    .query('filter_' + other_primary, 'd.'+ other_primary + ' %(operator)s %(value)s') \
     .replace('table').replace('agg_score').replace('and_where').arg('species').build()
 
 
@@ -184,8 +184,8 @@ def create_sample(result, basename, idtype, primary):
         SELECT D.{primary} AS id, D.%(attribute)s AS score
         FROM {base}.targid_%(table)s D
         INNER JOIN public.targid_gene C ON D.ensg = C.ensg
-        WHERE C.species = :species AND c.ensg = :name""".format(primary=primary, base=basename)) \
-    .replace('table').replace('attribute').arg('name').arg('species').build()
+        WHERE C.species = :species AND c.ensg = :name %(and_where)s""".format(primary=primary, base=basename)) \
+    .replace('table').replace('attribute').replace('and_where').arg('name').arg('species').build()
 
   result[basename + '_gene_frequency_score'] = DBViewBuilder().idtype(idtype).query("""
          SELECT a.{primary} AS id, (COALESCE(freq.count,0)+0.0) AS count, a.total
@@ -206,7 +206,7 @@ def create_sample(result, basename, idtype, primary):
          ON freq.{primary} = a.{primary}""".format(primary=primary, base=basename)) \
     .replace("table").replace('and_where').replace("attribute").replace("operator") \
     .query('filter_panel', filter_gene_panel) \
-    .query('filter_' + primary, 'c.' + primary + ' %(operator)s %(value)s') \
+    .query('filter_' + primary, 'm.' + primary + ' %(operator)s %(value)s') \
     .query('filter_ensg', 'g.ensg %(operator)s %(value)s') \
     .arg("species").arg("value").build()
 
@@ -217,7 +217,7 @@ def create_sample(result, basename, idtype, primary):
           WHERE C.species = :species %(and_where)s
           GROUP BY D.{primary}""".format(primary=primary, base=basename)) \
     .query('filter_panel', filter_gene_panel) \
-    .query('filter_' + primary, 'c.' + primary + ' %(operator)s %(value)s') \
+    .query('filter_' + primary, 'd.' + primary + ' %(operator)s %(value)s') \
     .query('filter_ensg', 'c.ensg %(operator)s %(value)s') \
     .replace('table').replace('agg_score').replace('and_where').arg('species').build()
 
