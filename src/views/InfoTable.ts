@@ -42,7 +42,7 @@ export abstract class AInfoTable extends AView {
 
   private async fetchInformation() {
     const ids = await this.resolveIds(this.selection.idtype, this.selection.range, this.dataSource.idType);
-    const results = await getAPIJSON(`/targid/db/${this.dataSource.db}/${this.dataSource.base}/filter`, {
+    const results = await getAPIJSON(`/targid/db/${this.dataSource.db}/${this.dataSource.base}_all_columns/filter`, {
       ['filter_'+this.dataSource.entityName]: ids,
       species: getSelectedSpecies()
     });
@@ -73,16 +73,15 @@ export abstract class AInfoTable extends AView {
 
     const dataMap = new Map();
     dbResults.forEach((datum) => {
-      header.push(datum.symbol || datum.id);
+      header.push(datum.id || 'Values');
       Object.keys(datum).forEach((key) => {
-        if(key.startsWith('_')) {
+        if(key === 'id' || key === 'targidid') {
           return;
         }
-        const k = (key === 'id')? this.mapID() : key;
-        if(!dataMap.has(k)) {
-          dataMap.set(k, [datum[key]]);
+        if(!dataMap.has(key)) {
+          dataMap.set(key, [datum[key]]);
         } else {
-          dataMap.get(k).push(datum[key]);
+          dataMap.get(key).push(datum[key]);
         }
       });
     });
@@ -95,6 +94,16 @@ export abstract class AInfoTable extends AView {
       .sort((a, b) => {
         const first = this.fields.find((f) => f.key === a[0]);
         const second = this.fields.find((f) => f.key === b[0]);
+
+        // show elements that have no defined order at the bottom by default
+        if(!first && !second) {
+          return 0; // both not found --> assume they are equal
+        } else if(!first) {
+          return 1; // order for a not defined --> sort b to lower index
+        } else if(!second) {
+          return -1; // order for b not defined --> sort a to lower index
+        }
+
         return first.order - second.order;
       });
 
@@ -130,7 +139,6 @@ export abstract class AInfoTable extends AView {
   }
 
   protected abstract getFields(): {key: string, order: number}[];
-  protected abstract mapID(): string;
 }
 
 class CelllineInfoTable extends AInfoTable {
@@ -153,18 +161,90 @@ class CelllineInfoTable extends AInfoTable {
         order: 30
       },
       {
-        key: 'tumortype',
+        key: 'tissue_subtype',
         order: 40
       },
       {
-        key: 'gender',
+        key: 'metastatic_site',
         order: 50
+      },
+      {
+        key: 'histology_type',
+        order: 60
+      },
+      {
+        key: 'morphology',
+        order: 70
+      },
+      {
+        key: 'tumortype',
+        order: 80
+      },
+      {
+        key: 'growth_type',
+        order: 90
+      },
+      {
+        key: 'gender',
+        order: 100
+      },
+      {
+        key: 'ploidy',
+        order: 110
+      },
+      {
+        key: 'age_at_surgery',
+        order: 120
+      },
+      {
+        key: 'stage',
+        order: 130
+      },
+      {
+        key: 'grade',
+        order: 140
+      },
+      {
+        key: 'atcc_no',
+        order: 150
+      },
+      {
+        key: 'dsmz_no',
+        order: 160
+      },
+      {
+        key: 'ecacc_no',
+        order: 170
+      },
+      {
+        key: 'jcrb_no',
+        order: 180
+      },
+      {
+        key: 'iclc_no',
+        order: 190
+      },
+      {
+        key: 'riken_no',
+        order: 200
+      },
+      {
+        key: 'kclb_no',
+        order: 210
+      },
+      {
+        key: 'cosmicid',
+        order: 220
+      },
+      {
+        key: 'pubmed',
+        order: 230
+      },
+      {
+        key: 'comment',
+        order: 240
       }
     ];
-  }
-
-  protected mapID() {
-    return 'celllinename';
   }
 }
 
@@ -180,12 +260,12 @@ class GeneInfoTable extends AInfoTable {
         order: 10
       },
       {
-        key: 'species',
-        order: 30
-      },
-      {
         key: 'symbol',
         order: 20
+      },
+      {
+        key: 'name',
+        order: 30
       },
       {
         key: 'chromosome',
@@ -196,22 +276,26 @@ class GeneInfoTable extends AInfoTable {
         order: 50
       },
       {
-        key: 'biotype',
+        key: 'seqregionstart',
         order: 60
       },
       {
-        key: 'seqregionstart',
+        key: 'seqregionend',
         order: 70
       },
       {
-        key: 'seqregionend',
+        key: 'biotype',
         order: 80
+      },
+      {
+        key: 'cosmic_id_gene',
+        order: 90
+      },
+      {
+        key: 'gc_content',
+        order: 100
       }
     ];
-  }
-
-  protected mapID() {
-    return 'ensg';
   }
 }
 
@@ -227,26 +311,70 @@ class TissueInfoTable extends AInfoTable {
         order: 10
       },
       {
-        key: 'species',
+        key: 'vendorname',
         order: 20
       },
       {
-        key: 'organ',
+        key: 'species',
         order: 30
       },
       {
-        key: 'tumortype',
+        key: 'organ',
         order: 40
       },
       {
-        key: 'gender',
+        key: 'tumortype',
         order: 50
+      },
+      {
+        key: 'patientname',
+        order: 60
+      },
+      {
+        key: 'tumortype_adjacent',
+        order: 70
+      },
+      {
+        key: 'tissue_subtype',
+        order: 80
+      },
+      {
+        key: 'metastatic_site',
+        order: 90
+      },
+      {
+        key: 'histology_type',
+        order: 100
+      },
+      {
+        key: 'histology_subtype',
+        order: 110
+      },
+      {
+        key: 'gender',
+        order: 120
+      },
+      {
+        key: 'age_at_surgery',
+        order: 120
+      },
+      {
+        key: 'stage',
+        order: 130
+      },
+      {
+        key: 'grade',
+        order: 140
+      },
+      {
+        key: 'sample_description',
+        order: 150
+      },
+      {
+        key: 'comment',
+        order: 160
       }
     ];
-  }
-
-  protected mapID() {
-    return 'tissuename';
   }
 }
 
