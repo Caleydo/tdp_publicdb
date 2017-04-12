@@ -268,32 +268,36 @@ class GeneInfoTable extends AInfoTable {
         order: 30
       },
       {
-        key: 'chromosome',
+        key: 'biotype',
         order: 40
       },
       {
-        key: 'strand',
+        key: 'species',
         order: 50
       },
       {
-        key: 'seqregionstart',
+        key: 'chromosome',
         order: 60
       },
       {
-        key: 'seqregionend',
+        key: 'seqregionstart',
         order: 70
       },
       {
-        key: 'biotype',
+        key: 'seqregionend',
         order: 80
       },
       {
-        key: 'cosmic_id_gene',
+        key: 'strand',
         order: 90
       },
       {
-        key: 'gc_content',
+        key: 'cosmic_id_gene',
         order: 100
+      },
+      {
+        key: 'gc_content',
+        order: 110
       }
     ];
   }
