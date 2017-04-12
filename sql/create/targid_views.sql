@@ -1,9 +1,12 @@
-CREATE OR REPLACE VIEW targid_gene AS
-  SELECT targidid, ensg, getSpecies(ensg) AS species, symbol, chromosome, strand, biotype, seqregionstart, seqregionend
+DROP VIEW targid_gene;
+CREATE VIEW targid_gene AS
+  SELECT targidid, ensg, species, symbol, name, chromosome, strand, biotype, seqregionstart, seqregionend
   FROM gene;
 
-CREATE OR REPLACE VIEW targid_geneset AS
+DROP VIEW targid_geneset;
+CREATE VIEW targid_geneset AS
   SELECT genesetname, species FROM geneset;
 
-CREATE OR REPLACE VIEW targid_geneassignment AS
+DROP VIEW targid_geneassignment;
+CREATE VIEW targid_geneassignment AS
   SELECT ensg, genesetname FROM geneassignment;
