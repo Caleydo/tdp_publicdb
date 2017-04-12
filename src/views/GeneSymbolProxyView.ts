@@ -23,9 +23,9 @@ export default class GeneSymbolProxyView extends ProxyView {
       const ids = await this.resolveIds(this.selection.idtype, this.selection.range, GENE_IDTYPE);
       const geneList = await loadGeneList(ids);
 
-      return geneList.map((d) => {
+      return geneList.map((d, i) => {
         return {
-          name: d.symbol,
+          name: `${d.symbol} (${d.id})`,
           value: d.symbol,
           data: d
         };
