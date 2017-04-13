@@ -21,9 +21,10 @@ CREATE TYPE tumortype_enum AS ENUM('placenta carcinomar', 'breast carcinoma', 'h
 'vulva carcinoma', 'gallbladder carcinoma', 'sarcoma/soft tissue');
 
 
-ALTER TABLE cellline.cellline alter column species type species_enum using species::species_enum;
-ALTER TABLE tissue.tissue alter column species type species_enum using species::species_enum;
+ALTER TABLE cellline.cellline alter column species TYPE species_enum USING species::species_enum;
+ALTER TABLE tissue.tissue alter column species TYPE species_enum USING species::species_enum;
+ALTER TABLE public.geneset ALTER COLUMN species TYPE species_enum USING species::species_enum;
 
-ALTER TABLE public.gene ALTER COLUMN biotype type biotype_enum USING biotype::biotype_enum;
+ALTER TABLE public.gene ALTER COLUMN biotype TYPE biotype_enum USING biotype::biotype_enum;
 
-ALTER TABLE cellline.cellline ALTER COLUMN tumortype type tumortype_enum using tumortype::tumortype_enum;
+ALTER TABLE cellline.cellline ALTER COLUMN tumortype TYPE tumortype_enum USING tumortype::tumortype_enum;
