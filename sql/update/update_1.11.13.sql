@@ -1,6 +1,7 @@
 
 -- add "name" field to view
-CREATE OR REPLACE VIEW public.targid_gene AS 
+DROP VIEW public.targid_gene;
+CREATE VIEW public.targid_gene AS 
  SELECT public.gene.targidid,
     gene.ensg,
     getspecies(gene.ensg) AS species,
