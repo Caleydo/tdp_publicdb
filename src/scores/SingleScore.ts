@@ -21,7 +21,6 @@ import {FORM_SINGLE_SCORE} from './forms';
 import {selectDataSources} from './utils';
 
 interface ISingleScoreParam {
-  sampleType: string;
   name: {id: string, text: string};
   data_type: string;
   data_subtype: string;
@@ -33,7 +32,9 @@ export default class SingleScore extends AScore implements IScore<any> {
   }
 
   createDesc(): any {
-    return createDesc(this.dataSubType.type, `${this.dataSubType.name} of ${this.parameter.name.text}`, this.dataSubType);
+    const ds = this.oppositeDataSource;
+    return createDesc(this.dataSubType.type, `${this.dataSubType.name} of ${this.parameter.name.text}`, this.dataSubType,
+    `${this.dataSubType.name} of ${ds.name} "${this.parameter.name.text}"`);
   }
 
   async compute(ids:RangeLike, idtype:IDType):Promise<any[]> {

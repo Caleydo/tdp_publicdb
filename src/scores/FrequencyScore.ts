@@ -8,7 +8,7 @@ import IDType from 'phovea_core/src/idtype/IDType';
 import {getSelectedSpecies} from 'targid_common/src/Common';
 import {IDataSourceConfig, dataSubtypes, mutation} from '../config';
 import {IScore} from 'ordino/src/LineUpView';
-import {createDesc} from './utils';
+import {createDesc, toFilterString} from './utils';
 import AScore, {ICommonScoreParam} from './AScore';
 import {toFilter, limitScoreRows} from '../utils';
 
@@ -24,10 +24,12 @@ export default class FrequencyScore extends AScore implements IScore<number> {
   }
 
   createDesc() {
+    const ds = this.oppositeDataSource;
     const subtype = this.dataSubType;
     const isMutation = this.dataType === mutation;
     const compare = !isMutation ? `${this.parameter.comparison_operator} ${this.parameter.comparison_value} `: '';
-    return createDesc(dataSubtypes.number, `${subtype.name} ${compare}${this.countOnly ? 'Count' : 'Frequency'}`, subtype);
+    const desc = `${this.countOnly ? 'Count' : 'Frequency'} ${subtype.name} ${compare} of ${ds.name}s(${toFilterString(this.parameter.filter, ds)})`;
+    return createDesc(dataSubtypes.number, `${subtype.name} ${compare}${this.countOnly ? 'Count' : 'Frequency'}`, subtype, desc);
   }
 
   async compute(ids: RangeLike, idtype: IDType): Promise<any[]> {
