@@ -183,9 +183,13 @@ def create_sample(result, basename, idtype, primary):
   result[basename + '_gene_single_score'] = DBViewBuilder().idtype(idtype).query("""
         SELECT D.{primary} AS id, D.%(attribute)s AS score
         FROM {base}.targid_%(table)s D
-        INNER JOIN public.targid_gene C ON D.ensg = C.ensg
-        WHERE C.species = :species AND c.ensg = :name %(and_where)s""".format(primary=primary, base=basename)) \
-    .replace('table').replace('attribute').replace('and_where').arg('name').arg('species').build()
+        INNER JOIN public.targid_gene g ON D.ensg = g.ensg
+       INNER JOIN {base}.targid_{base} C ON d.{primary} = C.{primary}
+        WHERE g.species = :species AND g.ensg = :name %(and_where)s""".format(primary=primary, base=basename)) \
+    .replace('table').replace('attribute').replace('and_where').arg('name').arg('species')\
+    .query('filter_panel', filter_panel) \
+    .query('filter_' + primary, 'c.'+ primary + ' %(operator)s %(value)s') \
+    .build()
 
   result[basename + '_gene_frequency_score'] = DBViewBuilder().idtype(idtype).query("""
          SELECT a.{primary} AS id, (COALESCE(freq.count,0)+0.0) AS count, a.total
