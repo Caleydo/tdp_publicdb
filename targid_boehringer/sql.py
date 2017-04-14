@@ -119,7 +119,7 @@ def create_sample(result, basename, idtype, primary):
     .query_categories("""
       SELECT distinct %(col)s as cat
       FROM {base}.targid_{base}
-      WHERE %(col)s is not null AND %(col)s <> ''""".format(base=basename)) \
+      WHERE %(col)s is not null""".format(base=basename)) \
     .replace('where').query('filter_panel', filter_panel) \
     .query('filter_' + primary, 'c.'+ primary + ' %(operator)s %(value)s') \
     .build()
@@ -242,7 +242,7 @@ views = dict(
     min(seqregionend) AS seqregionend_min, max(seqregionend) AS seqregionend_max FROM public.targid_gene""")
     .query_categories("""
   SELECT DISTINCT %(col)s AS cat FROM PUBLIC.targid_gene
-  WHERE %(col)s IS NOT NULL AND %(col)s <> ''""".format(base='gene'))
+  WHERE %(col)s IS NOT NULL""".format(base='gene'))
     .column(_primary_gene, label='id', type='string')
     .column('symbol', type='string')
     .column('species', type='categorical')
