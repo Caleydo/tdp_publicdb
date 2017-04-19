@@ -56,7 +56,7 @@ class GeneList extends ACommonList {
       categoricalCol('biotype', desc.columns.biotype.categories, 'Biotype', true),
       stringCol('seqregionstart', 'Seq Region Start', false),
       stringCol('seqregionend', 'Seq Region End', false),
-      stringCol('name', 'Name', false)
+      stringCol('name', 'Name', true)
     ];
   }
 }
