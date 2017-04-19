@@ -52,8 +52,9 @@ export default class AggregatedScore extends AScore implements IScore<number> {
     limitScoreRows(param, ids, this.dataSource);
     toFilter(param, this.parameter.filter);
 
-    const rows: any[] = await ajax.getAPIJSON(url, param);
+    let rows: any[] = await ajax.getAPIJSON(url, param);
     if (this.parameter.aggregation === 'boxplot') {
+      rows = rows.filter((d) => d.score !== null);
       rows.forEach((row) => row.score = array2boxplotData(row.score));
     }
     if (this.dataSubType.useForAggregation.indexOf('log2') !== -1) {
