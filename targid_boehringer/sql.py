@@ -14,7 +14,7 @@ _column_query_cellline_tissue = 'targidid as _id, organ, gender, tumortype'
 idtype_gene = 'Ensembl'
 _primary_gene = 'ensg'
 _index_gene = "row_number() OVER(ORDER BY t.ensg ASC) as _index"
-_column_query_gene = 'targidid as _id, t.ensg as id, symbol, species, chromosome, strand, biotype, seqregionstart, seqregionend'
+_column_query_gene = 'targidid as _id, t.ensg as id, symbol, species, chromosome, strand, biotype, seqregionstart, seqregionend, name'
 
 agg_score = DBViewBuilder().query('%(agg)s(%(data_subtype)s)') \
   .query('median', 'percentile_cont(0.5) WITHIN GROUP (ORDER BY %(data_subtype)s)') \

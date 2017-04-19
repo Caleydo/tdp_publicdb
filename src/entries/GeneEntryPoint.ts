@@ -55,7 +55,8 @@ class GeneList extends ACommonList {
       categoricalCol('strand', [{ label: 'reverse strand', name:String(-1)}, { label: 'forward strand', name:String(1)}], 'Strand', true),
       categoricalCol('biotype', desc.columns.biotype.categories, 'Biotype', true),
       stringCol('seqregionstart', 'Seq Region Start', false),
-      stringCol('seqregionend', 'Seq Region End', false)
+      stringCol('seqregionend', 'Seq Region End', false),
+      stringCol('name', 'Name', true)
     ];
   }
 }
