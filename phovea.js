@@ -433,7 +433,7 @@ module.exports = function(registry) {
     'selection': 'multiple',
     'group': {
       'name': 'External resources',
-      'order': 60
+      // 'order': 60
     }
   });
   // generator-phovea:end
