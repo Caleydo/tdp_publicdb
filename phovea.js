@@ -380,7 +380,7 @@ module.exports = function(registry) {
       'Visualization': 30,
       'Internal resources': 40,
       'External resources': 50,
-      'Other': 100
+      'Other': 1000
     }
   });
 
