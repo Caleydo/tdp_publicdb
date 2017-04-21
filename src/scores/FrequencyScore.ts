@@ -11,6 +11,7 @@ import {IScore} from 'ordino/src/LineUpView';
 import {createDesc} from './utils';
 import AScore, {ICommonScoreParam} from './AScore';
 import {toFilter, limitScoreRows} from '../utils';
+import {INamedSet} from 'ordino/src/storage';
 
 interface IFrequencyScoreParam extends ICommonScoreParam {
   comparison_operator: string;
@@ -30,7 +31,7 @@ export default class FrequencyScore extends AScore implements IScore<number> {
     return createDesc(dataSubtypes.number, `${subtype.name} ${compare}${this.countOnly ? 'Count' : 'Frequency'}`, subtype);
   }
 
-  async compute(ids: RangeLike, idtype: IDType): Promise<any[]> {
+  async compute(ids: RangeLike, idtype: IDType, namedSet?: INamedSet): Promise<any[]> {
     const isMutation = this.dataType === mutation;
     const url = `/targid/db/${this.dataSource.db}/${this.dataSource.base}_${this.oppositeDataSource.base}_frequency_score/filter`;
     const param: any = {
@@ -38,7 +39,7 @@ export default class FrequencyScore extends AScore implements IScore<number> {
       species: getSelectedSpecies(),
       table: this.dataType.tableName
     };
-    limitScoreRows(param, ids, this.dataSource);
+    limitScoreRows(param, ids, this.dataSource, namedSet);
     if (!isMutation) {
       param.operator = this.parameter.comparison_operator;
       param.value = this.parameter.comparison_value;
