@@ -240,7 +240,7 @@ views = dict(
   gene=DBViewBuilder().idtype(idtype_gene).query("""
   SELECT {index}, {columns}
   FROM public.targid_gene t
-  WHERE species = :species %(and_where)s
+  %(where)s
   ORDER BY t.symbol ASC""".format(index=_index_gene, columns=_column_query_gene))
     .query_stats("""
   SELECT min(strand) AS strand_min, max(strand) AS strand_max, min(seqregionstart) AS seqregionstart_min, max(seqregionstart) AS seqregionstart_max,
@@ -256,9 +256,8 @@ views = dict(
     .column('biotype', type='categorical')
     .column('seqregionstart', type='number')
     .column('seqregionend', type='number')
-    .replace('and_where')
+    .replace('where')
     .query('filter_panel', 'ensg = ANY(SELECT ensg FROM public.targid_geneassignment WHERE genesetname %(operator)s %(value)s)')
-    .arg('species')
     .build(),
   gene_panel=DBViewBuilder().query("""
     SELECT genesetname AS id, species AS description FROM public.targid_geneset ORDER BY genesetname ASC""")
