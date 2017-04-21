@@ -62,6 +62,7 @@ def create_gene_score(result, other_prefix, other_primary):
           SELECT D.ensg AS id, D.%(attribute)s AS score
           FROM {base}.targid_%(table)s D
           INNER JOIN {base}.targid_{base} C ON D.{primary} = C.{primary}
+          INNER JOIN public.targid_gene G ON G.ensg = D.ensg
           WHERE C.species = :species AND C.{primary} = :name %(and_where)s""".format(primary=other_primary, base=other_prefix)) \
     .replace('table').replace('attribute').replace('and_where').arg('name').arg('species').build()
 

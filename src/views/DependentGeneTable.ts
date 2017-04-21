@@ -111,7 +111,7 @@ class InvertedRawDataTable extends ALineUpView2 {
   protected loadRows() {
     const url = `/targid/db/${this.dataSource.db}/gene/filter`;
     const param = {
-      species: getSelectedSpecies()
+      filter_species: getSelectedSpecies()
     };
     toFilter(param, convertRow2MultiMap(this.getParameter('filter')));
     return ajax.getAPIJSON(url, param);
