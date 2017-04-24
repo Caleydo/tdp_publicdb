@@ -19,6 +19,7 @@ import {IPluginDesc} from 'phovea_core/src/plugin';
 import AScore from './AScore';
 import {FORM_SINGLE_SCORE} from './forms';
 import {selectDataSources} from './utils';
+import {INamedSet} from "ordino/src/storage";
 
 interface ISingleScoreParam {
   sampleType: string;
@@ -36,7 +37,7 @@ export default class SingleScore extends AScore implements IScore<any> {
     return createDesc(this.dataSubType.type, `${this.dataSubType.name} of ${this.parameter.name.text}`, this.dataSubType);
   }
 
-  async compute(ids:RangeLike, idtype:IDType):Promise<any[]> {
+  async compute(ids:RangeLike, idtype:IDType, namedSet?: INamedSet):Promise<any[]> {
     const url = `/targid/db/${this.dataSource.db}/${this.dataSource.base}_${this.oppositeDataSource.base}_single_score/filter`;
     const param: any = {
       table: this.dataType.tableName,
@@ -44,7 +45,7 @@ export default class SingleScore extends AScore implements IScore<any> {
       name: this.parameter.name.id,
       species: getSelectedSpecies()
     };
-    limitScoreRows(param, ids, this.dataSource);
+    limitScoreRows(param, ids, this.dataSource, namedSet);
 
     const rows: any[] = await getAPIJSON(url, param);
     if (this.dataSubType.useForAggregation.indexOf('log2') !== -1) {
