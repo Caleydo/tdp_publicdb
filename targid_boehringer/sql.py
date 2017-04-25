@@ -68,7 +68,9 @@ def create_gene_score(result, other_prefix, other_primary):
           INNER JOIN public.targid_gene G ON G.ensg = D.ensg
           WHERE C.species = :species AND C.{primary} = :name %(and_where)s""".format(primary=other_primary, base=other_prefix)) \
     .replace('table').replace('attribute') \
-    .query('filter_panel_ensg', filter_gene_panel_no) \
+    .query('filter_panel', filter_gene_panel_d) \
+    .query('filter_panel_ensg', filter_gene_panel_d) \
+    .query('filter_ensg', 'd.ensg %(operator)s %(value)s') \
     .replace('and_where').arg('name').arg('species').build()
 
   result[basename + '_frequency_score'] = DBViewBuilder().idtype(idtype_gene).query("""
@@ -90,7 +92,8 @@ def create_gene_score(result, other_prefix, other_primary):
            ON freq.ensg = a.ensg""".format(primary=other_primary, base=other_prefix)) \
     .replace("table").replace('and_where').replace("attribute").replace("operator") \
     .query('filter_panel', filter_panel) \
-    .query('filter_panel_ensg', filter_gene_panel_no) \
+    .query('filter_panel_ensg', filter_gene_panel_d) \
+    .query('filter_ensg', 'd.ensg %(operator)s %(value)s') \
     .query('filter_' + other_primary, 'c.'+ other_primary + ' %(operator)s %(value)s') \
     .arg("species").arg("value").build()
 
@@ -102,6 +105,7 @@ def create_gene_score(result, other_prefix, other_primary):
             GROUP BY D.ensg""".format(primary=other_primary, base=other_prefix)) \
     .query('filter_panel', filter_panel) \
     .query('filter_panel_ensg', filter_gene_panel_d) \
+    .query('filter_ensg', 'd.ensg %(operator)s %(value)s') \
     .query('filter_' + other_primary, 'd.'+ other_primary + ' %(operator)s %(value)s') \
     .replace('table').replace('agg_score').replace('and_where').arg('species').build()
 
