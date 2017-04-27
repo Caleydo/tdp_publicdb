@@ -90,10 +90,14 @@ export function toFilterString(filter: any, ds: IDataSourceConfig) {
       key2name.set(entry.value, entry.name);
     });
   }
-  return Object.keys(filter).map((d) => {
+  const keys = Object.keys(filter);
+  if (keys.length === 0) {
+    return '<None>';
+  }
+  return keys.map((d) => {
     const v = filter[d];
     const label = key2name.has(d) ? key2name.get(d) : d;
     const vn = Array.isArray(v) ? '["' + v.join('","') + '"]' : '"' + v.toString() + '"';
     return `${label}=${vn}`;
-  }).join(', ');
+  }).join(' & ');
 }

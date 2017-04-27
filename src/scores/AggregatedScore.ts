@@ -38,7 +38,7 @@ export default class AggregatedScore extends AScore implements IScore<number> {
 
   createDesc() {
     const ds = this.oppositeDataSource;
-    const desc = `${this.parameter.aggregation} ${this.dataSubType.name} of ${ds.name}s(${toFilterString(this.parameter.filter, ds)})`;
+    const desc = `${ds.name} Filter: ${toFilterString(this.parameter.filter, ds)}\nData Type: ${this.dataType.name}\nData Subtype: ${this.dataSubType.name}\nAggregation: ${this.parameter.aggregation}`;
     return createDesc(this.parameter.aggregation === 'boxplot' ? 'boxplot' : dataSubtypes.number, `${this.parameter.aggregation} ${this.dataSubType.name}`, this.dataSubType, desc);
   }
 

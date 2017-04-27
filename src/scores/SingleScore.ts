@@ -35,7 +35,7 @@ export default class SingleScore extends AScore implements IScore<any> {
   createDesc(): any {
     const ds = this.oppositeDataSource;
     return createDesc(this.dataSubType.type, `${this.dataSubType.name} of ${this.parameter.name.text}`, this.dataSubType,
-    `${this.dataSubType.name} of ${ds.name} "${this.parameter.name.text}"`);
+    `${ds.name} Name: "${this.parameter.name.text}"\nData Type: ${this.dataType.name}\nData Subtype: ${this.dataSubType.name}`);
   }
 
   async compute(ids:RangeLike, idtype:IDType, namedSet?: INamedSet):Promise<any[]> {

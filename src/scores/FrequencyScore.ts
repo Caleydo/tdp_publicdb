@@ -29,7 +29,7 @@ export default class FrequencyScore extends AScore implements IScore<number> {
     const subtype = this.dataSubType;
     const isMutation = this.dataType === mutation;
     const compare = !isMutation ? `${this.parameter.comparison_operator} ${this.parameter.comparison_value} `: '';
-    const desc = `${this.countOnly ? 'Count' : 'Frequency'} ${subtype.name} ${compare} of ${ds.name}s(${toFilterString(this.parameter.filter, ds)})`;
+    const desc = `${ds.name} Filter: ${toFilterString(this.parameter.filter, ds)}\nData Type: ${this.dataType.name}\nData Subtype: ${this.dataSubType.name}\n${this.countOnly ? 'Count' : 'Frequency'}: ${compare}`;
     return createDesc(dataSubtypes.number, `${subtype.name} ${compare}${this.countOnly ? 'Count' : 'Frequency'}`, subtype, desc);
   }
 
