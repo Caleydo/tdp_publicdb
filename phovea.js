@@ -380,7 +380,7 @@ module.exports = function(registry) {
       'Visualization': 30,
       'Internal resources': 40,
       'External resources': 50,
-      'Other': 100
+      'Other': 1000
     }
   });
 
@@ -433,7 +433,7 @@ module.exports = function(registry) {
     'selection': 'multiple',
     'group': {
       'name': 'External resources',
-      'order': 60
+      // 'order': 60
     }
   });
   // generator-phovea:end

@@ -12,6 +12,9 @@ import {getAPIJSON} from 'phovea_core/src/ajax';
 import {loadGeneList, loadFirstName} from './utils';
 import {convertRow2MultiMap} from 'ordino/src/form/internal/FormMap';
 import {toFilter} from '../utils';
+import {resolve} from 'phovea_core/src/idtype/manager';
+import Range from 'phovea_core/src/range/Range';
+
 
 export class CoExpression extends ACoExpression {
 
@@ -53,6 +56,13 @@ export class CoExpression extends ACoExpression {
 
   protected getAttributeName() {
     return this.getParameter(ParameterFormIds.EXPRESSION_SUBTYPE).name;
+  }
+
+  protected select(range: Range): void {
+    this.setItemSelection({
+      idtype: resolve(this.getParameter(ParameterFormIds.DATA_SOURCE).idType),
+      range
+    });
   }
 }
 
