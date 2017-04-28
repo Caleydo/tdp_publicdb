@@ -436,6 +436,17 @@ module.exports = function(registry) {
       // 'order': 60
     }
   });
+
+  registry.push('idTypeDetector', 'geneSymbol', function() {
+    return System.import('./src/GeneSymbolDetector');
+  }, {
+    'factory': 'human',
+    'name': 'GeneSymbol',
+    'idType': 'GeneSymbol_human',
+    'options': {
+      'sampleType': 'GeneSymbol'
+    }
+  });
   // generator-phovea:end
 };
 

@@ -298,6 +298,10 @@ views = dict(
 
   gene_all_columns=DBViewBuilder().query("""
     SELECT symbol as id, * FROM public.targid_gene %(where)s
+  """).replace('where').build(),
+
+  gene_match_symbols=DBViewBuilder().query("""
+    SELECT COUNT(*) as matches FROM public.targid_gene %(where)s
   """).replace('where').build()
 )
 _create_common(views, 'gene', 'public.targid_gene', _primary_gene, idtype_gene)
