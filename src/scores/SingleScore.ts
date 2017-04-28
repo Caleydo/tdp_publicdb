@@ -22,7 +22,6 @@ import {selectDataSources} from './utils';
 import {INamedSet} from "ordino/src/storage";
 
 interface ISingleScoreParam {
-  sampleType: string;
   name: {id: string, text: string};
   data_type: string;
   data_subtype: string;
@@ -34,7 +33,9 @@ export default class SingleScore extends AScore implements IScore<any> {
   }
 
   createDesc(): any {
-    return createDesc(this.dataSubType.type, `${this.dataSubType.name} of ${this.parameter.name.text}`, this.dataSubType);
+    const ds = this.oppositeDataSource;
+    return createDesc(this.dataSubType.type, `${this.dataSubType.name} of ${this.parameter.name.text}`, this.dataSubType,
+    `${ds.name} Name: "${this.parameter.name.text}"\nData Type: ${this.dataType.name}\nData Subtype: ${this.dataSubType.name}`);
   }
 
   async compute(ids:RangeLike, idtype:IDType, namedSet?: INamedSet):Promise<any[]> {
