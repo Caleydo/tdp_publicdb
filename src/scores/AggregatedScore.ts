@@ -9,7 +9,7 @@ import {getSelectedSpecies} from 'targid_common/src/Common';
 import {IDataSourceConfig, dataSubtypes} from '../config';
 import {convertLog2ToLinear} from '../utils';
 import {IScore} from 'ordino/src/LineUpView';
-import {createDesc} from './utils';
+import {createDesc, toFilterString} from './utils';
 import AScore, {ICommonScoreParam} from './AScore';
 import {toFilter, limitScoreRows} from '../utils';
 import {IBoxPlotData} from 'lineupjs/src/model/BoxPlotColumn';
@@ -37,7 +37,9 @@ export default class AggregatedScore extends AScore implements IScore<number> {
   }
 
   createDesc() {
-    return createDesc(this.parameter.aggregation === 'boxplot' ? 'boxplot' : dataSubtypes.number, `${this.parameter.aggregation} ${this.dataSubType.name}`, this.dataSubType);
+    const ds = this.oppositeDataSource;
+    const desc = `${ds.name} Filter: ${toFilterString(this.parameter.filter, ds)}\nData Type: ${this.dataType.name}\nData Subtype: ${this.dataSubType.name}\nAggregation: ${this.parameter.aggregation}`;
+    return createDesc(this.parameter.aggregation === 'boxplot' ? 'boxplot' : dataSubtypes.number, `${this.parameter.aggregation} ${this.dataSubType.name}`, this.dataSubType, desc);
   }
 
   async compute(ids: ranges.RangeLike, idtype: idtypes.IDType, namedSet?: INamedSet): Promise<any[]> {
