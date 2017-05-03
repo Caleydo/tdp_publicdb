@@ -44,6 +44,9 @@ const elems = template.create(document.body, {
   loginForm: String(loginForm)
 });
 
+const aboutDialogBody = elems.header.aboutDialog;
+aboutDialogBody.insertAdjacentHTML('afterbegin', '<div class="alert alert-warning" role="alert"><strong>Disclaimer</strong> This software is <strong>for research purpose only</strong>.</span></div>');
+
 // enable tooltips e.g. for login dialog
 $('[data-toggle="popover"]').popover();
 

@@ -33,8 +33,8 @@ class GeneEntryPointList extends ACommonEntryPointList {
       ajax: {
         url: api2absURL(`/targid/db/${this.dataSource.db}/${this.dataSource.base}_gene_items/lookup`),
       },
-      templateResult: (item: any) => (item.id) ? `${item.text} <span class="ensg">${item.id}</span>` : item.text,
-      templateSelection: (item: any) => (item.id) ? `${item.text} <span class="ensg">${item.id}</span>` : item.text
+      templateResult: (item: any) => (item.id) ? `${item.text || ''} <span class="ensg">${item.id}</span>` : item.text,
+      templateSelection: (item: any) => (item.id) ? `${item.text || ''} <span class="ensg">${item.id}</span>` : item.text
     });
   }
 }
