@@ -164,7 +164,7 @@ class InvertedRawDataTable extends ALineUpView2 {
   }
 
   getItemName(count: number) {
-    return (count === 1) ? this.dataSource.name.toLowerCase() : this.dataSource.name.toLowerCase() + 's';
+    return (count === 1) ? gene.name.toLowerCase() : gene.name.toLowerCase() + 's';
   }
 }
 
