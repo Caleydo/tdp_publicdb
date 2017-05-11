@@ -105,7 +105,7 @@ class RawDataTable extends ALineUpView2 {
     const dataSource = this.getParameter(ParameterFormIds.DATA_SOURCE);
     const url = `/targid/db/${dataSource.db}/${dataSource.base}/filter`;
     const param = {
-      species: getSelectedSpecies()
+      filter_species: getSelectedSpecies()
     };
     toFilter(param, convertRow2MultiMap(this.getParameter('filter')));
     return ajax.getAPIJSON(url, param);
