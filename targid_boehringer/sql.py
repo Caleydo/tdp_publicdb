@@ -9,8 +9,6 @@ _primary_cellline = 'celllinename'
 idtype_tissue = 'Tissue'
 _primary_tissue = 'tissuename'
 
-_column_query_cellline_tissue = 'targidid as _id, organ, gender, tumortype'
-
 idtype_gene = 'Ensembl'
 _primary_gene = 'ensg'
 _index_gene = "row_number() OVER(ORDER BY t.ensg ASC) as _index"
@@ -120,12 +118,21 @@ def create_sample(result, basename, idtype, primary):
   filter_panel_d = 'd.{primary} = ANY(SELECT {primary} FROM {base}.targid_panelassignment WHERE panel %(operator)s %(value)s)'.format(
     primary=primary, base=basename)
 
-  result[basename] = DBViewBuilder().idtype(idtype).column(primary, label='id', type='string') \
+  base = DBViewBuilder().idtype(idtype).column(primary, label='id', type='string') \
     .column('species', type='categorical') \
     .column('tumortype', type='categorical') \
     .column('organ', type='categorical') \
     .column('gender', type='categorical') \
-    .query("""
+
+  if basename is 'cellline':
+    column_query += ', metastatic_site, histology_type, morphology, growth_type, age_at_surgery'
+    base.column('metastatic_site', type='categorical') \
+      .column('histology_type', type='categorical') \
+      .column('morphology', type='categorical') \
+      .column('growth_type', type='categorical') \
+      .column('age_at_surgery', type='categorical') \
+
+  base.query("""
       SELECT {index}, {columns}
       FROM {base}.targid_{base} c
       %(where)s
@@ -135,8 +142,9 @@ def create_sample(result, basename, idtype, primary):
       FROM {base}.targid_{base}
       WHERE %(col)s is not null""".format(base=basename)) \
     .replace('where').query('filter_panel', filter_panel) \
-    .query('filter_' + primary, 'c.'+ primary + ' %(operator)s %(value)s') \
-    .build()
+    .query('filter_' + primary, 'c.'+ primary + ' %(operator)s %(value)s')
+
+  result[basename] = base.build()
 
   result[basename + '_panel'] = DBViewBuilder().query("""
   SELECT panel as id, paneldescription as description
