@@ -107,7 +107,7 @@ module.exports = function(registry) {
     return System.import('./src/entries/CellLineEntryPoint');
   }, {
     'name': 'Tissues',
-    'factory': 'createStart',
+    'factory': 'createStartTissue',
     "idtype": "Tissue",
     "selection": "none",
     "sampleType": "Tissue"

@@ -39,6 +39,28 @@ class CellLineList extends ACommonList {
       //categoricalCol('species', desc.columns.species.categories, 'Species', true),
       categoricalCol('tumortype', desc.columns.tumortype.categories, 'Tumor Type', true),
       categoricalCol('organ', desc.columns.organ.categories, 'Organ', true),
+      categoricalCol('gender', desc.columns.gender.categories, 'Gender', true),
+      categoricalCol('metastatic_site', desc.columns.metastatic_site.categories, 'Metastatic Site', false),
+      categoricalCol('histology_type', desc.columns.histology_type.categories, 'Histology Type', false),
+      categoricalCol('morphology', desc.columns.morphology.categories, 'Morphology', false),
+      categoricalCol('growth_type', desc.columns.growth_type.categories, 'Growth Type', false),
+      categoricalCol('age_at_surgery', desc.columns.age_at_surgery.categories, 'Age at Surgery', false),
+    ];
+  }
+}
+
+class TissueList extends ACommonList {
+
+  constructor(context:IViewContext, selection: ISelection, parent:Element, options: IACommonListOptions) {
+    super(context, selection, parent, chooseDataSource(context.desc), options);
+  }
+
+  protected defineColumns(desc: any) {
+    return [
+      stringCol('id', 'Name', true, 120),
+      //categoricalCol('species', desc.columns.species.categories, 'Species', true),
+      categoricalCol('tumortype', desc.columns.tumortype.categories, 'Tumor Type', true),
+      categoricalCol('organ', desc.columns.organ.categories, 'Organ', true),
       categoricalCol('gender', desc.columns.gender.categories, 'Gender', true)
     ];
   }
@@ -60,3 +82,8 @@ export function createStartFactory(parent: HTMLElement, desc: IPluginDesc, optio
 export function createStart(context:IViewContext, selection: ISelection, parent:Element, options: IACommonListOptions) {
   return new CellLineList(context, selection, parent, options);
 }
+
+export function createStartTissue(context:IViewContext, selection: ISelection, parent:Element, options: IACommonListOptions) {
+  return new TissueList(context, selection, parent, options);
+}
+
