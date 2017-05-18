@@ -108,43 +108,61 @@ def create_gene_score(result, other_prefix, other_primary):
     .replace('table').replace('agg_score').replace('and_where').arg('species').build()
 
 
-def create_sample(result, basename, idtype, primary):
-  _create_common(result, basename, '{base}.targid_{base}'.format(base=basename), primary, idtype)
+def create_cellline_specific(result, basename, idtype, primary):
   index = 'row_number() OVER(ORDER BY c.{primary} ASC) as _index'.format(primary=primary)
-  column_query = 'targidid as _id, c.{primary} as id, species, tumortype, organ, gender'.format(primary=primary)
+  column_query = 'targidid as _id, c.{primary} as id, species, tumortype, organ, gender, metastatic_site, histology_type, morphology, growth_type, age_at_surgery'.format(
+    primary=primary)
+
+  return DBViewBuilder().idtype(idtype).column(primary, label='id', type='string') \
+    .column('species', type='categorical') \
+    .column('tumortype', type='categorical') \
+    .column('organ', type='categorical') \
+    .column('gender', type='categorical') \
+    .column('metastatic_site', type='categorical') \
+    .column('histology_type', type='categorical') \
+    .column('morphology', type='categorical') \
+    .column('growth_type', type='categorical') \
+    .column('age_at_surgery', type='categorical') \
+    .query("""
+      SELECT {index}, {columns}
+      FROM {base}.targid_{base} c
+      %(where)s
+      ORDER BY {primary} ASC""".format(index=index, columns=column_query, base=basename, primary=primary))
+
+
+def create_tissue_specific(result, basename, idtype, primary):
+  index = 'row_number() OVER(ORDER BY c.{primary} ASC) as _index'.format(primary=primary)
+  column_query = 'targidid as _id, c.{primary} as id, species, tumortype, organ, gender'.format(
+    primary=primary)
+
+  return DBViewBuilder().idtype(idtype).column(primary, label='id', type='string') \
+    .column('species', type='categorical') \
+    .column('tumortype', type='categorical') \
+    .column('organ', type='categorical') \
+    .column('gender', type='categorical') \
+    .query("""
+          SELECT {index}, {columns}
+          FROM {base}.targid_{base} c
+          %(where)s
+          ORDER BY {primary} ASC""".format(index=index, columns=column_query, base=basename, primary=primary)) \
+
+
+def create_sample(result, basename, idtype, primary, base):
+  _create_common(result, basename, '{base}.targid_{base}'.format(base=basename), primary, idtype)
+
 
   filter_panel = 'c.{primary} = ANY(SELECT {primary} FROM {base}.targid_panelassignment WHERE panel %(operator)s %(value)s)'.format(
     primary=primary, base=basename)
   filter_panel_d = 'd.{primary} = ANY(SELECT {primary} FROM {base}.targid_panelassignment WHERE panel %(operator)s %(value)s)'.format(
     primary=primary, base=basename)
 
-  base = DBViewBuilder().idtype(idtype).column(primary, label='id', type='string') \
-    .column('species', type='categorical') \
-    .column('tumortype', type='categorical') \
-    .column('organ', type='categorical') \
-    .column('gender', type='categorical') \
-
-  if basename is 'cellline':
-    column_query += ', metastatic_site, histology_type, morphology, growth_type, age_at_surgery'
-    base.column('metastatic_site', type='categorical') \
-      .column('histology_type', type='categorical') \
-      .column('morphology', type='categorical') \
-      .column('growth_type', type='categorical') \
-      .column('age_at_surgery', type='categorical') \
-
-  base.query("""
-      SELECT {index}, {columns}
-      FROM {base}.targid_{base} c
-      %(where)s
-      ORDER BY {primary} ASC""".format(index=index, columns=column_query, base=basename, primary=primary)) \
-    .query_categories("""
+  result[basename] = base.query_categories("""
       SELECT distinct %(col)s as cat
       FROM {base}.targid_{base}
       WHERE %(col)s is not null""".format(base=basename)) \
     .replace('where').query('filter_panel', filter_panel) \
-    .query('filter_' + primary, 'c.'+ primary + ' %(operator)s %(value)s')
-
-  result[basename] = base.build()
+    .query('filter_' + primary, 'c.' + primary + ' %(operator)s %(value)s') \
+    .build()
 
   result[basename + '_panel'] = DBViewBuilder().query("""
   SELECT panel as id, paneldescription as description
@@ -315,8 +333,12 @@ views = dict(
 _create_common(views, 'gene', 'public.targid_gene', _primary_gene, idtype_gene)
 create_gene_score(views, 'cellline', _primary_cellline)
 create_gene_score(views, 'tissue', _primary_tissue)
-create_sample(views, 'cellline', idtype_celline, _primary_cellline)
-create_sample(views, 'tissue', idtype_tissue, _primary_tissue)
+
+cellline_base = create_cellline_specific(views, 'cellline', idtype_celline, _primary_cellline)
+tissue_base = create_tissue_specific(views, 'tissue', idtype_tissue, _primary_tissue)
+create_sample(views, 'cellline', idtype_celline, _primary_cellline, cellline_base)
+create_sample(views, 'tissue', idtype_tissue, _primary_tissue, tissue_base)
+
 
 
 def create():
