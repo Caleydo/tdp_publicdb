@@ -40,11 +40,11 @@ class CellLineList extends ACommonList {
       categoricalCol('tumortype', desc.columns.tumortype.categories, 'Tumor Type', true),
       categoricalCol('organ', desc.columns.organ.categories, 'Organ', true),
       categoricalCol('gender', desc.columns.gender.categories, 'Gender', true),
-      categoricalCol('metastatic_site', desc.columns.metastatic_site.categories, 'Metastatic Site', true),
-      categoricalCol('histology_type', desc.columns.histology_type.categories, 'Histology Type', true),
-      categoricalCol('morphology', desc.columns.morphology.categories, 'Morphology', true),
-      categoricalCol('growth_type', desc.columns.growth_type.categories, 'Growth Type', true),
-      categoricalCol('age_at_surgery', desc.columns.age_at_surgery.categories, 'Age at Surgery', true),
+      categoricalCol('metastatic_site', desc.columns.metastatic_site.categories, 'Metastatic Site', false),
+      categoricalCol('histology_type', desc.columns.histology_type.categories, 'Histology Type', false),
+      categoricalCol('morphology', desc.columns.morphology.categories, 'Morphology', false),
+      categoricalCol('growth_type', desc.columns.growth_type.categories, 'Growth Type', false),
+      categoricalCol('age_at_surgery', desc.columns.age_at_surgery.categories, 'Age at Surgery', false),
     ];
   }
 }
