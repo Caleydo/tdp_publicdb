@@ -93,6 +93,18 @@ export function create(pluginDesc: IPluginDesc) {
     dialog.onSubmit(() => {
       const data = <any>form.getElementData();
 
+      {
+        const datatypes = (<IFormSelect2Element>form.getElementById(ParameterFormIds.DATA_HIERARCHICAL_SUBTYPE)).values;
+        delete data[ParameterFormIds.DATA_HIERARCHICAL_SUBTYPE];
+        const resolved = datatypes.map((entry) => entry.id.split('-'));
+        if (datatypes.length === 1) {
+          data.data_type = resolved[0][0];
+          data.data_subtype = resolved[0][1];
+        } else {
+          data.data_types = resolved;
+        }
+      }
+
       switch (opposite) {
         case gene:
           data.name = (<IFormSelect2Element>form.getElementById(ParameterFormIds.GENE_SYMBOL)).values;
@@ -124,9 +136,17 @@ export function create(pluginDesc: IPluginDesc) {
 
 export function createScore(data: ISingleScoreParam, pluginDesc: IPluginDesc): IScore<number>|IScore<any>[] {
   const {primary, opposite} = selectDataSources(pluginDesc);
+  const configs = (<any>data).data_types;
+  function defineScore(name: {id: string, text: string}) {
+    if (configs) {
+      return configs.map((ds) => new SingleScore({name, data_type: ds[0], data_subtype: ds[1]}, primary, opposite));
+    } else {
+      return new SingleScore(Object.assign({}, data, { name }), primary, opposite);
+    }
+  }
   if (Array.isArray(data.name)) {
-    return data.name.map((name) => new SingleScore(Object.assign({}, data, { name }), primary, opposite));
+    return [].concat(...data.name.map((name) => defineScore(name)));
   } else {
-    return new SingleScore(data, primary, opposite);
+    return defineScore(data.name);
   }
 }
