@@ -19,7 +19,9 @@ import {IPluginDesc} from 'phovea_core/src/plugin';
 import AScore from './AScore';
 import {FORM_SINGLE_SCORE} from './forms';
 import {selectDataSources} from './utils';
-import {INamedSet} from "ordino/src/storage";
+import {mixin} from 'phovea_core/src';
+import {INamedSet} from 'ordino/src/storage';
+import {IFormSelect2Element} from 'ordino/src/form/internal/FormSelect2';
 
 interface ISingleScoreParam {
   name: {id: string, text: string};
@@ -56,6 +58,15 @@ export default class SingleScore extends AScore implements IScore<any> {
   }
 }
 
+function enableMultiple(desc: any): any {
+  return mixin({
+    options: {
+      multiple: true,
+      tags: true
+    }
+  }, desc);
+}
+
 export function create(pluginDesc: IPluginDesc) {
   const {opposite} = selectDataSources(pluginDesc);
   // resolve promise when closing or submitting the modal dialog
@@ -67,32 +78,44 @@ export function create(pluginDesc: IPluginDesc) {
 
     switch(opposite) {
       case gene:
-        formDesc.unshift(FORM_GENE_NAME);
+        formDesc.unshift(enableMultiple(FORM_GENE_NAME));
         break;
       case tissue:
-        formDesc.unshift(FORM_TISSUE_NAME);
+        formDesc.unshift(enableMultiple(FORM_TISSUE_NAME));
         break;
       case cellline:
-        formDesc.unshift(FORM_CELLLINE_NAME);
+        formDesc.unshift(enableMultiple(FORM_CELLLINE_NAME));
         break;
     }
 
     form.build(formDesc);
 
     dialog.onSubmit(() => {
-      const data = <ISingleScoreParam>form.getElementData();
+      const data = <any>form.getElementData();
+
+      {
+        const datatypes = (<IFormSelect2Element>form.getElementById(ParameterFormIds.DATA_HIERARCHICAL_SUBTYPE)).values;
+        delete data[ParameterFormIds.DATA_HIERARCHICAL_SUBTYPE];
+        const resolved = datatypes.map((entry) => entry.id.split('-'));
+        if (datatypes.length === 1) {
+          data.data_type = resolved[0][0];
+          data.data_subtype = resolved[0][1];
+        } else {
+          data.data_types = resolved;
+        }
+      }
 
       switch (opposite) {
         case gene:
-          data.name = data[ParameterFormIds.GENE_SYMBOL];
+          data.name = (<IFormSelect2Element>form.getElementById(ParameterFormIds.GENE_SYMBOL)).values;
           delete data[ParameterFormIds.GENE_SYMBOL];
           break;
         case tissue:
-          data.name = data[ParameterFormIds.TISSUE_NAME];
+          data.name = (<IFormSelect2Element>form.getElementById(ParameterFormIds.TISSUE_NAME)).values;
           delete data[ParameterFormIds.TISSUE_NAME];
           break;
         case cellline:
-          data.name = data[ParameterFormIds.CELLLINE_NAME];
+          data.name = (<IFormSelect2Element>form.getElementById(ParameterFormIds.CELLLINE_NAME)).values;
           delete data[ParameterFormIds.CELLLINE_NAME];
           break;
       }
@@ -111,7 +134,19 @@ export function create(pluginDesc: IPluginDesc) {
 }
 
 
-export function createScore(data: ISingleScoreParam, pluginDesc: IPluginDesc): IScore<number> {
+export function createScore(data: ISingleScoreParam, pluginDesc: IPluginDesc): IScore<number>|IScore<any>[] {
   const {primary, opposite} = selectDataSources(pluginDesc);
-  return new SingleScore(data, primary, opposite);
+  const configs = (<any>data).data_types;
+  function defineScore(name: {id: string, text: string}) {
+    if (configs) {
+      return configs.map((ds) => new SingleScore({name, data_type: ds[0], data_subtype: ds[1]}, primary, opposite));
+    } else {
+      return new SingleScore(Object.assign({}, data, { name }), primary, opposite);
+    }
+  }
+  if (Array.isArray(data.name)) {
+    return [].concat(...data.name.map((name) => defineScore(name)));
+  } else {
+    return defineScore(data.name);
+  }
 }

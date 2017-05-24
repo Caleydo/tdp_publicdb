@@ -77,30 +77,23 @@ export const FORM_AGGREGATED_SCORE = [
 
 export const FORM_SINGLE_SCORE = [
   {
-    type: FormElementType.SELECT,
+    type: FormElementType.SELECT2,
     label: 'Data Type',
-    id: ParameterFormIds.DATA_TYPE,
-    options: {
-      optionsData: dataTypes.map((ds) => {
-        return {name: ds.name, value: ds.id, data: ds.id};
-      })
+    id: ParameterFormIds.DATA_HIERARCHICAL_SUBTYPE,
+    attributes: {
+      style: 'width:100%'
     },
-    useSession: true
-  },
-  {
-    type: FormElementType.SELECT,
-    label: 'Data Subtype',
-    id: ParameterFormIds.DATA_SUBTYPE,
-    dependsOn: [ParameterFormIds.DATA_TYPE],
     options: {
-      optionsFnc: (selection) => {
-        const id = selection[0].data;
-        const r = dataTypes.find((d) => d.id === id).dataSubtypes;
-        return r.map((ds) => {
-          return {name: ds.name, value: ds.id, data: ds.id};
-        });
-      },
-      optionsData: []
+      multiple: true,
+      data: dataTypes.map((ds) => {
+        return {
+          text: ds.name,
+          children: ds.dataSubtypes.map((dss) => ({
+            id: `${ds.id}-${dss.id}`,
+            text: dss.name
+          }))
+        };
+      })
     },
     useSession: true
   }

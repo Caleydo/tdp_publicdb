@@ -26,6 +26,7 @@ export class ParameterFormIds {
   static ALTERATION_TYPE = 'alteration_type';
   static DATA_TYPE = 'data_type';
   static DATA_SUBTYPE = 'data_subtype';
+  static DATA_HIERARCHICAL_SUBTYPE = 'hierarchical_data_subtype';
   static COPYNUMBER_SUBTYPE = FORM_COPYNUMBER_SUBTYPE_ID;
   static EXPRESSION_SUBTYPE = FORM_EXPRESSION_SUBTYPE_ID;
   static BIO_TYPE = 'bio_type';
