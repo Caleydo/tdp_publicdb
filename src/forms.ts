@@ -70,6 +70,7 @@ export const FORM_GENE_NAME = {
   attributes: {
     style: 'width:100%'
   },
+  required: true,
   options: {
     optionsData: [],
     ajax: {
@@ -97,6 +98,7 @@ function generateNameLookup(d: IDataSourceConfig, field: string) {
     attributes: {
       style: 'width:100%'
     },
+    required: true,
     options: {
       optionsData: [],
       ajax: {
@@ -264,6 +266,7 @@ export const FORM_DATA_SOURCE = {
   type: FormElementType.SELECT,
   label: 'Data Source',
   id: ParameterFormIds.DATA_SOURCE,
+  required: true,
   options: {
     optionsData: dataSources.map((ds) => {
       return {name: ds.name, value: ds.name, data: ds};
@@ -304,6 +307,7 @@ export const FORM_DATA_HIEARCHICAL_SUBTYPE = {
   attributes: {
     style: 'width:100%'
   },
+  required: true,
   options: {
     data: dataTypes.map((ds) => {
       return {

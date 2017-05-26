@@ -11,6 +11,7 @@ export const FORM_AGGREGATED_SCORE = [
     type: FormElementType.SELECT,
     label: 'Data Type',
     id: ParameterFormIds.DATA_TYPE,
+    required: true,
     options: {
       optionsData: dataTypes.map((ds) => {
         return {name: ds.name, value: ds.id, data: ds.id};
@@ -23,6 +24,7 @@ export const FORM_AGGREGATED_SCORE = [
     label: 'Data Subtype',
     id: ParameterFormIds.DATA_SUBTYPE,
     dependsOn: [ParameterFormIds.DATA_TYPE],
+    required: true,
     options: {
       optionsFnc: (selection) => {
         const id = selection[0].data;
@@ -40,6 +42,7 @@ export const FORM_AGGREGATED_SCORE = [
     label: 'Aggregation',
     id: ParameterFormIds.AGGREGATION,
     dependsOn: [ParameterFormIds.DATA_TYPE],
+    required: true,
     options: {
       optionsFnc: (selection) => {
         if (selection[0].data === mutation.id) {
@@ -57,6 +60,7 @@ export const FORM_AGGREGATED_SCORE = [
     label: 'Comparison Operator',
     id: ParameterFormIds.COMPARISON_OPERATOR,
     dependsOn: [ParameterFormIds.DATA_TYPE, ParameterFormIds.AGGREGATION],
+    required: true,
     showIf: (dependantValues) => // show form element for expression and copy number frequencies
       ((dependantValues[1].value === 'frequency' || dependantValues[1].value === 'count') && (dependantValues[0].data === expression.id || dependantValues[0].data === copyNumber.id)),
     options: {
@@ -68,6 +72,7 @@ export const FORM_AGGREGATED_SCORE = [
     type: FormElementType.INPUT_TEXT,
     label: 'Comparison Value',
     id: ParameterFormIds.COMPARISON_VALUE,
+    required: true,
     dependsOn: [ParameterFormIds.DATA_TYPE, ParameterFormIds.AGGREGATION],
     showIf: (dependantValues) => // show form element for expression and copy number frequencies
       ((dependantValues[1].value === 'frequency' || dependantValues[1].value === 'count') && (dependantValues[0].data === expression.id || dependantValues[0].data === copyNumber.id)),
