@@ -87,6 +87,9 @@ export function create(pluginDesc: IPluginDesc) {
     form.build(formDesc);
 
     dialog.onSubmit(() => {
+      if (!form.validate()) {
+        return false;
+      }
       const data = <any>form.getElementData();
 
       {

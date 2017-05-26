@@ -41,6 +41,9 @@ export function create(pluginDesc: IPluginDesc) {
     form.build(formDesc);
 
     dialog.onSubmit(() => {
+      if (!form.validate()) {
+        return false;
+      }
       const data = form.getElementData();
       data.filter = convertRow2MultiMap(data.filter);
 

@@ -76,7 +76,10 @@ export const FORM_AGGREGATED_SCORE = [
     dependsOn: [ParameterFormIds.DATA_TYPE, ParameterFormIds.AGGREGATION],
     showIf: (dependantValues) => // show form element for expression and copy number frequencies
       ((dependantValues[1].value === 'frequency' || dependantValues[1].value === 'count') && (dependantValues[0].data === expression.id || dependantValues[0].data === copyNumber.id)),
-    useSession: true
+    useSession: true,
+    options: {
+      type: 'number'
+    }
   }
 ];
 
