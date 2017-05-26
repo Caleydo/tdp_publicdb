@@ -1,4 +1,4 @@
-import {ParameterFormIds, MUTATION_AGGREGATION, NUMERIC_AGGREGATION, COMPARISON_OPERATORS} from '../forms';
+import {ParameterFormIds, MUTATION_AGGREGATION, NUMERIC_AGGREGATION, COMPARISON_OPERATORS, FORM_DATA_HIEARCHICAL_SUBTYPE} from '../forms';
 import {FormElementType} from 'ordino/src/form';
 import {dataTypes, mutation, expression, copyNumber} from '../config';
 /**
@@ -76,25 +76,5 @@ export const FORM_AGGREGATED_SCORE = [
 ];
 
 export const FORM_SINGLE_SCORE = [
-  {
-    type: FormElementType.SELECT2,
-    label: 'Data Type',
-    id: ParameterFormIds.DATA_HIERARCHICAL_SUBTYPE,
-    attributes: {
-      style: 'width:100%'
-    },
-    options: {
-      multiple: true,
-      data: dataTypes.map((ds) => {
-        return {
-          text: ds.name,
-          children: ds.dataSubtypes.map((dss) => ({
-            id: `${ds.id}-${dss.id}`,
-            text: dss.name
-          }))
-        };
-      })
-    },
-    useSession: true
-  }
+  FORM_DATA_HIEARCHICAL_SUBTYPE
 ];
