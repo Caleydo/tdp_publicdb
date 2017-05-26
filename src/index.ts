@@ -49,7 +49,7 @@ const aboutDialogBody = elems.header.aboutDialog;
 aboutDialogBody.insertAdjacentHTML('afterbegin', '<div class="alert alert-warning" role="alert"><strong>Disclaimer</strong> This software is <strong>for research purpose only</strong>.</span></div>');
 
 setGlobalErrorTemplate((details) => `<div class="alert alert-warning" role="alert">An error has occurred. We are sorry about this. In case of questions, please contact <a
-            href="mailto:thomas.zichner@boehringer-ingelheim.com">Thomas Zichner</a></div><hr>${details}`);
+            href="mailto:thomas.zichner@boehringer-ingelheim.com">Thomas Zichner</a></div><hr><div style="max-width: 100%; overflow: auto">${details}</div>`);
 
 // enable tooltips e.g. for login dialog
 $('[data-toggle="popover"]').popover();
