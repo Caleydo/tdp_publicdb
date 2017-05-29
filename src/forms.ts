@@ -7,7 +7,7 @@ import {FORM_EXPRESSION_SUBTYPE_ID, FORM_COPYNUMBER_SUBTYPE_ID} from 'targid_com
 import {FormElementType, IFormElement} from 'ordino/src/form';
 import {cachedLazy} from 'ordino/src/cached';
 import {getAPIJSON, api2absURL} from 'phovea_core/src/ajax';
-import {gene, IDataSourceConfig, tissue, cellline, dataSources} from './config';
+import {gene, IDataSourceConfig, tissue, cellline, dataSources, dataTypes} from './config';
 import {listNamedSetsAsOptions} from 'ordino/src/storage';
 
 /**
@@ -70,6 +70,7 @@ export const FORM_GENE_NAME = {
   attributes: {
     style: 'width:100%'
   },
+  required: true,
   options: {
     optionsData: [],
     ajax: {
@@ -97,6 +98,7 @@ function generateNameLookup(d: IDataSourceConfig, field: string) {
     attributes: {
       style: 'width:100%'
     },
+    required: true,
     options: {
       optionsData: [],
       ajax: {
@@ -264,6 +266,7 @@ export const FORM_DATA_SOURCE = {
   type: FormElementType.SELECT,
   label: 'Data Source',
   id: ParameterFormIds.DATA_SOURCE,
+  required: true,
   options: {
     optionsData: dataSources.map((ds) => {
       return {name: ds.name, value: ds.name, data: ds};
@@ -294,4 +297,27 @@ export const FORM_TISSUE_OR_CELLLINE_FILTER = {
       return [];
     }
   }
+};
+
+
+export const FORM_DATA_HIEARCHICAL_SUBTYPE = {
+  type: FormElementType.SELECT2_MULTIPLE,
+  label: 'Data Type',
+  id: ParameterFormIds.DATA_HIERARCHICAL_SUBTYPE,
+  attributes: {
+    style: 'width:100%'
+  },
+  required: true,
+  options: {
+    data: dataTypes.map((ds) => {
+      return {
+        text: ds.name,
+        children: ds.dataSubtypes.map((dss) => ({
+          id: `${ds.id}-${dss.id}`,
+          text: dss.name
+        }))
+      };
+    })
+  },
+  useSession: true
 };

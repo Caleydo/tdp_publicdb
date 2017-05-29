@@ -12,7 +12,7 @@ import {IDataSourceConfig, gene, tissue, cellline} from '../config';
 import {convertLog2ToLinear, limitScoreRows} from '../utils';
 import {IScore} from 'ordino/src/LineUpView';
 import {createDesc} from './utils';
-import {IFormElementDesc} from 'ordino/src/form';
+import {IFormElementDesc, FormElementType} from 'ordino/src/form';
 import FormBuilder from 'ordino/src/form/FormBuilder';
 import {ParameterFormIds, FORM_GENE_NAME, FORM_TISSUE_NAME, FORM_CELLLINE_NAME} from 'targid_boehringer/src/forms';
 import {IPluginDesc} from 'phovea_core/src/plugin';
@@ -21,7 +21,6 @@ import {FORM_SINGLE_SCORE} from './forms';
 import {selectDataSources} from './utils';
 import {mixin} from 'phovea_core/src';
 import {INamedSet} from 'ordino/src/storage';
-import {IFormSelect2Element} from 'ordino/src/form/internal/FormSelect2';
 
 interface ISingleScoreParam {
   name: {id: string, text: string};
@@ -59,12 +58,9 @@ export default class SingleScore extends AScore implements IScore<any> {
 }
 
 function enableMultiple(desc: any): any {
-  return mixin({
-    options: {
-      multiple: true,
-      tags: true
-    }
-  }, desc);
+  return mixin({}, desc, {
+    type: FormElementType.SELECT2_MULTIPLE,
+  });
 }
 
 export function create(pluginDesc: IPluginDesc) {
@@ -91,10 +87,13 @@ export function create(pluginDesc: IPluginDesc) {
     form.build(formDesc);
 
     dialog.onSubmit(() => {
+      if (!form.validate()) {
+        return false;
+      }
       const data = <any>form.getElementData();
 
       {
-        const datatypes = (<IFormSelect2Element>form.getElementById(ParameterFormIds.DATA_HIERARCHICAL_SUBTYPE)).values;
+        const datatypes = data[ParameterFormIds.DATA_HIERARCHICAL_SUBTYPE];
         delete data[ParameterFormIds.DATA_HIERARCHICAL_SUBTYPE];
         const resolved = datatypes.map((entry) => entry.id.split('-'));
         if (datatypes.length === 1) {
@@ -107,15 +106,15 @@ export function create(pluginDesc: IPluginDesc) {
 
       switch (opposite) {
         case gene:
-          data.name = (<IFormSelect2Element>form.getElementById(ParameterFormIds.GENE_SYMBOL)).values;
+          data.name = data[ParameterFormIds.GENE_SYMBOL];
           delete data[ParameterFormIds.GENE_SYMBOL];
           break;
         case tissue:
-          data.name = (<IFormSelect2Element>form.getElementById(ParameterFormIds.TISSUE_NAME)).values;
+          data.name = data[ParameterFormIds.TISSUE_NAME];
           delete data[ParameterFormIds.TISSUE_NAME];
           break;
         case cellline:
-          data.name = (<IFormSelect2Element>form.getElementById(ParameterFormIds.CELLLINE_NAME)).values;
+          data.name = data[ParameterFormIds.CELLLINE_NAME];
           delete data[ParameterFormIds.CELLLINE_NAME];
           break;
       }
