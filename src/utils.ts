@@ -1,25 +1,10 @@
 import {IDataSourceConfig, MAX_FILTER_SCORE_ROWS_BEFORE_ALL} from './config';
 import {RangeLike, parse} from 'phovea_core/src/range';
 import {INamedSet, ENamedSetType} from 'ordino/src/storage';
+export {toFilter, convertLog2ToLinear, previewFilterHint} from 'targid_common/src/utils';
 /**
  * Created by sam on 06.03.2017.
  */
-
-export function convertLog2ToLinear(rows: any[], field: string) {
-  console.log('convert log2 score to linear scale');
-  return rows.map((row) => {
-    row[field] = Math.pow(2, row[field]);
-    return row;
-  });
-}
-
-export function toFilter(param: any, filter: any) {
-  Object.keys(filter).forEach((k) => {
-    const v = filter[k];
-    param['filter_' + k] = filter[k];
-  });
-}
-
 
 /**
  * limit the number of score rows if it doesn't exceed some criteria

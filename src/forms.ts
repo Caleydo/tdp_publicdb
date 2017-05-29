@@ -9,6 +9,7 @@ import {cachedLazy} from 'ordino/src/cached';
 import {getAPIJSON, api2absURL} from 'phovea_core/src/ajax';
 import {gene, IDataSourceConfig, tissue, cellline, dataSources, dataTypes} from './config';
 import {listNamedSetsAsOptions} from 'ordino/src/storage';
+import {previewFilterHint} from './utils';
 
 /**
  * List of ids for parameter form elements
@@ -129,6 +130,7 @@ export const FORM_GENE_FILTER = {
     sessionKeySuffix: '-gene',
     defaultSelection: false,
     uniqueKeys: true,
+    badgeProvider: previewFilterHint(`/targid/db/${gene.db}/gene`),
     entries: [{
       name: 'Bio Type',
       value: 'biotype',
@@ -194,6 +196,7 @@ function generateFilter(d: IDataSourceConfig) {
     useSession: true,
     options: {
       sessionKeySuffix: '-' + d.base,
+      badgeProvider: previewFilterHint(`/targid/db/${d.db}/${d.base}`),
       defaultSelection: false,
       uniqueKeys: true,
       entries: [{
@@ -287,6 +290,15 @@ export const FORM_TISSUE_OR_CELLLINE_FILTER = {
     sessionKeySuffix: '-choose',
     defaultSelection: false,
     uniqueKeys: true,
+    badgeProvider: (filter: any, dataSource: IFormElement) => {
+      const value = dataSource.value.data;
+      if (value === tissue || value === tissue.id) {
+        return FORM_TISSUE_FILTER.options.badgeProvider(filter);
+      } else if (value === cellline || value === cellline.id) {
+        return FORM_CELLLINE_FILTER.options.badgeProvider(filter);
+      }
+      return '';
+    },
     entries: (dataSource: IFormElement) => {
       const value = dataSource.value.data;
       if (value === tissue || value === tissue.id) {
