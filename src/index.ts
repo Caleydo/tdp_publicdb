@@ -16,6 +16,7 @@ import * as template from 'phovea_clue/src/template';
 import * as header from 'phovea_ui/src/header';
 import * as targid from 'ordino/src/Targid';
 import * as $ from 'jquery';
+import {setGlobalErrorTemplate} from 'ordino/src/Dialogs';
 
 // cache the nodes from the ordino/index.html before the TargID app is created
 // NOTE: the template (see next line) replaces the content of the document.body (but not document.head)
@@ -43,6 +44,12 @@ const elems = template.create(document.body, {
   },
   loginForm: String(loginForm)
 });
+
+const aboutDialogBody = elems.header.aboutDialog;
+aboutDialogBody.insertAdjacentHTML('afterbegin', '<div class="alert alert-warning" role="alert"><strong>Disclaimer</strong> This software is <strong>for research purpose only</strong>.</span></div>');
+
+setGlobalErrorTemplate((details) => `<div class="alert alert-warning" role="alert">An error has occurred. We are sorry about this. In case of questions, please contact <a
+            href="mailto:thomas.zichner@boehringer-ingelheim.com">Thomas Zichner</a></div><hr><div style="max-width: 100%; overflow: auto">${details}</div>`);
 
 // enable tooltips e.g. for login dialog
 $('[data-toggle="popover"]').popover();
