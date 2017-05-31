@@ -80,8 +80,8 @@ export const FORM_GENE_NAME = {
         return {
           column: 'symbol',
           species: getSelectedSpecies(),
-          query: params.term,
-          page: params.page
+          query: params.term === undefined ? '' : params.term,
+          page: params.page === undefined ? 0 : params.page
         };
       }
     },
@@ -108,8 +108,8 @@ function generateNameLookup(d: IDataSourceConfig, field: string) {
           return {
             column: d.entityName,
             species: getSelectedSpecies(),
-            query: params.term,
-            page: params.page
+            query: params.term === undefined ? '' : params.term,
+            page: params.page === undefined ? 0 : params.page
           };
         }
       }
@@ -177,8 +177,8 @@ export const FORM_GENE_FILTER = {
           return {
             column: 'symbol',
             species: getSelectedSpecies(),
-            query: params.term,
-            page: params.page
+            query: params.term === undefined ? '' : params.term,
+            page: params.page === undefined ? 0 : params.page
           };
         }
       },
@@ -255,8 +255,8 @@ function generateFilter(d: IDataSourceConfig) {
             return {
               column: d.entityName,
               species: getSelectedSpecies(),
-              query: params.term,
-              page: params.page
+              query: params.term === undefined ? '' : params.term,
+              page: params.page === undefined ? 0 : params.page
             };
           }
         }
