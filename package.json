@@ -2,7 +2,7 @@
   "name": "targid_boehringer",
   "description": "",
   "homepage": "https://phovea.caleydo.org",
-  "version": "2.0.0",
+  "version": "2.0.1-SNAPSHOT",
   "author": {
     "name": "The Caleydo Team",
     "email": "contact@caleydo.org",
@@ -73,8 +73,8 @@
     "node": ">= 6"
   },
   "dependencies": {
-    "ordino": "github:Caleydo/ordino#v2.0.0",
-    "targid_common": "github:Caleydo/targid_common#v2.0.0"
+    "ordino": "github:Caleydo/ordino#develop",
+    "targid_common": "github:Caleydo/targid_common#develop"
   },
   "devDependencies": {
     "@types/jasmine": "2.5.41",
