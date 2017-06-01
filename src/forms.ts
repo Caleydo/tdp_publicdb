@@ -123,7 +123,7 @@ export const FORM_CELLLINE_NAME = generateNameLookup(cellline, ParameterFormIds.
 
 export const FORM_GENE_FILTER = {
   type: FormElementType.MAP,
-  label: `Filter By`,
+  label: `Filter:`,
   id: 'filter',
   useSession: true,
   options: {
@@ -191,7 +191,7 @@ export const FORM_GENE_FILTER = {
 function generateFilter(d: IDataSourceConfig) {
   return {
     type: FormElementType.MAP,
-    label: `Filter By`,
+    label: `Filter:`,
     id: 'filter',
     useSession: true,
     options: {
@@ -282,7 +282,7 @@ export const FORM_TISSUE_FILTER = generateFilter(tissue);
 export const FORM_CELLLINE_FILTER = generateFilter(cellline);
 export const FORM_TISSUE_OR_CELLLINE_FILTER = {
   type: FormElementType.MAP,
-  label: `Filter By`,
+  label: `Filter:`,
   id: 'filter',
   useSession: true,
   dependsOn: [ParameterFormIds.DATA_SOURCE],
