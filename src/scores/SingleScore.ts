@@ -5,7 +5,8 @@
 import {generateDialog} from 'phovea_ui/src/dialogs';
 import {getAPIJSON} from 'phovea_core/src/ajax';
 import {Range, RangeLike} from 'phovea_core/src/range';
-import {IDType} from 'phovea_core/src/idtype';
+import {resolve} from 'phovea_core/src/idtype';
+import IDType from 'phovea_core/src/idtype/IDType';
 import {select} from 'd3';
 import {getSelectedSpecies} from 'targid_common/src/Common';
 import {IDataSourceConfig, gene, tissue, cellline} from '../config';
@@ -31,6 +32,10 @@ interface ISingleScoreParam {
 export default class SingleScore extends AScore implements IScore<any> {
   constructor(private parameter: ISingleScoreParam, private readonly dataSource: IDataSourceConfig, private readonly oppositeDataSource: IDataSourceConfig) {
     super(parameter);
+  }
+
+  get idType() {
+    return resolve(this.dataSource.idType);
   }
 
   createDesc(): any {
