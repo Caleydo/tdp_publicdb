@@ -138,12 +138,12 @@ class InvertedRawDataTable extends ALineUpView2 {
 
   protected getSelectionColumnLabel(id: number) {
     // TODO When playing the provenance graph, the RawDataTable is loaded before the GeneList has finished loading, i.e. that the local idType cache is not build yet and it will send an unmap request to the server
-    return this.resolveId(this.selection.idtype, id);
+    return this.resolveId(this.selection.idtype, id, this.idType);
   }
 
   protected async loadSelectionColumnData(id: number): Promise<IScoreRow<any>[]> {
     // TODO When playing the provenance graph, the RawDataTable is loaded before the GeneList has finished loading, i.e. that the local idType cache is not build yet and it will send an unmap request to the server
-    const name = await this.resolveId(this.selection.idtype, id);
+    const name = await this.resolveId(this.selection.idtype, id, this.idType);
     const url = `/targid/db/${this.dataSource.db}/gene_${this.dataSource.base}_single_score/filter`;
     const param = {
       table: this.dataType.tableName,
