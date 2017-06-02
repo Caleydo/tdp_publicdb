@@ -1,4 +1,5 @@
 {
   "dburl": "postgresql://bioinfodb:bioinfodb@bioinfodb:5432/bioinfodb",
-  "statement_timeout": "'2min'"
+  "statement_timeout": "'2min'",
+  "statement_timeout_query": "set statement_timeout to {}"
 }
