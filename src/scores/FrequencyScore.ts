@@ -12,6 +12,7 @@ import {createDesc, toFilterString} from './utils';
 import AScore, {ICommonScoreParam} from './AScore';
 import {toFilter, limitScoreRows} from '../utils';
 import {INamedSet} from 'ordino/src/storage';
+import {resolve} from 'phovea_core/src/idtype';
 
 interface IFrequencyScoreParam extends ICommonScoreParam {
   comparison_operator: string;
@@ -22,6 +23,10 @@ export default class FrequencyScore extends AScore implements IScore<number> {
 
   constructor(private readonly parameter: IFrequencyScoreParam,private readonly dataSource: IDataSourceConfig, private readonly oppositeDataSource: IDataSourceConfig, private readonly countOnly: boolean) {
     super(parameter);
+  }
+
+  get idType() {
+    return resolve(this.dataSource.idType);
   }
 
   createDesc() {

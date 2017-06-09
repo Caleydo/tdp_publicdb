@@ -14,6 +14,7 @@ import AScore, {ICommonScoreParam} from './AScore';
 import {toFilter, limitScoreRows} from '../utils';
 import {IBoxPlotData} from 'lineupjs/src/model/BoxPlotColumn';
 import {INamedSet} from 'ordino/src/storage';
+import {resolve} from 'phovea_core/src/idtype';
 
 interface IAggregatedScoreParam extends ICommonScoreParam {
   aggregation: string;
@@ -34,6 +35,10 @@ export default class AggregatedScore extends AScore implements IScore<number> {
 
   constructor(private readonly parameter: IAggregatedScoreParam, private readonly dataSource: IDataSourceConfig, private readonly oppositeDataSource: IDataSourceConfig) {
     super(parameter);
+  }
+
+  get idType() {
+    return resolve(this.dataSource.idType);
   }
 
   createDesc() {
