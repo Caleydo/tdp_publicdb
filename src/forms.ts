@@ -130,7 +130,7 @@ export const FORM_GENE_FILTER = {
     sessionKeySuffix: '-gene',
     defaultSelection: false,
     uniqueKeys: true,
-    badgeProvider: previewFilterHint(`/targid/db/${gene.db}/gene`),
+    badgeProvider: previewFilterHint(`/targid/db/${gene.db}/gene`, () => ({ filter_species: getSelectedSpecies()})),
     entries: [{
       name: 'Bio Type',
       value: 'biotype',
@@ -196,7 +196,7 @@ function generateFilter(d: IDataSourceConfig) {
     useSession: true,
     options: {
       sessionKeySuffix: '-' + d.base,
-      badgeProvider: previewFilterHint(`/targid/db/${d.db}/${d.base}`),
+      badgeProvider: previewFilterHint(`/targid/db/${d.db}/${d.base}`, () => ({ filter_species: getSelectedSpecies()})),
       defaultSelection: false,
       uniqueKeys: true,
       entries: [{
