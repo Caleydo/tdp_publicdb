@@ -53,7 +53,7 @@ export default class SingleScore extends AScore implements IScore<any> {
       species: getSelectedSpecies(),
       target: idtype.id
     };
-    limitScoreRows(param, ids, this.dataSource, namedSet);
+    limitScoreRows(param, ids, idtype, this.dataSource, namedSet);
 
     const rows: any[] = await getAPIJSON(url, param);
     if (this.dataSubType.useForAggregation.indexOf('log2') !== -1) {

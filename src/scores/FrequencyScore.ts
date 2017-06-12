@@ -47,7 +47,7 @@ export default class FrequencyScore extends AScore implements IScore<number> {
       table: this.dataType.tableName,
       target: idtype.id
     };
-    limitScoreRows(param, ids, this.dataSource, namedSet);
+    limitScoreRows(param, ids, idtype, this.dataSource, namedSet);
     if (!isMutation) {
       param.operator = this.parameter.comparison_operator;
       param.value = this.parameter.comparison_value;

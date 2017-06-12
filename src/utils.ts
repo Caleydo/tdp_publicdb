@@ -1,6 +1,7 @@
 import {IDataSourceConfig, MAX_FILTER_SCORE_ROWS_BEFORE_ALL} from './config';
 import {RangeLike, parse} from 'phovea_core/src/range';
 import {INamedSet, ENamedSetType} from 'ordino/src/storage';
+import IDType from 'phovea_core/src/idtype/IDType';
 export {toFilter, convertLog2ToLinear, previewFilterHint} from 'targid_common/src/utils';
 /**
  * Created by sam on 06.03.2017.
@@ -12,10 +13,10 @@ export {toFilter, convertLog2ToLinear, previewFilterHint} from 'targid_common/sr
  * @param ids
  * @param dataSource
  */
-export function limitScoreRows(param: any, ids: RangeLike, dataSource: IDataSourceConfig, namedSet?: INamedSet) {
+export function limitScoreRows(param: any, ids: RangeLike, idTypeOfIDs: IDType, dataSource: IDataSourceConfig, namedSet?: INamedSet) {
   const range = parse(ids);
   if (range.dim(0).length < MAX_FILTER_SCORE_ROWS_BEFORE_ALL) {
-    param[`filter_rangeOf${dataSource.idType}4${dataSource.entityName}`] = range.toString();
+    param[`filter_rangeOf${idTypeOfIDs.id}4${dataSource.entityName}`] = range.toString();
     return;
   }
   if (namedSet) {

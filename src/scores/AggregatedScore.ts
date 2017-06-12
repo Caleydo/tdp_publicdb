@@ -58,7 +58,7 @@ export default class AggregatedScore extends AScore implements IScore<number> {
       species: getSelectedSpecies(),
       target: idtype.id
     };
-    limitScoreRows(param, ids, this.dataSource, namedSet);
+    limitScoreRows(param, ids, idtype, this.dataSource, namedSet);
     toFilter(param, this.parameter.filter);
 
     let rows: any[] = await ajax.getAPIJSON(url, param);
