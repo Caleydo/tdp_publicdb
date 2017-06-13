@@ -12,6 +12,7 @@ import {createDesc, toFilterString} from './utils';
 import AScore, {ICommonScoreParam} from './AScore';
 import {toFilter, limitScoreRows} from '../utils';
 import {INamedSet} from 'ordino/src/storage';
+import {resolve} from 'phovea_core/src/idtype';
 
 interface IFrequencyScoreParam extends ICommonScoreParam {
   comparison_operator: string;
@@ -22,6 +23,10 @@ export default class FrequencyScore extends AScore implements IScore<number> {
 
   constructor(private readonly parameter: IFrequencyScoreParam,private readonly dataSource: IDataSourceConfig, private readonly oppositeDataSource: IDataSourceConfig, private readonly countOnly: boolean) {
     super(parameter);
+  }
+
+  get idType() {
+    return resolve(this.dataSource.idType);
   }
 
   createDesc() {
@@ -35,13 +40,14 @@ export default class FrequencyScore extends AScore implements IScore<number> {
 
   async compute(ids: RangeLike, idtype: IDType, namedSet?: INamedSet): Promise<any[]> {
     const isMutation = this.dataType === mutation;
-    const url = `/targid/db/${this.dataSource.db}/${this.dataSource.base}_${this.oppositeDataSource.base}_frequency_score/filter`;
+    const url = `/targid/db/${this.dataSource.db}/${this.dataSource.base}_${this.oppositeDataSource.base}_frequency_score/score`;
     const param: any = {
       attribute: this.dataSubType.useForAggregation,
       species: getSelectedSpecies(),
-      table: this.dataType.tableName
+      table: this.dataType.tableName,
+      target: idtype.id
     };
-    limitScoreRows(param, ids, this.dataSource, namedSet);
+    limitScoreRows(param, ids, idtype, this.dataSource, namedSet);
     if (!isMutation) {
       param.operator = this.parameter.comparison_operator;
       param.value = this.parameter.comparison_value;

@@ -4,7 +4,8 @@
 
 import {getAPIJSON} from 'phovea_core/src/ajax';
 import {Range, RangeLike} from 'phovea_core/src/range';
-import {IDType} from 'phovea_core/src/idtype';
+import {resolve} from 'phovea_core/src/idtype';
+import IDType from 'phovea_core/src/idtype/IDType';
 import {getSelectedSpecies} from 'targid_common/src/Common';
 import {IDataSourceConfig, gene, tissue, cellline} from '../config';
 import {convertLog2ToLinear, limitScoreRows} from '../utils';
@@ -31,6 +32,10 @@ export default class SingleScore extends AScore implements IScore<any> {
     super(parameter);
   }
 
+  get idType() {
+    return resolve(this.dataSource.idType);
+  }
+
   createDesc(): any {
     const ds = this.oppositeDataSource;
     return createDesc(this.dataSubType.type, `${this.dataSubType.name} of ${this.parameter.name.text}`, this.dataSubType,
@@ -38,14 +43,15 @@ export default class SingleScore extends AScore implements IScore<any> {
   }
 
   async compute(ids:RangeLike, idtype:IDType, namedSet?: INamedSet):Promise<any[]> {
-    const url = `/targid/db/${this.dataSource.db}/${this.dataSource.base}_${this.oppositeDataSource.base}_single_score/filter`;
+    const url = `/targid/db/${this.dataSource.db}/${this.dataSource.base}_${this.oppositeDataSource.base}_single_score/score`;
     const param: any = {
       table: this.dataType.tableName,
       attribute: this.dataSubType.id,
       name: this.parameter.name.id,
-      species: getSelectedSpecies()
+      species: getSelectedSpecies(),
+      target: idtype.id
     };
-    limitScoreRows(param, ids, this.dataSource, namedSet);
+    limitScoreRows(param, ids, idtype, this.dataSource, namedSet);
 
     const rows: any[] = await getAPIJSON(url, param);
     if (this.dataSubType.useForAggregation.indexOf('log2') !== -1) {

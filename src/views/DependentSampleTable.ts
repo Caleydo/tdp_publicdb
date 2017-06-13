@@ -129,14 +129,14 @@ class RawDataTable extends ALineUpView2 {
     const dataSource = this.getParameter(ParameterFormIds.DATA_SOURCE);
     // resolve `_id` (= `targidid`) to symbol (`ensg`)
     // TODO When playing the provenance graph, the RawDataTable is loaded before the GeneList has finished loading, i.e. that the local idType cache is not build yet and it will send an unmap request to the server
-    const ensg = await this.resolveId(this.selection.idtype, id);
+    const ensg = await this.resolveId(this.selection.idtype, id, this.idType);
     return await loadFirstName(ensg);
   }
 
   protected async loadSelectionColumnData(id: number): Promise<IScoreRow<any>[]> {
     const dataSource = this.getParameter(ParameterFormIds.DATA_SOURCE);
     // TODO When playing the provenance graph, the RawDataTable is loaded before the GeneList has finished loading, i.e. that the local idType cache is not build yet and it will send an unmap request to the server
-    const ensg = await this.resolveId(this.selection.idtype, id);
+    const ensg = await this.resolveId(this.selection.idtype, id, this.idType);
     const url = `/targid/db/${dataSource.db}/${dataSource.base}_gene_single_score/filter`;
     const param = {
       table: this.dataType.tableName,
