@@ -48,16 +48,17 @@ export default class AggregatedScore extends AScore implements IScore<number> {
   }
 
   async compute(ids: ranges.RangeLike, idtype: idtypes.IDType, namedSet?: INamedSet): Promise<any[]> {
-    const url = `/targid/db/${this.dataSource.db}/${this.dataSource.base}_${this.oppositeDataSource.base}_score/filter`;
+    const url = `/targid/db/${this.dataSource.db}/${this.dataSource.base}_${this.oppositeDataSource.base}_score/score`;
 
     const param = {
       table: this.dataType.tableName,
       // by convention for the aggregation to do its magic, it has to be called `data_subtype`
       data_subtype: this.dataSubType.useForAggregation,
       agg: this.parameter.aggregation,
-      species: getSelectedSpecies()
+      species: getSelectedSpecies(),
+      target: idtype.id
     };
-    limitScoreRows(param, ids, this.dataSource, namedSet);
+    limitScoreRows(param, ids, idtype, this.dataSource, namedSet);
     toFilter(param, this.parameter.filter);
 
     let rows: any[] = await ajax.getAPIJSON(url, param);

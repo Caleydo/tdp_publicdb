@@ -45,14 +45,15 @@ export default class SingleScore extends AScore implements IScore<any> {
   }
 
   async compute(ids:RangeLike, idtype:IDType, namedSet?: INamedSet):Promise<any[]> {
-    const url = `/targid/db/${this.dataSource.db}/${this.dataSource.base}_${this.oppositeDataSource.base}_single_score/filter`;
+    const url = `/targid/db/${this.dataSource.db}/${this.dataSource.base}_${this.oppositeDataSource.base}_single_score/score`;
     const param: any = {
       table: this.dataType.tableName,
       attribute: this.dataSubType.id,
       name: this.parameter.name.id,
-      species: getSelectedSpecies()
+      species: getSelectedSpecies(),
+      target: idtype.id
     };
-    limitScoreRows(param, ids, this.dataSource, namedSet);
+    limitScoreRows(param, ids, idtype, this.dataSource, namedSet);
 
     const rows: any[] = await getAPIJSON(url, param);
     if (this.dataSubType.useForAggregation.indexOf('log2') !== -1) {
