@@ -5,13 +5,15 @@
 
 import {IFormSelectDesc} from 'ordino/src/FormBuilder';
 import {IViewContext, ISelection} from 'ordino/src/View';
-import AOncoPrint,{IDataFormatRow} from 'targid_common/src/views/AOncoPrint';
+import AOncoPrint,{IDataFormatRow, ISample} from 'targid_common/src/views/AOncoPrint';
 import {getSelectedSpecies} from 'targid_common/src/Common';
 import {ParameterFormIds, FORM_TISSUE_OR_CELLLINE_FILTER, FORM_DATA_SOURCE} from '../forms';
 import {getAPIJSON} from 'phovea_core/src/ajax';
 import {loadFirstName} from './utils';
 import {convertRow2MultiMap} from 'ordino/src/form/internal/FormMap';
 import {toFilter} from '../utils';
+import {IDataSourceConfig} from 'targid_boehringer/src/config';
+import {resolve} from 'phovea_core/src/idtype';
 
 export class OncoPrint extends AOncoPrint {
 
@@ -23,14 +25,19 @@ export class OncoPrint extends AOncoPrint {
     ];
   }
 
-   protected async loadSampleList(): Promise<string[]> {
+   protected async loadSampleList(): Promise<ISample[]> {
     const ds = this.getParameter(ParameterFormIds.DATA_SOURCE);
     const param: any = {
       species: getSelectedSpecies()
     };
     toFilter(param, convertRow2MultiMap(this.getParameter('filter')));
     const rows = await getAPIJSON(`/targid/db/${ds.db}/${ds.base}_onco_print_sample_list/filter`, param);
-    return rows.map((r) => r.id);
+    return rows.map((r) => ({name: r.id, id: r._id}));
+  }
+
+  protected getSampleIdType() {
+    const ds = <IDataSourceConfig>this.getParameter(ParameterFormIds.DATA_SOURCE);
+    return resolve(ds.idType);
   }
 
   protected loadRows(ensg: string): Promise<IDataFormatRow[]> {
