@@ -184,7 +184,8 @@ module.exports = function(registry) {
     'selection': 'some',
     'group': {
       'name': 'Gene overview',
-      'order': 10
+      'order': 10,
+      'species': 'human'
     }
   });
 
@@ -197,7 +198,8 @@ module.exports = function(registry) {
     'selection': 'some',
     'group': {
       'name': 'Gene overview',
-      'order': 0
+      'order': 0,
+      'species': 'human'
     }
   });
 
@@ -210,7 +212,8 @@ module.exports = function(registry) {
     'selection': 'some',
     'group': {
       'name': 'Gene overview',
-      'order': 20
+      'order': 20,
+      'species': 'human'
     }
   });
 
