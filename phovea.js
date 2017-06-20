@@ -182,10 +182,10 @@ module.exports = function(registry) {
     'factory': 'createExpressionTable',
     'idtype': 'Cellline',
     'selection': 'some',
+    'species': 'human',
     'group': {
       'name': 'Gene overview',
-      'order': 10,
-      'species': 'human'
+      'order': 10
     }
   });
 
@@ -196,10 +196,10 @@ module.exports = function(registry) {
     'factory': 'createCopyNumberTable',
     'idtype': 'Cellline',
     'selection': 'some',
+    'species': 'human',
     'group': {
       'name': 'Gene overview',
-      'order': 0,
-      'species': 'human'
+      'order': 0
     }
   });
 
@@ -210,10 +210,10 @@ module.exports = function(registry) {
     'factory': 'createMutationTable',
     'idtype': 'Cellline',
     'selection': 'some',
+    'species': 'human',
     'group': {
       'name': 'Gene overview',
-      'order': 20,
-      'species': 'human'
+      'order': 20
     }
   });
 
