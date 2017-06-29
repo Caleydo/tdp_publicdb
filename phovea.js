@@ -456,6 +456,22 @@ module.exports = function(registry) {
       'sampleType': 'GeneSymbol'
     }
   });
+
+  registry.push('targidView', 'celllline_combined_lineup', function () {
+    return System.import('./src/views/CombinedDependentGeneTable');
+  }, {
+    'name': 'Combined View',
+    'factory': 'create',
+    'idtype': 'Cellline',
+    'selection': 'some',
+    'group': {
+      'name': 'Gene overview',
+      'order': 40
+    },
+    'filter': {
+      'species': 'human'
+    }
+  });
   // generator-phovea:end
 };
 
