@@ -49,7 +49,7 @@ abstract class ACombinedTable extends ALineUpView2 {
   }
 
   protected loadRows() {
-    const url = `/targid/db/${this.dataSource.db}/gene/filter`;
+    const url = `/targid/db/${this.dataSource.db}/${this.oppositeDataSource.tableName}/filter`;
     const param = {
       filter_species: getSelectedSpecies()
     };
@@ -83,7 +83,7 @@ abstract class ACombinedTable extends ALineUpView2 {
   protected loadSelectionColumnData(id: number): Promise<IScoreRow<any>[][]> {
     // TODO When playing the provenance graph, the RawDataTable is loaded before the GeneList has finished loading, i.e. that the local idType cache is not build yet and it will send an unmap request to the server
     const namePromise = this.resolveId(this.selection.idtype, id, this.idType);
-    const url = `/targid/db/${this.dataSource.db}/gene_${this.dataSource.base}_single_score/filter`;
+    const url = `/targid/db/${this.dataSource.db}/${this.oppositeDataSource.base}_${this.dataSource.base}_single_score/filter`;
     const config = this.getParameter(ParameterFormIds.DATA_SUBTYPE).map((option) => option.id.split('-'));
 
     return namePromise.then((name: string) => {

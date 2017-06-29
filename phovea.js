@@ -472,6 +472,22 @@ module.exports = function(registry) {
       'species': 'human'
     }
   });
+
+  registry.push('targidView', 'gene_combined_lineup', function () {
+    return System.import('./src/views/CombinedDependentSampleTable');
+  }, {
+    'name': 'Combined View',
+    'factory': 'create',
+    'idtype': 'Ensembl',
+    'selection': 'some',
+    'group': {
+      'name': 'Sample overview',
+      'order': 40
+    },
+    'filter': {
+      'species': 'human'
+    }
+  });
   // generator-phovea:end
 };
 
