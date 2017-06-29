@@ -15,6 +15,8 @@ import {ParameterFormIds, FORM_GENE_FILTER, FORM_DATA_SOURCE, FORM_TISSUE_OR_CEL
 import {FormBuilder, FormElementType} from 'ordino/src/FormBuilder';
 import {IFormSelect2} from 'ordino/src/form/internal/FormSelect2';
 import ACombinedTable from './ACombinedDependentTable';
+import {loadFirstName} from './utils';
+
 
 class CombinedRawDataTable extends ACombinedTable {
 
@@ -97,9 +99,10 @@ class CombinedRawDataTable extends ACombinedTable {
     return rows;
   }
 
-  protected getSelectionColumnLabel(id: number) {
+  protected async getSelectionColumnLabel(id: number) {
     // TODO When playing the provenance graph, the RawDataTable is loaded before the GeneList has finished loading, i.e. that the local idType cache is not build yet and it will send an unmap request to the server
-    return this.resolveId(this.selection.idtype, id, this.idType);
+    const ensg = await this.resolveId(this.selection.idtype, id, this.idType);
+    return await loadFirstName(ensg);
   }
 
   protected mapSelectionRows(rows: IScoreRow<any>[]) {
