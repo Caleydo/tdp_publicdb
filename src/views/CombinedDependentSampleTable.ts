@@ -77,6 +77,11 @@ class CombinedRawDataTable extends ACombinedTable {
     this.oppositeDataSource = this.paramForm.getElementById(ParameterFormIds.DATA_SOURCE).value.data;
   }
 
+  setParameter(name: string, value: any) {
+    this.updateDataSource();
+    return super.setParameter(name, value);
+  }
+
   protected initColumns(desc) {
     super.initColumns(desc);
 
