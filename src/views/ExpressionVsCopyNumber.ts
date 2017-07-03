@@ -13,7 +13,7 @@ import {getAPIJSON} from 'phovea_core/src/ajax';
 import {resolve} from 'phovea_core/src/idtype';
 import {loadFirstName} from './utils';
 import {convertRow2MultiMap} from 'ordino/src/form/internal/FormMap';
-import {toFilter} from '../utils';
+import {toFilter} from 'targid_common/src/utils';
 
 export class ExpressionVsCopyNumber extends AExpressionVsCopyNumber {
 

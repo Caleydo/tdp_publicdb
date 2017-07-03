@@ -7,8 +7,8 @@ import {Range, RangeLike} from 'phovea_core/src/range';
 import {resolve} from 'phovea_core/src/idtype';
 import IDType from 'phovea_core/src/idtype/IDType';
 import {getSelectedSpecies} from 'targid_common/src/Common';
-import {IDataSourceConfig, gene, tissue, cellline} from '../config';
-import {convertLog2ToLinear, limitScoreRows} from '../utils';
+import {IDataSourceConfig, gene, tissue, cellline, MAX_FILTER_SCORE_ROWS_BEFORE_ALL} from '../config';
+import {convertLog2ToLinear, limitScoreRows} from 'targid_common/src/utils';
 import {IScore} from 'ordino/src/LineUpView';
 import {createDesc} from './utils';
 import {IFormElementDesc, FormElementType} from 'ordino/src/form';
@@ -25,6 +25,10 @@ interface ISingleScoreParam {
   name: {id: string, text: string};
   data_type: string;
   data_subtype: string;
+  /**
+   * see config.MAX_FILTER_SCORE_ROWS_BEFORE_ALL maximal number of rows for computing limiting the score to this subset
+   */
+  maxDirectFilterRows?: number;
 }
 
 export default class SingleScore extends AScore implements IScore<any> {
@@ -51,7 +55,8 @@ export default class SingleScore extends AScore implements IScore<any> {
       species: getSelectedSpecies(),
       target: idtype.id
     };
-    limitScoreRows(param, ids, idtype, this.dataSource, namedSet);
+    const maxDirectRows = typeof this.parameter.maxDirectFilterRows === 'number' ? this.parameter.maxDirectFilterRows : MAX_FILTER_SCORE_ROWS_BEFORE_ALL;
+    limitScoreRows(param, ids, idtype, this.dataSource.entityName, maxDirectRows, namedSet);
 
     const rows: any[] = await getAPIJSON(url, param);
     if (this.dataSubType.useForAggregation.indexOf('log2') !== -1) {

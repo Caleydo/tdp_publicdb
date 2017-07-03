@@ -19,10 +19,8 @@ import {
   IDataSourceConfig
 } from '../config';
 import {ParameterFormIds, FORM_GENE_FILTER, FORM_DATA_SOURCE} from '../forms';
-import {convertLog2ToLinear} from '../utils';
+import {convertLog2ToLinear, toFilter} from 'targid_common/src/utils';
 import {convertRow2MultiMap} from 'ordino/src/form/internal/FormMap';
-import {toFilter} from '../utils';
-
 import {FormBuilder, FormElementType, IFormSelectDesc} from 'ordino/src/FormBuilder';
 
 class InvertedRawDataTable extends ALineUpView2 {

@@ -1,6 +1,6 @@
 import {ParameterFormIds, MUTATION_AGGREGATION, NUMERIC_AGGREGATION, COMPARISON_OPERATORS, FORM_DATA_HIEARCHICAL_SUBTYPE} from '../forms';
 import {FormElementType} from 'ordino/src/form';
-import {dataTypes, mutation, expression, copyNumber} from '../config';
+import {dataTypes, mutation, expression, copyNumber, MAX_FILTER_SCORE_ROWS_BEFORE_ALL} from '../config';
 /**
  * Created by Samuel Gratzl on 15.03.2017.
  */
@@ -80,9 +80,19 @@ export const FORM_AGGREGATED_SCORE = [
     options: {
       type: 'number'
     }
+  }, {
+    type: FormElementType.CHECKBOX,
+    label: 'Force computing score for whole loaded dataset',
+    id: ParameterFormIds.SCORE_FORCE_DATASET_SIZE,
+    options: {
+      checked: -1,
+      unchecked: MAX_FILTER_SCORE_ROWS_BEFORE_ALL
+    },
+    useSession: true
   }
 ];
 
 export const FORM_SINGLE_SCORE = [
-  FORM_DATA_HIEARCHICAL_SUBTYPE
+  FORM_DATA_HIEARCHICAL_SUBTYPE,
+  FORM_AGGREGATED_SCORE[FORM_AGGREGATED_SCORE.length-1] //copy checkbox
 ];

@@ -10,11 +10,10 @@ import {
 } from 'ordino/src/LineUpView';
 import {getSelectedSpecies} from 'targid_common/src/Common';
 import {expression, copyNumber, mutation, IDataTypeConfig} from '../config';
-import {convertLog2ToLinear} from '../utils';
 import {ParameterFormIds, FORM_DATA_SOURCE, FORM_TISSUE_OR_CELLLINE_FILTER} from '../forms';
 import {FormBuilder, IFormSelectDesc} from 'ordino/src/FormBuilder';
 import {convertRow2MultiMap} from 'ordino/src/form/internal/FormMap';
-import {toFilter} from '../utils';
+import {toFilter, convertLog2ToLinear} from 'targid_common/src/utils';
 import {FormElementType} from 'ordino/src/form';
 import {loadFirstName} from './utils';
 

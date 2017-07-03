@@ -9,7 +9,7 @@ import {cachedLazy} from 'ordino/src/cached';
 import {getAPIJSON, api2absURL} from 'phovea_core/src/ajax';
 import {gene, IDataSourceConfig, tissue, cellline, dataSources, dataTypes} from './config';
 import {listNamedSetsAsOptions} from 'ordino/src/storage';
-import {previewFilterHint} from './utils';
+import {previewFilterHint} from 'targid_common/src/utils';
 
 /**
  * List of ids for parameter form elements
@@ -34,6 +34,7 @@ export class ParameterFormIds {
   static AGGREGATION = 'aggregation';
   static COMPARISON_OPERATOR = 'comparison_operator';
   static COMPARISON_VALUE = 'comparison_value';
+  static SCORE_FORCE_DATASET_SIZE = 'maxDirectFilterRows';
 }
 
 export const COMPARISON_OPERATORS = [
