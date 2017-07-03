@@ -12,7 +12,7 @@ import {getAPIJSON} from 'phovea_core/src/ajax';
 import {loadFirstName} from './utils';
 import {convertRow2MultiMap} from 'ordino/src/form/internal/FormMap';
 import {toFilter} from '../utils';
-import {IDataSourceConfig} from 'targid_boehringer/src/config';
+import {IDataSourceConfig} from '../config';
 import {resolve} from 'phovea_core/src/idtype';
 
 export class OncoPrint extends AOncoPrint {

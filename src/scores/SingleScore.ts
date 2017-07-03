@@ -12,7 +12,7 @@ import {convertLog2ToLinear, limitScoreRows} from '../utils';
 import {IScore} from 'ordino/src/LineUpView';
 import {createDesc} from './utils';
 import {IFormElementDesc, FormElementType} from 'ordino/src/form';
-import {ParameterFormIds, FORM_GENE_NAME, FORM_TISSUE_NAME, FORM_CELLLINE_NAME} from 'targid_boehringer/src/forms';
+import {ParameterFormIds, FORM_GENE_NAME, FORM_TISSUE_NAME, FORM_CELLLINE_NAME} from '../forms';
 import {IPluginDesc} from 'phovea_core/src/plugin';
 import AScore from './AScore';
 import {FORM_SINGLE_SCORE} from './forms';

@@ -1,5 +1,5 @@
 import {getAPIJSON} from 'phovea_core/src/ajax';
-import {chooseDataSource} from 'targid_boehringer/src/config';
+import {chooseDataSource} from './config';
 
 interface IIDTypeDetectorOptions {
   sampleType: string;
