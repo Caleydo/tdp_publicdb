@@ -156,21 +156,18 @@ export const FORM_GENE_FILTER = {
       value: 'panel',
       type: FormElementType.SELECT2,
       multiple: true,
-      return: 'id',
       optionsData: cachedLazy('gene_predefined_namedsets', buildPredefinedNamedSets.bind(null, gene))
     }, {
       name: 'My Named Sets',
       value: 'namedset4ensg',
       type: FormElementType.SELECT2,
       multiple: true,
-      return: 'id',
       optionsData: listNamedSetsAsOptions.bind(null, gene.idType)
     }, {
       name: 'Gene Symbol',
       value: 'ensg',
       type: FormElementType.SELECT2,
       multiple: true,
-      return: 'id',
       ajax: {
         url: api2absURL(`/targid/db/${gene.db}/gene_items/lookup`),
         data: (params: any) => {
@@ -234,21 +231,18 @@ function generateFilter(d: IDataSourceConfig) {
         value: 'panel',
         type: FormElementType.SELECT2,
         multiple: true,
-        return: 'id',
         optionsData: cachedLazy(d.base + '_predefined_namedsets', buildPredefinedNamedSets.bind(null, d))
       }, {
         name: 'My Named Sets',
         value: 'namedset4' + d.entityName,
         type: FormElementType.SELECT2,
         multiple: true,
-        return: 'id',
         optionsData: listNamedSetsAsOptions.bind(null, d.idType)
       }, {
         name: d.name,
         value: d.entityName,
         type: FormElementType.SELECT2,
         multiple: true,
-        return: 'id',
         ajax: {
           url: api2absURL(`/targid/db/${gene.db}/${d.base}_items/lookup`),
           data: (params: any) => {

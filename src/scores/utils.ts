@@ -6,6 +6,7 @@ import {IDataSubtypeConfig, dataSubtypes, cellline, tissue, gene, IDataSourceCon
 import {IBoxPlotData} from 'lineupjs/src/model/BoxPlotColumn';
 import {IPluginDesc} from 'phovea_core/src/plugin';
 import {FORM_GENE_FILTER, FORM_TISSUE_FILTER, FORM_CELLLINE_FILTER} from '../forms';
+import {toFilterString as toFilterStringImpl} from 'targid_common/src/utils';
 
 /**
  * creates a lineup config out of a IDataSubtypeConfig
@@ -82,7 +83,7 @@ function toFilterDesc(ds: IDataSourceConfig) {
 }
 
 export function toFilterString(filter: any, ds: IDataSourceConfig) {
-  const key2name = new Map<string,string>();
+  const key2name = new Map<string, string>();
 
   const filterDesc = toFilterDesc(ds);
   if (filterDesc) {
@@ -90,14 +91,5 @@ export function toFilterString(filter: any, ds: IDataSourceConfig) {
       key2name.set(entry.value, entry.name);
     });
   }
-  const keys = Object.keys(filter);
-  if (keys.length === 0) {
-    return '<None>';
-  }
-  return keys.map((d) => {
-    const v = filter[d];
-    const label = key2name.has(d) ? key2name.get(d) : d;
-    const vn = Array.isArray(v) ? '["' + v.join('","') + '"]' : '"' + v.toString() + '"';
-    return `${label}=${vn}`;
-  }).join(' & ');
+  return toFilterStringImpl(filter, key2name);
 }
