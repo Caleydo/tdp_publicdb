@@ -16,7 +16,7 @@ jobs:
           command: npm install
       - run: #remove all resolved github dependencies
           name: delete-vcs-dependencies
-          command: grep -l '._resolved.: .github:.' node_modules/*/package.json | xargs dirname | xargs rm -rf
+          command: "grep -l '._resolved.: .github:.' node_modules/*/package.json | xargs dirname | xargs rm -rf"
       - save_cache:
           key: deps2-{{ .Branch }}-{{ checksum "package.json" }}
           paths:
