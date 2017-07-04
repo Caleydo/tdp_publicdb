@@ -40,7 +40,11 @@ abstract class ACombinedTable extends ALineUpView2 {
 
   setParameter(name: string, value: any) {
     this.paramForm.getElementById(name).value = value;
-    this.clear();
+
+    if(name === 'filter') {
+      this.clear();
+    }
+    super.setParameter(name, value);
     return this.update();
   }
 
@@ -64,29 +68,31 @@ abstract class ACombinedTable extends ALineUpView2 {
 
   protected async getSelectionColumnDesc(id: number) {
     const selectedItem = await this.getSelectionColumnLabel(id);
-    const dataSubTypes = this.getParameter(ParameterFormIds.DATA_SUBTYPE);
+    const selectedSubTypes = this.getParameter(ParameterFormIds.DATA_SUBTYPE);
 
-    return dataSubTypes.map((dataSubType) => {
-      const label = `${selectedItem} (${dataSubType.text})`;
-      const data = dataSubType.data;
-      if (data.type === 'boolean') {
-        return stringCol(this.getSelectionColumnId(id), label, true, 50, id);
-      } else if (data.type === 'string') {
-        return stringCol(this.getSelectionColumnId(id), label, true, 50, id);
-      } else if (data.type === 'cat') {
-        return categoricalCol(this.getSelectionColumnId(id), data.categories, label, true, 50, id);
-      }
-      return numberCol2(this.getSelectionColumnId(id), data.domain[0], data.domain[1], label, true, 50, id);
-    });
+    return selectedSubTypes.map((selectedSubType) => {
+        const label = `${selectedItem} (${selectedSubType.text})`;
+        const data = selectedSubType.data;
+
+        // TODO: currently columns of the same gene with different subTypes have the same ID --> unique IDs?
+        if (data.type === 'boolean') {
+          return stringCol(this.getSelectionColumnId(id), label, true, 50, id, selectedSubType);
+        } else if (data.type === 'string') {
+          return stringCol(this.getSelectionColumnId(id), label, true, 50, id, selectedSubType);
+        } else if (data.type === 'cat') {
+          return categoricalCol(this.getSelectionColumnId(id), data.categories, label, true, 50, id, selectedSubType);
+        }
+        return numberCol2(this.getSelectionColumnId(id), data.domain[0], data.domain[1], label, true, 50, id, selectedSubType);
+      });
   }
 
-  protected loadSelectionColumnData(id: number): Promise<IScoreRow<any>[][]> {
+  protected loadSelectionColumnData(id: number, desc: any[]): Promise<IScoreRow<any>[]>[] {
     // TODO When playing the provenance graph, the RawDataTable is loaded before the GeneList has finished loading, i.e. that the local idType cache is not build yet and it will send an unmap request to the server
     const namePromise = this.resolveId(this.selection.idtype, id, this.idType);
     const url = `/targid/db/${this.dataSource.db}/${this.oppositeDataSource.base}_${this.dataSource.base}_single_score/filter`;
-    const config = this.getParameter(ParameterFormIds.DATA_SUBTYPE).map((option) => option.id.split('-'));
+    const config = desc.map((option) => option.subType.id.split('-'));
 
-    return namePromise.then((name: string) => {
+    return <any>namePromise.then((name: string) => {
       return config.map((entry) => {
         const param = {
           table: entry[0],
@@ -96,10 +102,8 @@ abstract class ACombinedTable extends ALineUpView2 {
         };
 
         toFilter(param, convertRow2MultiMap(this.getParameter('filter')));
-        return ajax.getAPIJSON(url, param);
+        return <Promise<IScoreRow<any>>>ajax.getAPIJSON(url, param);
       });
-    }).then((requests: Promise<IScoreRow<any>[]>[]) => {
-      return requests;
     });
   }
 
