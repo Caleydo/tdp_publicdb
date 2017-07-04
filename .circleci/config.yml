@@ -19,8 +19,8 @@ jobs:
           command: |
             ls ./node_modules/*/package.json
             cat ./node_modules/phovea_core/package.json
-            grep -l '._resolved.: .(git|github|bitbucket):.' ./node_modules/*/package.json
-            (grep -l '._resolved.: .(git|github|bitbucket):.' ./node_modules/*/package.json || true) | xargs -r dirname | xargs -r rm -rf
+            grep -l '._resolved.: .\(git\|github\|bitbucket\):' ./node_modules/*/package.json
+            (grep -l '._resolved.: .\(git\|github\|bitbucket\):' ./node_modules/*/package.json || true) | xargs -r dirname | xargs -r rm -rf
       - save_cache:
           key: deps2-{{ .Branch }}-{{ checksum "package.json" }}
           paths:
