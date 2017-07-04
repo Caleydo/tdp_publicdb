@@ -62,7 +62,7 @@ class CombinedRawDataTable extends ACombinedTable {
 
     // map FormElement change function to provenance graph onChange function
     paramDesc.forEach((p) => {
-      p.options.onChange = (selection, formElement) => onChange(formElement.id, selection.value);
+      p.options.onChange = (selection, formElement) => onChange(formElement.id, selection && selection.value !== undefined ? selection.value : selection);
     });
 
     this.paramForm.build(paramDesc);
