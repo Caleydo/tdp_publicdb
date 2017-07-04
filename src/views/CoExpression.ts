@@ -11,7 +11,7 @@ import {ParameterFormIds, FORM_TISSUE_OR_CELLLINE_FILTER, FORM_DATA_SOURCE} from
 import {getAPIJSON} from 'phovea_core/src/ajax';
 import {loadGeneList, loadFirstName} from './utils';
 import {convertRow2MultiMap} from 'ordino/src/form/internal/FormMap';
-import {toFilter} from '../utils';
+import {toFilter} from 'targid_common/src/utils';
 import {resolve} from 'phovea_core/src/idtype/manager';
 import Range from 'phovea_core/src/range/Range';
 

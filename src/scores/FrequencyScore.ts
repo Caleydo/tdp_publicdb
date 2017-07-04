@@ -6,11 +6,11 @@ import {getAPIJSON} from 'phovea_core/src/ajax';
 import {RangeLike} from 'phovea_core/src/range';
 import IDType from 'phovea_core/src/idtype/IDType';
 import {getSelectedSpecies} from 'targid_common/src/Common';
-import {IDataSourceConfig, dataSubtypes, mutation} from '../config';
+import {IDataSourceConfig, dataSubtypes, mutation, MAX_FILTER_SCORE_ROWS_BEFORE_ALL} from '../config';
 import {IScore} from 'ordino/src/LineUpView';
 import {createDesc, toFilterString} from './utils';
 import AScore, {ICommonScoreParam} from './AScore';
-import {toFilter, limitScoreRows} from '../utils';
+import {toFilter, limitScoreRows} from 'targid_common/src/utils';
 import {INamedSet} from 'ordino/src/storage';
 import {resolve} from 'phovea_core/src/idtype';
 
@@ -47,7 +47,8 @@ export default class FrequencyScore extends AScore implements IScore<number> {
       table: this.dataType.tableName,
       target: idtype.id
     };
-    limitScoreRows(param, ids, idtype, this.dataSource, namedSet);
+    const maxDirectRows = typeof this.parameter.maxDirectFilterRows === 'number' ? this.parameter.maxDirectFilterRows : MAX_FILTER_SCORE_ROWS_BEFORE_ALL;
+    limitScoreRows(param, ids, idtype, this.dataSource.entityName, maxDirectRows, namedSet);
     if (!isMutation) {
       param.operator = this.parameter.comparison_operator;
       param.value = this.parameter.comparison_value;
