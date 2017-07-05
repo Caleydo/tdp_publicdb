@@ -473,6 +473,22 @@ module.exports = function(registry) {
     }
   });
 
+  registry.push('targidView', 'tissue_combined_lineup', function () {
+    return System.import('./src/views/CombinedDependentGeneTable');
+  }, {
+    'name': 'Combined View',
+    'factory': 'create',
+    'idtype': 'Tissue',
+    'selection': 'some',
+    'group': {
+      'name': 'Gene overview',
+      'order': 40
+    },
+    'filter': {
+      'species': 'human'
+    }
+  });
+
   registry.push('targidView', 'gene_combined_lineup', function () {
     return System.import('./src/views/CombinedDependentSampleTable');
   }, {
