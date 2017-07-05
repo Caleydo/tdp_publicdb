@@ -74,6 +74,9 @@ abstract class ACombinedTable extends ALineUpView2 {
         const label = `${selectedItem} (${selectedSubType.text})`;
         const data = selectedSubType.data;
 
+        // HACK: add an identifier composed of the selection ID and the subtype ID
+        selectedSubType.colID = `${id}_${selectedSubType.id}`;
+
         // TODO: currently columns of the same gene with different subTypes have the same ID --> unique IDs?
         if (data.type === 'boolean') {
           return stringCol(this.getSelectionColumnId(id), label, true, 50, id, selectedSubType);
@@ -90,7 +93,7 @@ abstract class ACombinedTable extends ALineUpView2 {
     // TODO When playing the provenance graph, the RawDataTable is loaded before the GeneList has finished loading, i.e. that the local idType cache is not build yet and it will send an unmap request to the server
     const namePromise = this.resolveId(this.selection.idtype, id, this.idType);
     const url = `/targid/db/${this.dataSource.db}/${this.oppositeDataSource.base}_${this.dataSource.base}_single_score/filter`;
-    const config = desc.map((option) => option.subType.id.split('-'));
+    const config = desc.map((option) => option.selectionOptions.id.split('-'));
 
     return <any>namePromise.then((name: string) => {
       return config.map((entry) => {
