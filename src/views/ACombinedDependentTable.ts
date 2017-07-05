@@ -74,9 +74,6 @@ abstract class ACombinedTable extends ALineUpView2 {
         const label = `${selectedItem} (${selectedSubType.text})`;
         const data = selectedSubType.data;
 
-        // HACK: add an identifier composed of the selection ID and the subtype ID
-        selectedSubType.colID = `${id}_${selectedSubType.id}`;
-
         // TODO: currently columns of the same gene with different subTypes have the same ID --> unique IDs?
         if (data.type === 'boolean') {
           return stringCol(this.getSelectionColumnId(id), label, true, 50, id, selectedSubType);
