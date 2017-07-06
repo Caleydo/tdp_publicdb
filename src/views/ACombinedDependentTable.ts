@@ -12,7 +12,7 @@ import {
 } from '../config';
 import {ParameterFormIds} from '../forms';
 import {convertRow2MultiMap} from 'ordino/src/form/internal/FormMap';
-import {toFilter} from '../utils';
+import {toFilter} from 'targid_common/src/utils';
 import {FormBuilder} from 'ordino/src/FormBuilder';
 
 abstract class ACombinedTable extends ALineUpView2 {
