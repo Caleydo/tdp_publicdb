@@ -328,3 +328,8 @@ export const FORM_DATA_HIEARCHICAL_SUBTYPE = {
   },
   useSession: true
 };
+
+export const FORM_DATA_HIERARCHICAL_SUBTYPE_SINGLE_SELECTION = Object.assign(FORM_DATA_HIEARCHICAL_SUBTYPE, {
+  type: FormElementType.SELECT2,
+  id: ParameterFormIds.DATA_TYPE
+});
