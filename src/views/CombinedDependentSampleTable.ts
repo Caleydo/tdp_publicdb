@@ -45,6 +45,9 @@ class CombinedRawDataTable extends ACombinedTable {
         type: FormElementType.SELECT2_MULTIPLE,
         label: 'Data Subtype',
         id: ParameterFormIds.DATA_SUBTYPE,
+        attributes: {
+          style: 'width: 500px;'
+        },
         options: {
           data: this.dataType.map((ds) => {
             return {

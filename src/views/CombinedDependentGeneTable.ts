@@ -43,6 +43,9 @@ class CombinedInvertedRawDataTable extends ACombinedTable {
         type: FormElementType.SELECT2_MULTIPLE,
         label: 'Data Subtype',
         id: ParameterFormIds.DATA_SUBTYPE,
+        attributes: {
+          style: 'width:500px;'
+        },
         options: {
           data: this.dataType.map((ds) => {
             return {
@@ -59,7 +62,6 @@ class CombinedInvertedRawDataTable extends ACombinedTable {
     ];
 
     // map FormElement change function to provenance graph onChange function
-    // TODO: add onChange field to IFormElementDesc.options?
     paramDesc.forEach((p) => {
       p.options.onChange = (selection, formElement) => onChange(formElement.id, selection.value);
     });
