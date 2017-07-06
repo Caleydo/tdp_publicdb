@@ -6,12 +6,11 @@ import * as ajax from 'phovea_core/src/ajax';
 import * as ranges from 'phovea_core/src/range';
 import * as idtypes from 'phovea_core/src/idtype';
 import {getSelectedSpecies} from 'targid_common/src/Common';
-import {IDataSourceConfig, dataSubtypes} from '../config';
-import {convertLog2ToLinear} from '../utils';
+import {IDataSourceConfig, dataSubtypes, MAX_FILTER_SCORE_ROWS_BEFORE_ALL} from '../config';
 import {IScore} from 'ordino/src/LineUpView';
 import {createDesc, toFilterString} from './utils';
 import AScore, {ICommonScoreParam} from './AScore';
-import {toFilter, limitScoreRows} from '../utils';
+import {toFilter, limitScoreRows, convertLog2ToLinear} from 'targid_common/src/utils';
 import {IBoxPlotData} from 'lineupjs/src/model/BoxPlotColumn';
 import {INamedSet} from 'ordino/src/storage';
 import {resolve} from 'phovea_core/src/idtype';
@@ -58,7 +57,8 @@ export default class AggregatedScore extends AScore implements IScore<number> {
       species: getSelectedSpecies(),
       target: idtype.id
     };
-    limitScoreRows(param, ids, idtype, this.dataSource, namedSet);
+    const maxDirectRows = typeof this.parameter.maxDirectFilterRows === 'number' ? this.parameter.maxDirectFilterRows : MAX_FILTER_SCORE_ROWS_BEFORE_ALL;
+    limitScoreRows(param, ids, idtype, this.dataSource.entityName, maxDirectRows, namedSet);
     toFilter(param, this.parameter.filter);
 
     let rows: any[] = await ajax.getAPIJSON(url, param);
