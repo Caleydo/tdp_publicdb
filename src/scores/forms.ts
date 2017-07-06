@@ -3,7 +3,7 @@ import {
   FORM_DATA_HIERARCHICAL_SUBTYPE, FORM_DATA_HIERARCHICAL_SUBTYPE_SINGLE_SELECTION
 } from '../forms';
 import {FormElementType} from 'ordino/src/form';
-import {dataTypes, mutation, expression, copyNumber, MAX_FILTER_SCORE_ROWS_BEFORE_ALL} from '../config';
+import {mutation, expression, copyNumber, MAX_FILTER_SCORE_ROWS_BEFORE_ALL} from '../config';
 /**
  * Created by Samuel Gratzl on 15.03.2017.
  */
@@ -15,7 +15,7 @@ export const FORM_AGGREGATED_SCORE = [
     type: FormElementType.SELECT,
     label: 'Aggregation',
     id: ParameterFormIds.AGGREGATION,
-    dependsOn: [ParameterFormIds.DATA_TYPE],
+    dependsOn: [ParameterFormIds.DATA_HIERARCHICAL_SUBTYPE],
     required: true,
     options: {
       optionsFnc: (selection) => {
@@ -34,7 +34,7 @@ export const FORM_AGGREGATED_SCORE = [
     type: FormElementType.SELECT,
     label: 'Comparison Operator',
     id: ParameterFormIds.COMPARISON_OPERATOR,
-    dependsOn: [ParameterFormIds.DATA_TYPE, ParameterFormIds.AGGREGATION],
+    dependsOn: [ParameterFormIds.DATA_HIERARCHICAL_SUBTYPE, ParameterFormIds.AGGREGATION],
     required: true,
     showIf: (dependantValues) => // show form element for expression and copy number frequencies
       ((dependantValues[1].value === 'frequency' || dependantValues[1].value === 'count') && (dependantValues[0].data === expression.id || dependantValues[0].data === copyNumber.id)),
@@ -48,7 +48,7 @@ export const FORM_AGGREGATED_SCORE = [
     label: 'Comparison Value',
     id: ParameterFormIds.COMPARISON_VALUE,
     required: true,
-    dependsOn: [ParameterFormIds.DATA_TYPE, ParameterFormIds.AGGREGATION],
+    dependsOn: [ParameterFormIds.DATA_HIERARCHICAL_SUBTYPE, ParameterFormIds.AGGREGATION],
     showIf: (dependantValues) => // show form element for expression and copy number frequencies
       ((dependantValues[1].value === 'frequency' || dependantValues[1].value === 'count') && (dependantValues[0].data === expression.id || dependantValues[0].data === copyNumber.id)),
     useSession: true,
