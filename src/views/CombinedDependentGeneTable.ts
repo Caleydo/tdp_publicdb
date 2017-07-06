@@ -1,6 +1,6 @@
 import {IViewContext, ISelection} from 'ordino/src/View';
 import {
-  stringCol, categoricalCol, IScoreRow
+  stringCol, categoricalCol
 } from 'ordino/src/LineUpView';
 import {
   gene,
@@ -101,16 +101,6 @@ class CombinedInvertedRawDataTable extends ACombinedTable {
   protected getSelectionColumnLabel(id: number) {
     // TODO When playing the provenance graph, the RawDataTable is loaded before the GeneList has finished loading, i.e. that the local idType cache is not build yet and it will send an unmap request to the server
     return this.resolveId(this.selection.idtype, id, this.idType);
-  }
-
-  protected mapSelectionRows(rows: IScoreRow<any>[]) {
-    const parameters = this.getParameter(ParameterFormIds.DATA_SUBTYPE).map((option) => option.id.split('-'));
-    // TODO: find correct parameter data to check useForAggregation
-    // if (this.getParameter(ParameterFormIds.DATA_SUBTYPE).useForAggregation.indexOf('log2') !== -1) {
-    //   rows = convertLog2ToLinear(rows, 'score');
-    // }
-
-    return rows;
   }
 
   getItemName(count: number) {

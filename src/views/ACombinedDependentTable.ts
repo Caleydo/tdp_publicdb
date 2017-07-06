@@ -14,6 +14,8 @@ import {ParameterFormIds} from '../forms';
 import {convertRow2MultiMap} from 'ordino/src/form/internal/FormMap';
 import {toFilter} from 'targid_common/src/utils';
 import {FormBuilder} from 'ordino/src/FormBuilder';
+import {convertLog2ToLinear} from 'targid_common/src/utils';
+
 
 abstract class ACombinedTable extends ALineUpView2 {
 
@@ -105,6 +107,14 @@ abstract class ACombinedTable extends ALineUpView2 {
         return <Promise<IScoreRow<any>>>ajax.getAPIJSON(url, param);
       });
     });
+  }
+
+  protected mapSelectionRows(rows: IScoreRow<any>[], colDesc: any) {
+    if (colDesc.selectionOptions.data.useForAggregation.indexOf('log2') !== -1) {
+      rows = convertLog2ToLinear(rows, 'score');
+    }
+
+    return rows;
   }
 
   getItemName(count: number) {

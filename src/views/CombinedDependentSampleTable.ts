@@ -1,6 +1,6 @@
 import {IViewContext, ISelection} from 'ordino/src/View';
 import {
-  stringCol, categoricalCol, IScoreRow
+  stringCol, categoricalCol
 } from 'ordino/src/LineUpView';
 import {
   gene,
@@ -8,15 +8,13 @@ import {
   copyNumber,
   mutation,
   IDataTypeConfig,
-  chooseDataSource,
   IDataSourceConfig
 } from '../config';
-import {ParameterFormIds, FORM_GENE_FILTER, FORM_DATA_SOURCE, FORM_TISSUE_OR_CELLLINE_FILTER} from '../forms';
+import {ParameterFormIds, FORM_DATA_SOURCE, FORM_TISSUE_OR_CELLLINE_FILTER} from '../forms';
 import {FormBuilder, FormElementType} from 'ordino/src/FormBuilder';
 import {IFormSelect2} from 'ordino/src/form/internal/FormSelect2';
 import ACombinedTable from './ACombinedDependentTable';
 import {loadFirstName} from './utils';
-
 
 class CombinedRawDataTable extends ACombinedTable {
 
@@ -111,16 +109,6 @@ class CombinedRawDataTable extends ACombinedTable {
     // TODO When playing the provenance graph, the RawDataTable is loaded before the GeneList has finished loading, i.e. that the local idType cache is not build yet and it will send an unmap request to the server
     const ensg = await this.resolveId(this.selection.idtype, id, this.idType);
     return await loadFirstName(ensg);
-  }
-
-  protected mapSelectionRows(rows: IScoreRow<any>[]) {
-    const parameters = this.getParameter(ParameterFormIds.DATA_SUBTYPE).map((option) => option.id.split('-'));
-    // TODO: find correct parameter data to check useForAggregation
-    // if (this.getParameter(ParameterFormIds.DATA_SUBTYPE).useForAggregation.indexOf('log2') !== -1) {
-    //   rows = convertLog2ToLinear(rows, 'score');
-    // }
-
-    return rows;
   }
 
   getItemName(count: number) {
