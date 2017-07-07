@@ -7,7 +7,7 @@ import {Range, RangeLike} from 'phovea_core/src/range';
 import {resolve} from 'phovea_core/src/idtype';
 import IDType from 'phovea_core/src/idtype/IDType';
 import {getSelectedSpecies} from 'targid_common/src/Common';
-import {IDataSourceConfig, gene, tissue, cellline, MAX_FILTER_SCORE_ROWS_BEFORE_ALL} from '../config';
+import {IDataSourceConfig, gene, tissue, cellline, MAX_FILTER_SCORE_ROWS_BEFORE_ALL, splitTypes} from '../config';
 import {convertLog2ToLinear, limitScoreRows} from 'targid_common/src/utils';
 import {IScore} from 'ordino/src/LineUpView';
 import {createDesc} from './utils';
@@ -95,7 +95,10 @@ export function create(pluginDesc: IPluginDesc) {
     {
       const datatypes = data[ParameterFormIds.DATA_HIERARCHICAL_SUBTYPE];
       delete data[ParameterFormIds.DATA_HIERARCHICAL_SUBTYPE];
-      const resolved = datatypes.map((entry) => entry.id.split('-'));
+      const resolved = datatypes.map((entry) => {
+        const {dataType, dataSubType} = splitTypes(entry.id);
+        return [dataType.id, dataSubType.id];
+      });
       if (datatypes.length === 1) {
         data.data_type = resolved[0][0];
         data.data_subtype = resolved[0][1];
