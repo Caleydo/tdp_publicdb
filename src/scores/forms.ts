@@ -3,7 +3,7 @@ import {
   FORM_DATA_HIERARCHICAL_SUBTYPE, FORM_DATA_HIERARCHICAL_SUBTYPE_SINGLE_SELECTION
 } from '../forms';
 import {FormElementType} from 'ordino/src/form';
-import {mutation, expression, copyNumber, MAX_FILTER_SCORE_ROWS_BEFORE_ALL} from '../config';
+import {mutation, expression, copyNumber, MAX_FILTER_SCORE_ROWS_BEFORE_ALL, splitTypes} from '../config';
 /**
  * Created by Samuel Gratzl on 15.03.2017.
  */
@@ -19,8 +19,11 @@ export const FORM_AGGREGATED_SCORE = [
     required: true,
     options: {
       optionsFnc: (selection) => {
-        const [dataType] = selection[0].id.split('-');
-        if (dataType === mutation.id) {
+        if(selection.length === 0 || selection[0].id === '') {
+          return NUMERIC_AGGREGATION;
+        }
+        const {dataType} = splitTypes(selection[0].id);
+        if (dataType.id === mutation.id) {
           return MUTATION_AGGREGATION;
         } else {
           return NUMERIC_AGGREGATION;
