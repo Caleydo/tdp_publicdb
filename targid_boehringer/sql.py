@@ -26,7 +26,7 @@ agg_score = DBViewBuilder().query('%(agg)s(%(data_subtype)s)') \
 def _create_common(result, prefix, table, primary, idtype):
   # lookup for the id and primary names the table
   result[prefix + '_items'] = DBViewBuilder().idtype(idtype).query("""
-      SELECT {primary} as id, %(column)s AS text
+      SELECT targidid, {primary} as id, %(column)s AS text
       FROM {table} WHERE LOWER(%(column)s) LIKE :query AND species = :species
       ORDER BY %(column)s ASC LIMIT %(limit)s OFFSET %(offset)s""".format(table=table, primary=primary)) \
     .query('count', """
@@ -318,7 +318,7 @@ views = dict(
     .build(),
 
   gene_gene_items=DBViewBuilder().idtype(idtype_gene).query("""
-      SELECT ensg as id, symbol AS text
+      SELECT targidid, ensg as id, symbol AS text
       FROM public.targid_gene WHERE (LOWER(symbol) LIKE :query OR LOWER(ensg) LIKE :query) AND species = :species
       ORDER BY ensg ASC LIMIT %(limit)s OFFSET %(offset)s""") \
     .query('count', """

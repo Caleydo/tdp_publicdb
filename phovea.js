@@ -456,6 +456,21 @@ module.exports = function(registry) {
       'sampleType': 'GeneSymbol'
     }
   });
+
+  registry.push('bobSearchProvider', 'gene', function() { return import('./src/entries/SearchProvider')}, {
+    factory: 'createGene',
+    idType: 'Ensembl'
+  });
+
+  registry.push('bobSearchProvider', 'tissue', function() { return import('./src/entries/SearchProvider')}, {
+    factory: 'createTissue',
+    idType: 'Tissue'
+  });
+
+  registry.push('bobSearchProvider', 'cellline', function() { return import('./src/entries/SearchProvider')}, {
+    factory: 'createCellline',
+    idType: 'Cellline'
+  });
   // generator-phovea:end
 };
 
