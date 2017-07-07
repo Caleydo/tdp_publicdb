@@ -38,6 +38,7 @@ export function create(pluginDesc: IPluginDesc) {
   return dialog.showAsPromise((builder) => {
     const data = builder.getElementData();
     const [dataType, dataSubtype] = data[ParameterFormIds.DATA_HIERARCHICAL_SUBTYPE].id.split('-');
+    delete data[ParameterFormIds.DATA_HIERARCHICAL_SUBTYPE];
     data.data_type = dataType;
     data.data_subtype = dataSubtype;
     data.filter = convertRow2MultiMap(data.filter);
