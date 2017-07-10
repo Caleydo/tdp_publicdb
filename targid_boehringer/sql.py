@@ -29,9 +29,6 @@ def _create_common(result, prefix, table, primary, idtype):
       SELECT targidid, {primary} as id, %(column)s AS text
       FROM {table} WHERE LOWER(%(column)s) LIKE :query AND species = :species
       ORDER BY %(column)s ASC LIMIT %(limit)s OFFSET %(offset)s""".format(table=table, primary=primary)) \
-    .query('count', """
-      SELECT COUNT(*) AS total_count
-      FROM {table} WHERE LOWER(%(column)s) LIKE :query AND species = :species""".format(table=table)) \
     .replace("column").replace("limit").replace("offset") \
     .arg("query").arg('species').build()
 
@@ -41,9 +38,6 @@ def _create_common(result, prefix, table, primary, idtype):
         FROM (SELECT distinct %(column)s AS s
               FROM {table} WHERE LOWER(%(column)s) LIKE :query AND species = :species)
         ORDER BY %(column)s ASC LIMIT %(limit)s OFFSET %(offset)s""".format(table=table)) \
-    .query('count', """
-        SELECT COUNT(distinct %(column)s) AS total_count
-        FROM {table} WHERE LOWER(%(column)s) LIKE :query AND species = :species""".format(table=table)) \
     .replace("column").replace("limit").replace("offset") \
     .arg("query").arg('species').build()
   # lookup for unique / distinct categorical values in a table
@@ -101,11 +95,6 @@ def create_gene_score(result, other_prefix, other_primary):
             INNER JOIN {base}.targid_{base} C ON D.{primary} = C.{primary}
             WHERE C.species = :species %(and_where)s
             GROUP BY D.ensg""".format(primary=other_primary, base=other_prefix)) \
-    .query('count', """
-              SELECT count(DISTINCT D.{primary})
-              FROM {base}.targid_%(table)s D
-              INNER JOIN {base}.targid_{base} C ON D.{primary} = C.{primary}
-              WHERE C.species = :species %(and_where)s""".format(primary=other_primary, base=other_prefix)) \
     .query('filter_panel', filter_panel) \
     .query('filter_panel_ensg', filter_gene_panel_d) \
     .query('filter_ensg', 'd.ensg %(operator)s %(value)s') \
@@ -167,7 +156,6 @@ def create_sample(result, basename, idtype, primary, base):
       WHERE %(col)s is not null""".format(base=basename)) \
     .replace('where').query('filter_panel', filter_panel) \
     .query('filter_' + primary, 'c.' + primary + ' %(operator)s %(value)s') \
-    .query('count', 'SELECT count(*) from {base}.targid_{base} c %(where)s'.format(base=basename)) \
     .build()
 
   result[basename + '_panel'] = DBViewBuilder().query("""
@@ -267,12 +255,6 @@ def create_sample(result, basename, idtype, primary, base):
           INNER JOIN public.targid_gene C ON D.ensg = C.ensg
           WHERE C.species = :species %(and_where)s
           GROUP BY D.{primary}""".format(primary=primary, base=basename)) \
-    .query('count', """
-              SELECT count(DISTINCT {primary})
-              FROM {base}.targid_%(table)s D
-              INNER JOIN public.targid_gene C ON D.ensg = C.ensg
-              WHERE C.species = :species %(and_where)s
-              GROUP BY D.{primary}""".format(primary=primary, base=basename)) \
     .query('filter_panel', filter_gene_panel) \
     .query('filter_panel_' + primary, filter_panel_d) \
     .query('filter_' + primary, 'd.' + primary + ' %(operator)s %(value)s') \
@@ -311,7 +293,6 @@ views = dict(
     .column('seqregionend', type='number')
     .replace('where')
     .query('filter_panel', 'ensg = ANY(SELECT ensg FROM public.targid_geneassignment WHERE genesetname %(operator)s %(value)s)')
-    .query('count', 'SELECT count(*) from public.targid_gene c %(where)s')
     .build(),
   gene_panel=DBViewBuilder().query("""
     SELECT genesetname AS id, species AS description FROM public.targid_geneset ORDER BY genesetname ASC""")
@@ -321,9 +302,6 @@ views = dict(
       SELECT targidid, ensg as id, symbol AS text
       FROM public.targid_gene WHERE (LOWER(symbol) LIKE :query OR LOWER(ensg) LIKE :query) AND species = :species
       ORDER BY ensg ASC LIMIT %(limit)s OFFSET %(offset)s""") \
-    .query('count', """
-      SELECT COUNT(*) AS total_count
-      FROM public.targid_gene WHERE (LOWER(symbol) LIKE :query OR LOWER(ensg) LIKE :query) AND species = :species""") \
     .replace("limit").replace("offset") \
     .arg("query").arg('species').build(),
 
