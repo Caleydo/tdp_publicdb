@@ -8,7 +8,8 @@ import {getSelectedSpecies} from 'targid_common/src/Common';
 import {
   gene,
   IDataTypeConfig,
-  IDataSourceConfig
+  IDataSourceConfig,
+  splitTypes
 } from '../config';
 import {ParameterFormIds} from '../forms';
 import {convertRow2MultiMap} from 'ordino/src/form/internal/FormMap';
@@ -88,13 +89,13 @@ abstract class ACombinedTable extends ALineUpView2 {
     // TODO When playing the provenance graph, the RawDataTable is loaded before the GeneList has finished loading, i.e. that the local idType cache is not build yet and it will send an unmap request to the server
     const namePromise = this.resolveId(this.selection.idtype, id, this.idType);
     const url = `/targid/db/${this.dataSource.db}/${this.oppositeDataSource.base}_${this.dataSource.base}_single_score/filter`;
-    const config = desc.map((option) => option.selectionOptions.id.split('-'));
+    const config = desc.map((option) => splitTypes(option.selectedSubtype));
 
     return <any>namePromise.then((name: string) => {
       return config.map((entry) => {
         const param = {
-          table: entry[0],
-          attribute: entry[1],
+          table: entry.dataType.tableName,
+          attribute: entry.dataSubType.id,
           name,
           species: getSelectedSpecies()
         };
@@ -106,7 +107,8 @@ abstract class ACombinedTable extends ALineUpView2 {
   }
 
   protected mapSelectionRows(rows: IScoreRow<any>[], colDesc: any) {
-    if (colDesc.selectionOptions.data.useForAggregation.indexOf('log2') !== -1) {
+    const {dataSubType} = splitTypes(colDesc.selectedSubtype);
+    if (dataSubType.useForAggregation.indexOf('log2') !== -1) {
       rows = convertLog2ToLinear(rows, 'score');
     }
 
