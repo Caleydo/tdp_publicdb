@@ -69,17 +69,18 @@ abstract class ACombinedTable extends ALineUpView2 {
 
     return selectedSubTypes.map((selectedSubType) => {
         const label = `${selectedItem} (${selectedSubType.text})`;
-        const data = selectedSubType.data;
+        const {dataSubType} = splitTypes(selectedSubType.id);
 
-        // TODO: currently columns of the same gene with different subTypes have the same ID --> unique IDs?
-        if (data.type === 'boolean') {
-          return stringCol(this.getSelectionColumnId(id), label, true, 50, id, selectedSubType);
-        } else if (data.type === 'string') {
-          return stringCol(this.getSelectionColumnId(id), label, true, 50, id, selectedSubType);
-        } else if (data.type === 'cat') {
-          return categoricalCol(this.getSelectionColumnId(id), data.categories, label, true, 50, id, selectedSubType);
+        switch(dataSubType.type) {
+          case 'boolean':
+            return stringCol(this.getSelectionColumnId(id), label, true, 50, id, selectedSubType.id);
+          case 'string':
+            return stringCol(this.getSelectionColumnId(id), label, true, 50, id, selectedSubType.id);
+          case 'cat':
+            return categoricalCol(this.getSelectionColumnId(id), dataSubType.categories, label, true, 50, id, selectedSubType.id);
+          default:
+            return numberCol2(this.getSelectionColumnId(id), dataSubType.domain[0], dataSubType.domain[1], label, true, 50, id, selectedSubType.id);
         }
-        return numberCol2(this.getSelectionColumnId(id), data.domain[0], data.domain[1], label, true, 50, id, selectedSubType);
       });
   }
 
