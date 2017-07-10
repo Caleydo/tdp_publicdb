@@ -21,7 +21,7 @@ import {ISelect2Option, IFormSelect2} from 'ordino/src/form';
 
 abstract class ACombinedTable extends ALineUpView2 {
 
-  protected dataType: IDataTypeConfig[];
+  protected readonly dataType: IDataTypeConfig[];
 
   /**
    * Parameter UI form
