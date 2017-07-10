@@ -52,21 +52,14 @@ class CombinedRawDataTable extends ACombinedTable {
     return super.setParameter(name, value);
   }
 
-  protected initColumns(desc) {
-    super.initColumns(desc);
-
-    const columns = [
+  protected getColumnDescs(desc) {
+    return [
       stringCol('id', 'Name', true, 120),
       //categoricalCol('species', desc.columns.species.categories, 'Species', true),
       categoricalCol('tumortype', desc.columns.tumortype.categories, 'Tumor Type', true),
       categoricalCol('organ', desc.columns.organ.categories, 'Organ', true),
       categoricalCol('gender', desc.columns.gender.categories, 'Gender', true)
     ];
-
-    this.build([], columns);
-    this.handleSelectionColumns(this.selection);
-
-    return columns;
   }
 
   protected async getSelectionColumnLabel(id: number) {

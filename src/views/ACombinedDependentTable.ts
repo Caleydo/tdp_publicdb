@@ -38,7 +38,7 @@ abstract class ACombinedTable extends ALineUpView2 {
     this.dataType = dataType;
   }
 
-  buildParameterDescs(): IFormSelect2[] {
+  protected buildParameterDescs(): IFormSelect2[] {
     return [
       Object.assign(
         {},
@@ -140,6 +140,19 @@ abstract class ACombinedTable extends ALineUpView2 {
   protected loadDynamicColumnOptions(): ISelect2Option[] {
     return this.getParameter(ParameterFormIds.DATA_HIERARCHICAL_SUBTYPE);
   }
+
+  protected initColumns(desc) {
+    super.initColumns(desc);
+
+    const columns = this.getColumnDescs(desc);
+
+    this.build([], columns);
+    this.handleSelectionColumns(this.selection);
+
+    return columns;
+  }
+
+  protected abstract getColumnDescs(desc);
 }
 
 export default ACombinedTable;

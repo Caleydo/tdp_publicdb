@@ -39,10 +39,8 @@ class CombinedInvertedRawDataTable extends ACombinedTable {
     super.buildParameterUI($parent.select('form'), onChange);
   }
 
-  protected initColumns(desc: {idType: string, columns: any}) {
-    super.initColumns(desc);
-
-    const columns = [
+  protected getColumnDescs(desc) {
+    return [
       stringCol('symbol', 'Symbol', true, 100),
       stringCol('id', 'Ensembl', true, 120),
       stringCol('name', 'Name', true),
@@ -53,11 +51,6 @@ class CombinedInvertedRawDataTable extends ACombinedTable {
       stringCol('seqregionstart', 'Seq Region Start', false),
       stringCol('seqregionend', 'Seq Region End', false)
     ];
-
-    this.build([], columns);
-    this.handleSelectionColumns(this.selection);
-
-    return columns;
   }
 
   protected getSelectionColumnLabel(id: number) {
