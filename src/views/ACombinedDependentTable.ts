@@ -91,6 +91,8 @@ abstract class ACombinedTable extends ALineUpView2 {
     const url = `/targid/db/${this.dataSource.db}/${this.oppositeDataSource.base}_${this.dataSource.base}_single_score/filter`;
     const config = desc.map((option) => splitTypes(option.selectedSubtype));
 
+    const filter = convertRow2MultiMap(this.getParameter('filter'));
+
     return <any>namePromise.then((name: string) => {
       return config.map((entry) => {
         const param = {
@@ -100,7 +102,7 @@ abstract class ACombinedTable extends ALineUpView2 {
           species: getSelectedSpecies()
         };
 
-        toFilter(param, convertRow2MultiMap(this.getParameter('filter')));
+        toFilter(param, filter);
         return <Promise<IScoreRow<any>>>ajax.getAPIJSON(url, param);
       });
     });
