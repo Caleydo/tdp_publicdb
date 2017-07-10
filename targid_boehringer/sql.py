@@ -6,15 +6,15 @@ __author__ = 'Samuel Gratzl'
 
 idtype_celline = 'Cellline'
 _primary_cellline = 'celllinename'
-cellline_columns = ['species', 'tumortype', 'organ', 'gender', 'metastatic_site', 'histology_type', 'morphology', 'growth_type', 'age_at_surgery']
+cellline_columns = [_primary_cellline, 'species', 'tumortype', 'organ', 'gender', 'metastatic_site', 'histology_type', 'morphology', 'growth_type', 'age_at_surgery']
 
 idtype_tissue = 'Tissue'
 _primary_tissue = 'tissuename'
-tissue_columns = ['species', 'tumortype', 'organ', 'gender']
+tissue_columns = [_primary_tissue, 'species', 'tumortype', 'organ', 'gender']
 
 idtype_gene = 'Ensembl'
 _primary_gene = 'ensg'
-gene_columns = ['symbol', 'species', 'chromosome', 'strand', 'biotype', 'seqregionstart', 'seqregionend']
+gene_columns = [_primary_gene, 'symbol', 'species', 'chromosome', 'strand', 'biotype', 'seqregionstart', 'seqregionend']
 _index_gene = "row_number() OVER(ORDER BY t.ensg ASC) as _index"
 _column_query_gene = 'targidid as _id, t.ensg as id, symbol, species, chromosome, strand, biotype, seqregionstart, seqregionend, name'
 filter_gene_panel = 'c.ensg = ANY(SELECT ensg FROM public.targid_geneassignment WHERE genesetname %(operator)s %(value)s)'
