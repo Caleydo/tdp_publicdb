@@ -342,7 +342,7 @@ views = dict(
     FROM public.targid_gene WHERE ensg IN (%(ensgs)s) AND species = :species
     ORDER BY symbol ASC""")
     .arg('species')
-    .replace('ensgs', re.compile('[\w,\s]+'))
+    .replace('ensgs', re.compile('(\'[\w]+\')(,\'[\w]+\')*'))
     .build(),
 
   gene_all_columns=DBViewBuilder().query("""
