@@ -31,10 +31,10 @@ abstract class ACombinedTable extends ALineUpView2 {
 
   protected oppositeDataSource: IDataSourceConfig;
 
-  constructor(context: IViewContext, selection: ISelection, parent: Element, dataType: IDataTypeConfig|IDataTypeConfig[], options?) {
+  constructor(context: IViewContext, selection: ISelection, parent: Element, dataType: IDataTypeConfig[], options?) {
     super(context, selection, parent, options);
 
-    this.dataType = Array.isArray(dataType)? dataType : [dataType];
+    this.dataType = dataType;
   }
 
   getParameter(name: string): any {

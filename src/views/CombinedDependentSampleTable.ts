@@ -17,21 +17,10 @@ import ACombinedTable from './ACombinedDependentTable';
 import {loadFirstName} from './utils';
 
 class CombinedRawDataTable extends ACombinedTable {
-
-  /**
-   * Parameter UI form
-   */
-  protected paramForm: FormBuilder;
-
-  protected dataSource: IDataSourceConfig;
-
-  protected oppositeDataSource: IDataSourceConfig;
-
-  constructor(context: IViewContext, selection: ISelection, parent: Element, dataType: IDataTypeConfig|IDataTypeConfig[], options?) {
+  constructor(context: IViewContext, selection: ISelection, parent: Element, dataType: IDataTypeConfig[], options?) {
     super(context, selection, parent, dataType, options);
 
     this.dataSource = gene;
-    this.dataType = Array.isArray(dataType)? dataType : [dataType];
   }
 
   buildParameterUI($parent: d3.Selection<any>, onChange: (name: string, value: any) => Promise<any>) {
