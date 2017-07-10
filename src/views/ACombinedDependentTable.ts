@@ -16,6 +16,7 @@ import {convertRow2MultiMap} from 'ordino/src/form/internal/FormMap';
 import {toFilter} from 'targid_common/src/utils';
 import {FormBuilder} from 'ordino/src/FormBuilder';
 import {convertLog2ToLinear} from 'targid_common/src/utils';
+import {ISelect2Option} from 'ordino/src/form';
 
 
 abstract class ACombinedTable extends ALineUpView2 {
@@ -119,6 +120,10 @@ abstract class ACombinedTable extends ALineUpView2 {
 
   getItemName(count: number) {
     return (count === 1) ? gene.name.toLowerCase() : gene.name.toLowerCase() + 's';
+  }
+
+  protected loadDynamicColumnOptions(): ISelect2Option[] {
+    return this.getParameter(ParameterFormIds.DATA_SUBTYPE);
   }
 }
 
