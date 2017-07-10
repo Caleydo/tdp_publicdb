@@ -344,7 +344,7 @@ module.exports = function(registry) {
     'site': '//vie-toolbox/clip/multiViewGene.php?ensg={gene}',
     'argument': 'gene',
     'idtype': 'Ensembl',
-    'selection': 'multiple',
+    'selection': 'chooser',
     'group': {
       'name': 'Internal resources',
       'order': 0
@@ -358,7 +358,7 @@ module.exports = function(registry) {
     'site': '///vie-toolbox/clip/multiViewCellline.php?celllinename={cellline}',
     'argument': 'cellline',
     'idtype': 'Cellline',
-    'selection': 'multiple',
+    'selection': 'chooser',
     'group': {
       'name': 'Internal resources',
       'order': 0
@@ -372,7 +372,7 @@ module.exports = function(registry) {
     'site': '///vie-bio-shiny.eu.boehringer.com/copynumberoverview/?celllinename={cellline}',
     'argument': 'cellline',
     'idtype': 'Cellline',
-    'selection': 'multiple',
+    'selection': 'chooser',
     'group': {
       'name': 'Internal resources',
       'order': 10
@@ -439,9 +439,9 @@ module.exports = function(registry) {
     'site': '//www.ncbi.nlm.nih.gov/pubmed?term={gene}',
     'argument': 'gene',
     'idtype': 'Ensembl',
-    'selection': 'multiple',
+    'selection': 'chooser',
     'group': {
-      'name': 'External resources',
+      'name': 'External resources'
       // 'order': 60
     }
   });
