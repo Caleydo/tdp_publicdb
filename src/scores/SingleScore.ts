@@ -69,6 +69,7 @@ export default class SingleScore extends AScore implements IScore<any> {
 function enableMultiple(desc: any): any {
   return mixin({}, desc, {
     type: FormElementType.SELECT2_MULTIPLE,
+    useSession: false
   });
 }
 
