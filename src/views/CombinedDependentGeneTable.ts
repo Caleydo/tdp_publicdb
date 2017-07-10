@@ -51,7 +51,7 @@ class CombinedInvertedRawDataTable extends ACombinedTable {
             return {
               text: ds.name,
               children: ds.dataSubtypes.map((dss) => {
-                return {text: dss.name, id: `${ds.tableName}-${dss.id}`, data: dss};
+                return {text: dss.name, id: `${ds.id}-${dss.id}`};
               })
             };
           })
