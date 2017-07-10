@@ -17,7 +17,9 @@ jobs:
       - run: #remove all resolved github dependencies
           name: delete-vcs-dependencies
           command: |
-            (grep -l '._resolved.: .\(git\|git\+https\|github\|bitbucket\):' ./node_modules/*/package.json || true) | xargs -r dirname | xargs -r rm -rf
+            list=`(grep -l '._resolved.: .\(git[^:]*\|bitbucket\):' ./node_modules/*/package.json || true) | xargs -r dirname`
+            echo $list
+            (grep -l '._resolved.: .\(git[^:]*\|bitbucket\):' ./node_modules/*/package.json || true) | xargs -r dirname | xargs -r rm -rf
       - save_cache:
           key: deps2-{{ .Branch }}-{{ checksum "package.json" }}
           paths:
