@@ -1,5 +1,6 @@
 import SearchProvider, {IResult} from 'targid_common/src/entries/SearchProvider';
 import {cellline, gene, tissue} from '../config';
+import '../styles/idtype_color.scss';
 
 export function createCellline() {
   return new SearchProvider(cellline);

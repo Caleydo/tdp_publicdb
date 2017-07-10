@@ -1,0 +1,14 @@
+
+@import "~ordino/src/styles/utils";
+
+*[data-idtype="Ensembl"] {
+  @include idtype_color(#86ffb1);
+}
+
+*[data-idtype="Tissue"] {
+  @include idtype_color(#95b1ff);
+}
+
+*[data-idtype="Cellline"] {
+  @include idtype_color(#fff663);
+}
