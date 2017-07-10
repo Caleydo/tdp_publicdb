@@ -26,36 +26,16 @@ class CombinedRawDataTable extends ACombinedTable {
   buildParameterUI($parent: d3.Selection<any>, onChange: (name: string, value: any) => Promise<any>) {
     this.paramForm = new FormBuilder($parent);
 
-    const paramDesc: IFormSelect2[] = [
-      FORM_DATA_SOURCE,
-      {
-        type: FormElementType.SELECT2_MULTIPLE,
-        label: 'Data Subtype',
-        id: ParameterFormIds.DATA_SUBTYPE,
-        attributes: {
-          style: 'width: 500px;'
-        },
-        options: {
-          data: this.dataType.map((ds) => {
-            return {
-              text: ds.name,
-              children: ds.dataSubtypes.map((dss) => {
-                return {text: dss.name, id: `${ds.id}-${dss.id}`};
-              })
-            };
-          })
-        },
-        useSession: true
-      },
-      FORM_TISSUE_OR_CELLLINE_FILTER
-    ];
+    const base = super.buildParameterDescs();
+    base.unshift(FORM_DATA_SOURCE);
+    base.push(FORM_TISSUE_OR_CELLLINE_FILTER);
 
     // map FormElement change function to provenance graph onChange function
-    paramDesc.forEach((p) => {
+    base.forEach((p) => {
       p.options.onChange = (selection, formElement) => onChange(formElement.id, selection && selection.value !== undefined ? selection.value : selection);
     });
 
-    this.paramForm.build(paramDesc);
+    this.paramForm.build(base);
 
     this.updateDataSource();
 

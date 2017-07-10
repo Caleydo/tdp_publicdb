@@ -9,11 +9,9 @@ import {
   mutation,
   IDataTypeConfig,
   chooseDataSource,
-  IDataSourceConfig
 } from '../config';
-import {ParameterFormIds, FORM_GENE_FILTER} from '../forms';
-import {FormBuilder, FormElementType} from 'ordino/src/FormBuilder';
-import {IFormSelect2} from 'ordino/src/form/internal/FormSelect2';
+import {FORM_GENE_FILTER} from '../forms';
+import {FormBuilder} from 'ordino/src/FormBuilder';
 import ACombinedTable from './ACombinedDependentTable';
 
 class CombinedInvertedRawDataTable extends ACombinedTable {
@@ -27,35 +25,15 @@ class CombinedInvertedRawDataTable extends ACombinedTable {
   buildParameterUI($parent: d3.Selection<any>, onChange: (name: string, value: any) => Promise<any>) {
     this.paramForm = new FormBuilder($parent);
 
-    const paramDesc: IFormSelect2[] = [
-      {
-        type: FormElementType.SELECT2_MULTIPLE,
-        label: 'Data Subtype',
-        id: ParameterFormIds.DATA_SUBTYPE,
-        attributes: {
-          style: 'width:500px;'
-        },
-        options: {
-          data: this.dataType.map((ds) => {
-            return {
-              text: ds.name,
-              children: ds.dataSubtypes.map((dss) => {
-                return {text: dss.name, id: `${ds.id}-${dss.id}`};
-              })
-            };
-          })
-        },
-        useSession: true
-      },
-      FORM_GENE_FILTER
-    ];
+    const base = super.buildParameterDescs();
+    base.push(FORM_GENE_FILTER);
 
     // map FormElement change function to provenance graph onChange function
-    paramDesc.forEach((p) => {
+    base.forEach((p) => {
       p.options.onChange = (selection, formElement) => onChange(formElement.id, selection.value);
     });
 
-    this.paramForm.build(paramDesc);
+    this.paramForm.build(base);
 
     // add other fields
     super.buildParameterUI($parent.select('form'), onChange);

@@ -11,12 +11,12 @@ import {
   IDataSourceConfig,
   splitTypes
 } from '../config';
-import {ParameterFormIds} from '../forms';
+import {ParameterFormIds, FORM_DATA_HIERARCHICAL_SUBTYPE} from '../forms';
 import {convertRow2MultiMap} from 'ordino/src/form/internal/FormMap';
 import {toFilter} from 'targid_common/src/utils';
 import {FormBuilder} from 'ordino/src/FormBuilder';
 import {convertLog2ToLinear} from 'targid_common/src/utils';
-import {ISelect2Option} from 'ordino/src/form';
+import {ISelect2Option, IFormSelect2} from 'ordino/src/form';
 
 
 abstract class ACombinedTable extends ALineUpView2 {
@@ -36,6 +36,21 @@ abstract class ACombinedTable extends ALineUpView2 {
     super(context, selection, parent, options);
 
     this.dataType = dataType;
+  }
+
+  buildParameterDescs(): IFormSelect2[] {
+    return [
+      Object.assign(
+        {},
+        FORM_DATA_HIERARCHICAL_SUBTYPE,
+        {
+          label: 'Data Subtype',
+          attributes: {
+            style: 'width:500px'
+          }
+        }
+      )
+    ];
   }
 
   getParameter(name: string): any {
@@ -67,7 +82,7 @@ abstract class ACombinedTable extends ALineUpView2 {
 
   protected async getSelectionColumnDesc(id: number) {
     const selectedItem = await this.getSelectionColumnLabel(id);
-    const selectedSubTypes = this.getParameter(ParameterFormIds.DATA_SUBTYPE);
+    const selectedSubTypes = this.getParameter(ParameterFormIds.DATA_HIERARCHICAL_SUBTYPE);
 
     return selectedSubTypes.map((selectedSubType) => {
         const label = `${selectedItem} (${selectedSubType.text})`;
@@ -123,7 +138,7 @@ abstract class ACombinedTable extends ALineUpView2 {
   }
 
   protected loadDynamicColumnOptions(): ISelect2Option[] {
-    return this.getParameter(ParameterFormIds.DATA_SUBTYPE);
+    return this.getParameter(ParameterFormIds.DATA_HIERARCHICAL_SUBTYPE);
   }
 }
 
