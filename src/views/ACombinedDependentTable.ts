@@ -63,11 +63,6 @@ abstract class ACombinedTable extends ALineUpView2 {
     return ajax.getAPIJSON(url, param);
   }
 
-  protected mapRows(rows: any[]) {
-    rows = super.mapRows(rows);
-    return rows;
-  }
-
   protected async getSelectionColumnDesc(id: number) {
     const selectedItem = await this.getSelectionColumnLabel(id);
     const selectedSubTypes = this.getParameter(ParameterFormIds.DATA_SUBTYPE);
