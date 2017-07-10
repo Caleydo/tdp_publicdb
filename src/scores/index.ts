@@ -12,7 +12,7 @@ import AggregatedScore from './AggregatedScore';
 import FrequencyScore from './FrequencyScore';
 import {convertRow2MultiMap} from 'ordino/src/form/internal/FormMap';
 import {FORM_AGGREGATED_SCORE} from './forms';
-import {gene, tissue, cellline} from '../config';
+import {gene, tissue, cellline, splitTypes} from '../config';
 import {selectDataSources} from './utils';
 import FormBuilderDialog from 'ordino/src/form/FormDialog';
 
@@ -37,6 +37,10 @@ export function create(pluginDesc: IPluginDesc) {
 
   return dialog.showAsPromise((builder) => {
     const data = builder.getElementData();
+    const {dataType, dataSubType} = splitTypes(data[ParameterFormIds.DATA_HIERARCHICAL_SUBTYPE].id);
+    delete data[ParameterFormIds.DATA_HIERARCHICAL_SUBTYPE];
+    data.data_type = dataType.id;
+    data.data_subtype = dataSubType.id;
     data.filter = convertRow2MultiMap(data.filter);
     return data;
   });

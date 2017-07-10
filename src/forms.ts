@@ -307,7 +307,7 @@ export const FORM_TISSUE_OR_CELLLINE_FILTER = {
 };
 
 
-export const FORM_DATA_HIEARCHICAL_SUBTYPE = {
+export const FORM_DATA_HIERARCHICAL_SUBTYPE = {
   type: FormElementType.SELECT2_MULTIPLE,
   label: 'Data Type',
   id: ParameterFormIds.DATA_HIERARCHICAL_SUBTYPE,
@@ -328,3 +328,11 @@ export const FORM_DATA_HIEARCHICAL_SUBTYPE = {
   },
   useSession: true
 };
+
+export const FORM_DATA_HIERARCHICAL_SUBTYPE_SINGLE_SELECTION = Object.assign(
+  {},
+  FORM_DATA_HIERARCHICAL_SUBTYPE,
+  {
+    type: FormElementType.SELECT2
+  }
+);

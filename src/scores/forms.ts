@@ -1,51 +1,29 @@
-import {ParameterFormIds, MUTATION_AGGREGATION, NUMERIC_AGGREGATION, COMPARISON_OPERATORS, FORM_DATA_HIEARCHICAL_SUBTYPE} from '../forms';
+import {
+  ParameterFormIds, MUTATION_AGGREGATION, NUMERIC_AGGREGATION, COMPARISON_OPERATORS,
+  FORM_DATA_HIERARCHICAL_SUBTYPE, FORM_DATA_HIERARCHICAL_SUBTYPE_SINGLE_SELECTION
+} from '../forms';
 import {FormElementType} from 'ordino/src/form';
-import {dataTypes, mutation, expression, copyNumber, MAX_FILTER_SCORE_ROWS_BEFORE_ALL} from '../config';
+import {mutation, expression, copyNumber, MAX_FILTER_SCORE_ROWS_BEFORE_ALL, splitTypes} from '../config';
 /**
  * Created by Samuel Gratzl on 15.03.2017.
  */
 
 
 export const FORM_AGGREGATED_SCORE = [
-  {
-    type: FormElementType.SELECT,
-    label: 'Data Type',
-    id: ParameterFormIds.DATA_TYPE,
-    required: true,
-    options: {
-      optionsData: dataTypes.map((ds) => {
-        return {name: ds.name, value: ds.id, data: ds.id};
-      })
-    },
-    useSession: true
-  },
-  {
-    type: FormElementType.SELECT,
-    label: 'Data Subtype',
-    id: ParameterFormIds.DATA_SUBTYPE,
-    dependsOn: [ParameterFormIds.DATA_TYPE],
-    required: true,
-    options: {
-      optionsFnc: (selection) => {
-        const id = selection[0].data;
-        const r = dataTypes.find((d) => d.id === id).dataSubtypes.filter((d) => d.type !== 'string');
-        return r.map((ds) => {
-          return {name: ds.name, value: ds.id, data: ds.id};
-        });
-      },
-      optionsData: []
-    },
-    useSession: true
-  },
+  FORM_DATA_HIERARCHICAL_SUBTYPE_SINGLE_SELECTION,
   {
     type: FormElementType.SELECT,
     label: 'Aggregation',
     id: ParameterFormIds.AGGREGATION,
-    dependsOn: [ParameterFormIds.DATA_TYPE],
+    dependsOn: [ParameterFormIds.DATA_HIERARCHICAL_SUBTYPE],
     required: true,
     options: {
       optionsFnc: (selection) => {
-        if (selection[0].data === mutation.id) {
+        if(selection.length === 0 || selection[0].id === '') {
+          return NUMERIC_AGGREGATION;
+        }
+        const {dataType} = splitTypes(selection[0].id);
+        if (dataType.id === mutation.id) {
           return MUTATION_AGGREGATION;
         } else {
           return NUMERIC_AGGREGATION;
@@ -59,7 +37,7 @@ export const FORM_AGGREGATED_SCORE = [
     type: FormElementType.SELECT,
     label: 'Comparison Operator',
     id: ParameterFormIds.COMPARISON_OPERATOR,
-    dependsOn: [ParameterFormIds.DATA_TYPE, ParameterFormIds.AGGREGATION],
+    dependsOn: [ParameterFormIds.DATA_HIERARCHICAL_SUBTYPE, ParameterFormIds.AGGREGATION],
     required: true,
     showIf: (dependantValues) => // show form element for expression and copy number frequencies
       ((dependantValues[1].value === 'frequency' || dependantValues[1].value === 'count') && (dependantValues[0].data === expression.id || dependantValues[0].data === copyNumber.id)),
@@ -73,7 +51,7 @@ export const FORM_AGGREGATED_SCORE = [
     label: 'Comparison Value',
     id: ParameterFormIds.COMPARISON_VALUE,
     required: true,
-    dependsOn: [ParameterFormIds.DATA_TYPE, ParameterFormIds.AGGREGATION],
+    dependsOn: [ParameterFormIds.DATA_HIERARCHICAL_SUBTYPE, ParameterFormIds.AGGREGATION],
     showIf: (dependantValues) => // show form element for expression and copy number frequencies
       ((dependantValues[1].value === 'frequency' || dependantValues[1].value === 'count') && (dependantValues[0].data === expression.id || dependantValues[0].data === copyNumber.id)),
     useSession: true,
@@ -93,6 +71,6 @@ export const FORM_AGGREGATED_SCORE = [
 ];
 
 export const FORM_SINGLE_SCORE = [
-  FORM_DATA_HIEARCHICAL_SUBTYPE,
+  FORM_DATA_HIERARCHICAL_SUBTYPE,
   FORM_AGGREGATED_SCORE[FORM_AGGREGATED_SCORE.length-1] //copy checkbox
 ];
