@@ -1,14 +1,8 @@
 
 @import "~ordino/src/styles/utils";
 
-*[data-idtype="Ensembl"] {
-  @include idtype_color(#86ffb1);
-}
-
-*[data-idtype="Tissue"] {
-  @include idtype_color(#95b1ff);
-}
-
-*[data-idtype="Cellline"] {
-  @include idtype_color(#fff663);
+* {
+  @include idtype_color('Ensembl', #86ffb1);
+  @include idtype_color('Tissue', #95b1ff);
+  @include idtype_color('Cellline', #fff663);
 }
