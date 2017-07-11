@@ -58,19 +58,32 @@ export const FORM_AGGREGATED_SCORE = [
     options: {
       type: 'number'
     }
-  }, {
-    type: FormElementType.CHECKBOX,
-    label: 'Force computing score for whole loaded dataset',
-    id: ParameterFormIds.SCORE_FORCE_DATASET_SIZE,
-    options: {
-      checked: -1,
-      unchecked: MAX_FILTER_SCORE_ROWS_BEFORE_ALL
-    },
-    useSession: true
   }
 ];
 
+const FORM_COMPUTE_BASE = {
+  type: FormElementType.CHECKBOX,
+  id: ParameterFormIds.SCORE_FORCE_DATASET_SIZE,
+  options: {
+    checked: -1,
+    unchecked: MAX_FILTER_SCORE_ROWS_BEFORE_ALL
+  },
+  useSession: true
+};
+
+export const FORCE_COMPUTE_ALL_GENES = Object.assign({
+  label: 'Compute score for all genes and not only for the selected subset'
+}, FORM_COMPUTE_BASE);
+
+export const FORCE_COMPUTE_ALL_TISSUE = Object.assign({
+  label: 'Compute score for all tissues and not only for the selected subset'
+}, FORM_COMPUTE_BASE);
+
+export const FORCE_COMPUTE_ALL_CELLLINE = Object.assign({
+  label: 'Compute score for all celllines and not only for the selected subset'
+}, FORM_COMPUTE_BASE);
+
+
 export const FORM_SINGLE_SCORE = [
-  FORM_DATA_HIERARCHICAL_SUBTYPE,
-  FORM_AGGREGATED_SCORE[FORM_AGGREGATED_SCORE.length-1] //copy checkbox
+  FORM_DATA_HIERARCHICAL_SUBTYPE
 ];
