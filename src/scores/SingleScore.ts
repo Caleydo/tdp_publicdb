@@ -15,7 +15,10 @@ import {IFormElementDesc, FormElementType} from 'ordino/src/form';
 import {ParameterFormIds, FORM_GENE_NAME, FORM_TISSUE_NAME, FORM_CELLLINE_NAME} from '../forms';
 import {IPluginDesc} from 'phovea_core/src/plugin';
 import AScore from './AScore';
-import {FORM_SINGLE_SCORE} from './forms';
+import {
+  FORCE_COMPUTE_ALL_CELLLINE, FORCE_COMPUTE_ALL_GENES, FORCE_COMPUTE_ALL_TISSUE,
+  FORM_SINGLE_SCORE
+} from './forms';
 import {selectDataSources} from './utils';
 import {mixin} from 'phovea_core/src';
 import {INamedSet} from 'ordino/src/storage';
@@ -74,18 +77,21 @@ function enableMultiple(desc: any): any {
 }
 
 export function create(pluginDesc: IPluginDesc) {
-  const {opposite} = selectDataSources(pluginDesc);
+  const {primary, opposite} = selectDataSources(pluginDesc);
   const dialog = new FormBuilderDialog('Add Single Score Column', 'Add Single Score Column');
   const formDesc:IFormElementDesc[] = FORM_SINGLE_SCORE.slice();
   switch(opposite) {
     case gene:
       formDesc.unshift(enableMultiple(FORM_GENE_NAME));
+      formDesc.push(primary === tissue ? FORCE_COMPUTE_ALL_TISSUE : FORCE_COMPUTE_ALL_CELLLINE);
       break;
     case tissue:
       formDesc.unshift(enableMultiple(FORM_TISSUE_NAME));
+      formDesc.push(FORCE_COMPUTE_ALL_GENES);
       break;
     case cellline:
       formDesc.unshift(enableMultiple(FORM_CELLLINE_NAME));
+      formDesc.push(FORCE_COMPUTE_ALL_GENES);
       break;
   }
   dialog.append(...formDesc);

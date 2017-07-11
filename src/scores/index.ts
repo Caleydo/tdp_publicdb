@@ -11,26 +11,32 @@ import {IFormElementDesc} from 'ordino/src/FormBuilder';
 import AggregatedScore from './AggregatedScore';
 import FrequencyScore from './FrequencyScore';
 import {convertRow2MultiMap} from 'ordino/src/form/internal/FormMap';
-import {FORM_AGGREGATED_SCORE} from './forms';
+import {
+  FORCE_COMPUTE_ALL_CELLLINE, FORCE_COMPUTE_ALL_GENES, FORCE_COMPUTE_ALL_TISSUE,
+  FORM_AGGREGATED_SCORE
+} from './forms';
 import {gene, tissue, cellline, splitTypes} from '../config';
 import {selectDataSources} from './utils';
 import FormBuilderDialog from 'ordino/src/form/FormDialog';
 
 
 export function create(pluginDesc: IPluginDesc) {
-  const {opposite} = selectDataSources(pluginDesc);
+  const {primary, opposite} = selectDataSources(pluginDesc);
 
   const dialog = new FormBuilderDialog('Add Aggregated Score Column', 'Add Aggregated Score Column');
   const formDesc: IFormElementDesc[] = FORM_AGGREGATED_SCORE.slice();
   switch(opposite) {
     case gene:
       formDesc.unshift(FORM_GENE_FILTER);
+      formDesc.push(primary === tissue ? FORCE_COMPUTE_ALL_TISSUE : FORCE_COMPUTE_ALL_CELLLINE);
       break;
     case tissue:
       formDesc.unshift(FORM_TISSUE_FILTER);
+      formDesc.push(FORCE_COMPUTE_ALL_GENES);
       break;
     case cellline:
       formDesc.unshift(FORM_CELLLINE_FILTER);
+      formDesc.push(FORCE_COMPUTE_ALL_GENES);
       break;
   }
   dialog.append(...formDesc);
