@@ -1,6 +1,6 @@
 /*==============================================================*/
 /* DBMS name:      PostgreSQL 7.3                               */
-/* Created on:     16.01.2017 12:42:58                          */
+/* Created on:     13.07.2017 10:19:49                          */
 /*==============================================================*/
 
 
@@ -68,6 +68,17 @@ create table FUSIONDESCRIPTION (
 PROCESSEDFUSION      INT4                 not null,
 FUSIONTYPE           TEXT                 not null,
 constraint PK_FUSIONDESCRIPTION primary key (PROCESSEDFUSION, FUSIONTYPE)
+);
+
+/*==============================================================*/
+/* Table: HLATYPE                                               */
+/*==============================================================*/
+create table HLATYPE (
+NGSID                TEXT                 not null,
+HLA_CLASS            TEXT                 not null,
+ALLELE1              TEXT                 null,
+ALLELE2              TEXT                 null,
+constraint PK_HLATYPE primary key (NGSID, HLA_CLASS)
 );
 
 /*==============================================================*/
@@ -170,7 +181,7 @@ DAYS_TO_BIRTH        INT4                 null,
 GENDER               TEXT                 null,
 HEIGHT               FLOAT4               null,
 WEIGHT               FLOAT4               null,
-RACE_LIST            TEXT                 null,
+RACE                 TEXT                 null,
 ETHNICITY            TEXT                 null,
 HISTORY_OF_NEOAD_TREATMENT TEXT                 null,
 DAYS_TO_LAST_FOLLOWUP INT4                 null,
@@ -246,6 +257,7 @@ NGSID                TEXT                 not null,
 LOG2FPKM             REAL                 null,
 LOG2TPM              REAL                 null,
 COUNTS               INT4                 null,
+STATUS               CHAR                 null,
 constraint PK_PROCESSEDRNASEQ primary key (ENSG, NGSID)
 );
 
@@ -289,21 +301,12 @@ constraint PK_SIMILARITY primary key (SIMILARITYID, TISSUENAME)
 );
 
 /*==============================================================*/
-/* Table: SIMILARITYTYPE                                        */
-/*==============================================================*/
-create table SIMILARITYTYPE (
-SIMILARITYTYPE       TEXT                 not null,
-SIMILARITYDESCRIPTION TEXT                 null,
-constraint PK_SIMILARITYTYPE primary key (SIMILARITYTYPE)
-);
-
-/*==============================================================*/
 /* Table: TISSUE                                                */
 /*==============================================================*/
 create table TISSUE (
 TISSUENAME           TEXT                 not null,
 VENDORNAME           TEXT                 not null,
-SPECIES              TEXT                 not null,
+SPECIES              SPECIES_ENUM         not null,
 ORGAN                TEXT                 null,
 TUMORTYPE            TEXT                 null,
 PATIENTNAME          TEXT                 null,
@@ -319,6 +322,7 @@ GRADE                TEXT                 null,
 SAMPLE_DESCRIPTION   TEXT                 null,
 COMMENT              TEXT                 null,
 TARGIDID             SERIAL               not null,
+SEQUENCED            BOOL                 null,
 constraint PK_TISSUE primary key (TISSUENAME)
 );
 
@@ -408,6 +412,11 @@ alter table FUSIONDESCRIPTION
    add constraint FK_FUSIONDE_REFERENCE_FUSIONTY foreign key (FUSIONTYPE)
       references FUSIONTYPE (FUSIONTYPE)
       on delete restrict on update restrict;
+
+alter table HLATYPE
+   add constraint FK_HLATYPE_REFERENCE_NGSRUN foreign key (NGSID)
+      references NGSRUN (NGSID)
+      on delete cascade on update restrict;
 
 alter table HYBRIDIZATION
    add constraint FK_HYBRIDIZ_REFERENCE_CHIPTECH foreign key (CHIPNAME)
@@ -547,6 +556,11 @@ alter table TISSUE
 alter table TISSUE
    add constraint FK_TISSUE_REFERENCE_PATIENT foreign key (PATIENTNAME)
       references PATIENT (PATIENTNAME)
+      on delete restrict on update restrict;
+
+alter table TISSUE
+   add constraint FK_TISSUE_TUMORTYPEADJACENT foreign key (TUMORTYPE_ADJACENT)
+      references TUMORTYPE (TUMORTYPE)
       on delete restrict on update restrict;
 
 alter table TISSUEASSIGNMENT
