@@ -23,6 +23,48 @@ SELECT pfg.processedfusion, pfg.tissuename, pfg.ensg1, pfg.ensg2, g1.symbol as s
 
 DROP VIEW IF EXISTS tissue.processedrnaseqview CASCADE;
 CREATE VIEW tissue.processedrnaseqview AS
-SELECT prs.ngsid, tissuename, prs.ensg, prs.log2fpkm, prs.log2tpm, prs.counts FROM tissue.processedrnaseq prs 
+SELECT prs.ngsid, tissuename, prs.ensg, prs.log2fpkm, prs.log2tpm, prs.counts, prs.status FROM tissue.processedrnaseq prs 
        JOIN tissue.ngsrun nr ON nr.ngsid = prs.ngsid WHERE nr.canonical;
 
+----
+DROP MATERIALIZED VIEW tissue.tcgaensg CASCADE;
+CREATE MATERIALIZED VIEW tissue.tcgaensg AS
+SELECT DISTINCT enst
+  FROM tissue.processedsequence WHERE processedsequence.tissuename IN 
+  (SELECT tissuename FROM tissue.tissueassignment WHERE tissuepanel = 'TCGA tumors');
+
+----
+DROP MATERIALIZED VIEW IF EXISTS tissue.processedsequenceExtended CASCADE;
+CREATE MATERIALIZED VIEW tissue.processedsequenceExtended AS
+WITH TCGAtissue AS (
+  SELECT tissuename
+    FROM tissue.tissueassignment WHERE tissuepanel = 'TCGA tumors'
+  ),
+  TCGAenst AS (
+    SELECT enst FROM tissue.tcgaensg
+  )
+  SELECT ps.enst, ps.tissuename, ps.versionnumber, ps.dnamutation, ps.aamutation, ps.zygosity, ps.exonscomplete
+    FROM tissue.processedsequence ps WHERE tissuename NOT IN (SELECT tissuename FROM TCGAtissue)
+  UNION
+  SELECT t.enst, t.tissuename, coalesce(versionnumber, 1) AS versionnumber,
+    coalesce(dnamutation, 'wt') AS dnamutation, coalesce(aamutation, 'wt') AS aamutation, zygosity, exonscomplete
+    FROM (SELECT tissuename, enst FROM TCGAtissue, TCGAenst) AS t 
+    LEFT OUTER JOIN tissue.processedsequence ps ON (t.tissuename = ps.tissuename AND t.enst = ps.enst);
+
+--- alternative to the above one
+--DROP VIEW IF EXISTS tissue.processedsequenceExtended CASCADE;
+--CREATE VIEW tissue.processedsequenceExtended AS
+--WITH TCGAtissue AS (
+--  SELECT tissuename             
+--    FROM tissue.tissueassignment WHERE tissuepanel = 'TCGA tumors'
+--  ),
+--  TCGAenst AS (
+--  SELECT DISTINCT enst FROM tissue.processedsequence
+--    WHERE tissuename IN (SELECT tissuename FROM TCGAtissue)
+--  )
+--  SELECT ps.* FROM tissue.processedsequence ps
+--  UNION
+--  SELECT tissuename, e.enst, 1 AS versionnumber, 'wt' AS dnamutation, 'wt' AS aamutation, NULL AS zygosity, NULL AS exonscomplete
+--    FROM TCGAtissue t, TCGAenst e WHERE (t.tissuename, e.enst) NOT IN 
+--     (SELECT ps.tissuename, ps.enst FROM tissue.processedsequence ps JOIN TCGAtissue t ON (ps.tissuename = t.tissuename)
+--  ) AS;
