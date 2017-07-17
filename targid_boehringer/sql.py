@@ -360,7 +360,7 @@ create_gene_score(views, 'tissue', _primary_tissue, tissue_columns)
 cellline_base = create_cellline_specific(views, 'cellline', idtype_celline, _primary_cellline)
 tissue_base = create_tissue_specific(views, 'tissue', idtype_tissue, _primary_tissue)
 create_sample(views, 'cellline', idtype_celline, _primary_cellline, cellline_base, cellline_columns)
-create_sample(views, 'tissue', idtype_tissue, _primary_tissue, tissue_base, cellline_columns)
+create_sample(views, 'tissue', idtype_tissue, _primary_tissue, tissue_base, tissue_columns)
 
 
 
