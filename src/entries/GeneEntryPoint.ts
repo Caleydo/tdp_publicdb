@@ -9,8 +9,9 @@ import {ACommonEntryPointList} from 'targid_common/src/entries/ACommonEntryPoint
 import {IACommonListOptions, ACommonList} from 'targid_common/src/entries/ACommonList';
 import {IViewContext, ISelection} from 'ordino/src/View';
 import {stringCol, categoricalCol} from 'ordino/src/LineUpView';
-import {api2absURL} from 'phovea_core/src/ajax';
+import {api2absURL, getAPIJSON} from 'phovea_core/src/ajax';
 import {mixin} from 'phovea_core/src';
+import {getSelectedSpecies} from 'targid_common/src/Common';
 
 /**
  * Entry point list from all species and LineUp named sets (aka stored LineUp sessions)
@@ -35,6 +36,14 @@ class GeneEntryPointList extends ACommonEntryPointList {
       },
       templateResult: (item: any) => (item.id) ? `${item.text || ''} <span class="ensg">${item.id}</span>` : item.text,
       templateSelection: (item: any) => (item.id) ? `${item.text || ''} <span class="ensg">${item.id}</span>` : item.text
+    });
+  }
+
+
+  protected validate(terms: string[]): Promise<{id: string, text: string}[]> {
+    return getAPIJSON(`/targid/db/${this.dataSource.db}/${this.dataSource.base}_gene_items_verify/filter`, {
+      species: getSelectedSpecies(),
+      [`filter_symbol`]: terms,
     });
   }
 }

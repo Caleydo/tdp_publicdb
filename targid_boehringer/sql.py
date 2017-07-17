@@ -35,6 +35,11 @@ def _create_common(result, prefix, table, primary, idtype):
     .replace("column").replace("limit").replace("offset") \
     .arg("query").arg('species').build()
 
+  result[prefix + '_items_verify'] = DBViewBuilder().idtype(idtype).query("""
+      SELECT {primary} as id, %(column)s AS text
+       FROM {table} WHERE species = :species %(and_where)s""".format(table=table, primary=primary))\
+    .replace("and_where").arg('species').build()
+
   # lookup for unique / distinct categorical values in a table
   result[prefix + '_unique'] = DBViewBuilder().query("""
         SELECT s as id, s as text
@@ -327,12 +332,18 @@ views = dict(
     .replace("limit").replace("offset") \
     .arg("query").arg('species').build(),
 
+  gene_gene_items_verify=DBViewBuilder().idtype(idtype_gene).query("""
+      SELECT ensg as id, symbol AS text
+       FROM public.targid_gene WHERE species = :species %(and_where)s""") \
+    .replace("and_where").arg('species') \
+    .query('filter_symbol', '(lower(ensg) %(operator)s %(value)s or lower(symbol) %(operator)s %(value)s)').build(),
+
   gene_map_ensgs=DBViewBuilder().idtype(idtype_gene).query("""
     SELECT targidid AS _id, ensg AS id, symbol
     FROM public.targid_gene WHERE ensg IN (%(ensgs)s) AND species = :species
-    ORDER BY symbol ASC""")
-    .arg('species')
-    .replace('ensgs')
+    ORDER BY symbol ASC""") \
+    .arg('species') \
+    .replace('ensgs') \
     .build(),
 
   gene_all_columns=DBViewBuilder().query("""
