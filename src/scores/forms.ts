@@ -40,6 +40,9 @@ export const FORM_AGGREGATED_SCORE = [
     dependsOn: [ParameterFormIds.DATA_HIERARCHICAL_SUBTYPE, ParameterFormIds.AGGREGATION],
     required: true,
     showIf: (dependantValues) => { // show form element for expression and copy number frequencies
+      if (dependantValues[0].id === '') {
+        return false;
+      }
       const agg = dependantValues[1].value;
       const {dataType} = splitTypes(dependantValues[0].id);
       return (agg === 'frequency' || agg === 'count') && (dataType === expression || dataType === copyNumber);
@@ -56,6 +59,9 @@ export const FORM_AGGREGATED_SCORE = [
     required: true,
     dependsOn: [ParameterFormIds.DATA_HIERARCHICAL_SUBTYPE, ParameterFormIds.AGGREGATION],
     showIf: (dependantValues) => { // show form element for expression and copy number frequencies
+      if (dependantValues[0].id === '') {
+        return false;
+      }
       const agg = dependantValues[1].value;
       const {dataType} = splitTypes(dependantValues[0].id);
       return (agg === 'frequency' || agg === 'count') && (dataType === expression || dataType === copyNumber);
