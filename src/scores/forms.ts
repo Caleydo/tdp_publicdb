@@ -39,8 +39,14 @@ export const FORM_AGGREGATED_SCORE = [
     id: ParameterFormIds.COMPARISON_OPERATOR,
     dependsOn: [ParameterFormIds.DATA_HIERARCHICAL_SUBTYPE, ParameterFormIds.AGGREGATION],
     required: true,
-    showIf: (dependantValues) => // show form element for expression and copy number frequencies
-      ((dependantValues[1].value === 'frequency' || dependantValues[1].value === 'count') && (dependantValues[0].data === expression.id || dependantValues[0].data === copyNumber.id)),
+    showIf: (dependantValues) => { // show form element for expression and copy number frequencies
+      if (dependantValues[0].id === '') {
+        return false;
+      }
+      const agg = dependantValues[1].value;
+      const {dataType} = splitTypes(dependantValues[0].id);
+      return (agg === 'frequency' || agg === 'count') && (dataType === expression || dataType === copyNumber);
+    },
     options: {
       optionsData: COMPARISON_OPERATORS
     },
@@ -52,8 +58,14 @@ export const FORM_AGGREGATED_SCORE = [
     id: ParameterFormIds.COMPARISON_VALUE,
     required: true,
     dependsOn: [ParameterFormIds.DATA_HIERARCHICAL_SUBTYPE, ParameterFormIds.AGGREGATION],
-    showIf: (dependantValues) => // show form element for expression and copy number frequencies
-      ((dependantValues[1].value === 'frequency' || dependantValues[1].value === 'count') && (dependantValues[0].data === expression.id || dependantValues[0].data === copyNumber.id)),
+    showIf: (dependantValues) => { // show form element for expression and copy number frequencies
+      if (dependantValues[0].id === '') {
+        return false;
+      }
+      const agg = dependantValues[1].value;
+      const {dataType} = splitTypes(dependantValues[0].id);
+      return (agg === 'frequency' || agg === 'count') && (dataType === expression || dataType === copyNumber);
+    },
     useSession: true,
     options: {
       type: 'number'

@@ -40,22 +40,19 @@ export default class FrequencyScore extends AScore implements IScore<number> {
 
   async compute(ids: RangeLike, idtype: IDType, namedSet?: INamedSet): Promise<any[]> {
     const isMutation = this.dataType === mutation;
-    const url = `/targid/db/${this.dataSource.db}/${this.dataSource.base}_${this.oppositeDataSource.base}_frequency_score/score`;
+    const url = `/targid/db/${this.dataSource.db}/${this.dataSource.base}_${this.oppositeDataSource.base}_frequency_${isMutation? 'mutation_' : ''}score/score`;
     const param: any = {
       attribute: this.dataSubType.useForAggregation,
       species: getSelectedSpecies(),
       table: this.dataType.tableName,
       target: idtype.id
     };
-    const maxDirectRows = typeof this.parameter.maxDirectFilterRows === 'number' ? this.parameter.maxDirectFilterRows : MAX_FILTER_SCORE_ROWS_BEFORE_ALL;
-    limitScoreRows(param, ids, idtype, this.dataSource.entityName, maxDirectRows, namedSet);
     if (!isMutation) {
       param.operator = this.parameter.comparison_operator;
       param.value = this.parameter.comparison_value;
-    } else {
-      param.operator = '=';
-      param.value = 'true';
     }
+    const maxDirectRows = typeof this.parameter.maxDirectFilterRows === 'number' ? this.parameter.maxDirectFilterRows : MAX_FILTER_SCORE_ROWS_BEFORE_ALL;
+    limitScoreRows(param, ids, idtype, this.dataSource.entityName, maxDirectRows, namedSet);
     toFilter(param, this.parameter.filter);
 
     const rows = await getAPIJSON(url, param);
