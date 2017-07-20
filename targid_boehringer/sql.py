@@ -278,7 +278,7 @@ def create_sample(result, basename, idtype, primary, base, columns):
            GROUP BY d.{primary}""".format(primary=primary, base=basename)) \
     .replace("table", tables).replace('and_where').replace("attribute", attributes).replace("operator", operators).arg("value") \
     .filters(gene_columns) \
-     filter('panel', filter_gene_panel) \
+    .filter('panel', filter_gene_panel) \
     .filter('panel_' + primary, filter_panel_d) \
     .filter(primary, 'd.' + primary + ' %(operator)s %(value)s') \
     .filter('ensg', 'g.ensg %(operator)s %(value)s') \
