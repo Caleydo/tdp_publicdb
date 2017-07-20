@@ -2,7 +2,7 @@ import SearchProvider, {IResult} from 'targid_common/src/entries/SearchProvider'
 import {cellline, gene, tissue} from '../config';
 import '../styles/idtype_color.scss';
 import {getAPIJSON} from 'phovea_core/src/ajax';
-import {getSelectedSpecies} from 'targid_common/src/common';
+import {getSelectedSpecies} from 'targid_common/src/Common';
 
 export function createCellline() {
   return new SearchProvider(cellline);
