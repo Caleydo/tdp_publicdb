@@ -2,7 +2,8 @@
   "name": "targid_boehringer",
   "description": "",
   "homepage": "https://phovea.caleydo.org",
-  "version": "2.0.0",
+  "version": "2.1.0",
+  "private": true,
   "author": {
     "name": "The Caleydo Team",
     "email": "contact@caleydo.org",
@@ -67,14 +68,13 @@
     "dist:web": "mkdirp dist && cd build && tar cvzf ../dist/targid_boehringer.tar.gz *",
     "dist:python": "python setup.py bdist_egg"
   },
-  "private": true,
   "engines": {
     "npm": ">= 3",
     "node": ">= 6"
   },
   "dependencies": {
-    "ordino": "github:Caleydo/ordino#v2.0.0",
-    "targid_common": "github:Caleydo/targid_common#v2.0.0"
+    "ordino": "github:Caleydo/ordino#v2.1.0",
+    "targid_common": "github:Caleydo/targid_common#v2.1.0"
   },
   "devDependencies": {
     "@types/jasmine": "2.5.41",

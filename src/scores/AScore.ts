@@ -16,6 +16,10 @@ export interface ICommonScoreParam {
   data_type: string;
   data_subtype: string;
   filter: IScoreFilter;
+  /**
+   * see config.MAX_FILTER_SCORE_ROWS_BEFORE_ALL maximal number of rows for computing limiting the score to this subset
+   */
+  maxDirectFilterRows?: number;
 }
 
 function split(dataTypeId: string, dataSubTypeId: string) {

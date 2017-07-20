@@ -2,35 +2,45 @@
  * Created by sam on 06.03.2017.
  */
 
-import {generateDialog} from 'phovea_ui/src/dialogs';
 import {getAPIJSON} from 'phovea_core/src/ajax';
 import {Range, RangeLike} from 'phovea_core/src/range';
-import {IDType} from 'phovea_core/src/idtype';
-import {select} from 'd3';
+import {resolve} from 'phovea_core/src/idtype';
+import IDType from 'phovea_core/src/idtype/IDType';
 import {getSelectedSpecies} from 'targid_common/src/Common';
-import {IDataSourceConfig, gene, tissue, cellline} from '../config';
-import {convertLog2ToLinear, limitScoreRows} from '../utils';
+import {IDataSourceConfig, gene, tissue, cellline, MAX_FILTER_SCORE_ROWS_BEFORE_ALL, splitTypes} from '../config';
+import {convertLog2ToLinear, limitScoreRows} from 'targid_common/src/utils';
 import {IScore} from 'ordino/src/LineUpView';
 import {createDesc} from './utils';
 import {IFormElementDesc, FormElementType} from 'ordino/src/form';
-import FormBuilder from 'ordino/src/form/FormBuilder';
-import {ParameterFormIds, FORM_GENE_NAME, FORM_TISSUE_NAME, FORM_CELLLINE_NAME} from 'targid_boehringer/src/forms';
+import {ParameterFormIds, FORM_GENE_NAME, FORM_TISSUE_NAME, FORM_CELLLINE_NAME} from '../forms';
 import {IPluginDesc} from 'phovea_core/src/plugin';
 import AScore from './AScore';
-import {FORM_SINGLE_SCORE} from './forms';
+import {
+  FORCE_COMPUTE_ALL_CELLLINE, FORCE_COMPUTE_ALL_GENES, FORCE_COMPUTE_ALL_TISSUE,
+  FORM_SINGLE_SCORE
+} from './forms';
 import {selectDataSources} from './utils';
 import {mixin} from 'phovea_core/src';
 import {INamedSet} from 'ordino/src/storage';
+import FormBuilderDialog from 'ordino/src/form/FormDialog';
 
 interface ISingleScoreParam {
   name: {id: string, text: string};
   data_type: string;
   data_subtype: string;
+  /**
+   * see config.MAX_FILTER_SCORE_ROWS_BEFORE_ALL maximal number of rows for computing limiting the score to this subset
+   */
+  maxDirectFilterRows?: number;
 }
 
 export default class SingleScore extends AScore implements IScore<any> {
   constructor(private parameter: ISingleScoreParam, private readonly dataSource: IDataSourceConfig, private readonly oppositeDataSource: IDataSourceConfig) {
     super(parameter);
+  }
+
+  get idType() {
+    return resolve(this.dataSource.idType);
   }
 
   createDesc(): any {
@@ -40,14 +50,16 @@ export default class SingleScore extends AScore implements IScore<any> {
   }
 
   async compute(ids:RangeLike, idtype:IDType, namedSet?: INamedSet):Promise<any[]> {
-    const url = `/targid/db/${this.dataSource.db}/${this.dataSource.base}_${this.oppositeDataSource.base}_single_score/filter`;
+    const url = `/targid/db/${this.dataSource.db}/${this.dataSource.base}_${this.oppositeDataSource.base}_single_score/score`;
     const param: any = {
       table: this.dataType.tableName,
       attribute: this.dataSubType.id,
       name: this.parameter.name.id,
-      species: getSelectedSpecies()
+      species: getSelectedSpecies(),
+      target: idtype.id
     };
-    limitScoreRows(param, ids, this.dataSource, namedSet);
+    const maxDirectRows = typeof this.parameter.maxDirectFilterRows === 'number' ? this.parameter.maxDirectFilterRows : MAX_FILTER_SCORE_ROWS_BEFORE_ALL;
+    limitScoreRows(param, ids, idtype, this.dataSource.entityName, maxDirectRows, namedSet);
 
     const rows: any[] = await getAPIJSON(url, param);
     if (this.dataSubType.useForAggregation.indexOf('log2') !== -1) {
@@ -60,75 +72,68 @@ export default class SingleScore extends AScore implements IScore<any> {
 function enableMultiple(desc: any): any {
   return mixin({}, desc, {
     type: FormElementType.SELECT2_MULTIPLE,
+    useSession: false
   });
 }
 
-export function create(pluginDesc: IPluginDesc) {
-  const {opposite} = selectDataSources(pluginDesc);
-  // resolve promise when closing or submitting the modal dialog
-  return new Promise<ISingleScoreParam>((resolve) => {
-    const dialog = generateDialog('Add Single Score Column', 'Add Single Score Column');
+export function create(pluginDesc: IPluginDesc, extra: any, countHint?: number) {
+  const {primary, opposite} = selectDataSources(pluginDesc);
+  const dialog = new FormBuilderDialog('Add Single Score Column', 'Add Single Score Column');
+  const formDesc:IFormElementDesc[] = FORM_SINGLE_SCORE.slice();
+  switch(opposite) {
+    case gene:
+      formDesc.unshift(enableMultiple(FORM_GENE_NAME));
+      formDesc.push(primary === tissue ? FORCE_COMPUTE_ALL_TISSUE : FORCE_COMPUTE_ALL_CELLLINE);
+      break;
+    case tissue:
+      formDesc.unshift(enableMultiple(FORM_TISSUE_NAME));
+      formDesc.push(FORCE_COMPUTE_ALL_GENES);
+      break;
+    case cellline:
+      formDesc.unshift(enableMultiple(FORM_CELLLINE_NAME));
+      formDesc.push(FORCE_COMPUTE_ALL_GENES);
+      break;
+  }
 
-    const form:FormBuilder = new FormBuilder(select(dialog.body));
-    const formDesc:IFormElementDesc[] = FORM_SINGLE_SCORE.slice();
+  if (typeof countHint === 'number' && countHint > MAX_FILTER_SCORE_ROWS_BEFORE_ALL) {
+    formDesc.pop();
+  }
 
-    switch(opposite) {
-      case gene:
-        formDesc.unshift(enableMultiple(FORM_GENE_NAME));
-        break;
-      case tissue:
-        formDesc.unshift(enableMultiple(FORM_TISSUE_NAME));
-        break;
-      case cellline:
-        formDesc.unshift(enableMultiple(FORM_CELLLINE_NAME));
-        break;
+  dialog.append(...formDesc);
+
+  return dialog.showAsPromise((builder) => {
+    const data = <any>builder.getElementData();
+
+    {
+      const datatypes = data[ParameterFormIds.DATA_HIERARCHICAL_SUBTYPE];
+      delete data[ParameterFormIds.DATA_HIERARCHICAL_SUBTYPE];
+      const resolved = datatypes.map((entry) => {
+        const {dataType, dataSubType} = splitTypes(entry.id);
+        return [dataType.id, dataSubType.id];
+      });
+      if (datatypes.length === 1) {
+        data.data_type = resolved[0][0];
+        data.data_subtype = resolved[0][1];
+      } else {
+        data.data_types = resolved;
+      }
     }
 
-    form.build(formDesc);
-
-    dialog.onSubmit(() => {
-      if (!form.validate()) {
-        return false;
-      }
-      const data = <any>form.getElementData();
-
-      {
-        const datatypes = data[ParameterFormIds.DATA_HIERARCHICAL_SUBTYPE];
-        delete data[ParameterFormIds.DATA_HIERARCHICAL_SUBTYPE];
-        const resolved = datatypes.map((entry) => entry.id.split('-'));
-        if (datatypes.length === 1) {
-          data.data_type = resolved[0][0];
-          data.data_subtype = resolved[0][1];
-        } else {
-          data.data_types = resolved;
-        }
-      }
-
-      switch (opposite) {
-        case gene:
-          data.name = data[ParameterFormIds.GENE_SYMBOL];
-          delete data[ParameterFormIds.GENE_SYMBOL];
-          break;
-        case tissue:
-          data.name = data[ParameterFormIds.TISSUE_NAME];
-          delete data[ParameterFormIds.TISSUE_NAME];
-          break;
-        case cellline:
-          data.name = data[ParameterFormIds.CELLLINE_NAME];
-          delete data[ParameterFormIds.CELLLINE_NAME];
-          break;
-      }
-
-      dialog.hide();
-      resolve(data);
-      return false;
-    });
-
-    dialog.onHide(() => {
-      dialog.destroy();
-    });
-
-    dialog.show();
+    switch (opposite) {
+      case gene:
+        data.name = data[ParameterFormIds.GENE_SYMBOL];
+        delete data[ParameterFormIds.GENE_SYMBOL];
+        break;
+      case tissue:
+        data.name = data[ParameterFormIds.TISSUE_NAME];
+        delete data[ParameterFormIds.TISSUE_NAME];
+        break;
+      case cellline:
+        data.name = data[ParameterFormIds.CELLLINE_NAME];
+        delete data[ParameterFormIds.CELLLINE_NAME];
+        break;
+    }
+    return data;
   });
 }
 

@@ -125,7 +125,15 @@ export const copyNumber:IDataTypeConfig = {
   dataSubtypes: [
     { id: 'relativecopynumber', name: 'Relative Copy Number', type: dataSubtypes.number, domain: [0, 15], missingValue: NaN, constantDomain: true, useForAggregation: 'relativecopynumber'},
     { id: 'totalabscopynumber', name: 'Total Absolute Copy Number', type: dataSubtypes.number, domain: [0, 15], missingValue: NaN, constantDomain: true, useForAggregation: 'totalabscopynumber'},
-    { id: 'copynumberclass', name: 'Copy Number Class', type: dataSubtypes.cat, categories: toLineUpCategories(copyNumberCat), missingCategory: unknownCopyNumberValue, useForAggregation: 'copynumberclass'}
+    { id: 'copynumberclass',
+      name: 'Copy Number Class',
+      type: dataSubtypes.cat,
+      categories: toLineUpCategories(copyNumberCat),
+      domain: [0, 100],
+      missingValue: NaN,
+      missingCategory: unknownCopyNumberValue,
+      useForAggregation: 'copynumberclass'
+    }
   ],
 };
 
@@ -175,4 +183,31 @@ export const dataTypes:IDataTypeConfig[] = [expression, copyNumber, mutation];
 
 function toLineUpCategories(arr: {name: string, value: any, color: string}[]) {
   return arr.map((a) => ({label: a.name, name: String(a.value), color: a.color}));
+}
+
+/**
+ * splits strings in the form of "DATA_TYPE-DATA_SUBTYPE" and returns the corresponding DATA_TYPE and DATA_SUBTYPE objects
+ */
+export function splitTypes(toSplit: string): {dataType: IDataTypeConfig, dataSubType: IDataSubtypeConfig} {
+  console.assert(toSplit.includes('-'), 'The splitTypes method requires the string to contain a dash ("-")');
+  const [type, subtype] = toSplit.split('-');
+  let dataType: IDataTypeConfig;
+
+  switch(type) {
+    case mutation.id:
+      dataType = mutation;
+      break;
+    case expression.id:
+      dataType = expression;
+      break;
+    case copyNumber.id:
+      dataType = copyNumber;
+      break;
+  }
+
+  const dataSubType = dataType.dataSubtypes.find((element) => element.id === subtype);
+  return {
+    dataType,
+    dataSubType
+  };
 }

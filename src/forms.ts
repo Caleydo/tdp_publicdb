@@ -7,9 +7,9 @@ import {FORM_EXPRESSION_SUBTYPE_ID, FORM_COPYNUMBER_SUBTYPE_ID} from 'targid_com
 import {FormElementType, IFormElement} from 'ordino/src/form';
 import {cachedLazy} from 'ordino/src/cached';
 import {getAPIJSON, api2absURL} from 'phovea_core/src/ajax';
-import {gene, IDataSourceConfig, tissue, cellline, dataSources, dataTypes} from './config';
+import {gene, IDataSourceConfig, tissue, cellline, dataSources, dataTypes, dataSubtypes} from './config';
 import {listNamedSetsAsOptions} from 'ordino/src/storage';
-import {previewFilterHint} from './utils';
+import {previewFilterHint} from 'targid_common/src/utils';
 
 /**
  * List of ids for parameter form elements
@@ -34,6 +34,7 @@ export class ParameterFormIds {
   static AGGREGATION = 'aggregation';
   static COMPARISON_OPERATOR = 'comparison_operator';
   static COMPARISON_VALUE = 'comparison_value';
+  static SCORE_FORCE_DATASET_SIZE = 'maxDirectFilterRows';
 }
 
 export const COMPARISON_OPERATORS = [
@@ -123,14 +124,14 @@ export const FORM_CELLLINE_NAME = generateNameLookup(cellline, ParameterFormIds.
 
 export const FORM_GENE_FILTER = {
   type: FormElementType.MAP,
-  label: `Filter By`,
+  label: `Filter:`,
   id: 'filter',
   useSession: true,
   options: {
     sessionKeySuffix: '-gene',
     defaultSelection: false,
     uniqueKeys: true,
-    badgeProvider: previewFilterHint(`/targid/db/${gene.db}/gene`),
+    badgeProvider: previewFilterHint(`/targid/db/${gene.db}/gene`, () => ({ filter_species: getSelectedSpecies()})),
     entries: [{
       name: 'Bio Type',
       value: 'biotype',
@@ -156,21 +157,18 @@ export const FORM_GENE_FILTER = {
       value: 'panel',
       type: FormElementType.SELECT2,
       multiple: true,
-      return: 'id',
       optionsData: cachedLazy('gene_predefined_namedsets', buildPredefinedNamedSets.bind(null, gene))
     }, {
       name: 'My Named Sets',
       value: 'namedset4ensg',
       type: FormElementType.SELECT2,
       multiple: true,
-      return: 'id',
       optionsData: listNamedSetsAsOptions.bind(null, gene.idType)
     }, {
       name: 'Gene Symbol',
       value: 'ensg',
       type: FormElementType.SELECT2,
       multiple: true,
-      return: 'id',
       ajax: {
         url: api2absURL(`/targid/db/${gene.db}/gene_items/lookup`),
         data: (params: any) => {
@@ -191,12 +189,12 @@ export const FORM_GENE_FILTER = {
 function generateFilter(d: IDataSourceConfig) {
   return {
     type: FormElementType.MAP,
-    label: `Filter By`,
+    label: `Filter:`,
     id: 'filter',
     useSession: true,
     options: {
       sessionKeySuffix: '-' + d.base,
-      badgeProvider: previewFilterHint(`/targid/db/${d.db}/${d.base}`),
+      badgeProvider: previewFilterHint(`/targid/db/${d.db}/${d.base}`, () => ({ filter_species: getSelectedSpecies()})),
       defaultSelection: false,
       uniqueKeys: true,
       entries: [{
@@ -234,21 +232,18 @@ function generateFilter(d: IDataSourceConfig) {
         value: 'panel',
         type: FormElementType.SELECT2,
         multiple: true,
-        return: 'id',
         optionsData: cachedLazy(d.base + '_predefined_namedsets', buildPredefinedNamedSets.bind(null, d))
       }, {
         name: 'My Named Sets',
         value: 'namedset4' + d.entityName,
         type: FormElementType.SELECT2,
         multiple: true,
-        return: 'id',
         optionsData: listNamedSetsAsOptions.bind(null, d.idType)
       }, {
         name: d.name,
         value: d.entityName,
         type: FormElementType.SELECT2,
         multiple: true,
-        return: 'id',
         ajax: {
           url: api2absURL(`/targid/db/${gene.db}/${d.base}_items/lookup`),
           data: (params: any) => {
@@ -282,7 +277,7 @@ export const FORM_TISSUE_FILTER = generateFilter(tissue);
 export const FORM_CELLLINE_FILTER = generateFilter(cellline);
 export const FORM_TISSUE_OR_CELLLINE_FILTER = {
   type: FormElementType.MAP,
-  label: `Filter By`,
+  label: `Filter:`,
   id: 'filter',
   useSession: true,
   dependsOn: [ParameterFormIds.DATA_SOURCE],
@@ -312,7 +307,7 @@ export const FORM_TISSUE_OR_CELLLINE_FILTER = {
 };
 
 
-export const FORM_DATA_HIEARCHICAL_SUBTYPE = {
+export const FORM_DATA_HIERARCHICAL_SUBTYPE = {
   type: FormElementType.SELECT2_MULTIPLE,
   label: 'Data Type',
   id: ParameterFormIds.DATA_HIERARCHICAL_SUBTYPE,
@@ -325,6 +320,29 @@ export const FORM_DATA_HIEARCHICAL_SUBTYPE = {
       return {
         text: ds.name,
         children: ds.dataSubtypes.map((dss) => ({
+          id: `${ds.id}-${dss.id}`,
+          text: dss.name
+        }))
+      };
+    })
+  },
+  useSession: true
+};
+
+export const FORM_DATA_HIERARCHICAL_SUBTYPE_AGGREGATED_SELECTION = {
+  type: FormElementType.SELECT2,
+  label: 'Data Type',
+  id: ParameterFormIds.DATA_HIERARCHICAL_SUBTYPE,
+  attributes: {
+    style: 'width:100%'
+  },
+  required: true,
+  options: {
+    data: dataTypes.map((ds) => {
+      return {
+        text: ds.name,
+        //string types can't be aggregated
+        children: ds.dataSubtypes.filter((d) => d.type !== dataSubtypes.string).map((dss) => ({
           id: `${ds.id}-${dss.id}`,
           text: dss.name
         }))

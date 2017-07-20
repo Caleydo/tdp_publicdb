@@ -6,14 +6,14 @@ import * as ajax from 'phovea_core/src/ajax';
 import * as ranges from 'phovea_core/src/range';
 import * as idtypes from 'phovea_core/src/idtype';
 import {getSelectedSpecies} from 'targid_common/src/Common';
-import {IDataSourceConfig, dataSubtypes} from '../config';
-import {convertLog2ToLinear} from '../utils';
+import {IDataSourceConfig, dataSubtypes, MAX_FILTER_SCORE_ROWS_BEFORE_ALL} from '../config';
 import {IScore} from 'ordino/src/LineUpView';
 import {createDesc, toFilterString} from './utils';
 import AScore, {ICommonScoreParam} from './AScore';
-import {toFilter, limitScoreRows} from '../utils';
+import {toFilter, limitScoreRows, convertLog2ToLinear} from 'targid_common/src/utils';
 import {IBoxPlotData} from 'lineupjs/src/model/BoxPlotColumn';
 import {INamedSet} from 'ordino/src/storage';
+import {resolve} from 'phovea_core/src/idtype';
 
 interface IAggregatedScoreParam extends ICommonScoreParam {
   aggregation: string;
@@ -36,6 +36,10 @@ export default class AggregatedScore extends AScore implements IScore<number> {
     super(parameter);
   }
 
+  get idType() {
+    return resolve(this.dataSource.idType);
+  }
+
   createDesc() {
     const ds = this.oppositeDataSource;
     const desc = `${ds.name} Filter: ${toFilterString(this.parameter.filter, ds)}\nData Type: ${this.dataType.name}\nData Subtype: ${this.dataSubType.name}\nAggregation: ${this.parameter.aggregation}`;
@@ -43,16 +47,18 @@ export default class AggregatedScore extends AScore implements IScore<number> {
   }
 
   async compute(ids: ranges.RangeLike, idtype: idtypes.IDType, namedSet?: INamedSet): Promise<any[]> {
-    const url = `/targid/db/${this.dataSource.db}/${this.dataSource.base}_${this.oppositeDataSource.base}_score/filter`;
+    const url = `/targid/db/${this.dataSource.db}/${this.dataSource.base}_${this.oppositeDataSource.base}_score/score`;
 
     const param = {
       table: this.dataType.tableName,
       // by convention for the aggregation to do its magic, it has to be called `data_subtype`
       data_subtype: this.dataSubType.useForAggregation,
       agg: this.parameter.aggregation,
-      species: getSelectedSpecies()
+      species: getSelectedSpecies(),
+      target: idtype.id
     };
-    limitScoreRows(param, ids, this.dataSource, namedSet);
+    const maxDirectRows = typeof this.parameter.maxDirectFilterRows === 'number' ? this.parameter.maxDirectFilterRows : MAX_FILTER_SCORE_ROWS_BEFORE_ALL;
+    limitScoreRows(param, ids, idtype, this.dataSource.entityName, maxDirectRows, namedSet);
     toFilter(param, this.parameter.filter);
 
     let rows: any[] = await ajax.getAPIJSON(url, param);

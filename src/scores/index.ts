@@ -2,61 +2,58 @@
  * Created by Samuel Gratzl on 27.04.2016.
  */
 
-import * as dialogs from 'phovea_ui/src/dialogs';
 import {IPluginDesc} from 'phovea_core/src/plugin';
 import {
   ParameterFormIds, FORM_GENE_FILTER, FORM_TISSUE_FILTER, FORM_CELLLINE_FILTER
 } from '../forms';
 import {IScore} from 'ordino/src/LineUpView';
-import {FormBuilder, IFormElementDesc} from 'ordino/src/FormBuilder';
-import {select} from 'd3';
+import {IFormElementDesc} from 'ordino/src/FormBuilder';
 import AggregatedScore from './AggregatedScore';
 import FrequencyScore from './FrequencyScore';
 import {convertRow2MultiMap} from 'ordino/src/form/internal/FormMap';
-import {FORM_AGGREGATED_SCORE} from './forms';
-import {gene, tissue, cellline} from '../config';
+import {
+  FORCE_COMPUTE_ALL_CELLLINE, FORCE_COMPUTE_ALL_GENES, FORCE_COMPUTE_ALL_TISSUE,
+  FORM_AGGREGATED_SCORE
+} from './forms';
+import {gene, tissue, cellline, splitTypes, MAX_FILTER_SCORE_ROWS_BEFORE_ALL} from '../config';
 import {selectDataSources} from './utils';
+import FormBuilderDialog from 'ordino/src/form/FormDialog';
 
 
-export function create(pluginDesc: IPluginDesc) {
-  const {opposite} = selectDataSources(pluginDesc);
-  // resolve promise when closing or submitting the modal dialog
-  return new Promise((resolve) => {
-    const dialog = dialogs.generateDialog('Add Aggregated Score Column', 'Add Aggregated Score Column');
+export function create(pluginDesc: IPluginDesc, extras: any, countHint?: number) {
+  const {primary, opposite} = selectDataSources(pluginDesc);
 
-    const form: FormBuilder = new FormBuilder(select(dialog.body));
-    const formDesc: IFormElementDesc[] = FORM_AGGREGATED_SCORE.slice();
-    switch(opposite) {
-      case gene:
-        formDesc.unshift(FORM_GENE_FILTER);
-        break;
-      case tissue:
-        formDesc.unshift(FORM_TISSUE_FILTER);
-        break;
-      case cellline:
-        formDesc.unshift(FORM_CELLLINE_FILTER);
-        break;
-    }
+  const dialog = new FormBuilderDialog('Add Aggregated Score Column', 'Add Aggregated Score Column');
+  const formDesc: IFormElementDesc[] = FORM_AGGREGATED_SCORE.slice();
+  switch(opposite) {
+    case gene:
+      formDesc.unshift(FORM_GENE_FILTER);
+      formDesc.push(primary === tissue ? FORCE_COMPUTE_ALL_TISSUE : FORCE_COMPUTE_ALL_CELLLINE);
+      break;
+    case tissue:
+      formDesc.unshift(FORM_TISSUE_FILTER);
+      formDesc.push(FORCE_COMPUTE_ALL_GENES);
+      break;
+    case cellline:
+      formDesc.unshift(FORM_CELLLINE_FILTER);
+      formDesc.push(FORCE_COMPUTE_ALL_GENES);
+      break;
+  }
 
-    form.build(formDesc);
+  if (typeof countHint === 'number' && countHint > MAX_FILTER_SCORE_ROWS_BEFORE_ALL) {
+    formDesc.pop();
+  }
 
-    dialog.onSubmit(() => {
-      if (!form.validate()) {
-        return false;
-      }
-      const data = form.getElementData();
-      data.filter = convertRow2MultiMap(data.filter);
+  dialog.append(...formDesc);
 
-      dialog.hide();
-      resolve(data);
-      return false;
-    });
-
-    dialog.onHide(() => {
-      dialog.destroy();
-    });
-
-    dialog.show();
+  return dialog.showAsPromise((builder) => {
+    const data = builder.getElementData();
+    const {dataType, dataSubType} = splitTypes(data[ParameterFormIds.DATA_HIERARCHICAL_SUBTYPE].id);
+    delete data[ParameterFormIds.DATA_HIERARCHICAL_SUBTYPE];
+    data.data_type = dataType.id;
+    data.data_subtype = dataSubType.id;
+    data.filter = convertRow2MultiMap(data.filter);
+    return data;
   });
 }
 

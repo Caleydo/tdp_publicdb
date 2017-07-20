@@ -185,6 +185,9 @@ module.exports = function(registry) {
     'group': {
       'name': 'Gene overview',
       'order': 10
+    },
+    'filter': {
+      'species': 'human'
     }
   });
 
@@ -198,6 +201,9 @@ module.exports = function(registry) {
     'group': {
       'name': 'Gene overview',
       'order': 0
+    },
+    'filter': {
+      'species': 'human'
     }
   });
 
@@ -211,6 +217,9 @@ module.exports = function(registry) {
     'group': {
       'name': 'Gene overview',
       'order': 20
+    },
+    'filter': {
+      'species': 'human'
     }
   });
 
