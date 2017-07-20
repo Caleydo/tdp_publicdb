@@ -82,7 +82,7 @@ def create_gene_score(result, other_prefix, other_primary):
            INNER JOIN {base}.targid_{base} c ON c.{primary} = d.{primary}
            WHERE c.species = :species %(and_where)s
            GROUP BY ensg""".format(primary=other_primary, base=other_prefix)) \
-    .replace("table").replace('and_where') \
+    .replace("table").replace('attribute').replace('and_where') \
     .query('filter_panel', filter_panel) \
     .query('filter_panel_ensg', filter_gene_panel_d) \
     .query('filter_ensg', 'd.ensg %(operator)s %(value)s') \
@@ -90,7 +90,7 @@ def create_gene_score(result, other_prefix, other_primary):
     .arg("species").build()
 
   result[basename + '_frequency_score'] = DBViewBuilder().idtype(idtype_gene).query("""
-           SELECT ensg AS id, SUM(CASE WHEN %(attribute)s %(operator)s :value THEN 1 ELSE 0 END) as count, COUNT(%(attribute)s) as total
+           SELECT ensg AS id, SUM((%(attribute)s %(operator)s :value)::INT4) as count, COUNT(%(attribute)s) as total
            FROM {base}.targid_%(table)s d
            INNER JOIN {base}.targid_{base} c ON c.{primary} = d.{primary}
            WHERE c.species = :species %(and_where)s 
@@ -250,7 +250,7 @@ def create_sample(result, basename, idtype, primary, base):
          INNER JOIN public.targid_gene g ON g.ensg = d.ensg
            WHERE g.species = :species %(and_where)s
            GROUP BY d.{primary}""".format(primary=primary, base=basename)) \
-    .replace("table").replace('and_where') \
+    .replace("table").replace('attribute').replace('and_where') \
     .query('filter_panel', filter_gene_panel) \
     .query('filter_panel_' + primary, filter_panel_d) \
     .query('filter_' + primary, 'd.' + primary + ' %(operator)s %(value)s') \
@@ -258,7 +258,7 @@ def create_sample(result, basename, idtype, primary, base):
     .arg("species").build()
 
   result[basename + '_gene_frequency_score'] = DBViewBuilder().idtype(idtype).query("""
-        SELECT d.{primary} AS id, SUM(CASE WHEN %(attribute)s %(operator)s :value THEN 1 ELSE 0 END) as count, COUNT(%(attribute)s) as total
+        SELECT d.{primary} AS id, SUM((%(attribute)s %(operator)s :value)::INT4) as count, COUNT(%(attribute)s) as total
            FROM {base}.targid_%(table)s d
          INNER JOIN public.targid_gene g ON g.ensg = d.ensg
            WHERE g.species = :species %(and_where)s

@@ -125,7 +125,15 @@ export const copyNumber:IDataTypeConfig = {
   dataSubtypes: [
     { id: 'relativecopynumber', name: 'Relative Copy Number', type: dataSubtypes.number, domain: [0, 15], missingValue: NaN, constantDomain: true, useForAggregation: 'relativecopynumber'},
     { id: 'totalabscopynumber', name: 'Total Absolute Copy Number', type: dataSubtypes.number, domain: [0, 15], missingValue: NaN, constantDomain: true, useForAggregation: 'totalabscopynumber'},
-    { id: 'copynumberclass', name: 'Copy Number Class', type: dataSubtypes.cat, categories: toLineUpCategories(copyNumberCat), missingCategory: unknownCopyNumberValue, useForAggregation: 'copynumberclass'}
+    { id: 'copynumberclass',
+      name: 'Copy Number Class',
+      type: dataSubtypes.cat,
+      categories: toLineUpCategories(copyNumberCat),
+      domain: [0, 100],
+      missingValue: NaN,
+      missingCategory: unknownCopyNumberValue,
+      useForAggregation: 'copynumberclass'
+    }
   ],
 };
 
