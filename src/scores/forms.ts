@@ -1,16 +1,16 @@
 import {
   ParameterFormIds, MUTATION_AGGREGATION, NUMERIC_AGGREGATION, COMPARISON_OPERATORS,
-  FORM_DATA_HIERARCHICAL_SUBTYPE, FORM_DATA_HIERARCHICAL_SUBTYPE_SINGLE_SELECTION
+  FORM_DATA_HIERARCHICAL_SUBTYPE, FORM_DATA_HIERARCHICAL_SUBTYPE_AGGREGATED_SELECTION
 } from '../forms';
 import {FormElementType} from 'ordino/src/form';
-import {mutation, expression, copyNumber, MAX_FILTER_SCORE_ROWS_BEFORE_ALL, splitTypes} from '../config';
+import {mutation, expression, copyNumber, MAX_FILTER_SCORE_ROWS_BEFORE_ALL, splitTypes, dataSubtypes} from '../config';
 /**
  * Created by Samuel Gratzl on 15.03.2017.
  */
 
 
 export const FORM_AGGREGATED_SCORE = [
-  FORM_DATA_HIERARCHICAL_SUBTYPE_SINGLE_SELECTION,
+  FORM_DATA_HIERARCHICAL_SUBTYPE_AGGREGATED_SELECTION,
   {
     type: FormElementType.SELECT,
     label: 'Aggregation',
@@ -22,8 +22,8 @@ export const FORM_AGGREGATED_SCORE = [
         if(selection.length === 0 || selection[0].id === '') {
           return NUMERIC_AGGREGATION;
         }
-        const {dataType} = splitTypes(selection[0].id);
-        if (dataType.id === mutation.id) {
+        const {dataSubType} = splitTypes(selection[0].id);
+        if (dataSubType.type === dataSubtypes.cat) {
           return MUTATION_AGGREGATION;
         } else {
           return NUMERIC_AGGREGATION;
@@ -44,8 +44,8 @@ export const FORM_AGGREGATED_SCORE = [
         return false;
       }
       const agg = dependantValues[1].value;
-      const {dataType} = splitTypes(dependantValues[0].id);
-      return (agg === 'frequency' || agg === 'count') && (dataType === expression || dataType === copyNumber);
+      const {dataSubType} = splitTypes(dependantValues[0].id);
+      return (agg === 'frequency' || agg === 'count') && dataSubType.type === dataSubtypes.number;
     },
     options: {
       optionsData: COMPARISON_OPERATORS
@@ -63,8 +63,8 @@ export const FORM_AGGREGATED_SCORE = [
         return false;
       }
       const agg = dependantValues[1].value;
-      const {dataType} = splitTypes(dependantValues[0].id);
-      return (agg === 'frequency' || agg === 'count') && (dataType === expression || dataType === copyNumber);
+      const {dataSubType} = splitTypes(dependantValues[0].id);
+      return (agg === 'frequency' || agg === 'count') && dataSubType.type === dataSubtypes.number;
     },
     useSession: true,
     options: {
