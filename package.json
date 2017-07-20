@@ -3,6 +3,7 @@
   "description": "",
   "homepage": "https://phovea.caleydo.org",
   "version": "2.0.1-SNAPSHOT",
+  "private": true,
   "author": {
     "name": "The Caleydo Team",
     "email": "contact@caleydo.org",
