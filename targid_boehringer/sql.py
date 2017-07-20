@@ -39,6 +39,11 @@ def _create_common(result, prefix, table, primary, idtype, columns):
     .replace("column", columns).replace('limit', int).replace('offset', int) \
     .arg("query").arg('species').build()
 
+  result[prefix + '_items_verify'] = DBViewBuilder().idtype(idtype).query("""
+      SELECT {primary} as id, %(column)s AS text
+       FROM {table} WHERE species = :species %(and_where)s""".format(table=table, primary=primary))\
+    .replace("and_where").arg('species').build()
+
   # lookup for unique / distinct categorical values in a table
   result[prefix + '_unique'] = DBViewBuilder().query("""
         SELECT s as id, s as text
@@ -73,30 +78,33 @@ def create_gene_score(result, other_prefix, other_primary, other_columns):
     .filter('ensg', 'd.ensg %(operator)s %(value)s') \
     .replace('and_where').arg('name').arg('species').build()
 
-  result[basename + '_frequency_score'] = DBViewBuilder().idtype(idtype_gene).query("""
-           SELECT a.ensg AS id, (COALESCE(freq.count,0)+0.0) AS count, a.total
-           FROM (
-           SELECT COUNT(*) AS total, ensg
+  result[basename + '_frequency_mutation_score'] = DBViewBuilder().idtype(idtype_gene).query("""
+           SELECT ensg AS id, SUM(%(attribute)s::integer) as count, COUNT(%(attribute)s) as total
            FROM {base}.targid_%(table)s d
            INNER JOIN {base}.targid_{base} c ON c.{primary} = d.{primary}
            WHERE c.species = :species %(and_where)s
-           GROUP BY ensg
-           ) a
-           LEFT JOIN (
-           SELECT COUNT(*) AS count, ensg
+           GROUP BY ensg""".format(primary=other_primary, base=other_prefix)) \
+    .replace("table", tables).replace('attribute', attributes).replace('and_where') \
+    .filters(other_columns) \
+    .query('panel', filter_panel) \
+    .query('panel_ensg', filter_gene_panel_d) \
+    .query('ensg', 'd.ensg %(operator)s %(value)s') \
+    .query(other_primary, 'c.'+ other_primary + ' %(operator)s %(value)s') \
+    .arg("species").build()
+
+  result[basename + '_frequency_score'] = DBViewBuilder().idtype(idtype_gene).query("""
+           SELECT ensg AS id, SUM((%(attribute)s %(operator)s :value)::INT4) as count, COUNT(%(attribute)s) as total
            FROM {base}.targid_%(table)s d
            INNER JOIN {base}.targid_{base} c ON c.{primary} = d.{primary}
-           WHERE c.species = :species %(and_where)s AND %(attribute)s %(operator)s :value
-           GROUP BY ensg
-           ) freq
-           ON freq.ensg = a.ensg""".format(primary=other_primary, base=other_prefix)) \
-    .replace("table", tables).replace("attribute", attributes).replace('and_where').replace("operator", operators) \
+           WHERE c.species = :species %(and_where)s 
+           GROUP BY ensg""".format(primary=other_primary, base=other_prefix)) \
+    .replace("table", tables).replace('and_where').replace("attribute", attributes).replace("operator", operators).arg("value") \
     .filters(other_columns) \
     .filter('panel', filter_panel) \
     .filter('panel_ensg', filter_gene_panel_d) \
     .filter('ensg', 'd.ensg %(operator)s %(value)s') \
     .filter(other_primary, 'c.'+ other_primary + ' %(operator)s %(value)s') \
-    .arg("species").arg("value").build()
+    .arg("species").build()
 
   result[basename + '_score'] = DBViewBuilder().idtype(idtype_gene).query("""
             SELECT D.ensg AS id, %(agg_score)s AS score
@@ -248,30 +256,33 @@ def create_sample(result, basename, idtype, primary, base, columns):
     .filter(primary, 'c.'+ primary + ' %(operator)s %(value)s') \
     .build()
 
-  result[basename + '_gene_frequency_score'] = DBViewBuilder().idtype(idtype).query("""
-         SELECT a.{primary} AS id, (COALESCE(freq.count,0)+0.0) AS count, a.total
-         FROM (
-         SELECT COUNT(*) AS total, d.{primary}
-         FROM {base}.targid_%(table)s d
+  result[basename + '_gene_frequency_mutation_score'] = DBViewBuilder().idtype(idtype).query("""
+        SELECT d.{primary} AS id, SUM(%(attribute)s::integer) as count, COUNT(%(attribute)s) as total
+           FROM {base}.targid_%(table)s d
          INNER JOIN public.targid_gene g ON g.ensg = d.ensg
-         WHERE g.species = :species %(and_where)s
-         GROUP BY d.{primary}
-         ) a
-         LEFT JOIN (
-         SELECT COUNT(*) AS count, d.{primary}
-         FROM {base}.targid_%(table)s d
-         INNER JOIN PUBLIC.targid_gene g ON g.ensg = d.ensg
-         WHERE g.species = :species %(and_where)s AND %(attribute)s %(operator)s :value
-         GROUP BY d.{primary}
-         ) freq
-         ON freq.{primary} = a.{primary}""".format(primary=primary, base=basename)) \
-    .replace("table", tables).replace('and_where').replace("attribute", attributes).replace("operator", operators) \
+           WHERE g.species = :species %(and_where)s
+           GROUP BY d.{primary}""".format(primary=primary, base=basename)) \
+    .replace("table", tables).replace('attribute', attributes).replace('and_where') \
     .filters(gene_columns) \
     .filter('panel', filter_gene_panel) \
-    .filter('_panel_' + primary, filter_panel_d) \
+    .filter('panel_' + primary, filter_panel_d) \
     .filter(primary, 'd.' + primary + ' %(operator)s %(value)s') \
     .filter('ensg', 'g.ensg %(operator)s %(value)s') \
-    .arg("species").arg("value").build()
+    .arg("species").build()
+
+  result[basename + '_gene_frequency_score'] = DBViewBuilder().idtype(idtype).query("""
+        SELECT d.{primary} AS id, SUM((%(attribute)s %(operator)s :value)::INT4) as count, COUNT(%(attribute)s) as total
+           FROM {base}.targid_%(table)s d
+         INNER JOIN public.targid_gene g ON g.ensg = d.ensg
+           WHERE g.species = :species %(and_where)s
+           GROUP BY d.{primary}""".format(primary=primary, base=basename)) \
+    .replace("table", tables).replace('and_where').replace("attribute", attributes).replace("operator", operators).arg("value") \
+    .filters(gene_columns) \
+     filter('panel', filter_gene_panel) \
+    .filter('panel_' + primary, filter_panel_d) \
+    .filter(primary, 'd.' + primary + ' %(operator)s %(value)s') \
+    .filter('ensg', 'g.ensg %(operator)s %(value)s') \
+    .arg("species").build()
 
   result[basename + '_gene_score'] = DBViewBuilder().idtype(idtype).query("""
           SELECT D.{primary} AS id, %(agg_score)s AS score
@@ -336,6 +347,12 @@ views = dict(
       ORDER BY ensg ASC LIMIT %(limit)s OFFSET %(offset)s""") \
     .replace('limit', int).replace('offset', int) \
     .arg("query").arg('species').build(),
+
+  gene_gene_items_verify=DBViewBuilder().idtype(idtype_gene).query("""
+      SELECT ensg as id, symbol AS text
+       FROM public.targid_gene WHERE species = :species %(and_where)s""") \
+    .replace("and_where").arg('species') \
+    .query('filter_symbol', '(lower(ensg) %(operator)s %(value)s or lower(symbol) %(operator)s %(value)s)').build(),
 
   gene_map_ensgs=DBViewBuilder().idtype(idtype_gene).query("""
     SELECT targidid AS _id, ensg AS id, symbol

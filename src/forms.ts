@@ -7,7 +7,7 @@ import {FORM_EXPRESSION_SUBTYPE_ID, FORM_COPYNUMBER_SUBTYPE_ID} from 'targid_com
 import {FormElementType, IFormElement} from 'ordino/src/form';
 import {cachedLazy} from 'ordino/src/cached';
 import {getAPIJSON, api2absURL} from 'phovea_core/src/ajax';
-import {gene, IDataSourceConfig, tissue, cellline, dataSources, dataTypes} from './config';
+import {gene, IDataSourceConfig, tissue, cellline, dataSources, dataTypes, dataSubtypes} from './config';
 import {listNamedSetsAsOptions} from 'ordino/src/storage';
 import {previewFilterHint} from 'targid_common/src/utils';
 
@@ -329,10 +329,25 @@ export const FORM_DATA_HIERARCHICAL_SUBTYPE = {
   useSession: true
 };
 
-export const FORM_DATA_HIERARCHICAL_SUBTYPE_SINGLE_SELECTION = Object.assign(
-  {},
-  FORM_DATA_HIERARCHICAL_SUBTYPE,
-  {
-    type: FormElementType.SELECT2
-  }
-);
+export const FORM_DATA_HIERARCHICAL_SUBTYPE_AGGREGATED_SELECTION = {
+  type: FormElementType.SELECT2,
+  label: 'Data Type',
+  id: ParameterFormIds.DATA_HIERARCHICAL_SUBTYPE,
+  attributes: {
+    style: 'width:100%'
+  },
+  required: true,
+  options: {
+    data: dataTypes.map((ds) => {
+      return {
+        text: ds.name,
+        //string types can't be aggregated
+        children: ds.dataSubtypes.filter((d) => d.type !== dataSubtypes.string).map((dss) => ({
+          id: `${ds.id}-${dss.id}`,
+          text: dss.name
+        }))
+      };
+    })
+  },
+  useSession: true
+};
