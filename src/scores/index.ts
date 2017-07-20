@@ -15,12 +15,12 @@ import {
   FORCE_COMPUTE_ALL_CELLLINE, FORCE_COMPUTE_ALL_GENES, FORCE_COMPUTE_ALL_TISSUE,
   FORM_AGGREGATED_SCORE
 } from './forms';
-import {gene, tissue, cellline, splitTypes} from '../config';
+import {gene, tissue, cellline, splitTypes, MAX_FILTER_SCORE_ROWS_BEFORE_ALL} from '../config';
 import {selectDataSources} from './utils';
 import FormBuilderDialog from 'ordino/src/form/FormDialog';
 
 
-export function create(pluginDesc: IPluginDesc) {
+export function create(pluginDesc: IPluginDesc, extras: any, countHint?: number) {
   const {primary, opposite} = selectDataSources(pluginDesc);
 
   const dialog = new FormBuilderDialog('Add Aggregated Score Column', 'Add Aggregated Score Column');
@@ -39,6 +39,11 @@ export function create(pluginDesc: IPluginDesc) {
       formDesc.push(FORCE_COMPUTE_ALL_GENES);
       break;
   }
+
+  if (typeof countHint === 'number' && countHint > MAX_FILTER_SCORE_ROWS_BEFORE_ALL) {
+    formDesc.pop();
+  }
+
   dialog.append(...formDesc);
 
   return dialog.showAsPromise((builder) => {

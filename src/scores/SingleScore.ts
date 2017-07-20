@@ -76,7 +76,7 @@ function enableMultiple(desc: any): any {
   });
 }
 
-export function create(pluginDesc: IPluginDesc) {
+export function create(pluginDesc: IPluginDesc, extra: any, countHint?: number) {
   const {primary, opposite} = selectDataSources(pluginDesc);
   const dialog = new FormBuilderDialog('Add Single Score Column', 'Add Single Score Column');
   const formDesc:IFormElementDesc[] = FORM_SINGLE_SCORE.slice();
@@ -94,6 +94,11 @@ export function create(pluginDesc: IPluginDesc) {
       formDesc.push(FORCE_COMPUTE_ALL_GENES);
       break;
   }
+
+  if (typeof countHint === 'number' && countHint > MAX_FILTER_SCORE_ROWS_BEFORE_ALL) {
+    formDesc.pop();
+  }
+
   dialog.append(...formDesc);
 
   return dialog.showAsPromise((builder) => {
