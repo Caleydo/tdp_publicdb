@@ -2,7 +2,7 @@
 @import "~ordino/src/styles/utils";
 
 * {
-  @include idtype_color('Ensembl', #86ffb1);
-  @include idtype_color('Tissue', #95b1ff);
-  @include idtype_color('Cellline', #fff663);
+  @include idtype_color('Ensembl', rgb(127, 201, 127));
+  @include idtype_color('Tissue', rgb(190, 174, 212));
+  @include idtype_color('Cellline', rgb(253, 192, 134));
 }
