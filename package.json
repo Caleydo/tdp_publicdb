@@ -74,7 +74,7 @@
   },
   "dependencies": {
     "ordino": "github:Caleydo/ordino#v2.1.0",
-    "targid_common": "github:Caleydo/targid_common#v2.1.0"
+    "targid_common": "github:Caleydo/targid_common#master"
   },
   "devDependencies": {
     "@types/jasmine": "2.5.41",
