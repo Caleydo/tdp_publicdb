@@ -22,13 +22,13 @@ class GeneSearchProvider extends SearchProvider {
   }
 
   format?(item: IResult): string {
-    return (item.id) ? `${item.text || ''} <span class="ensg">${(<any>item).extra}</span>` : item.text;
+    return (item.id) ? `${item.text || ''} <span class="ensg">${(<any>item).name}</span>` : item.text;
   }
 
   validate(query: string[]): Promise<IResult[]> {
     return getAPIJSON(this.verifyUrl, {
-      cspecies: getSelectedSpecies(),
-      [`filter_symbol`]: query,
+      species: getSelectedSpecies(),
+      filter_symbol: query,
     }).then((data) => data.map(this.mapItems.bind(this)));
   }
 }
