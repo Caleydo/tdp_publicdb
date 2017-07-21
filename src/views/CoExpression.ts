@@ -4,7 +4,7 @@
 
 import {FormElementType, IFormSelectDesc} from 'ordino/src/FormBuilder';
 import {IViewContext, ISelection} from 'ordino/src/View';
-import ACoExpression, {IDataFormatRow} from 'targid_common/src/views/ACoExpression';
+import ACoExpression, {IDataFormatRow, IGeneOption} from 'targid_common/src/views/ACoExpression';
 import {getSelectedSpecies} from 'targid_common/src/Common';
 import {expression} from '../config';
 import {ParameterFormIds, FORM_TISSUE_OR_CELLLINE_FILTER, FORM_DATA_SOURCE} from '../forms';
@@ -63,6 +63,11 @@ export class CoExpression extends ACoExpression {
       idtype: resolve(this.getParameter(ParameterFormIds.DATA_SOURCE).idType),
       range
     });
+  }
+
+  protected getNoDataErrorMessage(refGene: IGeneOption): string {
+    const dataSource = this.getParameter(ParameterFormIds.DATA_SOURCE).name;
+    return `No data for the selected reference gene ${refGene.data.symbol} (${refGene.data.id}) and data source ${dataSource} available.`;
   }
 }
 
