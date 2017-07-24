@@ -456,54 +456,6 @@ module.exports = function(registry) {
       'sampleType': 'GeneSymbol'
     }
   });
-
-  registry.push('targidView', 'celllline_combined_lineup', function () {
-    return System.import('./src/views/CombinedDependentGeneTable');
-  }, {
-    'name': 'Combined View',
-    'factory': 'create',
-    'idtype': 'Cellline',
-    'selection': 'some',
-    'group': {
-      'name': 'Gene overview',
-      'order': 40
-    },
-    'filter': {
-      'species': 'human'
-    }
-  });
-
-  registry.push('targidView', 'tissue_combined_lineup', function () {
-    return System.import('./src/views/CombinedDependentGeneTable');
-  }, {
-    'name': 'Combined View',
-    'factory': 'create',
-    'idtype': 'Tissue',
-    'selection': 'some',
-    'group': {
-      'name': 'Gene overview',
-      'order': 40
-    },
-    'filter': {
-      'species': 'human'
-    }
-  });
-
-  registry.push('targidView', 'gene_combined_lineup', function () {
-    return System.import('./src/views/CombinedDependentSampleTable');
-  }, {
-    'name': 'Combined View',
-    'factory': 'create',
-    'idtype': 'Ensembl',
-    'selection': 'some',
-    'group': {
-      'name': 'Sample overview',
-      'order': 40
-    },
-    'filter': {
-      'species': 'human'
-    }
-  });
   // generator-phovea:end
 };
 
