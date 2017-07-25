@@ -250,7 +250,7 @@ def create_sample(result, basename, idtype, primary, base, columns):
        INNER JOIN {base}.targid_{base} C ON d.{primary} = C.{primary}
         WHERE g.species = :species AND g.ensg = :name %(and_where)s""".format(primary=primary, base=basename)) \
     .replace('table', tables).replace('attribute', attributes).replace('and_where').arg('name').arg('species')\
-    .filters(gene_columns) \
+    .filters(columns) \
     .filter('panel', filter_panel) \
     .filter('panel_' + primary, filter_panel) \
     .filter(primary, 'c.'+ primary + ' %(operator)s %(value)s') \
@@ -263,7 +263,7 @@ def create_sample(result, basename, idtype, primary, base, columns):
            WHERE g.species = :species %(and_where)s
            GROUP BY d.{primary}""".format(primary=primary, base=basename)) \
     .replace("table", tables).replace('attribute', attributes).replace('and_where') \
-    .filters(gene_columns) \
+    .filters(columns) \
     .filter('panel', filter_gene_panel) \
     .filter('panel_' + primary, filter_panel_d) \
     .filter(primary, 'd.' + primary + ' %(operator)s %(value)s') \
@@ -277,7 +277,7 @@ def create_sample(result, basename, idtype, primary, base, columns):
            WHERE g.species = :species %(and_where)s
            GROUP BY d.{primary}""".format(primary=primary, base=basename)) \
     .replace("table", tables).replace('and_where').replace("attribute", attributes).replace("operator", operators).arg("value") \
-    .filters(gene_columns) \
+    .filters(columns) \
     .filter('panel', filter_gene_panel) \
     .filter('panel_' + primary, filter_panel_d) \
     .filter(primary, 'd.' + primary + ' %(operator)s %(value)s') \
