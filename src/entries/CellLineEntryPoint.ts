@@ -9,6 +9,7 @@ import {ACommonEntryPointList} from 'targid_common/src/entries/ACommonEntryPoint
 import {IACommonListOptions, ACommonList} from 'targid_common/src/entries/ACommonList';
 import {IViewContext, ISelection} from 'ordino/src/View';
 import {stringCol, categoricalCol} from 'ordino/src/LineUpView';
+import SearchProvider from 'targid_common/src/entries/SearchProvider';
 
 
 /**
@@ -86,4 +87,3 @@ export function createStart(context:IViewContext, selection: ISelection, parent:
 export function createStartTissue(context:IViewContext, selection: ISelection, parent:Element, options: IACommonListOptions) {
   return new TissueList(context, selection, parent, options);
 }
-
