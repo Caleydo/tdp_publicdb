@@ -63,8 +63,9 @@ abstract class ACombinedTable extends ALineUpView2 {
     if(name === 'filter') {
       this.clear();
     }
-    super.setParameter(name, value);
-    return this.update();
+    return this.update().then(() => {
+      super.setParameter(name, value);
+    });
   }
 
   protected loadColumnDesc() {

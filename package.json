@@ -2,7 +2,7 @@
   "name": "targid_boehringer",
   "description": "",
   "homepage": "https://phovea.caleydo.org",
-  "version": "2.1.1-SNAPSHOT",
+  "version": "2.1.2-SNAPSHOT",
   "private": true,
   "author": {
     "name": "The Caleydo Team",
