@@ -53,6 +53,10 @@ abstract class ACombinedTable extends ALineUpView2 {
     ];
   }
 
+  init() {
+    this.update().then(() => this.handleSelectionColumns(this.selection));
+  }
+
   getParameter(name: string): any {
     return this.paramForm.getElementById(name).value;
   }
@@ -63,6 +67,7 @@ abstract class ACombinedTable extends ALineUpView2 {
     if(name === 'filter') {
       this.clear();
     }
+
     return this.update().then(() => {
       super.setParameter(name, value);
     });
@@ -148,7 +153,6 @@ abstract class ACombinedTable extends ALineUpView2 {
     const columns = this.getColumnDescs(desc);
 
     this.build([], columns);
-    this.handleSelectionColumns(this.selection);
 
     return columns;
   }
