@@ -459,17 +459,20 @@ module.exports = function(registry) {
 
   registry.push('bobSearchProvider', 'gene', function() { return import('./src/entries/SearchProvider')}, {
     factory: 'createGene',
-    idType: 'Ensembl'
+    idType: 'Ensembl',
+    name: 'Genes'
   });
 
   registry.push('bobSearchProvider', 'tissue', function() { return import('./src/entries/SearchProvider')}, {
     factory: 'createTissue',
-    idType: 'Tissue'
+    idType: 'Tissue',
+    name: 'Tissues'
   });
 
   registry.push('bobSearchProvider', 'cellline', function() { return import('./src/entries/SearchProvider')}, {
     factory: 'createCellline',
-    idType: 'Cellline'
+    idType: 'Cellline',
+    name: 'Cell lines'
   });
 
   registry.push('targidView', 'celllline_combined_lineup', function () {
@@ -521,4 +524,3 @@ module.exports = function(registry) {
   });
   // generator-phovea:end
 };
-
