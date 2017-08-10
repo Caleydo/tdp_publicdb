@@ -23,5 +23,5 @@ cat storedprocedureTissue.sql triggerTissue.sql viewTissue.sql | $DB
 
 cat sequenceCellline.sql sequenceTissue.sql | $DB
 
-cat ../views/targid_views.sql ../views/targid_views_cellline.sql ../views/targid_views_tissue.sql | $DB
+cat targid_views.sql targid_views_cellline.sql targid_views_tissue.sql | $DB
 cat permission.sql | $DB

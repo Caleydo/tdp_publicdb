@@ -42,21 +42,11 @@ for filename in `ls -v update_[0-9]*.[0-9]*.[0-9]*-*.sql`; do
 	fi
 done
 
-echo Recreating views
-for filename in `ls -v ../views/*.sql`; do
-  psql_exit_status=`psql -U ${username} -h ${host} -p ${port} -A -t -q -d ${dbname} -f $filename`
-	if [ -z "$psql_exit_status" ]
-	then
-		echo "psql failed to run script: $filename" 1>&2
-		exit $psql_exit_status
-	fi
-done
-
-echo Fixing permissions
-psql_exit_status=`psql -U ${username} -h ${host} -p ${port} -A -t -q -d ${dbname} -f ../create/permission.sql`
+echo Executing post update script
+psql_exit_status=`psql -U ${username} -h ${host} -p ${port} -A -t -q -d ${dbname} -f postUpdate.sql`
 if [ -z "$psql_exit_status" ]
 then
-  echo "psql failed to run script: ../create/permission.sql" 1>&2
+  echo "psql failed to run script: postUpdate.sql" 1>&2
   exit $psql_exit_status
 fi
 
