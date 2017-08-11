@@ -97,10 +97,10 @@ def create_gene_score(result, other_prefix, other_primary, other_columns):
     .replace('table', tables).replace('attribute', attributes).replace('and_where')\
     .arg('species') \
     .filters(other_columns) \
-    .fitler('panel', filter_panel) \
-    .fitler('panel_ensg', filter_gene_panel_d) \
-    .fitler('ensg', table='d') \
-    .fitler(other_primary, table = 'c') \
+    .filter('panel', filter_panel) \
+    .filter('panel_ensg', filter_gene_panel_d) \
+    .filter('ensg', table='d') \
+    .filter(other_primary, table = 'c') \
     .build()
 
   result[basename + '_frequency_score'] = DBViewBuilder().idtype(idtype_gene).query("""
@@ -333,7 +333,7 @@ views = dict(
   SELECT targidid as _id, {primary} as id, *
   FROM public.targid_gene t
   {{where}}
-  ORDER BY t.symbol ASC""")
+  ORDER BY t.symbol ASC""".format(primary=_primary_gene))
     .column(_primary_gene, label='id', type='string')
     .replace('where')
     .filter('panel', 'ensg = ANY(SELECT ensg FROM public.targid_geneassignment WHERE genesetname {operator} {value})')
