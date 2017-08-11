@@ -126,7 +126,7 @@ DROP TABLE IF EXISTS tissue.targid_tissue CASCADE;
 CREATE TABLE tissue.targid_tissue AS Select * from _tissue.targid_tissue;
 ALTER TABLE tissue.targid_tissue ADD CONSTRAINT pk_tissue PRIMARY KEY(tissuename);
 
-DROP TABLE IF EXISTS tissue.targid_tissue CASCADE;
+DROP TABLE IF EXISTS tissue.targid_panel CASCADE;
 CREATE TABLE tissue.targid_panel AS Select * from _tissue.targid_panel;
 ALTER TABLE tissue.targid_panel ADD CONSTRAINT pk_tissuepanel PRIMARY KEY(panel);
 
