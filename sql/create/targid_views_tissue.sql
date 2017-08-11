@@ -1,21 +1,21 @@
-DROP VIEW IF EXISTS tissue.targid_tissue CASCADE;
+DROP VIEW IF EXISTS tissue.targid_tissue;
 CREATE VIEW tissue.targid_tissue AS
   SELECT t.targidid, t.tissuename, t.species, t.organ, coalesce(t.gender, p.gender) AS gender, t.tumortype, t.tumortype_adjacent, vendorname, race, ethnicity,
     floor(days_to_birth/-365.25) as age, days_to_death, days_to_last_followup, vital_status,
     height, weight, round((weight/(height/100)^2)::NUMERIC, 2) AS bmi
   FROM tissue.tissue t LEFT OUTER JOIN tissue.patient p ON p.patientname = t.patientname;
 
-DROP VIEW IF EXISTS tissue.targid_copynumber CASCADE;
+DROP VIEW IF EXISTS tissue.targid_copynumber;
 CREATE VIEW tissue.targid_copynumber AS
   SELECT ensg, tissuename, log2relativecopynumber, pow(2,log2relativecopynumber)*2 AS relativecopynumber, getcopynumberclass(log2relativecopynumber) AS copynumberclass, totalabscopynumber
   FROM tissue.processedcopynumber;
 
-DROP VIEW IF EXISTS tissue.targid_expression CASCADE;
+DROP VIEW IF EXISTS tissue.targid_expression;
 CREATE VIEW tissue.targid_expression AS
   SELECT ensg, tissuename, log2tpm, pow(2, log2tpm) as tpm, counts
   FROM tissue.processedrnaseqview;
 
-DROP VIEW IF EXISTS tissue.targid_mutation CASCADE;
+DROP VIEW IF EXISTS tissue.targid_mutation;
 CREATE VIEW tissue.targid_mutation AS
   SELECT t.ensg,
     ps.tissuename,
@@ -27,7 +27,7 @@ CREATE VIEW tissue.targid_mutation AS
   WHERE t.iscanonical;
 
 --- alternative 1 (good when filtering by ensg)
-DROP VIEW IF EXISTS tissue.targid_mutation2 CASCADE; 
+DROP VIEW IF EXISTS tissue.targid_mutation2; 
 CREATE VIEW tissue.targid_mutation2 AS
 WITH 
   TCGAtissue AS (
@@ -50,7 +50,7 @@ WITH
 
 
 --- alternative 2 (good when filtering by tissuename)
-DROP VIEW IF EXISTS tissue.targid_mutation3 CASCADE;
+DROP VIEW IF EXISTS tissue.targid_mutation3;
 CREATE VIEW tissue.targid_mutation3 AS
   SELECT t.ensg, ps.tissuename, 
     coarse(ps.dnamutation) = 'mut' AS dna_mutated, ps.dnamutation,  
@@ -94,7 +94,7 @@ CREATE VIEW tissue.targid_mutation3 AS
 -----
 
 --combines expression, mutation, and copy number data into a single view
-DROP VIEW IF EXISTS tissue.targid_data CASCADE;
+DROP VIEW IF EXISTS tissue.targid_data;
 CREATE VIEW tissue.targid_data AS
   SELECT ensg, tissuename, max(copynumberclass) as copynumberclass, max(tpm) as tpm, every(dna_mutated) as dna_mutated, every(aa_mutated) as aa_mutated
   FROM (
@@ -113,12 +113,12 @@ GROUP BY ensg, tissuename;
 --    LEFT JOIN tissue.targid_mutation tm on clg.tissuename = tm.tissuename AND clg.ensg = tm.ensg
 --  WHERE NOT (copynumberclass IS NULL AND log2fpkm IS NULL AND dna_mutated IS NULL);
 
-DROP VIEW IF EXISTS tissue.targid_panel CASCADE;
+DROP VIEW IF EXISTS tissue.targid_panel;
 CREATE VIEW tissue.targid_panel AS
   SELECT tissuepanel as panel, tissuepaneldescription as paneldescription
   FROM tissue.tissuepanel;
 
-DROP VIEW IF EXISTS tissue.targid_panelassignment CASCADE; 
+DROP VIEW IF EXISTS tissue.targid_panelassignment; 
 CREATE VIEW tissue.targid_panelassignment AS
   SELECT tissuename, tissuepanel as panel
   FROM tissue.tissueassignment;

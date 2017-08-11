@@ -1,26 +1,26 @@
-DROP VIEW IF EXISTS cellline.targid_cellline CASCADE;
+DROP VIEW IF EXISTS cellline.targid_cellline;
 CREATE VIEW cellline.targid_cellline AS
   SELECT targidid, celllinename, species, organ, tumortype, gender, metastatic_site, histology_type, morphology, growth_type, age_at_surgery
   FROM cellline.cellline;
   
-DROP VIEW IF EXISTS cellline.targid_copynumber CASCADE;
+DROP VIEW IF EXISTS cellline.targid_copynumber;
 CREATE VIEW cellline.targid_copynumber AS
   SELECT ensg, celllinename, log2relativecopynumber, pow(2,log2relativecopynumber)*2 AS relativecopynumber, getcopynumberclass(log2relativecopynumber) AS copynumberclass, totalabscopynumber
   FROM cellline.processedcopynumber;
   
-DROP VIEW IF EXISTS cellline.targid_expression CASCADE;
+DROP VIEW IF EXISTS cellline.targid_expression;
 CREATE VIEW cellline.targid_expression AS
   SELECT ensg, celllinename, log2tpm, pow(2, log2tpm) as tpm, counts
   FROM cellline.processedrnaseqview;
 
-DROP VIEW IF EXISTS cellline.targid_mutation CASCADE;
+DROP VIEW IF EXISTS cellline.targid_mutation;
 CREATE VIEW cellline.targid_mutation AS
   SELECT t.ensg, ps.celllinename, coarse(ps.dnamutation) = 'mut' AS dna_mutated, ps.dnamutation, coarse(ps.aamutation) = 'mut' AS aa_mutated, ps.aamutation, ps.zygosity, ps.exonscomplete, ps.confirmeddetail, ps.numsources
  FROM cellline.processedsequence ps JOIN transcript t ON t.enst::text = ps.enst::text
  WHERE t.iscanonical;
 
 --combines expression, mutation, and copy number data into a single view
-DROP VIEW IF EXISTS cellline.targid_data CASCADE;
+DROP VIEW IF EXISTS cellline.targid_data;
 CREATE VIEW cellline.targid_data AS
   SELECT ensg, celllinename, max(copynumberclass) as copynumberclass, max(tpm) as tpm, every(dna_mutated) as dna_mutated, every(aa_mutated) as aa_mutated
   FROM (
@@ -39,12 +39,12 @@ CREATE VIEW cellline.targid_data AS
 --    LEFT JOIN cellline.targid_mutation tm on clg.celllinename = tm.celllinename AND clg.ensg = tm.ensg
 --  WHERE NOT (copynumberclass IS NULL AND log2fpkm IS NULL AND dna_mutated IS NULL);
 
-DROP VIEW IF EXISTS cellline.targid_panel CASCADE;
+DROP VIEW IF EXISTS cellline.targid_panel;
 CREATE VIEW cellline.targid_panel AS
   SELECT celllinepanel as panel, celllinepaneldescription as paneldescription
   FROM cellline.celllinepanel;
 
-DROP VIEW IF EXISTS cellline.targid_panelassignment CASCADE;
+DROP VIEW IF EXISTS cellline.targid_panelassignment;
 CREATE VIEW cellline.targid_panelassignment AS
   SELECT celllinename, celllinepanel as panel
   FROM cellline.celllineassignment; 
