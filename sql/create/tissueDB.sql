@@ -1,6 +1,6 @@
 /*==============================================================*/
 /* DBMS name:      PostgreSQL 7.3                               */
-/* Created on:     13.07.2017 10:19:49                          */
+/* Created on:     11.08.2017 10:08:02                          */
 /*==============================================================*/
 
 
@@ -322,7 +322,8 @@ GRADE                TEXT                 null,
 SAMPLE_DESCRIPTION   TEXT                 null,
 COMMENT              TEXT                 null,
 TARGIDID             SERIAL               not null,
-SEQUENCED            BOOL                 null,
+DNASEQUENCED         BOOL                 null,
+TUMORPURITY          FLOAT4               null,
 constraint PK_TISSUE primary key (TISSUENAME)
 );
 
@@ -466,7 +467,7 @@ alter table NGSRUN
 alter table NGSRUN
    add constraint FK_NGSRUN_REFERENCE_TISSUE foreign key (TISSUENAME)
       references TISSUE (TISSUENAME)
-      on delete restrict on update restrict;
+      on delete cascade on update cascade;
 
 alter table NGSRUN
    add constraint FK_NGSRUN_REFERENCE_LABORATO foreign key (LABORATORY)
