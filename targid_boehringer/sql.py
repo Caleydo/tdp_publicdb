@@ -389,4 +389,4 @@ create_sample(views, 'tissue', idtype_tissue, _primary_tissue, create_tissue_spe
 
 
 def create():
-  return DBConnector(agg_score, views)
+  return DBConnector(views, agg_score)
