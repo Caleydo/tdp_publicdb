@@ -1,3 +1,5 @@
+\set ON_ERROR_ROLLBACK interactive
+begin;
 /*==============================================================*/
 /* Table: HLATYPE                                               */
 /*==============================================================*/
@@ -15,3 +17,4 @@ alter table tissue.HLATYPE
       on delete cascade on update restrict;
 	  
 --empty for now
+commit;

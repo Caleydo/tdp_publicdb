@@ -1,3 +1,5 @@
+\set ON_ERROR_ROLLBACK interactive
+begin;
 /*==============================================================*/
 /* Table: SIMILARITYTYPE                                        */
 /*==============================================================*/
@@ -8,3 +10,4 @@ constraint PK_SIMILARITYTYPE primary key (SIMILARITYTYPE)
 );
 	  
 --empty for now
+commit;

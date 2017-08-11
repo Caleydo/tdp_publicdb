@@ -1,4 +1,5 @@
-
+\set ON_ERROR_ROLLBACK interactive
+begin;
 /*==============================================================*/
 /* Table: PATIENT                                               */
 /*==============================================================*/
@@ -30,3 +31,5 @@ alter table NGSRUN
    add constraint FK_NGSRUN_REFERENCE_TISSUE foreign key (TISSUENAME)
       references TISSUE (TISSUENAME)
       on delete cascade on update cascade;
+	  
+commit;
