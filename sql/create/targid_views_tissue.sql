@@ -62,36 +62,36 @@ CREATE VIEW tissue.targid_mutation3 AS
 -- select * from tissue.targid_mutation3 where ensg = 'ENSG00000124875' order by aamutation;
 
 --- find out if canonical mutations are missing
-WITH 
-  TCGAtissue AS (
-    SELECT tissuename FROM tissue.tissueassignment WHERE tissuepanel = 'TCGA tumors' 
-  ),
-  TCGAgenes AS (
-    SELECT DISTINCT ensg from tissue.processedsequence ps JOIN transcript t on t.enst = ps.enst JOIN TCGAtissue ti ON ps.tissuename = ti.tissuename WHERE not iscanonical
-  )
-  SELECT g.ensg, t.tissuename,
-    (select count(*) FROM tissue.processedsequence ps join transcript tr on tr.enst = ps.enst WHERE ensg = g.ensg AND iscanonical and tissuename = t.tissuename) as can,
-    (select count(*) FROM tissue.processedsequence ps join transcript tr on tr.enst = ps.enst WHERE ensg = g.ensg AND NOT iscanonical and tissuename = t.tissuename) as noncan
-    FROM TCGAgenes g, TCGAtissue t order by noncan desc; 
+--WITH 
+--  TCGAtissue AS (
+--    SELECT tissuename FROM tissue.tissueassignment WHERE tissuepanel = 'TCGA tumors' 
+--  ),
+--  TCGAgenes AS (
+--    SELECT DISTINCT ensg from tissue.processedsequence ps JOIN transcript t on t.enst = ps.enst JOIN TCGAtissue ti ON ps.tissuename = ti.tissuename WHERE not iscanonical
+--  )
+--  SELECT g.ensg, t.tissuename,
+--    (select count(*) FROM tissue.processedsequence ps join transcript tr on tr.enst = ps.enst WHERE ensg = g.ensg AND iscanonical and tissuename = t.tissuename) as can,
+--    (select count(*) FROM tissue.processedsequence ps join transcript tr on tr.enst = ps.enst WHERE ensg = g.ensg AND NOT iscanonical and tissuename = t.tissuename) as noncan
+--    FROM TCGAgenes g, TCGAtissue t order by noncan desc; 
 
-WITH
-  TCGAtissue AS (
-    SELECT tissuename FROM tissue.tissueassignment WHERE tissuepanel = 'TCGA tumors'
-  ),
-  TCGAgenes AS (
-    SELECT DISTINCT ensg from tissue.processedsequence ps JOIN transcript t on t.enst = ps.enst JOIN TCGAtissue ti ON ps.tissuename = ti.tissuename WHERE not iscanonical
-  )
-  SELECT g.ensg,
-    (SELECT symbol from gene where ensg = g.ensg) AS symbol,
-    (select count(*) FROM tissue.processedsequence ps join transcript tr on tr.enst = ps.enst JOIN TCGAtissue ti ON ps.tissuename = ti.tissuename WHERE ensg = g.ensg AND iscanonical) as can,
-    (select count(*) FROM tissue.processedsequence ps join transcript tr on tr.enst = ps.enst JOIN TCGAtissue ti ON ps.tissuename = ti.tissuename WHERE ensg = g.ensg AND NOT iscanonical) as noncan
-    FROM TCGAgenes g order by noncan desc;      
+--WITH
+--  TCGAtissue AS (
+--    SELECT tissuename FROM tissue.tissueassignment WHERE tissuepanel = 'TCGA tumors'
+--  ),
+--  TCGAgenes AS (
+--    SELECT DISTINCT ensg from tissue.processedsequence ps JOIN transcript t on t.enst = ps.enst JOIN TCGAtissue ti ON ps.tissuename = ti.tissuename WHERE not iscanonical
+--  )
+--  SELECT g.ensg,
+--    (SELECT symbol from gene where ensg = g.ensg) AS symbol,
+--    (select count(*) FROM tissue.processedsequence ps join transcript tr on tr.enst = ps.enst JOIN TCGAtissue ti ON ps.tissuename = ti.tissuename WHERE ensg = g.ensg AND iscanonical) as can,
+--    (select count(*) FROM tissue.processedsequence ps join transcript tr on tr.enst = ps.enst JOIN TCGAtissue ti ON ps.tissuename = ti.tissuename WHERE ensg = g.ensg AND NOT iscanonical) as noncan
+--   FROM TCGAgenes g order by noncan desc;      
 
-SELECT * FROM tissue.processedsequenceview WHERE ensg = 'ENSG00000168477';
-SELECT * FROM tissue.processedsequenceview WHERE ensg = 'ENSG00000086758';
-SELECT * FROM tissue.processedsequenceview WHERE ensg = 'ENSG00000168477';
+--SELECT * FROM tissue.processedsequenceview WHERE ensg = 'ENSG00000168477';
+--SELECT * FROM tissue.processedsequenceview WHERE ensg = 'ENSG00000086758';
+--SELECT * FROM tissue.processedsequenceview WHERE ensg = 'ENSG00000168477';
 
--------
+-----
 
 --combines expression, mutation, and copy number data into a single view
 DROP VIEW IF EXISTS tissue.targid_data CASCADE;
