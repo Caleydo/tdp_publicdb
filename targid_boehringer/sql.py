@@ -115,7 +115,8 @@ def create_gene_score(result, other_prefix, other_primary, other_columns):
     .filter('panel', filter_panel) \
     .filter('panel_ensg', filter_gene_panel_d) \
     .filter('ensg', table='d') \
-    .filter(other_primary, table='c') \
+    .filter(other_primary, table='c')\
+    .build()
 
   result[basename + '_score'] = DBViewBuilder().idtype(idtype_gene).query("""
             SELECT D.ensg AS id, {{agg_score}} AS score
@@ -174,6 +175,7 @@ def create_sample(result, basename, idtype, primary, base_columns, columns):
       {{where}}
       ORDER BY {primary} ASC""".format(table=table, primary=primary)) \
     .query('count', 'SELECT count(*) from {base}.targid_{base} c {{where}}'.format(base=basename)) \
+    .derive_columns()\
     .call(base_columns) \
     .column(primary, label='id', type='string') \
     .replace('where') \
@@ -334,6 +336,7 @@ views = dict(
   FROM public.targid_gene t
   {{where}}
   ORDER BY t.symbol ASC""".format(primary=_primary_gene))
+    .derive_columns()
     .column(_primary_gene, label='id', type='string')
     .replace('where')
     .filter('panel', 'ensg = ANY(SELECT ensg FROM public.targid_geneassignment WHERE genesetname {operator} {value})')
@@ -389,4 +392,6 @@ create_sample(views, 'tissue', idtype_tissue, _primary_tissue, create_tissue_spe
 
 
 def create():
-  return DBConnector(views, agg_score)
+  d = DBConnector(views, agg_score)
+  d.description = 'TCGA/CCLE database as assembled by Boehringer Ingelheim GmbH'
+  return d
