@@ -149,7 +149,7 @@ def create_cellline_specific(result, basename, idtype, primary):
 
 def create_tissue_specific(result, basename, idtype, primary):
   index = 'row_number() OVER(ORDER BY c.{primary} ASC) as _index'.format(primary=primary)
-  column_query = 'targidid as _id, c.{primary} as id, species, tumortype, organ, gender'.format(
+  column_query = 'targidid as _id, c.{primary} as id, species, tumortype, organ, gender, tumortype_adjacent, vendorname, race, ethnicity, age, days_to_death, days_to_last_followup, vital_status, height, weight, bmi'.format(
     primary=primary)
 
   return DBViewBuilder().idtype(idtype).column(primary, label='id', type='string') \
@@ -157,11 +157,31 @@ def create_tissue_specific(result, basename, idtype, primary):
     .column('tumortype', type='categorical') \
     .column('organ', type='categorical') \
     .column('gender', type='categorical') \
+    .column('tumortype_adjacent', type='string') \
+    .column('vendorname', type='categorical') \
+    .column('race', type='categorical') \
+    .column('ethnicity', type='categorical') \
+    .column('age', type='number') \
+    .column('days_to_death', type='number') \
+    .column('days_to_last_followup', type='number') \
+    .column('vital_status', type='categorical') \
+    .column('height', type='number') \
+    .column('weight', type='number') \
+    .column('bmi', type='number') \
     .query("""
           SELECT {index}, {columns}
           FROM {base}.targid_{base} c
           %(where)s
           ORDER BY {primary} ASC""".format(index=index, columns=column_query, base=basename, primary=primary)) \
+    .query_stats("""
+      SELECT 
+      min(age) as age_min, max(age) as age_max,
+      min(days_to_death) as days_to_death_min, max(days_to_death) as days_to_death_max,
+      min(days_to_last_followup) as days_to_last_followup_min, max(days_to_last_followup) as days_to_last_followup_max,
+      min(height) as height_min, max(height) as height_max,
+      min(weight) as weight_min, max(weight) as weight_max,
+      min(bmi) AS bmi_min, max(bmi) AS bmi_max
+      FROM {base}.targid_{base} c""".format(base=basename))
 
 
 def create_sample(result, basename, idtype, primary, base, columns):
