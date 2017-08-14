@@ -58,9 +58,13 @@ export class CoExpression extends ACoExpression {
     return this.getParameter(ParameterFormIds.EXPRESSION_SUBTYPE).name;
   }
 
+  get itemIDType() {
+    return resolve(this.getParameter(ParameterFormIds.DATA_SOURCE).idType);
+  }
+
   protected select(range: Range): void {
     this.setItemSelection({
-      idtype: resolve(this.getParameter(ParameterFormIds.DATA_SOURCE).idType),
+      idtype: this.itemIDType,
       range
     });
   }
