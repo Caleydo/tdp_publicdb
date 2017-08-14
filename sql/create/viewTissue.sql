@@ -37,8 +37,9 @@ SELECT DISTINCT enst
 DROP MATERIALIZED VIEW IF EXISTS tissue.processedsequenceExtended CASCADE;
 CREATE MATERIALIZED VIEW tissue.processedsequenceExtended AS
 WITH TCGAtissue AS (
-  SELECT tissuename
-    FROM tissue.tissueassignment WHERE tissuepanel = 'TCGA tumors'
+  SELECT t.tissuename
+    FROM tissue.tissueassignment ta JOIN tissue.tissue t ON t.tissuename = ta.tissuename 
+    WHERE tissuepanel = 'TCGA tumors' AND dnasequenced
   ),
   TCGAenst AS (
     SELECT enst FROM tissue.tcgaensg
