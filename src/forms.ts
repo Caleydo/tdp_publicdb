@@ -153,6 +153,16 @@ export const FORM_GENE_FILTER = {
         species: getSelectedSpecies()
       }).then((r) => r.map((d) => ({name: `${d.text === -1 ? 'reverse' : 'forward'} strand`, value: d.text}))))
     }, {
+      name: 'Chromosome',
+      value: 'chromosome',
+      type: FormElementType.SELECT2,
+      multiple: true,
+      return: 'id',
+      optionsData: cachedLazy('gene_chromosome', () => getAPIJSON(`/targid/db/${gene.db}/gene_unique_all`, {
+        column: 'chromosome',
+        species: getSelectedSpecies()
+      }).then((r) => r.map((d) => d.text.toString())))
+    }, {
       name: 'Predefined Named Sets',
       value: 'panel',
       type: FormElementType.SELECT2,
@@ -186,7 +196,126 @@ export const FORM_GENE_FILTER = {
   }
 };
 
+function generateTissueSpecificFilter(d: IDataSourceConfig) {
+  return [
+    {
+      name: 'Tumor Type adjacent',
+      value: 'tumortype_adjacent',
+      type: FormElementType.SELECT2,
+      multiple: true,
+      return: 'id',
+      optionsData: cachedLazy(d.base + '_tumortype_adjacent', () => getAPIJSON(`/targid/db/${d.db}/${d.base}_unique_all`, {
+        column: 'tumortype_adjacent',
+        species: getSelectedSpecies()
+      }).then((r) => r.map((d) => d.text)))
+    }, {
+      name: 'Vendor name',
+      value: 'vendorname',
+      type: FormElementType.SELECT2,
+      multiple: true,
+      return: 'id',
+      optionsData: cachedLazy(d.base + '_vendorname', () => getAPIJSON(`/targid/db/${d.db}/${d.base}_unique_all`, {
+        column: 'vendorname',
+        species: getSelectedSpecies()
+      }).then((r) => r.map((d) => d.text)))
+    }, {
+      name: 'Race',
+      value: 'race',
+      type: FormElementType.SELECT2,
+      multiple: true,
+      return: 'id',
+      optionsData: cachedLazy(d.base + '_race', () => getAPIJSON(`/targid/db/${d.db}/${d.base}_unique_all`, {
+        column: 'race',
+        species: getSelectedSpecies()
+      }).then((r) => r.map((d) => d.text)))
+    }, {
+      name: 'Ethnicity',
+      value: 'ethnicity',
+      type: FormElementType.SELECT2,
+      multiple: true,
+      return: 'id',
+      optionsData: cachedLazy(d.base + '_ethnicity', () => getAPIJSON(`/targid/db/${d.db}/${d.base}_unique_all`, {
+        column: 'ethnicity',
+        species: getSelectedSpecies()
+      }).then((r) => r.map((d) => d.text)))
+    }, {
+      name: 'Vital status',
+      value: 'vital_status',
+      type: FormElementType.SELECT2,
+      multiple: true,
+      return: 'id',
+      optionsData: cachedLazy(d.base + '_vital_status', () => getAPIJSON(`/targid/db/${d.db}/${d.base}_unique_all`, {
+        column: 'vital_status',
+        species: getSelectedSpecies()
+      }).then((r) => r.map((d) => d.text === true? 'true' : 'false')))
+    }
+  ];
+}
+
+function generateCelllineSpecificFilter(d: IDataSourceConfig) {
+  return [
+    {
+      name: 'Age at Surgery',
+      value: 'age_at_surgery',
+      type: FormElementType.SELECT2,
+      multiple: true,
+      return: 'id',
+      optionsData: cachedLazy(d.base + '_age_at_surgery', () => getAPIJSON(`/targid/db/${d.db}/${d.base}_unique_all`, {
+        column: 'age_at_surgery',
+        species: getSelectedSpecies()
+      }).then((r) => r.map((d) => d.text)))
+    }, {
+      name: 'Growth Type',
+      value: 'growth_type',
+      type: FormElementType.SELECT2,
+      multiple: true,
+      return: 'id',
+      optionsData: cachedLazy(d.base + '_growth_type', () => getAPIJSON(`/targid/db/${d.db}/${d.base}_unique_all`, {
+        column: 'growth_type',
+        species: getSelectedSpecies()
+      }).then((r) => r.map((d) => d.text)))
+    }, {
+      name: 'Histology Type',
+      value: 'histology_type',
+      type: FormElementType.SELECT2,
+      multiple: true,
+      return: 'id',
+      optionsData: cachedLazy(d.base + '_histology_type', () => getAPIJSON(`/targid/db/${d.db}/${d.base}_unique_all`, {
+        column: 'histology_type',
+        species: getSelectedSpecies()
+      }).then((r) => r.map((d) => d.text)))
+    }, {
+      name: 'Metastatic Site',
+      value: 'metastatic_site',
+      type: FormElementType.SELECT2,
+      multiple: true,
+      return: 'id',
+      optionsData: cachedLazy(d.base + '_metastatic_site', () => getAPIJSON(`/targid/db/${d.db}/${d.base}_unique_all`, {
+        column: 'metastatic_site',
+        species: getSelectedSpecies()
+      }).then((r) => r.map((d) => d.text)))
+    }, {
+      name: 'Morphology',
+      value: 'morphology',
+      type: FormElementType.SELECT2,
+      multiple: true,
+      return: 'id',
+      optionsData: cachedLazy(d.base + '_morphology', () => getAPIJSON(`/targid/db/${d.db}/${d.base}_unique_all`, {
+        column: 'morphology',
+        species: getSelectedSpecies()
+      }).then((r) => r.map((d) => d.text)))
+    }
+  ];
+}
+
 function generateFilter(d: IDataSourceConfig) {
+  let specificFilters = [];
+  if(d === tissue) {
+    specificFilters = generateTissueSpecificFilter(d);
+  } else if(d === cellline) {
+    specificFilters = generateCelllineSpecificFilter(d);
+  }
+
   return {
     type: FormElementType.MAP,
     label: `Filter:`,
@@ -227,7 +356,9 @@ function generateFilter(d: IDataSourceConfig) {
           column: 'gender',
           species: getSelectedSpecies()
         }).then((r) => r.map((d) => d.text)))
-      }, {
+      },
+      ...specificFilters,
+      {
         name: 'Predefined Named Sets',
         value: 'panel',
         type: FormElementType.SELECT2,
