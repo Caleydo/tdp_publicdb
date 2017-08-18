@@ -1,5 +1,5 @@
 # flake8: noqa
-from ordino.dbview import DBViewBuilder, DBConnector, limit_offset, append_where
+from ordino.dbview import DBViewBuilder, DBConnector, limit_offset, inject_where
 import re
 
 __author__ = 'Samuel Gratzl'
@@ -32,6 +32,7 @@ operators = ['<', '>', '>=', '<=', '=', '<>']
 
 def _create_common(result, prefix, table, primary, idtype, columns):
   # lookup for the id and primary names the table
+
   result[prefix + '_items'] = DBViewBuilder().idtype(idtype).query("""
       SELECT targidid, {primary} as id, {{column}} AS text
       FROM {table} WHERE LOWER({{column}}) LIKE :query AND species = :species
@@ -44,7 +45,8 @@ def _create_common(result, prefix, table, primary, idtype, columns):
   result[prefix + '_items_verify'] = DBViewBuilder().idtype(idtype).query("""
       SELECT {primary} as id,{{column}} AS text
        FROM {table} WHERE species = :species""".format(table=table, primary=primary))\
-    .call(append_where)\
+    .call(inject_where)\
+    .arg('column') \
     .arg('species')\
     .build()
 
@@ -80,7 +82,7 @@ def create_gene_score(result, other_prefix, other_primary, other_columns):
           INNER JOIN public.targid_gene G ON G.ensg = D.ensg
           WHERE C.species = :species AND C.{primary} = :name""".format(primary=other_primary, base=other_prefix)) \
     .replace('table', tables).replace('attribute', attributes)\
-    .call(append_where)\
+    .call(inject_where)\
     .arg('name').arg('species') \
     .filters(other_columns) \
     .filter('panel', filter_gene_panel_d) \
@@ -92,9 +94,10 @@ def create_gene_score(result, other_prefix, other_primary, other_columns):
            SELECT ensg AS id, SUM({{attribute}}::integer) as count, COUNT({{attribute}}) as total
            FROM {base}.targid_{{table}} d
            INNER JOIN {base}.targid_{base} c ON c.{primary} = d.{primary}
-           WHERE c.species = :species {{and_where}}
+           WHERE c.species = :species
            GROUP BY ensg""".format(primary=other_primary, base=other_prefix)) \
-    .replace('table', tables).replace('attribute', attributes).replace('and_where')\
+    .replace('table', tables).replace('attribute', attributes)\
+    .call(inject_where) \
     .arg('species') \
     .filters(other_columns) \
     .filter('panel', filter_panel) \
@@ -107,9 +110,10 @@ def create_gene_score(result, other_prefix, other_primary, other_columns):
            SELECT ensg AS id, SUM(({{attribute}} {{operator}} :value)::INT4) as count, COUNT({{attribute}}) as total
            FROM {base}.targid_{{table}} d
            INNER JOIN {base}.targid_{base} c ON c.{primary} = d.{primary}
-           WHERE c.species = :species {{and_where}} 
+           WHERE c.species = :species  
            GROUP BY ensg""".format(primary=other_primary, base=other_prefix)) \
-    .replace('table', tables).replace('and_where').replace('attribute', attributes).replace('operator', operators)\
+    .replace('table', tables).replace('attribute', attributes).replace('operator', operators) \
+    .call(inject_where) \
     .arg('value').arg('species') \
     .filters(other_columns) \
     .filter('panel', filter_panel) \
@@ -172,13 +176,11 @@ def create_sample(result, basename, idtype, primary, base_columns, columns):
     .query("""
       SELECT targidid as _id, {primary} as id, *
       FROM {table} c
-      {{where}}
       ORDER BY {primary} ASC""".format(table=table, primary=primary)) \
-    .query('count', 'SELECT count(*) from {base}.targid_{base} c {{where}}'.format(base=basename)) \
     .derive_columns()\
+    .call(inject_where) \
     .call(base_columns) \
     .column(primary, label='id', type='string') \
-    .replace('where') \
     .filters(columns) \
     .filter('panel', filter_panel) \
     .filter(primary, table='c') \
@@ -195,7 +197,7 @@ def create_sample(result, basename, idtype, primary, base_columns, columns):
         INNER JOIN {base}.targid_{base} C ON a.{primary} = C.{primary}
         WHERE a.ensg = :ensg""".format(primary=primary, base=basename))\
     .replace('attribute', attributes)\
-    .call(append_where)\
+    .call(inject_where)\
     .arg('ensg') \
     .filters(columns) \
     .filter('panel', filter_panel) \
@@ -211,7 +213,7 @@ def create_sample(result, basename, idtype, primary, base_columns, columns):
        INNER JOIN {base}.targid_{base} C ON a.{primary} = C.{primary}
        WHERE a.ensg = :ensg""".format(primary=primary, base=basename)) \
     .replace('expression_subtype', attributes).replace('copynumber_subtype', attributes)\
-    .call(append_where)\
+    .call(inject_where)\
     .arg('ensg')\
     .filters(columns) \
     .filter('panel', filter_panel) \
@@ -226,7 +228,7 @@ def create_sample(result, basename, idtype, primary, base_columns, columns):
        INNER JOIN {base}.targid_{base} C ON D.{primary} = C.{primary}
        INNER JOIN PUBLIC.targid_gene g ON D.ensg = g.ensg
        WHERE D.ensg = :ensg AND C.species = :species""".format(primary=primary, base=basename))\
-    .call(append_where) \
+    .call(inject_where) \
     .arg('ensg').arg('species') \
     .filters(columns) \
     .filter('panel', filter_panel) \
@@ -240,7 +242,7 @@ def create_sample(result, basename, idtype, primary, base_columns, columns):
        SELECT C.targidid AS _id, C.{primary} AS id
      FROM {base}.targid_{base} C
      WHERE C.species = :species""".format(primary=primary, base=basename)) \
-    .call(append_where)\
+    .call(inject_where)\
     .arg('species') \
     .filters(columns) \
     .filter('panel', filter_panel) \
@@ -257,7 +259,7 @@ def create_sample(result, basename, idtype, primary, base_columns, columns):
        INNER JOIN {base}.targid_{base} C ON d.{primary} = C.{primary}
         WHERE g.species = :species AND g.ensg = :name""".format(primary=primary, base=basename)) \
     .replace('table', tables).replace('attribute', attributes)\
-    .call(append_where)\
+    .call(inject_where)\
     .arg('name').arg('species')\
     .filters(columns) \
     .filter('panel', filter_panel) \
@@ -269,9 +271,10 @@ def create_sample(result, basename, idtype, primary, base_columns, columns):
         SELECT d.{primary} AS id, SUM({{attribute}}::integer) as count, COUNT({{attribute}}) as total
            FROM {base}.targid_{{table}} d
          INNER JOIN public.targid_gene g ON g.ensg = d.ensg
-           WHERE g.species = :species {{and_where}}
+           WHERE g.species = :species
            GROUP BY d.{primary}""".format(primary=primary, base=basename)) \
-    .replace('table', tables).replace('attribute', attributes).replace('and_where') \
+    .replace('table', tables).replace('attribute', attributes) \
+    .call(inject_where) \
     .arg('species')\
     .filters(columns) \
     .filter('panel', filter_gene_panel) \
@@ -284,9 +287,10 @@ def create_sample(result, basename, idtype, primary, base_columns, columns):
         SELECT d.{primary} AS id, SUM(({{attribute}} {{operator}} :value)::INT4) as count, COUNT({{attribute}}) as total
            FROM {base}.targid_{{table}} d
          INNER JOIN public.targid_gene g ON g.ensg = d.ensg
-           WHERE g.species = :species {{and_where}}
+           WHERE g.species = :species
            GROUP BY d.{primary}""".format(primary=primary, base=basename)) \
-    .replace('table', tables).replace('and_where').replace('attribute', attributes).replace('operator', operators)\
+    .replace('table', tables).replace('attribute', attributes).replace('operator', operators)\
+    .call(inject_where) \
     .arg('value').arg('species') \
     .filters(columns) \
     .filter('panel', filter_gene_panel) \
@@ -319,13 +323,13 @@ def create_sample(result, basename, idtype, primary, base_columns, columns):
   result[basename + '_check_ids'] = DBViewBuilder().query("""
     SELECT COUNT(*) AS matches FROM {base}.targid_{base}
   """.format(primary=primary, base=basename))\
-    .call(append_where)\
+    .call(inject_where)\
     .build()
 
   result[basename + '_all_columns'] = DBViewBuilder().query("""
     SELECT {primary} as id, * FROM {base}.targid_{base}
   """.format(base=basename, primary=primary))\
-    .call(append_where)\
+    .call(inject_where)\
     .build()
 
 
@@ -334,11 +338,10 @@ views = dict(
   gene=DBViewBuilder().idtype(idtype_gene).table('public.targid_gene').query("""
   SELECT targidid as _id, {primary} as id, *
   FROM public.targid_gene t
-  {{where}}
   ORDER BY t.symbol ASC""".format(primary=_primary_gene))
     .derive_columns()
     .column(_primary_gene, label='id', type='string')
-    .replace('where')
+    .call(inject_where)
     .filter('panel', 'ensg = ANY(SELECT ensg FROM public.targid_geneassignment WHERE genesetname {operator} {value})')
     .build(),
   gene_panel=DBViewBuilder().query("""
@@ -356,7 +359,7 @@ views = dict(
   gene_gene_items_verify=DBViewBuilder().idtype(idtype_gene).query("""
       SELECT ensg as id, symbol AS text
        FROM public.targid_gene WHERE species = :species""") \
-    .call(append_where)
+    .call(inject_where)
     .arg('species') \
     .filter('symbol', '(lower(ensg) {operator} {value} or lower(symbol) {operator} {value})')
     .build(),
@@ -372,13 +375,13 @@ views = dict(
   gene_all_columns=DBViewBuilder().query("""
     SELECT symbol as id, * FROM public.targid_gene
   """)
-    .call(append_where)
+    .call(inject_where)
     .build(),
 
   gene_match_symbols=DBViewBuilder().query("""
     SELECT COUNT(*) as matches FROM public.targid_gene
   """)
-    .call(append_where)
+    .call(inject_where)
     .build()
 )
 
