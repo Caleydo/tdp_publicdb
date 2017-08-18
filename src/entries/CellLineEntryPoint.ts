@@ -8,7 +8,7 @@ import {chooseDataSource} from '../config';
 import {ACommonEntryPointList} from 'targid_common/src/entries/ACommonEntryPointList';
 import {IACommonListOptions, ACommonList} from 'targid_common/src/entries/ACommonList';
 import {IViewContext, ISelection} from 'ordino/src/View';
-import {stringCol, categoricalCol} from 'ordino/src/LineUpView';
+import {stringCol, categoricalCol, numberCol2} from 'ordino/src/LineUpView';
 import SearchProvider from 'targid_common/src/entries/SearchProvider';
 
 
@@ -62,7 +62,18 @@ class TissueList extends ACommonList {
       //categoricalCol('species', desc.columns.species.categories, 'Species', true),
       categoricalCol('tumortype', desc.columns.tumortype.categories, 'Tumor Type', true),
       categoricalCol('organ', desc.columns.organ.categories, 'Organ', true),
-      categoricalCol('gender', desc.columns.gender.categories, 'Gender', true)
+      categoricalCol('gender', desc.columns.gender.categories, 'Gender', true),
+      categoricalCol('tumortype_adjacent', desc.columns.tumortype_adjacent.categories, 'Tumor Type adjacent', false),
+      categoricalCol('vendorname', desc.columns.vendorname.categories, 'Vendor name', false),
+      categoricalCol('race', desc.columns.race.categories, 'Race', false),
+      categoricalCol('ethnicity', desc.columns.ethnicity.categories, 'Ethnicity', false),
+      numberCol2('age', desc.columns.age.min, desc.columns.age.max, 'Age', false),
+      numberCol2('days_to_death', 0, desc.columns.days_to_death.max, 'Days to death', false),
+      numberCol2('days_to_last_followup', 0, desc.columns.days_to_last_followup.max, 'Days to last follow up', false),
+      categoricalCol('vital_status', desc.columns.vital_status.categories, 'Vital status', false),
+      numberCol2('height', 0, desc.columns.height.max, 'Height', false),
+      numberCol2('weight', 0, desc.columns.weight.max, 'Weight', false),
+      numberCol2('bmi', 0, desc.columns.bmi.max, 'Body Mass Index (BMI)', false)
     ];
   }
 }

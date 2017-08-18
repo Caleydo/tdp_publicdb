@@ -159,7 +159,10 @@ def create_tissue_specific(query):
   return query \
     .column('tumortype', type='categorical') \
     .column('organ', type='categorical') \
-    .column('gender', type='categorical')
+    .column('gender', type='categorical') \
+    .column('vendorname', type='categorical') \
+    .column('race', type='categorical') \
+    .column('ethnicity', type='categorical') \
 
 
 def create_sample(result, basename, idtype, primary, base_columns, columns):

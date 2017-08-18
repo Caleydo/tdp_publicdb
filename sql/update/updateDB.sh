@@ -22,12 +22,13 @@ then
   fi
 fi
 echo Actual version $actual_version
-for filename in `ls -v update_[0-9]*.[0-9]*.[0-9]*.sql`; do
+for filename in `ls -v update_[0-9]*.[0-9]*.[0-9]*-*.sql`; do
 	check_version=${filename#update_}
-	check_version=${check_version%\.sql}
+	check_version=`echo $check_version | cut -d- -f1`
 	major=`echo $check_version | cut -d. -f1`
-        minor=`echo $check_version | cut -d. -f2`
-        revision=`echo $check_version | cut -d. -f3`
+  minor=`echo $check_version | cut -d. -f2`
+  revision=`echo $check_version | cut -d. -f3`
+
 	if [ $actual_version != $check_version ] && [ "$( echo "${actual_version}\\n${check_version}" | sort -V | head -1)" = $actual_version ]
 	then
 		psql_exit_status=`psql -U ${username} -h ${host} -p ${port} -A -t -q -d ${dbname} -f $filename`
@@ -40,3 +41,13 @@ for filename in `ls -v update_[0-9]*.[0-9]*.[0-9]*.sql`; do
 		`psql -U ${username} -h ${host} -p ${port} -A -t -q -d ${dbname} -c "INSERT INTO public.ordino_version(major,minor,revision,date) values($major,$minor,$revision,now())"`
 	fi
 done
+
+echo Executing post update script
+psql_exit_status=`psql -U ${username} -h ${host} -p ${port} -A -t -q -d ${dbname} -f postUpdate.sql`
+if [ -z "$psql_exit_status" ]
+then
+  echo "psql failed to run script: postUpdate.sql" 1>&2
+  exit $psql_exit_status
+fi
+
+echo Done :)

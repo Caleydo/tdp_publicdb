@@ -12,14 +12,14 @@ cat recreatePublic.sql | $DB
 echo "CREATE schema tissue;" | $DB
 echo "CREATE schema cellline;" | $DB
 
-cat geneAnnotation.sql | $DB 
+cat geneAnnotation.sql | $DB
 echo "set search_path = tissue,public;" | cat - tissueDB.sql | $DB
 echo "set search_path = cellline,public;" | cat - celllineDB.sql | $DB
 
 cat storedprocedure.sql trigger.sql view.sql | $DB
 
-cat storedprocedureCellline.sql triggerCellline.sql viewCellline.sql | $DB 
-cat storedprocedureTissue.sql triggerTissue.sql viewTissue.sql | $DB 
+cat storedprocedureCellline.sql triggerCellline.sql viewCellline.sql | $DB
+cat storedprocedureTissue.sql triggerTissue.sql viewTissue.sql | $DB
 
 cat sequenceCellline.sql sequenceTissue.sql | $DB
 
