@@ -143,7 +143,7 @@ export function createScore(data: ISingleScoreParam, pluginDesc: IPluginDesc): I
   const configs = (<any>data).data_types;
   function defineScore(name: {id: string, text: string}) {
     if (configs) {
-      return configs.map((ds) => new SingleScore({name, data_type: ds[0], data_subtype: ds[1]}, primary, opposite));
+      return configs.map((ds) => new SingleScore({name, data_type: ds[0], data_subtype: ds[1], maxDirectFilterRows: data.maxDirectFilterRows}, primary, opposite));
     } else {
       return new SingleScore(Object.assign({}, data, { name }), primary, opposite);
     }

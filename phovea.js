@@ -344,7 +344,7 @@ module.exports = function(registry) {
     'site': '//vie-toolbox/clip/multiViewGene.php?ensg={gene}',
     'argument': 'gene',
     'idtype': 'Ensembl',
-    'selection': 'multiple',
+    'selection': 'chooser',
     'group': {
       'name': 'Internal resources',
       'order': 0
@@ -358,7 +358,7 @@ module.exports = function(registry) {
     'site': '///vie-toolbox/clip/multiViewCellline.php?celllinename={cellline}',
     'argument': 'cellline',
     'idtype': 'Cellline',
-    'selection': 'multiple',
+    'selection': 'chooser',
     'group': {
       'name': 'Internal resources',
       'order': 0
@@ -372,7 +372,7 @@ module.exports = function(registry) {
     'site': '///vie-bio-shiny.eu.boehringer.com/copynumberoverview/?celllinename={cellline}',
     'argument': 'cellline',
     'idtype': 'Cellline',
-    'selection': 'multiple',
+    'selection': 'chooser',
     'group': {
       'name': 'Internal resources',
       'order': 10
@@ -439,9 +439,9 @@ module.exports = function(registry) {
     'site': '//www.ncbi.nlm.nih.gov/pubmed?term={gene}',
     'argument': 'gene',
     'idtype': 'Ensembl',
-    'selection': 'multiple',
+    'selection': 'chooser',
     'group': {
-      'name': 'External resources',
+      'name': 'External resources'
       // 'order': 60
     }
   });
@@ -456,6 +456,71 @@ module.exports = function(registry) {
       'sampleType': 'GeneSymbol'
     }
   });
+
+  registry.push('bobSearchProvider', 'gene', function() { return import('./src/entries/SearchProvider')}, {
+    factory: 'createGene',
+    idType: 'Ensembl',
+    name: 'Genes'
+  });
+
+  registry.push('bobSearchProvider', 'tissue', function() { return import('./src/entries/SearchProvider')}, {
+    factory: 'createTissue',
+    idType: 'Tissue',
+    name: 'Tissues'
+  });
+
+  registry.push('bobSearchProvider', 'cellline', function() { return import('./src/entries/SearchProvider')}, {
+    factory: 'createCellline',
+    idType: 'Cellline',
+    name: 'Cell lines'
+  });
+
+  registry.push('targidView', 'celllline_combined_lineup', function () {
+    return System.import('./src/views/CombinedDependentGeneTable');
+  }, {
+    'name': 'Combined View',
+    'factory': 'create',
+    'idtype': 'Cellline',
+    'selection': 'some',
+    'group': {
+      'name': 'Gene overview',
+      'order': 40
+    },
+    'filter': {
+      'species': 'human'
+    }
+  });
+
+  registry.push('targidView', 'tissue_combined_lineup', function () {
+    return System.import('./src/views/CombinedDependentGeneTable');
+  }, {
+    'name': 'Combined View',
+    'factory': 'create',
+    'idtype': 'Tissue',
+    'selection': 'some',
+    'group': {
+      'name': 'Gene overview',
+      'order': 40
+    },
+    'filter': {
+      'species': 'human'
+    }
+  });
+
+  registry.push('targidView', 'gene_combined_lineup', function () {
+    return System.import('./src/views/CombinedDependentSampleTable');
+  }, {
+    'name': 'Combined View',
+    'factory': 'create',
+    'idtype': 'Ensembl',
+    'selection': 'some',
+    'group': {
+      'name': 'Sample overview',
+      'order': 40
+    },
+    'filter': {
+      'species': 'human'
+    }
+  });
   // generator-phovea:end
 };
-

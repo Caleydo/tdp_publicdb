@@ -52,9 +52,13 @@ export class ExpressionVsCopyNumber extends AExpressionVsCopyNumber {
     });
   }
 
+  get itemIDType() {
+    return resolve(this.getParameter(ParameterFormIds.DATA_SOURCE).idType);
+  }
+
   protected select(range: Range) {
     this.setItemSelection({
-      idtype: resolve(this.getParameter(ParameterFormIds.DATA_SOURCE).idType),
+      idtype: this.itemIDType,
       range
     });
   }
