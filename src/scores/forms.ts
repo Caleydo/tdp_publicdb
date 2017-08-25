@@ -2,8 +2,8 @@ import {
   ParameterFormIds, MUTATION_AGGREGATION, NUMERIC_AGGREGATION, COMPARISON_OPERATORS,
   FORM_DATA_HIERARCHICAL_SUBTYPE, FORM_DATA_HIERARCHICAL_SUBTYPE_AGGREGATED_SELECTION
 } from '../forms';
-import {FormElementType} from 'ordino/src/form';
-import {mutation, expression, copyNumber, MAX_FILTER_SCORE_ROWS_BEFORE_ALL, splitTypes, dataSubtypes} from '../config';
+import {FormElementType} from 'tdp_core/src/form';
+import {MAX_FILTER_SCORE_ROWS_BEFORE_ALL, splitTypes, dataSubtypes} from '../config';
 /**
  * Created by Samuel Gratzl on 15.03.2017.
  */

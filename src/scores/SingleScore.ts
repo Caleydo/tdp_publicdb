@@ -2,16 +2,14 @@
  * Created by sam on 06.03.2017.
  */
 
-import {getAPIJSON} from 'phovea_core/src/ajax';
 import {Range, RangeLike} from 'phovea_core/src/range';
-import {resolve} from 'phovea_core/src/idtype';
-import IDType from 'phovea_core/src/idtype/IDType';
-import {getSelectedSpecies} from 'targid_common/src/Common';
+import {resolve, IDType} from 'phovea_core/src/idtype';
+import {getSelectedSpecies} from 'tdp_gene/src/common';
 import {IDataSourceConfig, gene, tissue, cellline, MAX_FILTER_SCORE_ROWS_BEFORE_ALL, splitTypes} from '../config';
-import {convertLog2ToLinear, limitScoreRows} from 'targid_common/src/utils';
-import {IScore} from 'ordino/src/LineUpView';
+import {convertLog2ToLinear, limitScoreRows} from 'tdp_gene/src/utils';
+import {IScore} from 'tdp_core/src/extensions';
 import {createDesc} from './utils';
-import {IFormElementDesc, FormElementType} from 'ordino/src/form';
+import {IFormElementDesc, FormElementType} from 'tdp_core/src/form';
 import {ParameterFormIds, FORM_GENE_NAME, FORM_TISSUE_NAME, FORM_CELLLINE_NAME} from '../forms';
 import {IPluginDesc} from 'phovea_core/src/plugin';
 import AScore from './AScore';
@@ -21,8 +19,9 @@ import {
 } from './forms';
 import {selectDataSources} from './utils';
 import {mixin} from 'phovea_core/src';
-import {INamedSet} from 'ordino/src/storage';
-import FormBuilderDialog from 'ordino/src/form/FormDialog';
+import {INamedSet} from 'tdp_core/src/storage';
+import {FormDialog} from 'tdp_core/src/form';
+import {getTDPScore} from 'tdp_core/src/rest';
 
 interface ISingleScoreParam {
   name: {id: string, text: string};
@@ -44,13 +43,11 @@ export default class SingleScore extends AScore implements IScore<any> {
   }
 
   createDesc(): any {
-    const ds = this.oppositeDataSource;
     return createDesc(this.dataSubType.type, `${this.dataSubType.name} of ${this.parameter.name.text}`, this.dataSubType,
-    `${ds.name} Name: "${this.parameter.name.text}"\nData Type: ${this.dataType.name}\nData Subtype: ${this.dataSubType.name}`);
+    `${this.oppositeDataSource.name} Name: "${this.parameter.name.text}"\nData Type: ${this.dataType.name}\nData Subtype: ${this.dataSubType.name}`);
   }
 
   async compute(ids:RangeLike, idtype:IDType, namedSet?: INamedSet):Promise<any[]> {
-    const url = `/targid/db/${this.dataSource.db}/${this.dataSource.base}_${this.oppositeDataSource.base}_single_score/score`;
     const param: any = {
       table: this.dataType.tableName,
       attribute: this.dataSubType.id,
@@ -61,7 +58,7 @@ export default class SingleScore extends AScore implements IScore<any> {
     const maxDirectRows = typeof this.parameter.maxDirectFilterRows === 'number' ? this.parameter.maxDirectFilterRows : MAX_FILTER_SCORE_ROWS_BEFORE_ALL;
     limitScoreRows(param, ids, idtype, this.dataSource.entityName, maxDirectRows, namedSet);
 
-    const rows: any[] = await getAPIJSON(url, param);
+    const rows = await getTDPScore(this.dataSource.db, `${this.dataSource.base}_${this.oppositeDataSource.base}_single_score`, param);
     if (this.dataSubType.useForAggregation.indexOf('log2') !== -1) {
       return convertLog2ToLinear(rows, 'score');
     }
@@ -78,7 +75,7 @@ function enableMultiple(desc: any): any {
 
 export function create(pluginDesc: IPluginDesc, extra: any, countHint?: number) {
   const {primary, opposite} = selectDataSources(pluginDesc);
-  const dialog = new FormBuilderDialog('Add Single Score Column', 'Add Single Score Column');
+  const dialog = new FormDialog('Add Single Score Column', 'Add Single Score Column');
   const formDesc:IFormElementDesc[] = FORM_SINGLE_SCORE.slice();
   switch(opposite) {
     case gene:

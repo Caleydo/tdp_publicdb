@@ -2,7 +2,7 @@
  * Created by sam on 06.03.2017.
  */
 
-import {mutationCat, copyNumberCat, unknownMutationValue, unknownCopyNumberValue, GENE_IDTYPE} from 'targid_common/src/constants';
+import {mutationCat, copyNumberCat, unknownMutationValue, unknownCopyNumberValue, GENE_IDTYPE} from 'tdp_gene/src/constants';
 
 
 /**

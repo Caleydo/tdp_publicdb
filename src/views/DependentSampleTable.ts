@@ -8,12 +8,12 @@ import {
   stringCol, numberCol2, categoricalCol,
   ALineUpView2, IScoreRow
 } from 'ordino/src/LineUpView';
-import {getSelectedSpecies} from 'targid_common/src/Common';
+import {getSelectedSpecies} from 'tdp_gene/src/common';
 import {expression, copyNumber, mutation, IDataTypeConfig} from '../config';
 import {ParameterFormIds, FORM_DATA_SOURCE, FORM_TISSUE_OR_CELLLINE_FILTER} from '../forms';
 import {FormBuilder, IFormSelectDesc} from 'ordino/src/FormBuilder';
 import {convertRow2MultiMap} from 'ordino/src/form/internal/FormMap';
-import {toFilter, convertLog2ToLinear} from 'targid_common/src/utils';
+import {toFilter, convertLog2ToLinear} from 'tdp_gene/src/utils';
 import {FormElementType} from 'ordino/src/form';
 import {loadFirstName} from './utils';
 

@@ -2,24 +2,22 @@
  * Created by sam on 16.02.2017.
  */
 
-import {FormElementType, IFormSelectDesc} from 'ordino/src/FormBuilder';
-import {IViewContext, ISelection} from 'ordino/src/View';
-import ACoExpression, {IDataFormatRow, IGeneOption} from 'targid_common/src/views/ACoExpression';
-import {getSelectedSpecies} from 'targid_common/src/Common';
+import {FormElementType, IFormSelectDesc, convertRow2MultiMap} from 'tdp_core/src/form';
+import ACoExpression, {IDataFormatRow, IGeneOption} from 'tdp_gene/src/views/ACoExpression';
+import {getSelectedSpecies} from 'tdp_gene/src/common';
 import {expression} from '../config';
 import {ParameterFormIds, FORM_TISSUE_OR_CELLLINE_FILTER, FORM_DATA_SOURCE} from '../forms';
-import {getAPIJSON} from 'phovea_core/src/ajax';
 import {loadGeneList, loadFirstName} from './utils';
-import {convertRow2MultiMap} from 'ordino/src/form/internal/FormMap';
-import {toFilter} from 'targid_common/src/utils';
+import {toFilter} from 'tdp_gene/src/utils';
 import {resolve} from 'phovea_core/src/idtype/manager';
 import Range from 'phovea_core/src/range/Range';
+import {getTDPData} from 'tdp_core/src/rest';
 
 
-export class CoExpression extends ACoExpression {
+export default class CoExpression extends ACoExpression {
 
-  protected buildParameterDescs(): IFormSelectDesc[] {
-    const base = super.buildParameterDescs();
+  protected getParameterFormDescs(): IFormSelectDesc[] {
+    const base = super.getParameterFormDescs();
     base.splice(1, 0, FORM_DATA_SOURCE);
     base.push({
       type: FormElementType.SELECT,
@@ -47,7 +45,7 @@ export class CoExpression extends ACoExpression {
       species: getSelectedSpecies()
     };
     toFilter(param, convertRow2MultiMap(this.getParameter('filter')));
-    return getAPIJSON(`/targid/db/${ds.db}/${ds.base}_co_expression/filter`, param);
+    return getTDPData(ds.db, `${ds.base}_co_expression/filter`, param);
   }
 
   loadFirstName(ensg: string) {
@@ -73,8 +71,4 @@ export class CoExpression extends ACoExpression {
     const dataSource = this.getParameter(ParameterFormIds.DATA_SOURCE).name;
     return `No data for the selected reference gene ${refGene.data.symbol} (${refGene.data.id}) and data source ${dataSource} available.`;
   }
-}
-
-export function create(context:IViewContext, selection: ISelection, parent:Element, options?) {
-  return new CoExpression(context, selection, parent, options);
 }

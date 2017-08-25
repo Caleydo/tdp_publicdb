@@ -5,11 +5,11 @@
 import {IPluginDesc} from 'phovea_core/src/plugin';
 import {IEntryPointList, IEntryPointOptions} from 'ordino/src/StartMenu';
 import {chooseDataSource} from '../config';
-import {ACommonEntryPointList} from 'targid_common/src/entries/ACommonEntryPointList';
-import {IACommonListOptions, ACommonList} from 'targid_common/src/entries/ACommonList';
+import {ACommonEntryPointList} from 'tdp_gene/src/entries/ACommonEntryPointList';
+import {IACommonListOptions, ACommonList} from 'tdp_gene/src/entries/ACommonList';
 import {IViewContext, ISelection} from 'ordino/src/View';
 import {stringCol, categoricalCol, numberCol2} from 'ordino/src/LineUpView';
-import SearchProvider from 'targid_common/src/entries/SearchProvider';
+import SearchProvider from 'tdp_gene/src/entries/SearchProvider';
 
 
 /**

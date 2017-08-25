@@ -5,13 +5,13 @@
 import {IPluginDesc} from 'phovea_core/src/plugin';
 import {IEntryPointList, IEntryPointOptions} from 'ordino/src/StartMenu';
 import {gene} from '../config';
-import {ACommonEntryPointList} from 'targid_common/src/entries/ACommonEntryPointList';
-import {IACommonListOptions, ACommonList} from 'targid_common/src/entries/ACommonList';
+import {ACommonEntryPointList} from 'tdp_gene/src/entries/ACommonEntryPointList';
+import {IACommonListOptions, ACommonList} from 'tdp_gene/src/entries/ACommonList';
 import {IViewContext, ISelection} from 'ordino/src/View';
 import {stringCol, categoricalCol} from 'ordino/src/LineUpView';
 import {api2absURL, getAPIJSON} from 'phovea_core/src/ajax';
 import {mixin} from 'phovea_core/src';
-import {getSelectedSpecies} from 'targid_common/src/Common';
+import {getSelectedSpecies} from 'tdp_gene/src/common';
 
 /**
  * Entry point list from all species and LineUp named sets (aka stored LineUp sessions)

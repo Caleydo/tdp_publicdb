@@ -6,7 +6,7 @@ import {IDataSubtypeConfig, dataSubtypes, cellline, tissue, gene, IDataSourceCon
 import {IBoxPlotData} from 'lineupjs/src/model/BoxPlotColumn';
 import {IPluginDesc} from 'phovea_core/src/plugin';
 import {FORM_GENE_FILTER, FORM_TISSUE_FILTER, FORM_CELLLINE_FILTER} from '../forms';
-import {toFilterString as toFilterStringImpl} from 'targid_common/src/utils';
+import {toFilterString as toFilterStringImpl} from 'tdp_gene/src/utils';
 
 /**
  * creates a lineup config out of a IDataSubtypeConfig

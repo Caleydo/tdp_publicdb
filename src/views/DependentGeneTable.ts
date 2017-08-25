@@ -8,7 +8,7 @@ import {
   stringCol, numberCol2, categoricalCol,
   ALineUpView2, IScoreRow
 } from 'ordino/src/LineUpView';
-import {getSelectedSpecies} from 'targid_common/src/Common';
+import {getSelectedSpecies} from 'tdp_gene/src/common';
 import {
   gene,
   expression,
@@ -19,7 +19,7 @@ import {
   IDataSourceConfig
 } from '../config';
 import {ParameterFormIds, FORM_GENE_FILTER, FORM_DATA_SOURCE} from '../forms';
-import {convertLog2ToLinear, toFilter} from 'targid_common/src/utils';
+import {convertLog2ToLinear, toFilter} from 'tdp_gene/src/utils';
 import {convertRow2MultiMap} from 'ordino/src/form/internal/FormMap';
 import {FormBuilder, FormElementType, IFormSelectDesc} from 'ordino/src/FormBuilder';
 

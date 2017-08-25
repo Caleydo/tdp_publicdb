@@ -3,27 +3,23 @@
  */
 
 import {IPluginDesc} from 'phovea_core/src/plugin';
-import {
-  ParameterFormIds, FORM_GENE_FILTER, FORM_TISSUE_FILTER, FORM_CELLLINE_FILTER
-} from '../forms';
-import {IScore} from 'ordino/src/LineUpView';
-import {IFormElementDesc} from 'ordino/src/FormBuilder';
+import {ParameterFormIds, FORM_GENE_FILTER, FORM_TISSUE_FILTER, FORM_CELLLINE_FILTER} from '../forms';
+import {IScore} from 'tdp_core/src/extensions';
 import AggregatedScore from './AggregatedScore';
 import FrequencyScore from './FrequencyScore';
-import {convertRow2MultiMap} from 'ordino/src/form/internal/FormMap';
 import {
   FORCE_COMPUTE_ALL_CELLLINE, FORCE_COMPUTE_ALL_GENES, FORCE_COMPUTE_ALL_TISSUE,
   FORM_AGGREGATED_SCORE
 } from './forms';
 import {gene, tissue, cellline, splitTypes, MAX_FILTER_SCORE_ROWS_BEFORE_ALL} from '../config';
 import {selectDataSources} from './utils';
-import FormBuilderDialog from 'ordino/src/form/FormDialog';
+import {FormDialog, convertRow2MultiMap, IFormElementDesc}  from 'tdp_core/src/form';
 
 
 export function create(pluginDesc: IPluginDesc, extras: any, countHint?: number) {
   const {primary, opposite} = selectDataSources(pluginDesc);
 
-  const dialog = new FormBuilderDialog('Add Aggregated Score Column', 'Add Aggregated Score Column');
+  const dialog = new FormDialog('Add Aggregated Score Column', 'Add Aggregated Score Column');
   const formDesc: IFormElementDesc[] = FORM_AGGREGATED_SCORE.slice();
   switch(opposite) {
     case gene:

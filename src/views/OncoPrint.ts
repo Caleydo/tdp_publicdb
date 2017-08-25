@@ -3,22 +3,20 @@
  */
 
 
-import {IFormSelectDesc} from 'ordino/src/FormBuilder';
-import {IViewContext, ISelection} from 'ordino/src/View';
-import AOncoPrint,{IDataFormatRow, ISample} from 'targid_common/src/views/AOncoPrint';
-import {getSelectedSpecies} from 'targid_common/src/Common';
+import {IFormSelectDesc, convertRow2MultiMap} from 'tdp_core/src/form';
+import AOncoPrint,{IDataFormatRow, ISample} from 'tdp_gene/src/views/AOncoPrint';
+import {getSelectedSpecies} from 'tdp_gene/src/common';
 import {ParameterFormIds, FORM_TISSUE_OR_CELLLINE_FILTER, FORM_DATA_SOURCE} from '../forms';
-import {getAPIJSON} from 'phovea_core/src/ajax';
 import {loadFirstName} from './utils';
-import {convertRow2MultiMap} from 'ordino/src/form/internal/FormMap';
-import {toFilter} from 'targid_common/src/utils';
+import {toFilter} from 'tdp_gene/src/utils';
 import {IDataSourceConfig} from '../config';
 import {resolve} from 'phovea_core/src/idtype';
+import {getTDPData, getTDPFilteredRows} from 'tdp_core/src/rest';
 
-export class OncoPrint extends AOncoPrint {
+export default class OncoPrint extends AOncoPrint {
 
 
-  protected buildParameterConfig(): IFormSelectDesc[] {
+  protected getParameterFormDescs(): IFormSelectDesc[] {
     return [
       FORM_DATA_SOURCE,
       FORM_TISSUE_OR_CELLLINE_FILTER
@@ -31,7 +29,7 @@ export class OncoPrint extends AOncoPrint {
       species: getSelectedSpecies()
     };
     toFilter(param, convertRow2MultiMap(this.getParameter('filter')));
-    const rows = await getAPIJSON(`/targid/db/${ds.db}/${ds.base}_onco_print_sample_list/filter`, param);
+    const rows = await getTDPFilteredRows(ds.db, `${ds.base}_onco_print_sample_list`, param, {});
     return rows.map((r) => ({name: r.id, id: r._id}));
   }
 
@@ -47,16 +45,10 @@ export class OncoPrint extends AOncoPrint {
       species: getSelectedSpecies()
     };
     toFilter(param, convertRow2MultiMap(this.getParameter('filter')));
-    return getAPIJSON(`/targid/db/${ds.db}/${ds.base}_onco_print/filter`, param);
+    return getTDPData(ds.db, `${ds.base}_onco_print/filter`, param);
   }
 
   protected loadFirstName(ensg: string): Promise<string> {
     return loadFirstName(ensg);
   }
-}
-
-
-
-export function create(context:IViewContext, selection: ISelection, parent:Element, options?) {
-  return new OncoPrint(context, selection, parent, options);
 }

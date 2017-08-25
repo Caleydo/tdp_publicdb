@@ -2,12 +2,11 @@
  * Created by Holger Stitz on 06.12.2016.
  */
 
-import {IViewContext, ISelection} from 'ordino/src/View';
-import {ProxyView} from 'ordino/src/ProxyView';
+import {IViewContext, ISelection} from 'tdp_core/src/views';
+import ProxyView from 'tdp_core/src/views/ProxyView';
 import {IPluginDesc} from 'phovea_core/src/plugin';
-import {IFormSelectOption} from 'ordino/src/FormBuilder';
+import {IFormSelectOption} from 'tdp_core/src/form';
 import {loadGeneList} from './utils';
-import {GENE_IDTYPE} from 'targid_common/src/constants';
 
 /**
  * helper view for proxying an existing external website
@@ -20,7 +19,7 @@ export default class GeneSymbolProxyView extends ProxyView {
     }
 
     try {
-      const ids = await this.resolveIds(this.selection.idtype, this.selection.range, this.idType);
+      const ids = await this.resolveSelection();
       const geneList = await loadGeneList(ids);
 
       return geneList.map((d, i) => {
@@ -35,8 +34,4 @@ export default class GeneSymbolProxyView extends ProxyView {
       this.setBusy(false);
     }
   }
-}
-
-export function create(context: IViewContext, selection: ISelection, parent: Element, options, plugin: IPluginDesc) {
-  return new GeneSymbolProxyView(context, selection, parent, options, plugin);
 }

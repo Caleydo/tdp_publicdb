@@ -2,56 +2,52 @@
  * Created by Samuel Gratzl on 27.04.2016.
  */
 
-import {AView, IViewContext, ISelection, IView} from 'ordino/src/View';
-import {getAPIJSON} from 'phovea_core/src/ajax';
-import {getSelectedSpecies} from 'targid_common/src/Common';
+import {AD3View, IViewContext, ISelection, IView, resolveIds} from 'tdp_core/src/views';
+import {getSelectedSpecies} from 'tdp_gene/src/common';
 import {IDataSourceConfig, cellline, tissue, gene} from '../config';
-import {Primitive, transpose as d3Transpose} from 'd3';
+import {Primitive, transpose as d3Transpose, Selection} from 'd3';
+import {getTDPFilteredRows} from 'tdp_core/src/rest';
 
-export abstract class AInfoTable extends AView {
+export abstract class AInfoTable extends AD3View {
 
-  private $table: d3.Selection<IView>;
-  private $thead;
-  private $tbody;
+  private readonly $table: Selection<IView>;
+  private readonly $thead: Selection<IView>;
+  private readonly $tbody: Selection<IView>;
 
   private data: Primitive[][];
-  private fields: {key: string, order: number}[] = this.getFields();
+  private readonly fields: {key: string, order: number}[] = this.getFields();
 
-  constructor(context: IViewContext, private selection: ISelection, parent: Element, private dataSource:IDataSourceConfig, options?) {
-    super(context, parent, options);
+  constructor(context: IViewContext, selection: ISelection, parent: HTMLElement, private readonly dataSource:IDataSourceConfig) {
+    super(context, selection, parent);
 
     this.$table = this.$node
       .append('table')
       .classed('table table-striped table-hover table-bordered table-condensed', true);
     this.$thead = this.$table.append('thead').append('tr');
     this.$tbody = this.$table.append('tbody');
-
-    this.changeSelection(selection);
   }
 
-  init() {
-    super.init();
+  protected initImpl() {
+    super.initImpl();
     this.$node
       .classed('infoTable', true);
+    this.update();
   }
 
-  async changeSelection(selection: ISelection) {
-    this.selection = selection;
-    return this.update();
+  selectionChanged() {
+    this.update();
   }
 
   private async fetchInformation() {
-    const ids = await this.resolveIds(this.selection.idtype, this.selection.range, this.dataSource.idType);
-    const results = await getAPIJSON(`/targid/db/${this.dataSource.db}/${this.dataSource.base}_all_columns/filter`, {
-      ['filter_'+this.dataSource.entityName]: ids,
+    const ids = await resolveIds(this.selection.idtype, this.selection.range, this.dataSource.idType);
+    const results = await getTDPFilteredRows(this.dataSource.db, `${this.dataSource.base}_all_columns`, {
       species: getSelectedSpecies()
-    });
+    }, {[this.dataSource.entityName] : ids});
     this.data = this.transformData(results);
   }
 
   private async update() {
     this.setBusy(true);
-
     try {
       await this.fetchInformation();
       this.setBusy(false);
@@ -141,9 +137,9 @@ export abstract class AInfoTable extends AView {
   protected abstract getFields(): {key: string, order: number}[];
 }
 
-class CelllineInfoTable extends AInfoTable {
-  constructor(context, selection, parent, options) {
-    super(context, selection, parent, cellline, options);
+export class CelllineInfoTable extends AInfoTable {
+  constructor(context, selection, parent) {
+    super(context, selection, parent, cellline);
   }
 
   protected getFields() {
@@ -248,9 +244,9 @@ class CelllineInfoTable extends AInfoTable {
   }
 }
 
-class GeneInfoTable extends AInfoTable {
-  constructor(context, selection, parent, options) {
-    super(context, selection, parent, gene, options);
+export class GeneInfoTable extends AInfoTable {
+  constructor(context, selection, parent) {
+    super(context, selection, parent, gene);
   }
 
   protected getFields() {
@@ -303,9 +299,9 @@ class GeneInfoTable extends AInfoTable {
   }
 }
 
-class TissueInfoTable extends AInfoTable {
-  constructor(context, selection, parent, options) {
-    super(context, selection, parent, tissue, options);
+export class TissueInfoTable extends AInfoTable {
+  constructor(context, selection, parent) {
+    super(context, selection, parent, tissue);
   }
 
   protected getFields() {
@@ -380,16 +376,4 @@ class TissueInfoTable extends AInfoTable {
       }
     ];
   }
-}
-
-export function createCelllineInfoTable(context:IViewContext, selection: ISelection, parent:Element, options?) {
-  return new CelllineInfoTable(context, selection, parent, options);
-}
-
-export function createGeneInfoTable(context:IViewContext, selection: ISelection, parent:Element, options?) {
-  return new GeneInfoTable(context, selection, parent, options);
-}
-
-export function createTissueInfoTable(context:IViewContext, selection: ISelection, parent:Element, options?) {
-  return new TissueInfoTable(context, selection, parent, options);
 }

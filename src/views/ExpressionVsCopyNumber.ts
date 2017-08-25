@@ -2,23 +2,21 @@
  * Created by sam on 16.02.2017.
  */
 
-import {IFormSelectDesc} from 'ordino/src/FormBuilder';
-import {IViewContext, ISelection} from 'ordino/src/View';
-import AExpressionVsCopyNumber, {IDataFormatRow} from 'targid_common/src/views/AExpressionVsCopyNumber';
-import {getSelectedSpecies} from 'targid_common/src/Common';
+import {IFormSelectDesc, convertRow2MultiMap} from 'tdp_core/src/form';
+import AExpressionVsCopyNumber, {IDataFormatRow} from 'tdp_gene/src/views/AExpressionVsCopyNumber';
+import {getSelectedSpecies} from 'tdp_gene/src/common';
 import Range from 'phovea_core/src/range/Range';
 import {expression, copyNumber} from '../config';
 import {ParameterFormIds, FORM_TISSUE_OR_CELLLINE_FILTER, FORM_DATA_SOURCE} from '../forms';
-import {getAPIJSON} from 'phovea_core/src/ajax';
 import {resolve} from 'phovea_core/src/idtype';
 import {loadFirstName} from './utils';
-import {convertRow2MultiMap} from 'ordino/src/form/internal/FormMap';
-import {toFilter} from 'targid_common/src/utils';
+import {toFilter} from 'tdp_gene/src/utils';
+import {getTDPData} from 'tdp_core/src/rest';
 
-export class ExpressionVsCopyNumber extends AExpressionVsCopyNumber {
+export default class ExpressionVsCopyNumber extends AExpressionVsCopyNumber {
 
-  protected buildParameterDescs(): IFormSelectDesc[] {
-    const base = super.buildParameterDescs();
+  protected getParameterFormDescs(): IFormSelectDesc[] {
+    const base = super.getParameterFormDescs();
     base.unshift(FORM_DATA_SOURCE);
     base.push(FORM_TISSUE_OR_CELLLINE_FILTER);
     return base;
@@ -37,7 +35,7 @@ export class ExpressionVsCopyNumber extends AExpressionVsCopyNumber {
       species: getSelectedSpecies()
     };
     toFilter(param, convertRow2MultiMap(this.getParameter('filter')));
-    return getAPIJSON(`/targid/db/${ds.db}/${ds.base}_expression_vs_copynumber/filter`, param);
+    return getTDPData(ds.db, `${ds.base}_expression_vs_copynumber/filter`, param);
   }
 
   protected getExpressionValues() {
@@ -62,9 +60,4 @@ export class ExpressionVsCopyNumber extends AExpressionVsCopyNumber {
       range
     });
   }
-}
-
-
-export function create(context: IViewContext, selection: ISelection, parent: Element, options?) {
-  return new ExpressionVsCopyNumber(context, selection, parent, options);
 }

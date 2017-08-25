@@ -4,7 +4,7 @@ import {
   stringCol, numberCol2, categoricalCol,
   ALineUpView2, IScoreRow
 } from 'ordino/src/LineUpView';
-import {getSelectedSpecies} from 'targid_common/src/Common';
+import {getSelectedSpecies} from 'tdp_gene/src/common';
 import {
   gene,
   IDataTypeConfig,
@@ -13,9 +13,9 @@ import {
 } from '../config';
 import {ParameterFormIds, FORM_DATA_HIERARCHICAL_SUBTYPE} from '../forms';
 import {convertRow2MultiMap} from 'ordino/src/form/internal/FormMap';
-import {toFilter} from 'targid_common/src/utils';
+import {toFilter} from 'tdp_gene/src/utils';
 import {FormBuilder} from 'ordino/src/FormBuilder';
-import {convertLog2ToLinear} from 'targid_common/src/utils';
+import {convertLog2ToLinear} from 'tdp_gene/src/utils';
 import {ISelect2Option, IFormSelect2} from 'ordino/src/form';
 
 

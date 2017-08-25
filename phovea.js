@@ -102,7 +102,7 @@ module.exports = function (registry) {
       return System.import('./src/views/InfoTable.ts');
     }, {
       name: 'Database Info',
-      factory: 'createGeneInfoTable',
+      factory: 'new GeneInfoTable',
       idtype: 'Ensembl',
       selection: 'multiple',
       group: {
@@ -116,7 +116,7 @@ module.exports = function (registry) {
       return System.import('./src/views/OncoPrint');
     }, {
       name: 'OncoPrint',
-      factory: 'create',
+      factory: 'new',
       idtype: 'Ensembl',
       selection: 'some',
       group: {
@@ -129,7 +129,7 @@ module.exports = function (registry) {
       return System.import('./src/views/ExpressionVsCopyNumber');
     }, {
       name: 'Expression vs. Copy Number',
-      factory: 'create',
+      factory: 'new',
       idtype: 'Ensembl',
       selection: 'some',
       group: {
@@ -142,7 +142,7 @@ module.exports = function (registry) {
       return System.import('./src/views/CoExpression');
     }, {
       name: 'Co-Expression',
-      factory: 'create',
+      factory: 'new',
       idtype: 'Ensembl',
       selection: 'some',
       group: {
@@ -270,7 +270,7 @@ module.exports = function (registry) {
       return System.import('./src/views/InfoTable.ts');
     }, {
       name: 'Database Info',
-      factory: 'create' + idType + 'InfoTable',
+      factory: 'new ' + idType + 'InfoTable',
       idtype: idType,
       selection: 'multiple',
       group: {
@@ -393,6 +393,7 @@ module.exports = function (registry) {
     return System.import('./src/views/GeneSymbolProxyView');
   }, {
     name: 'PubMed',
+    factory: 'new',
     site: '//www.ncbi.nlm.nih.gov/pubmed?term={gene}',
     argument: 'gene',
     idtype: 'Ensembl',

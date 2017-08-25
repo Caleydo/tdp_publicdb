@@ -2,17 +2,17 @@
  * Created by sam on 06.03.2017.
  */
 
-import {getAPIJSON} from 'phovea_core/src/ajax';
 import {RangeLike} from 'phovea_core/src/range';
 import IDType from 'phovea_core/src/idtype/IDType';
-import {getSelectedSpecies} from 'targid_common/src/Common';
+import {getSelectedSpecies} from 'tdp_gene/src/common';
 import {IDataSourceConfig, dataSubtypes, mutation, MAX_FILTER_SCORE_ROWS_BEFORE_ALL} from '../config';
-import {IScore} from 'ordino/src/LineUpView';
+import {IScore} from 'tdp_core/src/extensions';
 import {createDesc, toFilterString} from './utils';
 import AScore, {ICommonScoreParam} from './AScore';
-import {toFilter, limitScoreRows} from 'targid_common/src/utils';
-import {INamedSet} from 'ordino/src/storage';
+import {toFilter, limitScoreRows} from 'tdp_gene/src/utils';
+import {INamedSet} from 'tdp_core/src/storage';
 import {resolve} from 'phovea_core/src/idtype';
+import {getTDPScore} from 'tdp_core/src/rest';
 
 interface IFrequencyScoreParam extends ICommonScoreParam {
   comparison_operator: string;
@@ -40,7 +40,6 @@ export default class FrequencyScore extends AScore implements IScore<number> {
 
   async compute(ids: RangeLike, idtype: IDType, namedSet?: INamedSet): Promise<any[]> {
     const isMutation = this.dataType === mutation;
-    const url = `/targid/db/${this.dataSource.db}/${this.dataSource.base}_${this.oppositeDataSource.base}_frequency_${isMutation? 'mutation_' : ''}score/score`;
     const param: any = {
       attribute: this.dataSubType.useForAggregation,
       species: getSelectedSpecies(),
@@ -55,7 +54,7 @@ export default class FrequencyScore extends AScore implements IScore<number> {
     limitScoreRows(param, ids, idtype, this.dataSource.entityName, maxDirectRows, namedSet);
     toFilter(param, this.parameter.filter);
 
-    const rows = await getAPIJSON(url, param);
+    const rows: any[] = await getTDPScore(this.dataSource.db, `${this.dataSource.base}_${this.oppositeDataSource.base}_frequency_${isMutation? 'mutation_' : ''}score`, param);
     rows.forEach((row) => row.score = this.countOnly ? row.count : row.count / row.total);
     return rows;
   }

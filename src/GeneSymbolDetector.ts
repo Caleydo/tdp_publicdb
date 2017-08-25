@@ -1,4 +1,3 @@
-import {getAPIJSON} from 'phovea_core/src/ajax';
 import {getTDPData} from 'tdp_core/src/rest';
 
 async function detectIDType(data: any[], accessor: (row: any) => string, sampleSize: number) {
