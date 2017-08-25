@@ -2,7 +2,13 @@
  * Created by sam on 06.03.2017.
  */
 
-import {mutationCat, copyNumberCat, unknownMutationValue, unknownCopyNumberValue, GENE_IDTYPE} from 'tdp_gene/src/constants';
+import {
+  mutationCat,
+  copyNumberCat,
+  unknownMutationValue,
+  unknownCopyNumberValue,
+  GENE_IDTYPE
+} from 'tdp_gene/src/constants';
 
 
 /**
@@ -20,13 +26,14 @@ export interface IDataSourceConfig {
   tableName: string;
   entityName: string;
   base: string;
+
   [key: string]: any;
 }
 
-export const cellline:IDataSourceConfig = {
+export const cellline: IDataSourceConfig = {
   idType: 'Cellline',
   name: 'Cell Line',
-  db: 'bioinfodb',
+  db: 'publicdb',
   schema: 'cellline',
   tableName: 'cellline',
   entityName: 'celllinename',
@@ -34,10 +41,10 @@ export const cellline:IDataSourceConfig = {
 };
 
 
-export const tissue:IDataSourceConfig = {
+export const tissue: IDataSourceConfig = {
   idType: 'Tissue',
   name: 'Tissue',
-  db: 'bioinfodb',
+  db: 'publicdb',
   schema: 'tissue',
   tableName: 'tissue',
   entityName: 'tissuename',
@@ -45,10 +52,10 @@ export const tissue:IDataSourceConfig = {
 };
 
 
-export const gene:IDataSourceConfig = {
+export const gene: IDataSourceConfig = {
   idType: GENE_IDTYPE,
   name: 'Gene',
-  db: 'bioinfodb',
+  db: 'publicdb',
   schema: 'public',
   tableName: 'gene',
   entityName: 'ensg',
@@ -86,7 +93,7 @@ export const dataSubtypes = {
   number: 'number',
   string: 'string',
   cat: 'cat',
-  boxplot :'boxplot'
+  boxplot: 'boxplot'
 
 };
 
@@ -97,7 +104,7 @@ export interface IDataSubtypeConfig {
   useForAggregation: string;
 
   //type: 'cat';
-  categories?: {label: string, name: string, color: string}[];
+  categories?: { label: string, name: string, color: string }[];
   missingCategory?: string;
 
   //type: 'number';
@@ -106,26 +113,59 @@ export interface IDataSubtypeConfig {
   constantDomain?: boolean;
 }
 
-export const expression:IDataTypeConfig = {
+export const expression: IDataTypeConfig = {
   id: 'expression',
   name: 'Expression',
   tableName: 'expression',
   query: 'expression_score',
   dataSubtypes: [
-    { id: 'tpm', name: 'TPM', type: dataSubtypes.number, domain: [-3, 3], missingValue: NaN, constantDomain: true, useForAggregation: 'tpm'},
-    { id: 'counts', name: 'Raw Counts', type: dataSubtypes.number, domain: [0, 10000], missingValue: NaN, constantDomain: true, useForAggregation: 'counts'}
+    {
+      id: 'tpm',
+      name: 'TPM',
+      type: dataSubtypes.number,
+      domain: [-3, 3],
+      missingValue: NaN,
+      constantDomain: true,
+      useForAggregation: 'tpm'
+    },
+    {
+      id: 'counts',
+      name: 'Raw Counts',
+      type: dataSubtypes.number,
+      domain: [0, 10000],
+      missingValue: NaN,
+      constantDomain: true,
+      useForAggregation: 'counts'
+    }
   ]
 };
 
-export const copyNumber:IDataTypeConfig = {
+export const copyNumber: IDataTypeConfig = {
   id: 'copy_number',
   name: 'Copy Number',
   tableName: 'copynumber',
   query: 'copynumber_score',
   dataSubtypes: [
-    { id: 'relativecopynumber', name: 'Relative Copy Number', type: dataSubtypes.number, domain: [0, 15], missingValue: NaN, constantDomain: true, useForAggregation: 'relativecopynumber'},
-    { id: 'totalabscopynumber', name: 'Total Absolute Copy Number', type: dataSubtypes.number, domain: [0, 15], missingValue: NaN, constantDomain: true, useForAggregation: 'totalabscopynumber'},
-    { id: 'copynumberclass',
+    {
+      id: 'relativecopynumber',
+      name: 'Relative Copy Number',
+      type: dataSubtypes.number,
+      domain: [0, 15],
+      missingValue: NaN,
+      constantDomain: true,
+      useForAggregation: 'relativecopynumber'
+    },
+    {
+      id: 'totalabscopynumber',
+      name: 'Total Absolute Copy Number',
+      type: dataSubtypes.number,
+      domain: [0, 15],
+      missingValue: NaN,
+      constantDomain: true,
+      useForAggregation: 'totalabscopynumber'
+    },
+    {
+      id: 'copynumberclass',
       name: 'Copy Number Class',
       type: dataSubtypes.cat,
       categories: toLineUpCategories(copyNumberCat),
@@ -137,7 +177,7 @@ export const copyNumber:IDataTypeConfig = {
   ],
 };
 
-export const mutation:IDataTypeConfig = {
+export const mutation: IDataTypeConfig = {
   id: 'mutation',
   name: 'Mutation',
   tableName: 'mutation',
@@ -179,21 +219,21 @@ export const mutation:IDataTypeConfig = {
   ]
 };
 
-export const dataTypes:IDataTypeConfig[] = [expression, copyNumber, mutation];
+export const dataTypes: IDataTypeConfig[] = [expression, copyNumber, mutation];
 
-function toLineUpCategories(arr: {name: string, value: any, color: string}[]) {
+function toLineUpCategories(arr: { name: string, value: any, color: string }[]) {
   return arr.map((a) => ({label: a.name, name: String(a.value), color: a.color}));
 }
 
 /**
  * splits strings in the form of "DATA_TYPE-DATA_SUBTYPE" and returns the corresponding DATA_TYPE and DATA_SUBTYPE objects
  */
-export function splitTypes(toSplit: string): {dataType: IDataTypeConfig, dataSubType: IDataSubtypeConfig} {
+export function splitTypes(toSplit: string): { dataType: IDataTypeConfig, dataSubType: IDataSubtypeConfig } {
   console.assert(toSplit.includes('-'), 'The splitTypes method requires the string to contain a dash ("-")');
   const [type, subtype] = toSplit.split('-');
   let dataType: IDataTypeConfig;
 
-  switch(type) {
+  switch (type) {
     case mutation.id:
       dataType = mutation;
       break;

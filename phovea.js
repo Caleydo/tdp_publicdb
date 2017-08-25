@@ -11,10 +11,10 @@ module.exports = function (registry) {
 
   /// #if include('ordino')
   registry.push('ordinoStartMenuSubSection', 'celllinedb_genes_start', function () {
-    return System.import('./src/entries/GeneEntryPoint');
+    return System.import('./src/menu/GeneSubSection');
   }, {
     name: 'Genes',
-    factory: 'createStartFactory',
+    factory: 'new',
     viewId: 'celllinedb_start',
     idtype: 'Ensembl',
     selection: 'none',
@@ -23,10 +23,10 @@ module.exports = function (registry) {
   });
 
   registry.push('ordinoStartMenuSubSection', 'bioinfodb_tissue_start', function () {
-    return System.import('./src/entries/CellLineEntryPoint');
+    return System.import('./src/entries/SampleSubSection');
   }, {
     name: 'Tissues',
-    factory: 'createStartFactory',
+    factory: 'new',
     viewId: 'bioinfodb_tissue_start',
     idtype: 'Tissue',
     selection: 'none',
@@ -36,10 +36,10 @@ module.exports = function (registry) {
   });
 
   registry.push('ordinoStartMenuSubSection', 'celllinedb_cellline_start', function () {
-    return System.import('./src/entries/CellLineEntryPoint');
+    return System.import('./src/entries/SampleSubSection');
   }, {
     name: 'Cell Lines',
-    factory: 'createStartFactory',
+    factory: 'new',
     viewId: 'celllinedb_cellline',
     idtype: 'Cellline',
     selection: 'none',
@@ -51,10 +51,10 @@ module.exports = function (registry) {
   //gene views
   {
     registry.push('tdpView', 'celllinedb_start', function () {
-      return System.import('./src/entries/GeneEntryPoint');
+      return System.import('./src/views/GeneList');
     }, {
       name: 'Genes',
-      factory: 'createStart',
+      factory: 'new',
       idtype: 'Ensembl',
       selection: 'none'
     });
@@ -199,10 +199,10 @@ module.exports = function (registry) {
 
 
     registry.push('tdpView', 'bioinfodb_' + plain + '_start', function () {
-      return System.import('./src/entries/CellLineEntryPoint');
+      return System.import('./src/entries/' + idType + 'List');
     }, {
       name: label,
-      factory: 'createStart' + idType,
+      factory: 'new',
       idtype: idType,
       selection: 'none',
       sampleType: idType
