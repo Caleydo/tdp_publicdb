@@ -35,6 +35,7 @@ export abstract class AInfoTable extends AD3View {
   }
 
   selectionChanged() {
+    super.selectionChanged();
     this.update();
   }
 
