@@ -1,7 +1,7 @@
 {
   "generator-phovea": {
     "type": "app-slib",
-    "name": "targid_boehringer",
+    "name": "tdp_publicdb",
     "author": "The Caleydo Team",
     "githubAccount": "caleydo",
     "modules": [
@@ -14,7 +14,7 @@
         "id": "bioinfodb",
         "module": "",
         "extras": {
-          "configKey": "targid_boehringer"
+          "configKey": "tdp_publicdb"
         }
       }
     ],

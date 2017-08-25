@@ -1,4 +1,4 @@
-targid_boehringer [![Phovea][phovea-image]][phovea-url] [![NPM version][npm-image]][npm-url] [![Build Status][travis-image]][travis-url] [![Dependency Status][daviddm-image]][daviddm-url]
+tdp_publicdb [![Phovea][phovea-image]][phovea-url] [![NPM version][npm-image]][npm-url] [![Build Status][travis-image]][travis-url] [![Dependency Status][daviddm-image]][daviddm-url]
 =====================
 
 This repository contains the database connector for the BI-internal bioinfoDB.hg19 database and the respective SQL queries to drive the [tagid_common](https://github.com/Caleydo/targid_common/) views and visualizations.
@@ -16,8 +16,8 @@ Installation
 ------------
 
 ```
-git clone https://github.com/caleydo/targid_boehringer.git
-cd targid_boehringer
+git clone https://github.com/caleydo/tdp_publicdb.git
+cd tdp_publicdb
 npm install
 ```
 
@@ -45,9 +45,9 @@ This repository is part of **[Phovea](http://phovea.caleydo.org/)**, a platform 
 
 [phovea-image]: https://img.shields.io/badge/Phovea-Client%20Plugin-F47D20.svg
 [phovea-url]: https://phovea.caleydo.org
-[npm-image]: https://badge.fury.io/js/targid_boehringer.svg
-[npm-url]: https://npmjs.org/package/targid_boehringer
-[travis-image]: https://travis-ci.org/caleydo/targid_boehringer.svg?branch=master
-[travis-url]: https://travis-ci.org/caleydo/targid_boehringer
-[daviddm-image]: https://david-dm.org/caleydo/targid_boehringer/status.svg
-[daviddm-url]: https://david-dm.org/caleydo/targid_boehringer
+[npm-image]: https://badge.fury.io/js/tdp_publicdb.svg
+[npm-url]: https://npmjs.org/package/tdp_publicdb
+[travis-image]: https://travis-ci.org/caleydo/tdp_publicdb.svg?branch=master
+[travis-url]: https://travis-ci.org/caleydo/tdp_publicdb
+[daviddm-image]: https://david-dm.org/caleydo/tdp_publicdb/status.svg
+[daviddm-url]: https://david-dm.org/caleydo/tdp_publicdb

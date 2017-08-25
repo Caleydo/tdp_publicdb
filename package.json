@@ -1,5 +1,5 @@
 {
-  "name": "targid_boehringer",
+  "name": "tdp_publicdb",
   "description": "",
   "homepage": "https://phovea.caleydo.org",
   "version": "2.1.2-SNAPSHOT",
@@ -11,11 +11,11 @@
   },
   "license": "BSD-3-Clause",
   "bugs": {
-    "url": "https://github.com/caleydo/targid_boehringer/issues"
+    "url": "https://github.com/caleydo/tdp_publicdb/issues"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/caleydo/targid_boehringer.git"
+    "url": "https://github.com/caleydo/tdp_publicdb.git"
   },
   "files": [
     "src",
@@ -23,7 +23,7 @@
     "phovea.js",
     "phovea_registry.js",
     "build",
-    "targid_boehringer",
+    "tdp_publicdb",
     "__init__.py",
     "__main__.py",
     "requirements.txt",
@@ -40,7 +40,7 @@
     "prebuild": "echo hybrid",
     "build": "npm run build:web && npm run build:python",
     "predocker": "npm run build",
-    "docker": "docker build -t targid_boehringer -f deploy/Dockerfile .",
+    "docker": "docker build -t tdp_publicdb -f deploy/Dockerfile .",
     "compile": "tsc",
     "lint": "tslint -c tslint.json src/**.ts tests/**.ts",
     "posttest": "echo hybrid",
@@ -53,7 +53,7 @@
     "release:minor": "npm version minor && npm publish && git push --follow-tags",
     "release:patch": "npm version patch && npm publish && git push --follow-tags",
     "docs:web": "typedoc --options typedoc.json src/**.ts",
-    "docs:python": "sphinx-apidoc -o docs -f ./targid_boehringer && sphinx-build ./docs build/docs",
+    "docs:python": "sphinx-apidoc -o docs -f ./tdp_publicdb && sphinx-build ./docs build/docs",
     "pretest:web": "npm run compile",
     "pretest:python": "npm run check",
     "posttest:web": "npm run lint",
@@ -65,7 +65,7 @@
     "build:web": "webpack --env prod",
     "predist:web": "npm run build:web && npm run docs:web",
     "predist:python": "npm run build:python && npm run docs:python",
-    "dist:web": "mkdirp dist && cd build && tar cvzf ../dist/targid_boehringer.tar.gz *",
+    "dist:web": "mkdirp dist && cd build && tar cvzf ../dist/tdp_publicdb.tar.gz *",
     "dist:python": "python setup.py bdist_egg"
   },
   "engines": {

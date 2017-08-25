@@ -12,4 +12,4 @@ import {register} from 'phovea_core/src/plugin';
 //other modules
 import 'ordino/phovea_registry.js';
 //self
-register('targid_boehringer',require('./phovea.js'));
+register('tdp_publicdb',require('./phovea.js'));
