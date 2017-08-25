@@ -1,6 +1,6 @@
 {
   "generator-phovea": {
-    "type": "app-slib",
+    "type": "lib-slib",
     "name": "tdp_publicdb",
     "author": "The Caleydo Team",
     "githubAccount": "caleydo",

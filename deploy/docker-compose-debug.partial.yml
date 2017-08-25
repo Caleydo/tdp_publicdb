@@ -1,5 +1,5 @@
 version: '2.0'
 services:
-  db_bioinfodb:
+  db_publicdb:
     ports:
       - '5432:5432'

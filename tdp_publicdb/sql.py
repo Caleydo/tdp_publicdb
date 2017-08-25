@@ -1,5 +1,5 @@
 # flake8: noqa
-from ordino.dbview import DBViewBuilder, DBConnector, limit_offset, inject_where
+from tdp_core.dbview import DBViewBuilder, DBConnector, limit_offset, inject_where
 import re
 
 __author__ = 'Samuel Gratzl'

@@ -2,9 +2,9 @@ version: '2.0'
 services:
   _host:
     depends_on:
-    - db_bioinfodb
+    - db_publicdb
     links:
-    - db_bioinfodb:bioinfodb
+    - db_publicdb:publicdb
   db_bioinfodb:
     image: postgres:9.6-alpine
     environment:
@@ -12,6 +12,6 @@ services:
        POSTGRES_PASSWORD: bioinfodb
        POSTGRES_DB: bioinfodb
     volumes:
-    - db_bioinfodb_data:/var/lib/postgresql/data
+    - db_publicdb_data:/var/lib/postgresql/data
 volumes:
   db_bioinfodb_data:
