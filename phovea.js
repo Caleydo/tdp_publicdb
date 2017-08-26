@@ -6,12 +6,12 @@
 
 //register all extensions in the registry following the given pattern
 module.exports = function (registry) {
-  //registry.push('extension-type', 'extension-id', function() { return System.import('./src/extension_impl'); }, {});
+  //registry.push('extension-type', 'extension-id', function() { return import('./src/extension_impl'); }, {});
   // generator-phovea:begin
 
   /// #if include('ordino')
   registry.push('ordinoStartMenuSubSection', 'celllinedb_genes_start', function () {
-    return System.import('./src/menu/GeneSubSection');
+    return import('./src/menu/GeneSubSection');
   }, {
     name: 'Genes',
     factory: 'new',
@@ -23,7 +23,7 @@ module.exports = function (registry) {
   });
 
   registry.push('ordinoStartMenuSubSection', 'bioinfodb_tissue_start', function () {
-    return System.import('./src/entries/SampleSubSection');
+    return import('./src/menu/SampleSubSection');
   }, {
     name: 'Tissues',
     factory: 'new',
@@ -36,7 +36,7 @@ module.exports = function (registry) {
   });
 
   registry.push('ordinoStartMenuSubSection', 'celllinedb_cellline_start', function () {
-    return System.import('./src/entries/SampleSubSection');
+    return import('./src/menu/SampleSubSection');
   }, {
     name: 'Cell Lines',
     factory: 'new',
@@ -51,7 +51,7 @@ module.exports = function (registry) {
   //gene views
   {
     registry.push('tdpView', 'celllinedb_start', function () {
-      return System.import('./src/views/GeneList');
+      return import('./src/views/GeneList');
     }, {
       name: 'Genes',
       factory: 'new',
@@ -60,7 +60,7 @@ module.exports = function (registry) {
     });
 
     registry.push('tdpView', 'expressiontable', function () {
-      return System.import('./src/views/DependentSampleTable');
+      return import('./src/views/DependentSampleTable');
     }, {
       name: 'Expression',
       factory: 'createExpressionTable',
@@ -73,7 +73,7 @@ module.exports = function (registry) {
     });
 
     registry.push('tdpView', 'copynumbertable', function () {
-      return System.import('./src/views/DependentSampleTable');
+      return import('./src/views/DependentSampleTable');
     }, {
       name: 'Copy Number',
       factory: 'createCopyNumberTable',
@@ -86,7 +86,7 @@ module.exports = function (registry) {
     });
 
     registry.push('tdpView', 'mutationtable', function () {
-      return System.import('./src/views/DependentSampleTable');
+      return import('./src/views/DependentSampleTable');
     }, {
       name: 'Mutation',
       factory: 'createMutationTable',
@@ -99,7 +99,7 @@ module.exports = function (registry) {
     });
 
     registry.push('tdpView', 'gene_generic_detail_view', function () {
-      return System.import('./src/views/InfoTable.ts');
+      return import('./src/views/InfoTable.ts');
     }, {
       name: 'Database Info',
       factory: 'new GeneInfoTable',
@@ -113,7 +113,7 @@ module.exports = function (registry) {
 
 
     registry.push('tdpView', 'celllinedb_onco_print', function () {
-      return System.import('./src/views/OncoPrint');
+      return import('./src/views/OncoPrint');
     }, {
       name: 'OncoPrint',
       factory: 'new',
@@ -126,7 +126,7 @@ module.exports = function (registry) {
     });
 
     registry.push('tdpView', 'celllinedb_expression_vs_copynumber', function () {
-      return System.import('./src/views/ExpressionVsCopyNumber');
+      return import('./src/views/ExpressionVsCopyNumber');
     }, {
       name: 'Expression vs. Copy Number',
       factory: 'new',
@@ -139,7 +139,7 @@ module.exports = function (registry) {
     });
 
     registry.push('tdpView', 'celllinedb_co_expression', function () {
-      return System.import('./src/views/CoExpression');
+      return import('./src/views/CoExpression');
     }, {
       name: 'Co-Expression',
       factory: 'new',
@@ -152,7 +152,7 @@ module.exports = function (registry) {
     });
 
     registry.push('tdpView', 'gene_combined_lineup', function () {
-      return System.import('./src/views/CombinedDependentSampleTable');
+      return import('./src/views/CombinedDependentSampleTable');
     }, {
       name: 'Combined View',
       factory: 'create',
@@ -169,7 +169,7 @@ module.exports = function (registry) {
 
     /// #if include('uploader')
     registry.push('idTypeDetector', 'geneSymbol', function () {
-      return System.import('./src/GeneSymbolDetector');
+      return import('./src/GeneSymbolDetector');
     }, {
       factory: 'human',
       name: 'GeneSymbol',
@@ -182,7 +182,7 @@ module.exports = function (registry) {
 
     /// #if include('bob')
     registry.push('bobSearchProvider', 'gene', function () {
-      return import('./src/entries/SearchProvider')
+      return import('./src/SearchProvider')
     }, {
       factory: 'createGene',
       idType: 'Ensembl',
@@ -199,7 +199,7 @@ module.exports = function (registry) {
 
 
     registry.push('tdpView', 'bioinfodb_' + plain + '_start', function () {
-      return System.import('./src/entries/' + idType + 'List');
+      return import('./src/views/' + idType + 'List');
     }, {
       name: label,
       factory: 'new',
@@ -209,7 +209,7 @@ module.exports = function (registry) {
     });
 
     registry.push('tdpView', plain + '_inverted_expressiontable', function () {
-      return System.import('./src/views/DependentGeneTable');
+      return import('./src/views/DependentGeneTable');
     }, {
       name: 'Expression',
       factory: 'createExpressionTable',
@@ -223,7 +223,7 @@ module.exports = function (registry) {
     });
 
     registry.push('tdpView', plain + '_inverted_copynumbertable', function () {
-      return System.import('./src/views/DependentGeneTable');
+      return import('./src/views/DependentGeneTable');
     }, {
       name: 'Copy Number',
       factory: 'createCopyNumberTable',
@@ -237,7 +237,7 @@ module.exports = function (registry) {
     });
 
     registry.push('tdpView', plain + '_inverted_mutationtable', function () {
-      return System.import('./src/views/DependentGeneTable');
+      return import('./src/views/DependentGeneTable');
     }, {
       name: 'Mutation',
       factory: 'createMutationTable',
@@ -251,7 +251,7 @@ module.exports = function (registry) {
     });
 
     registry.push('tdpView', plain + '_combined_lineup', function () {
-      return System.import('./src/views/CombinedDependentGeneTable');
+      return import('./src/views/CombinedDependentGeneTable');
     }, {
       name: 'Combined View',
       factory: 'new',
@@ -267,7 +267,7 @@ module.exports = function (registry) {
     });
 
     registry.push('tdpView', plain + '_generic_detail_view', function () {
-      return System.import('./src/views/InfoTable.ts');
+      return import('./src/views/InfoTable.ts');
     }, {
       name: 'Database Info',
       factory: 'new ' + idType + 'InfoTable',
@@ -282,7 +282,7 @@ module.exports = function (registry) {
 
     /// #if include('bob')
     registry.push('bobSearchProvider', idType.toLowerCase(), function () {
-      return import('./src/entries/SearchProvider')
+      return import('./src/SearchProvider')
     }, {
       factory: 'create' + idType,
       idType: idType,
@@ -292,7 +292,7 @@ module.exports = function (registry) {
 
 
     registry.push('idTypeDetector', plain + 'IDTypeDetector', function () {
-      return System.import('./src/IDTypeDetector');
+      return import('./src/IDTypeDetector');
     }, {
       factory: 'create',
       name: label + ' IDType Detector',
@@ -309,7 +309,7 @@ module.exports = function (registry) {
   ['Tissue', 'Cellline'].forEach(function (oppositeIDType) {
     const prefix = 'gene_' + oppositeIDType.toLowerCase();
     registry.push('ordinoScore', prefix + '_aggregated_score', function () {
-      return System.import('./src/scores');
+      return import('./src/scores');
     }, {
       name: 'Aggregated ' + oppositeIDType + ' Score',
       idtype: 'Ensembl',
@@ -317,14 +317,14 @@ module.exports = function (registry) {
       oppositeType: oppositeIDType
     });
     registry.push('ordinoScoreImpl', prefix + '_aggregated_score', function () {
-      return System.import('./src/scores');
+      return import('./src/scores');
     }, {
       factory: 'createScore',
       primaryType: 'Ensembl',
       oppositeType: oppositeIDType
     });
     registry.push('ordinoScore', prefix + '_single_score', function () {
-      return System.import('./src/scores/SingleScore');
+      return import('./src/scores/SingleScore');
     }, {
       name: 'Single ' + oppositeIDType + ' Score',
       idtype: 'Ensembl',
@@ -332,7 +332,7 @@ module.exports = function (registry) {
       oppositeType: oppositeIDType
     });
     registry.push('ordinoScoreImpl', prefix + '_single_score', function () {
-      return System.import('./src/scores/SingleScore');
+      return import('./src/scores/SingleScore');
     }, {
       factory: 'createScore',
       primaryType: 'Ensembl',
@@ -345,7 +345,7 @@ module.exports = function (registry) {
     const prefix = idType.toLowerCase() + '_gene';
 
     registry.push('ordinoScore', prefix + '_aggregated_score', function () {
-      return System.import('./src/scores');
+      return import('./src/scores');
     }, {
       name: 'Aggregated Score',
       idtype: idType,
@@ -353,14 +353,14 @@ module.exports = function (registry) {
       oppositeType: 'Ensembl'
     });
     registry.push('ordinoScoreImpl', prefix + '_aggregated_score', function () {
-      return System.import('./src/scores');
+      return import('./src/scores');
     }, {
       factory: 'createScore',
       primaryType: idType,
       oppositeType: 'Ensembl'
     });
     registry.push('ordinoScore', prefix + '_single_score', function () {
-      return System.import('./src/scores/SingleScore');
+      return import('./src/scores/SingleScore');
     }, {
       name: 'Single Gene Score',
       idtype: idType,
@@ -368,7 +368,7 @@ module.exports = function (registry) {
       oppositeType: 'Ensembl'
     });
     registry.push('ordinoScoreImpl', prefix + '_single_score', function () {
-      return System.import('./src/scores/SingleScore');
+      return import('./src/scores/SingleScore');
     }, {
       factory: 'createScore',
       primaryType: idType,
@@ -390,7 +390,7 @@ module.exports = function (registry) {
   });
 
   registry.push('tdpView', 'pubmed', function () {
-    return System.import('./src/views/GeneSymbolProxyView');
+    return import('./src/views/GeneSymbolProxyView');
   }, {
     name: 'PubMed',
     factory: 'new',
