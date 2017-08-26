@@ -73,11 +73,11 @@
     "node": ">= 6"
   },
   "dependencies": {
-    "tdp_gene": "github:datavisyn/tdp_gene#develop"
+    "tdp_gene": "github:datavisyn/tdp_gene#tdp"
   },
   "optionalDependencies": {
-    "ordino": "github:Caleydo/ordino#develop",
-    "bob": "github:datavisyn/bob"
+    "ordino": "github:Caleydo/ordino#tdp",
+    "bob": "github:datavisyn/bob#tdp"
   },
   "devDependencies": {
     "@types/jasmine": "2.5.41",

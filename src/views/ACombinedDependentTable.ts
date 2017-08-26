@@ -1,9 +1,4 @@
-import * as ajax from 'phovea_core/src/ajax';
-import {IViewContext, ISelection} from 'ordino/src/View';
-import {
-  stringCol, numberCol2, categoricalCol,
-  ALineUpView2, IScoreRow
-} from 'ordino/src/LineUpView';
+import {IViewContext, ISelection} from 'tdp_core/src/views';
 import {getSelectedSpecies} from 'tdp_gene/src/common';
 import {
   gene,
@@ -12,34 +7,28 @@ import {
   splitTypes
 } from '../config';
 import {ParameterFormIds, FORM_DATA_HIERARCHICAL_SUBTYPE} from '../forms';
-import {convertRow2MultiMap} from 'ordino/src/form/internal/FormMap';
 import {toFilter} from 'tdp_gene/src/utils';
-import {FormBuilder} from 'ordino/src/FormBuilder';
 import {convertLog2ToLinear} from 'tdp_gene/src/utils';
-import {ISelect2Option, IFormSelect2} from 'ordino/src/form';
+import {ISelect2Option, IFormSelect2} from 'tdp_core/src/form';
+import {ARankingView, multi} from 'tdp_core/src/lineup';
+import {getTDPDesc, getTDPFilteredRows, getTDPScore} from 'tdp_core/src/rest';
 
 
-abstract class ACombinedTable extends ALineUpView2 {
-
-  protected readonly dataType: IDataTypeConfig[];
-
-  /**
-   * Parameter UI form
-   */
-  protected paramForm: FormBuilder;
+abstract class ACombinedDependentTable extends ARankingView {
 
   protected dataSource: IDataSourceConfig;
-
   protected oppositeDataSource: IDataSourceConfig;
 
-  constructor(context: IViewContext, selection: ISelection, parent: Element, dataType: IDataTypeConfig[], options?) {
-    super(context, selection, parent, options);
+  constructor(context: IViewContext, selection: ISelection, parent: HTMLElement, protected readonly dataType: IDataTypeConfig[]) {
+    super(context, selection, parent, {
+      itemName: gene.name
+    });
 
     this.dataType = dataType;
   }
 
-  protected buildParameterDescs(): IFormSelect2[] {
-    return [
+  protected getParameterFormDescs() {
+    return super.getParameterFormDescs().concat([
       Object.assign(
         {},
         FORM_DATA_HIERARCHICAL_SUBTYPE,
@@ -50,45 +39,44 @@ abstract class ACombinedTable extends ALineUpView2 {
           }
         }
       )
-    ];
+    ]);
   }
 
-  init() {
+  protected createSelectionAdapter() {
+    return multi({
+      createDescs: (_id: number, id: string, subTypes: string[]) => this.getSelectionColumnDesc(_id, id, subTypes),
+      loadData: (_id: number, id: string, descs: IAdditionalColumnDesc[]) => undefined,
+      getSelectedSubTypes: () => this.getParameter(ParameterFormIds.DATA_HIERARCHICAL_SUBTYPE).map((d) => d.id)
+    })
+  }
+
+  protected initImpl() {
+    super.initImpl();
     this.update().then(() => this.handleSelectionColumns(this.selection));
   }
 
-  getParameter(name: string): any {
-    return this.paramForm.getElementById(name).value;
-  }
-
-  setParameter(name: string, value: any) {
-    this.paramForm.getElementById(name).value = value;
-
-    if(name === 'filter') {
-      this.clear();
+  protected parameterChanged(name: string) {
+    if (name === 'filter') {
+      this.reloadData();
     }
-
-    return this.update().then(() => {
-      super.setParameter(name, value);
-    });
+    super.parameterChanged(name);
   }
 
   protected loadColumnDesc() {
-    return ajax.getAPIJSON(`/targid/db/${this.oppositeDataSource.db}/${this.oppositeDataSource.base}/desc`);
+    return getTDPDesc(this.dataSource.db, this.oppositeDataSource.base);
   }
 
   protected loadRows() {
-    const url = `/targid/db/${this.dataSource.db}/${this.oppositeDataSource.tableName}/filter`;
     const param = {
       filter_species: getSelectedSpecies()
     };
     toFilter(param, convertRow2MultiMap(this.getParameter('filter')));
-    return ajax.getAPIJSON(url, param);
+    return getTDPFilteredRows(this.dataSource.db, this.oppositeDataSource.tableName, param, {});
   }
 
-  protected async getSelectionColumnDesc(id: number) {
+  protected async getSelectionColumnDesc(_id: number, id: string, subTypes: string[]) {
     const selectedItem = await this.getSelectionColumnLabel(id);
-    const selectedSubTypes = this.getParameter(ParameterFormIds.DATA_HIERARCHICAL_SUBTYPE);
+    const subTypes = this.getParameter(ParameterFormIds.DATA_HIERARCHICAL_SUBTYPE);
 
     return selectedSubTypes.map((selectedSubType) => {
         const label = `${selectedItem} (${selectedSubType.text})`;
@@ -109,7 +97,7 @@ abstract class ACombinedTable extends ALineUpView2 {
 
   protected loadSelectionColumnData(id: number, desc: any[]): Promise<IScoreRow<any>[]>[] {
     // TODO When playing the provenance graph, the RawDataTable is loaded before the GeneList has finished loading, i.e. that the local idType cache is not build yet and it will send an unmap request to the server
-    const namePromise = this.resolveId(this.selection.idtype, id, this.idType);
+    const namePromise = resolveId(this.selection.idtype, id, this.idType);
     const url = `/targid/db/${this.dataSource.db}/${this.oppositeDataSource.base}_${this.dataSource.base}_single_score/filter`;
     const config = desc.map((option) => splitTypes(option.selectedSubtype));
 
@@ -125,39 +113,19 @@ abstract class ACombinedTable extends ALineUpView2 {
         };
 
         toFilter(param, filter);
-        return <Promise<IScoreRow<any>>>ajax.getAPIJSON(url, param);
+        return getTDPScore(url, param);
       });
+    }).then((rows) => {
+      const {dataSubType} = splitTypes(colDesc.selectedSubtype);
+      if (dataSubType.useForAggregation.indexOf('log2') !== -1) {
+        rows = convertLog2ToLinear(rows, 'score');
+      }
     });
   }
 
-  protected mapSelectionRows(rows: IScoreRow<any>[], colDesc: any) {
-    const {dataSubType} = splitTypes(colDesc.selectedSubtype);
-    if (dataSubType.useForAggregation.indexOf('log2') !== -1) {
-      rows = convertLog2ToLinear(rows, 'score');
-    }
-
-    return rows;
-  }
-
-  getItemName(count: number) {
-    return (count === 1) ? gene.name.toLowerCase() : gene.name.toLowerCase() + 's';
-  }
-
   protected loadDynamicColumnOptions(): ISelect2Option[] {
-    return this.getParameter(ParameterFormIds.DATA_HIERARCHICAL_SUBTYPE);
+    return ;
   }
-
-  protected initColumns(desc) {
-    super.initColumns(desc);
-
-    const columns = this.getColumnDescs(desc);
-
-    this.build([], columns);
-
-    return columns;
-  }
-
-  protected abstract getColumnDescs(desc);
 }
 
-export default ACombinedTable;
+export default ACombinedDependentTable;
