@@ -1,4 +1,4 @@
-tdp_publicdb [![Phovea][phovea-image]][phovea-url] [![NPM version][npm-image]][npm-url] [![Build Status][travis-image]][travis-url] [![Dependency Status][daviddm-image]][daviddm-url]
+tdp_publicdb [![Phovea][phovea-image]][phovea-url] https://circleci.com/gh/Caleydo/tdp_publicdb.svg?style=shield&circle-token=89fdd541186de8c3af935cecda2542bcd62b9816)](https://circleci.com/gh/Caleydo/tdp_publicdb)
 =====================
 
 This repository contains the database connector for the BI-internal bioinfoDB.hg19 database and the respective SQL queries to drive the [tagid_common](https://github.com/Caleydo/targid_common/) views and visualizations.
@@ -45,9 +45,3 @@ This repository is part of **[Phovea](http://phovea.caleydo.org/)**, a platform 
 
 [phovea-image]: https://img.shields.io/badge/Phovea-Client%20Plugin-F47D20.svg
 [phovea-url]: https://phovea.caleydo.org
-[npm-image]: https://badge.fury.io/js/tdp_publicdb.svg
-[npm-url]: https://npmjs.org/package/tdp_publicdb
-[travis-image]: https://travis-ci.org/caleydo/tdp_publicdb.svg?branch=master
-[travis-url]: https://travis-ci.org/caleydo/tdp_publicdb
-[daviddm-image]: https://david-dm.org/caleydo/tdp_publicdb/status.svg
-[daviddm-url]: https://david-dm.org/caleydo/tdp_publicdb
