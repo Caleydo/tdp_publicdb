@@ -4,11 +4,11 @@
 
 import {SPECIES_SESSION_KEY, getSelectedSpecies} from 'tdp_gene/src/common';
 import {FORM_EXPRESSION_SUBTYPE_ID, FORM_COPYNUMBER_SUBTYPE_ID} from 'tdp_gene/src/forms';
-import {FormElementType, IFormElement} from 'ordino/src/form';
-import {cachedLazy} from 'ordino/src/cached';
+import {FormElementType, IFormElement} from 'tdp_core/src/form';
+import {cachedLazy} from 'tdp_core/src/cached';
 import {getAPIJSON, api2absURL} from 'phovea_core/src/ajax';
 import {gene, IDataSourceConfig, tissue, cellline, dataSources, dataTypes, dataSubtypes} from './config';
-import {listNamedSetsAsOptions} from 'ordino/src/storage';
+import {listNamedSetsAsOptions} from 'tdp_core/src/storage';
 import {previewFilterHint} from 'tdp_gene/src/utils';
 
 /**
