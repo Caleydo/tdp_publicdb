@@ -11,7 +11,7 @@ import {ARankingView, multi} from 'tdp_core/src/lineup';
 import {getTDPDesc, getTDPFilteredRows, getTDPScore, IServerColumn} from 'tdp_core/src/rest';
 import {IAdditionalColumnDesc} from 'tdp_core/src/lineup/desc';
 import {convertRow2MultiMap} from 'tdp_core/src/form';
-import {postProcessScore, subTypeDesc} from 'tdp_publicdb/src/views/utils';
+import {postProcessScore, subTypeDesc} from './utils';
 import {IScoreRow} from 'tdp_core/src/extensions';
 import {resolve} from 'phovea_core/src/idtype';
 
