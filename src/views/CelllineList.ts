@@ -13,18 +13,6 @@ export default class CelllineList extends ACommonList {
   }
 
   protected getColumnDescs(columns: IServerColumn[]) {
-    const findCat = (column: string) => columns.find((d) => d.column === column).categories;
-    return [
-      stringCol('id', {label: 'Name', width: 120}),
-      //categoricalCol('species', desc.columns.species.categories, 'Species', true),
-      categoricalCol('tumortype', findCat('tumortype'), {label: 'Tumor Type'}),
-      categoricalCol('organ', findCat('organ'), {label: 'Organ'}),
-      categoricalCol('gender', findCat('gender'), {label: 'Gender'}),
-      categoricalCol('metastatic_site', findCat('metastatic_site'), {label: 'Metastatic Site', visible: false}),
-      categoricalCol('histology_type', findCat('histology_type'), {label: 'Histology Type',  visible: false}),
-      categoricalCol('morphology', findCat('morphology'), {label: 'Morphology',  visible: false}),
-      categoricalCol('growth_type', findCat('growth_type'), {label: 'Growth Type',  visible: false}),
-      categoricalCol('age_at_surgery', findCat('age_at_surgery'), {label: 'Age at Surgery',  visible: false}),
-    ];
+    return cellline.columns(columns);
   }
 }

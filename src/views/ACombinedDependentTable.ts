@@ -1,30 +1,38 @@
 import {IViewContext, ISelection} from 'tdp_core/src/views';
 import {getSelectedSpecies} from 'tdp_gene/src/common';
 import {
-  gene,
   IDataTypeConfig,
   IDataSourceConfig,
   splitTypes
 } from '../config';
 import {ParameterFormIds, FORM_DATA_HIERARCHICAL_SUBTYPE} from '../forms';
 import {toFilter} from 'tdp_gene/src/utils';
-import {convertLog2ToLinear} from 'tdp_gene/src/utils';
-import {ISelect2Option, IFormSelect2} from 'tdp_core/src/form';
 import {ARankingView, multi} from 'tdp_core/src/lineup';
-import {getTDPDesc, getTDPFilteredRows, getTDPScore} from 'tdp_core/src/rest';
+import {getTDPDesc, getTDPFilteredRows, getTDPScore, IServerColumn} from 'tdp_core/src/rest';
+import {IAdditionalColumnDesc} from 'tdp_core/src/lineup/desc';
+import {convertRow2MultiMap} from 'tdp_core/src/form';
+import {postProcessScore, subTypeDesc} from 'tdp_publicdb/src/views/utils';
+import {IScoreRow} from 'tdp_core/src/extensions';
+import {resolve} from 'phovea_core/src/idtype';
 
 
 abstract class ACombinedDependentTable extends ARankingView {
 
   protected dataSource: IDataSourceConfig;
-  protected oppositeDataSource: IDataSourceConfig;
 
   constructor(context: IViewContext, selection: ISelection, parent: HTMLElement, protected readonly dataType: IDataTypeConfig[]) {
     super(context, selection, parent, {
-      itemName: gene.name
+      additionalScoreParameter: () => this.oppositeDataSource,
+      itemName: () => this.oppositeDataSource.name
     });
 
     this.dataType = dataType;
+  }
+
+  protected abstract get oppositeDataSource(): IDataSourceConfig;
+
+  get itemIDType() {
+    return resolve(this.oppositeDataSource.idType);
   }
 
   protected getParameterFormDescs() {
@@ -42,89 +50,72 @@ abstract class ACombinedDependentTable extends ARankingView {
     ]);
   }
 
-  protected createSelectionAdapter() {
-    return multi({
-      createDescs: (_id: number, id: string, subTypes: string[]) => this.getSelectionColumnDesc(_id, id, subTypes),
-      loadData: (_id: number, id: string, descs: IAdditionalColumnDesc[]) => undefined,
-      getSelectedSubTypes: () => this.getParameter(ParameterFormIds.DATA_HIERARCHICAL_SUBTYPE).map((d) => d.id)
-    })
+  private get subTypes() {
+    const value: { id: string, text: string }[] = this.getParameter(ParameterFormIds.DATA_HIERARCHICAL_SUBTYPE);
+    return value.map(({id, text}) => {
+      const {dataType, dataSubType} = splitTypes(id);
+      return {label: text, id, dataType, dataSubType};
+    });
   }
 
-  protected initImpl() {
-    super.initImpl();
-    this.update().then(() => this.handleSelectionColumns(this.selection));
+  protected createSelectionAdapter() {
+    return multi({
+      createDescs: (_id: number, id: string) => this.getSelectionColumnDesc(_id, id),
+      loadData: (_id: number, id: string, descs: IAdditionalColumnDesc[]) => this.loadSelectionColumnData(id, descs),
+      getSelectedSubTypes: () => this.subTypes.map((d) => d.id)
+    });
   }
 
   protected parameterChanged(name: string) {
+    super.parameterChanged(name);
     if (name === 'filter') {
       this.reloadData();
     }
-    super.parameterChanged(name);
   }
 
   protected loadColumnDesc() {
     return getTDPDesc(this.dataSource.db, this.oppositeDataSource.base);
   }
+  protected getColumnDescs(columns: IServerColumn[]) {
+    return this.oppositeDataSource.columns(columns);
+  }
 
   protected loadRows() {
-    const param = {
-      filter_species: getSelectedSpecies()
+    const filter = {
+      species: getSelectedSpecies()
     };
-    toFilter(param, convertRow2MultiMap(this.getParameter('filter')));
-    return getTDPFilteredRows(this.dataSource.db, this.oppositeDataSource.tableName, param, {});
+    toFilter(filter, convertRow2MultiMap(this.getParameter('filter')));
+    return getTDPFilteredRows(this.dataSource.db, this.oppositeDataSource.tableName, {},filter);
   }
 
-  protected async getSelectionColumnDesc(_id: number, id: string, subTypes: string[]) {
-    const selectedItem = await this.getSelectionColumnLabel(id);
-    const subTypes = this.getParameter(ParameterFormIds.DATA_HIERARCHICAL_SUBTYPE);
-
-    return selectedSubTypes.map((selectedSubType) => {
-        const label = `${selectedItem} (${selectedSubType.text})`;
-        const {dataSubType} = splitTypes(selectedSubType.id);
-
-        switch(dataSubType.type) {
-          case 'boolean':
-            return stringCol(this.getSelectionColumnId(id), label, true, 50, id, selectedSubType.id);
-          case 'string':
-            return stringCol(this.getSelectionColumnId(id), label, true, 50, id, selectedSubType.id);
-          case 'cat':
-            return categoricalCol(this.getSelectionColumnId(id), dataSubType.categories, label, true, 50, id, selectedSubType.id);
-          default:
-            return numberCol2(this.getSelectionColumnId(id), dataSubType.domain[0], dataSubType.domain[1], label, true, 50, id, selectedSubType.id);
-        }
-      });
+  protected getSelectionColumnLabel(name: string): Promise<string>|string {
+    return name;
   }
 
-  protected loadSelectionColumnData(id: number, desc: any[]): Promise<IScoreRow<any>[]>[] {
-    // TODO When playing the provenance graph, the RawDataTable is loaded before the GeneList has finished loading, i.e. that the local idType cache is not build yet and it will send an unmap request to the server
-    const namePromise = resolveId(this.selection.idtype, id, this.idType);
-    const url = `/targid/db/${this.dataSource.db}/${this.oppositeDataSource.base}_${this.dataSource.base}_single_score/filter`;
-    const config = desc.map((option) => splitTypes(option.selectedSubtype));
+  protected async getSelectionColumnDesc(_id: number, name: string) {
+    return Promise.resolve(this.getSelectionColumnLabel(name)).then((nlabel) => this.subTypes.map(({label, dataSubType, id}) => {
+      const clabel = `${nlabel} (${label})`;
+      const desc = subTypeDesc(dataSubType, _id, clabel, `col_${id}`);
+      desc.selectedSubtype = id;
+      return desc;
+    }));
+  }
 
-    const filter = convertRow2MultiMap(this.getParameter('filter'));
+  protected loadSelectionColumnData(name: string, descs: IAdditionalColumnDesc[]): Promise<IScoreRow<any>[]>[] {
+    const filter = {};
+    toFilter(filter, convertRow2MultiMap(this.getParameter('filter')));
+    const param = {
+      name,
+      species: getSelectedSpecies()
+    };
+    const config = descs.map((option) => splitTypes(option.selectedSubtype));
 
-    return <any>namePromise.then((name: string) => {
-      return config.map((entry) => {
-        const param = {
-          table: entry.dataType.tableName,
-          attribute: entry.dataSubType.id,
-          name,
-          species: getSelectedSpecies()
-        };
-
-        toFilter(param, filter);
-        return getTDPScore(url, param);
-      });
-    }).then((rows) => {
-      const {dataSubType} = splitTypes(colDesc.selectedSubtype);
-      if (dataSubType.useForAggregation.indexOf('log2') !== -1) {
-        rows = convertLog2ToLinear(rows, 'score');
-      }
+    return config.map(({dataType, dataSubType}) => {
+      return getTDPScore(this.dataSource.db, `${this.oppositeDataSource.base}_${this.dataSource.base}_single_score`, Object.assign({
+        table: dataType.tableName,
+        attribute: dataSubType.id
+      }, param), filter).then(postProcessScore(dataSubType));
     });
-  }
-
-  protected loadDynamicColumnOptions(): ISelect2Option[] {
-    return ;
   }
 }
 

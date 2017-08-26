@@ -9,6 +9,9 @@ import {
   unknownCopyNumberValue,
   GENE_IDTYPE
 } from 'tdp_gene/src/constants';
+import {IServerColumn} from 'tdp_core/src/rest';
+import {categoricalCol, numberCol, stringCol} from 'tdp_core/src/lineup';
+import {IAdditionalColumnDesc} from 'tdp_core/src/lineup/desc';
 
 
 /**
@@ -27,6 +30,8 @@ export interface IDataSourceConfig {
   entityName: string;
   base: string;
 
+  columns(columns: IServerColumn[]): IAdditionalColumnDesc[];
+
   [key: string]: any;
 }
 
@@ -37,7 +42,22 @@ export const cellline: IDataSourceConfig = {
   schema: 'cellline',
   tableName: 'cellline',
   entityName: 'celllinename',
-  base: 'cellline'
+  base: 'cellline',
+  columns: (columns: IServerColumn[]) => {
+    const findCat = (column: string) => columns.find((d) => d.column === column).categories;
+    return [
+      stringCol('id', {label: 'Name', width: 120}),
+      //categoricalCol('species', desc.columns.species.categories, 'Species', true),
+      categoricalCol('tumortype', findCat('tumortype'), {label: 'Tumor Type'}),
+      categoricalCol('organ', findCat('organ'), {label: 'Organ'}),
+      categoricalCol('gender', findCat('gender'), {label: 'Gender'}),
+      categoricalCol('metastatic_site', findCat('metastatic_site'), {label: 'Metastatic Site', visible: false}),
+      categoricalCol('histology_type', findCat('histology_type'), {label: 'Histology Type',  visible: false}),
+      categoricalCol('morphology', findCat('morphology'), {label: 'Morphology',  visible: false}),
+      categoricalCol('growth_type', findCat('growth_type'), {label: 'Growth Type',  visible: false}),
+      categoricalCol('age_at_surgery', findCat('age_at_surgery'), {label: 'Age at Surgery',  visible: false}),
+    ];
+  }
 };
 
 
@@ -48,7 +68,28 @@ export const tissue: IDataSourceConfig = {
   schema: 'tissue',
   tableName: 'tissue',
   entityName: 'tissuename',
-  base: 'tissue'
+  base: 'tissue',
+  columns: (columns: IServerColumn[]) => {
+    const findCol = (column: string) => columns.find((d) => d.column === column);
+    return [
+      stringCol('id', {label: 'Name', width: 120}),
+      //categoricalCol('species', desc.columns.species.categories, 'Species', true),
+      categoricalCol('tumortype', findCol('tumortype').categories, {label: 'Tumor Type'}),
+      categoricalCol('organ',findCol('organ').categories, {label: 'Organ'}),
+      categoricalCol('gender', findCol('gender').categories, {label: 'Gender'}),
+      categoricalCol('tumortype_adjacent', findCol('tumortype_adjacent').categories, {label: 'Tumor Type adjacent', visible: false}),
+      categoricalCol('vendorname', findCol('vendorname').categories, {label: 'Vendor name', visible: false}),
+      categoricalCol('race',findCol('race').categories, {label: 'Race', visible: false}),
+      categoricalCol('ethnicity', findCol('ethnicity').categories, {label: 'Ethnicity',  visible: false}),
+      numberCol('age', findCol('age').min, findCol('age').max, {label: 'Age',  visible: false}),
+      numberCol('days_to_death', 0, findCol('days_to_death').max, {label: 'Days to death',  visible: false}),
+      numberCol('days_to_last_followup', 0, findCol('days_to_last_followup').max, {label: 'Days to last follow up',  visible: false}),
+      categoricalCol('vital_status', findCol('vital_status').categories, {label: 'Vital status',  visible: false}),
+      numberCol('height', 0, findCol('height').max, {label: 'Height',  visible: false}),
+      numberCol('weight', 0, findCol('weight').max, {label: 'Weight',  visible: false}),
+      numberCol('bmi', 0, findCol('bmi').max, {label: 'Body Mass Index (BMI)',  visible: false})
+    ];
+  }
 };
 
 
@@ -59,7 +100,19 @@ export const gene: IDataSourceConfig = {
   schema: 'public',
   tableName: 'gene',
   entityName: 'ensg',
-  base: 'gene'
+  base: 'gene',
+  columns: (columns: IServerColumn[]) => {
+    return [
+      stringCol('symbol', {label: 'Symbol', width: 100}),
+      stringCol('id', {label: 'Ensembl', width: 120}),
+      stringCol('name', {label: 'Name'}),
+      stringCol('chromosome', {label: 'Chromosome', width: 150}),
+      categoricalCol('biotype', columns.find((d) => d.column === 'biotype').categories, {label: 'Biotype'}),
+      categoricalCol('strand', [{ label: 'reverse strand', name:String(-1)}, { label: 'forward strand', name:String(1)}], {label: 'Strand', visible: false}),
+      stringCol('seqregionstart', {label: 'Seq Region Start'}),
+      stringCol('seqregionend', {label: 'Seq Region End'})
+    ];
+  }
 };
 
 export const dataSources = [cellline, tissue];

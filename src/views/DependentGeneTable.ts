@@ -2,12 +2,7 @@
  * Created by Marc Streit on 28.07.2016.
  */
 
-import * as ajax from 'phovea_core/src/ajax';
-import {IViewContext, ISelection} from 'ordino/src/View';
-import {
-  stringCol, numberCol2, categoricalCol,
-  ALineUpView2, IScoreRow
-} from 'ordino/src/LineUpView';
+import {IScoreRow, ARankingView, single} from 'tdp_core/src/lineup';
 import {getSelectedSpecies} from 'tdp_gene/src/common';
 import {
   gene,
@@ -16,35 +11,30 @@ import {
   mutation,
   IDataTypeConfig,
   chooseDataSource,
-  IDataSourceConfig
+  IDataSourceConfig, IDataSubtypeConfig
 } from '../config';
-import {ParameterFormIds, FORM_GENE_FILTER, FORM_DATA_SOURCE} from '../forms';
-import {convertLog2ToLinear, toFilter} from 'tdp_gene/src/utils';
-import {convertRow2MultiMap} from 'ordino/src/form/internal/FormMap';
-import {FormBuilder, FormElementType, IFormSelectDesc} from 'ordino/src/FormBuilder';
+import {ParameterFormIds, FORM_GENE_FILTER} from '../forms';
+import {toFilter} from 'tdp_gene/src/utils';
+import {FormElementType, convertRow2MultiMap} from 'tdp_core/src/form';
+import {ISelection, IViewContext} from 'tdp_core/src/views';
+import {getTDPDesc, getTDPFilteredRows, getTDPScore, IServerColumn} from 'tdp_core/src/rest';
+import {postProcessScore, subTypeDesc} from './utils';
 
-class InvertedRawDataTable extends ALineUpView2 {
+export default class DependentGeneTable extends ARankingView {
+  private readonly dataSource: IDataSourceConfig;
 
-  private dataType: IDataTypeConfig;
+  constructor(context: IViewContext, selection: ISelection, parent: HTMLElement, private readonly dataType: IDataTypeConfig, options = {}) {
+    super(context, selection, parent, Object.assign({
+      additionalScoreParameter: gene,
+      itemName: gene.name,
+      itemIDType: gene.idType
+    }, options));
 
-  /**
-   * Parameter UI form
-   */
-  private paramForm: FormBuilder;
-
-  private dataSource: IDataSourceConfig;
-
-  constructor(context: IViewContext, selection: ISelection, parent: Element, dataType: IDataTypeConfig, options?) {
-    super(context, selection, parent, options);
-
-    this.additionalScoreParameter = this.dataSource = chooseDataSource(context.desc);
-    this.dataType = dataType;
+    this.dataSource = chooseDataSource(context.desc);
   }
 
-  buildParameterUI($parent: d3.Selection<any>, onChange: (name: string, value: any) => Promise<any>) {
-    this.paramForm = new FormBuilder($parent);
-
-    const paramDesc: IFormSelectDesc[] = [
+  protected getParameterFormDescs() {
+    return super.getParameterFormDescs().concat([
       {
         type: FormElementType.SELECT,
         label: 'Data Subtype',
@@ -57,123 +47,63 @@ class InvertedRawDataTable extends ALineUpView2 {
         useSession: true
       },
       FORM_GENE_FILTER
-    ];
-
-    // map FormElement change function to provenance graph onChange function
-    paramDesc.forEach((p) => {
-      p.options.onChange = (selection, formElement) => onChange(formElement.id, selection.value);
-    });
-
-    this.paramForm.build(paramDesc);
-
-    // add other fields
-    super.buildParameterUI($parent.select('form'), onChange);
+    ]);
   }
 
-  getParameter(name: string): any {
-    return this.paramForm.getElementById(name).value.data;
-  }
-
-  setParameter(name: string, value: any) {
-    this.paramForm.getElementById(name).value = value;
-    this.clear();
-    return this.update();
+  protected parameterChanged(name: string) {
+    super.parameterChanged(name);
+    this.rebuild();
   }
 
   protected loadColumnDesc() {
-    const dataSource = gene; //this.getParameter(ParameterFormIds.DATA_SOURCE);
-    return ajax.getAPIJSON(`/targid/db/${dataSource.db}/${dataSource.base}/desc`);
+    return getTDPDesc(gene.db, gene.base);
   }
 
-  protected initColumns(desc: {idType: string, columns: any}) {
-    super.initColumns(desc);
+  protected createSelectionAdapter() {
+    return single({
+      createDesc: (_id: number, id: string) => subTypeDesc(this.dataSubType, _id, id),
+      loadData: (_id: number, id: string) => this.loadSelectionColumnData(id)
+    });
+  }
 
-    const columns = [
-      stringCol('symbol', 'Symbol', true, 100),
-      stringCol('id', 'Ensembl', true, 120),
-      stringCol('name', 'Name', true),
-      stringCol('chromosome', 'Chromosome', true, 150),
-      //categoricalCol('species', desc.columns.species.categories, 'Species', true),
-      categoricalCol('biotype', desc.columns.biotype.categories, 'Biotype', true),
-      categoricalCol('strand', [{ label: 'reverse strand', name:String(-1)}, { label: 'forward strand', name:String(1)}], 'Strand', false),
-      stringCol('seqregionstart', 'Seq Region Start', false),
-      stringCol('seqregionend', 'Seq Region End', false)
-    ];
-
-    this.build([], columns);
-    this.handleSelectionColumns(this.selection);
-
-    return columns;
+  protected getColumnDescs(columns: IServerColumn[]) {
+    return gene.columns(columns);
   }
 
   protected loadRows() {
-    const url = `/targid/db/${this.dataSource.db}/gene/filter`;
-    const param = {
-      filter_species: getSelectedSpecies()
+    const filter = {
+      species: getSelectedSpecies()
     };
-    toFilter(param, convertRow2MultiMap(this.getParameter('filter')));
-    return ajax.getAPIJSON(url, param);
+    toFilter(filter, convertRow2MultiMap(this.getParameter('filter')));
+    return getTDPFilteredRows(gene.db, gene.base, {}, filter);
   }
 
-  protected mapRows(rows: any[]) {
-    rows = super.mapRows(rows);
-    return rows;
+  private get dataSubType() {
+    return <IDataSubtypeConfig>this.getParameter(ParameterFormIds.DATA_SUBTYPE);
   }
 
-  protected async getSelectionColumnDesc(id: number) {
-    const label = await this.getSelectionColumnLabel(id);
-    const dataSubType = this.getParameter(ParameterFormIds.DATA_SUBTYPE);
-
-    if (dataSubType.type === 'boolean') {
-      return stringCol(this.getSelectionColumnId(id), label, true, 50, id);
-    } else if (dataSubType.type === 'string') {
-      return stringCol(this.getSelectionColumnId(id), label, true, 50, id);
-    } else if (dataSubType.type === 'cat') {
-      return categoricalCol(this.getSelectionColumnId(id), dataSubType.categories, label, true, 50, id);
-    }
-    return numberCol2(this.getSelectionColumnId(id), dataSubType.domain[0], dataSubType.domain[1], label, true, 50, id);
-  }
-
-  protected getSelectionColumnLabel(id: number) {
-    // TODO When playing the provenance graph, the RawDataTable is loaded before the GeneList has finished loading, i.e. that the local idType cache is not build yet and it will send an unmap request to the server
-    return this.resolveId(this.selection.idtype, id, this.idType);
-  }
-
-  protected async loadSelectionColumnData(id: number): Promise<IScoreRow<any>[]> {
-    // TODO When playing the provenance graph, the RawDataTable is loaded before the GeneList has finished loading, i.e. that the local idType cache is not build yet and it will send an unmap request to the server
-    const name = await this.resolveId(this.selection.idtype, id, this.idType);
-    const url = `/targid/db/${this.dataSource.db}/gene_${this.dataSource.base}_single_score/filter`;
+  private loadSelectionColumnData(name: string): Promise<IScoreRow<any>[]> {
+    const subType = this.dataSubType;
     const param = {
       table: this.dataType.tableName,
-      attribute: this.getParameter(ParameterFormIds.DATA_SUBTYPE).id,
+      attribute: subType.id,
       name,
       species: getSelectedSpecies()
     };
-    toFilter(param, convertRow2MultiMap(this.getParameter('filter')));
-    return ajax.getAPIJSON(url, param);
-  }
-
-  protected mapSelectionRows(rows: IScoreRow<any>[]) {
-    if (this.getParameter(ParameterFormIds.DATA_SUBTYPE).useForAggregation.indexOf('log2') !== -1) {
-      rows = convertLog2ToLinear(rows, 'score');
-    }
-
-    return rows;
-  }
-
-  getItemName(count: number) {
-    return (count === 1) ? gene.name.toLowerCase() : gene.name.toLowerCase() + 's';
+    const filter = {};
+    toFilter(filter, convertRow2MultiMap(this.getParameter('filter')));
+    return getTDPScore(gene.db, `gene_${this.dataSource.base}_single_score`, param, filter).then(postProcessScore(subType));
   }
 }
 
-export function createExpressionTable(context: IViewContext, selection: ISelection, parent: Element, options?) {
-  return new InvertedRawDataTable(context, selection, parent, expression, options);
+export function createExpressionTable(context: IViewContext, selection: ISelection, parent: HTMLElement, options?) {
+  return new DependentGeneTable(context, selection, parent, expression, options);
 }
 
-export function createCopyNumberTable(context: IViewContext, selection: ISelection, parent: Element, options?) {
-  return new InvertedRawDataTable(context, selection, parent, copyNumber, options);
+export function createCopyNumberTable(context: IViewContext, selection: ISelection, parent: HTMLElement, options?) {
+  return new DependentGeneTable(context, selection, parent, copyNumber, options);
 }
 
-export function createMutationTable(context: IViewContext, selection: ISelection, parent: Element, options?) {
-  return new InvertedRawDataTable(context, selection, parent, mutation, options);
+export function createMutationTable(context: IViewContext, selection: ISelection, parent: HTMLElement, options?) {
+  return new DependentGeneTable(context, selection, parent, mutation, options);
 }
