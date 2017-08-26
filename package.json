@@ -73,7 +73,7 @@
     "node": ">= 6"
   },
   "dependencies": {
-    "tdp_gene": "github:datavisyn/tdp_gene#tdp"
+    "tdp_gene": "github:Caleydo/tdp_gene#tdp"
   },
   "optionalDependencies": {
     "ordino": "github:Caleydo/ordino#tdp",
