@@ -29,9 +29,8 @@ export abstract class AInfoTable extends AD3View {
 
   protected initImpl() {
     super.initImpl();
-    this.$node
-      .classed('infoTable', true);
-    this.update();
+    this.$node.classed('infoTable', true);
+    return this.update();
   }
 
   selectionChanged() {
