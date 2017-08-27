@@ -16,7 +16,7 @@ module.exports = function (registry) {
     name: 'Genes',
     factory: 'new',
     viewId: 'celllinedb_start',
-    idtype: 'Ensembl',
+    idType: 'Ensembl',
     selection: 'none',
     description: 'Gene Sets',
     cssClass: 'gene-entry-point'
@@ -28,7 +28,7 @@ module.exports = function (registry) {
     name: 'Tissues',
     factory: 'new',
     viewId: 'bioinfodb_tissue_start',
-    idtype: 'Tissue',
+    idType: 'Tissue',
     selection: 'none',
     sampleType: 'Tissue',
     description: 'Tissue Panels',
@@ -41,7 +41,7 @@ module.exports = function (registry) {
     name: 'Cell Lines',
     factory: 'new',
     viewId: 'celllinedb_cellline',
-    idtype: 'Cellline',
+    idType: 'Cellline',
     selection: 'none',
     description: 'Cell Line Panels',
     cssClass: 'cellline-entry-point'
