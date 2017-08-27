@@ -6,7 +6,7 @@ import {IFormSelectDesc, convertRow2MultiMap} from 'tdp_core/src/form';
 import AExpressionVsCopyNumber, {IDataFormatRow} from 'tdp_gene/src/views/AExpressionVsCopyNumber';
 import {getSelectedSpecies} from 'tdp_gene/src/common';
 import Range from 'phovea_core/src/range/Range';
-import {expression, copyNumber} from '../config';
+import {expression, copyNumber, IDataSourceConfig} from '../config';
 import {ParameterFormIds, FORM_TISSUE_OR_CELLLINE_FILTER, FORM_DATA_SOURCE} from '../forms';
 import {resolve} from 'phovea_core/src/idtype';
 import {loadFirstName} from './utils';
@@ -22,12 +22,16 @@ export default class ExpressionVsCopyNumber extends AExpressionVsCopyNumber {
     return base;
   }
 
+  private get dataSource() {
+    return <IDataSourceConfig>this.getParameterData(ParameterFormIds.DATA_SOURCE);
+  }
+
   loadFirstName(ensg: string) {
     return loadFirstName(ensg);
   }
 
   loadData(ensg: string): Promise<IDataFormatRow[]> {
-    const ds = this.getParameter(ParameterFormIds.DATA_SOURCE);
+    const ds = this.dataSource;
     const param: any = {
       ensg,
       expression_subtype: this.getParameter(ParameterFormIds.EXPRESSION_SUBTYPE).id,
@@ -51,7 +55,7 @@ export default class ExpressionVsCopyNumber extends AExpressionVsCopyNumber {
   }
 
   get itemIDType() {
-    return resolve(this.getParameter(ParameterFormIds.DATA_SOURCE).idType);
+    return resolve(this.dataSource.idType);
   }
 
   protected select(range: Range) {

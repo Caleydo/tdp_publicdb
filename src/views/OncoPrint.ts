@@ -4,7 +4,7 @@
 
 
 import {IFormSelectDesc, convertRow2MultiMap} from 'tdp_core/src/form';
-import AOncoPrint,{IDataFormatRow, ISample} from 'tdp_gene/src/views/AOncoPrint';
+import AOncoPrint, {IDataFormatRow, ISample} from 'tdp_gene/src/views/AOncoPrint';
 import {getSelectedSpecies} from 'tdp_gene/src/common';
 import {ParameterFormIds, FORM_TISSUE_OR_CELLLINE_FILTER, FORM_DATA_SOURCE} from '../forms';
 import {loadFirstName} from './utils';
@@ -23,8 +23,13 @@ export default class OncoPrint extends AOncoPrint {
     ];
   }
 
-   protected async loadSampleList(): Promise<ISample[]> {
-    const ds = this.getParameter(ParameterFormIds.DATA_SOURCE);
+
+  private get dataSource() {
+    return <IDataSourceConfig>this.getParameterData(ParameterFormIds.DATA_SOURCE);
+  }
+
+  protected async loadSampleList(): Promise<ISample[]> {
+    const ds = this.dataSource;
     const param: any = {
       species: getSelectedSpecies()
     };
@@ -34,12 +39,12 @@ export default class OncoPrint extends AOncoPrint {
   }
 
   protected getSampleIdType() {
-    const ds = <IDataSourceConfig>this.getParameter(ParameterFormIds.DATA_SOURCE);
+    const ds = this.dataSource;
     return resolve(ds.idType);
   }
 
   protected loadRows(ensg: string): Promise<IDataFormatRow[]> {
-    const ds= this.getParameter(ParameterFormIds.DATA_SOURCE);
+    const ds = this.dataSource;
     const param: any = {
       ensg,
       species: getSelectedSpecies()

@@ -47,11 +47,11 @@ export default class DependentSampleTable extends ARankingView {
   }
 
   private get dataSource() {
-    return <IDataSourceConfig>this.getParameter(ParameterFormIds.DATA_SOURCE);
+    return <IDataSourceConfig>this.getParameterData(ParameterFormIds.DATA_SOURCE);
   }
 
   private get dataSubType() {
-    return <IDataSubtypeConfig>this.getParameter(ParameterFormIds.DATA_SUBTYPE);
+    return <IDataSubtypeConfig>this.getParameterData(ParameterFormIds.DATA_SUBTYPE);
   }
 
   protected parameterChanged(name: string) {
@@ -76,7 +76,7 @@ export default class DependentSampleTable extends ARankingView {
   }
 
   protected loadRows() {
-    const dataSource = this.getParameter(ParameterFormIds.DATA_SOURCE);
+    const dataSource = this.dataSource;
     const filter = {
       species: getSelectedSpecies()
     };

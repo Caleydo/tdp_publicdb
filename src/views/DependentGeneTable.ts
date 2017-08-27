@@ -79,7 +79,7 @@ export default class DependentGeneTable extends ARankingView {
   }
 
   private get dataSubType() {
-    return <IDataSubtypeConfig>this.getParameter(ParameterFormIds.DATA_SUBTYPE);
+    return <IDataSubtypeConfig>this.getParameterData(ParameterFormIds.DATA_SUBTYPE);
   }
 
   private loadSelectionColumnData(name: string): Promise<IScoreRow<any>[]> {

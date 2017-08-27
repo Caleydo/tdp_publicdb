@@ -5,6 +5,7 @@ import {
   copyNumber,
   mutation,
   IDataTypeConfig,
+  IDataSourceConfig,
 } from '../config';
 import {ParameterFormIds, FORM_DATA_SOURCE, FORM_TISSUE_OR_CELLLINE_FILTER} from '../forms';
 import ACombinedTable from './ACombinedDependentTable';
@@ -18,7 +19,7 @@ export class CombinedDependentSampleTable extends ACombinedTable {
   }
 
   protected get oppositeDataSource() {
-    return this.getParameter(ParameterFormIds.DATA_SOURCE);
+    return <IDataSourceConfig>this.getParameterData(ParameterFormIds.DATA_SOURCE);
   }
 
   protected getParameterFormDescs() {
