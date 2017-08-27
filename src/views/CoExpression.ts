@@ -5,7 +5,7 @@
 import {FormElementType, IFormSelectDesc, convertRow2MultiMap} from 'tdp_core/src/form';
 import ACoExpression, {IDataFormatRow, IGeneOption} from 'tdp_gene/src/views/ACoExpression';
 import {getSelectedSpecies} from 'tdp_gene/src/common';
-import {expression, IDataSourceConfig} from '../config';
+import {expression, IDataSourceConfig, IDataSubtypeConfig} from '../config';
 import {ParameterFormIds, FORM_TISSUE_OR_CELLLINE_FILTER, FORM_DATA_SOURCE} from '../forms';
 import {loadGeneList, loadFirstName} from './utils';
 import {toFilter} from 'tdp_gene/src/utils';
@@ -36,6 +36,9 @@ export default class CoExpression extends ACoExpression {
   private get dataSource() {
     return <IDataSourceConfig>this.getParameterData(ParameterFormIds.DATA_SOURCE);
   }
+  private get dataSubType() {
+    return <IDataSubtypeConfig>this.getParameterData(ParameterFormIds.EXPRESSION_SUBTYPE);
+  }
 
   loadGeneList(ensgs: string[]) {
     return loadGeneList(ensgs);
@@ -45,7 +48,7 @@ export default class CoExpression extends ACoExpression {
     const ds = this.dataSource;
     const param: any = {
       ensg,
-      attribute: this.getParameter(ParameterFormIds.EXPRESSION_SUBTYPE).id,
+      attribute: this.dataSubType.id,
       species: getSelectedSpecies()
     };
     toFilter(param, convertRow2MultiMap(this.getParameter('filter')));
@@ -57,7 +60,7 @@ export default class CoExpression extends ACoExpression {
   }
 
   protected getAttributeName() {
-    return this.getParameter(ParameterFormIds.EXPRESSION_SUBTYPE).name;
+    return this.dataSubType.name;
   }
 
   get itemIDType() {

@@ -34,8 +34,8 @@ export default class ExpressionVsCopyNumber extends AExpressionVsCopyNumber {
     const ds = this.dataSource;
     const param: any = {
       ensg,
-      expression_subtype: this.getParameter(ParameterFormIds.EXPRESSION_SUBTYPE).id,
-      copynumber_subtype: this.getParameter(ParameterFormIds.COPYNUMBER_SUBTYPE).id,
+      expression_subtype: this.getParameterData(ParameterFormIds.EXPRESSION_SUBTYPE).id,
+      copynumber_subtype: this.getParameterData(ParameterFormIds.COPYNUMBER_SUBTYPE).id,
       species: getSelectedSpecies()
     };
     toFilter(param, convertRow2MultiMap(this.getParameter('filter')));
