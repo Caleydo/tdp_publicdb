@@ -286,19 +286,21 @@ export const FORM_TISSUE_OR_CELLLINE_FILTER = {
     defaultSelection: false,
     uniqueKeys: true,
     badgeProvider: (filter: any, dataSource: IFormElement) => {
-      const value = dataSource.value.data;
-      if (value === tissue || value === tissue.id) {
+      const value = dataSource.value;
+      const data = value ? value.data : null;
+      if (data === tissue || data === tissue.id) {
         return FORM_TISSUE_FILTER.options.badgeProvider(filter);
-      } else if (value === cellline || value === cellline.id) {
+      } else if (data === cellline || data === cellline.id) {
         return FORM_CELLLINE_FILTER.options.badgeProvider(filter);
       }
       return '';
     },
     entries: (dataSource: IFormElement) => {
-      const value = dataSource.value.data;
-      if (value === tissue || value === tissue.id) {
+      const value = dataSource.value;
+      const data = value ? value.data : null;
+      if (data === tissue || data === tissue.id) {
         return FORM_TISSUE_FILTER.options.entries;
-      } else if (value === cellline || value === cellline.id) {
+      } else if (data === cellline || data === cellline.id) {
         return FORM_CELLLINE_FILTER.options.entries;
       }
       return [];
