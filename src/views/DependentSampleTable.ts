@@ -46,6 +46,10 @@ export default class DependentSampleTable extends ARankingView {
     ]);
   }
 
+  get itemIDType() {
+    return resolve(this.dataSource.idType);
+  }
+
   private get dataSource() {
     return <IDataSourceConfig>this.getParameterData(ParameterFormIds.DATA_SOURCE);
   }
