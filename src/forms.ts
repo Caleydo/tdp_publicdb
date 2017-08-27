@@ -6,10 +6,10 @@ import {SPECIES_SESSION_KEY, getSelectedSpecies} from 'tdp_gene/src/common';
 import {FORM_EXPRESSION_SUBTYPE_ID, FORM_COPYNUMBER_SUBTYPE_ID} from 'tdp_gene/src/forms';
 import {FormElementType, IFormElement} from 'tdp_core/src/form';
 import {cachedLazy} from 'tdp_core/src/cached';
-import {getAPIJSON, api2absURL} from 'phovea_core/src/ajax';
 import {gene, IDataSourceConfig, tissue, cellline, dataSources, dataTypes, dataSubtypes} from './config';
 import {listNamedSetsAsOptions} from 'tdp_core/src/storage';
 import {previewFilterHint} from 'tdp_gene/src/utils';
+import {getTDPData, getTDPLookupUrl} from 'tdp_core/src/rest';
 
 /**
  * List of ids for parameter form elements
@@ -62,7 +62,7 @@ export const NUMERIC_AGGREGATION = [
 
 
 function buildPredefinedNamedSets(ds: IDataSourceConfig) {
-  return getAPIJSON(`/targid/db/${ds.db}/${ds.base}_panel`).then((panels: {id: string}[]) => panels.map((p) => p.id));
+  return getTDPData<{id: string}>(ds.db, `${ds.base}_panel`).then((panels: {id: string}[]) => panels.map((p) => p.id));
 }
 
 export const FORM_GENE_NAME = {
@@ -76,7 +76,7 @@ export const FORM_GENE_NAME = {
   options: {
     optionsData: [],
     ajax: {
-      url: api2absURL(`/targid/db/${gene.db}/${gene.base}_items/lookup`),
+      url: getTDPLookupUrl(gene.db, `${gene.base}_items`),
       data: (params: any) => {
         return {
           column: 'symbol',
@@ -104,7 +104,7 @@ function generateNameLookup(d: IDataSourceConfig, field: string) {
     options: {
       optionsData: [],
       ajax: {
-        url: api2absURL(`/targid/db/${d.db}/${d.base}_items/lookup`),
+        url: getTDPLookupUrl(d.db, `${d.base}_items`),
         data: (params: any) => {
           return {
             column: d.entityName,
@@ -131,14 +131,14 @@ export const FORM_GENE_FILTER = {
     sessionKeySuffix: '-gene',
     defaultSelection: false,
     uniqueKeys: true,
-    badgeProvider: previewFilterHint(`/targid/db/${gene.db}/gene`, () => ({ filter_species: getSelectedSpecies()})),
+    badgeProvider: previewFilterHint(gene.db, 'gene', () => ({ filter_species: getSelectedSpecies()})),
     entries: [{
       name: 'Bio Type',
       value: 'biotype',
       type: FormElementType.SELECT2,
       multiple: true,
       return: 'id',
-      optionsData: cachedLazy('gene_biotypes', () => getAPIJSON(`/targid/db/${gene.db}/gene_unique_all`, {
+      optionsData: cachedLazy('gene_biotypes', () => getTDPData<{text: string}>(gene.db, 'gene_unique_all', {
         column: 'biotype',
         species: getSelectedSpecies()
       }).then((r) => r.map((d) => d.text)))
@@ -148,7 +148,7 @@ export const FORM_GENE_FILTER = {
       type: FormElementType.SELECT2,
       multiple: true,
       return: 'id',
-      optionsData: cachedLazy('gene_strands', () => getAPIJSON(`/targid/db/${gene.db}/gene_unique_all`, {
+      optionsData: cachedLazy('gene_strands', () => getTDPData<{text: string|number}>(gene.db, `gene_unique_all`, {
         column: 'strand',
         species: getSelectedSpecies()
       }).then((r) => r.map((d) => ({name: `${d.text === -1 ? 'reverse' : 'forward'} strand`, value: d.text}))))
@@ -170,7 +170,7 @@ export const FORM_GENE_FILTER = {
       type: FormElementType.SELECT2,
       multiple: true,
       ajax: {
-        url: api2absURL(`/targid/db/${gene.db}/gene_items/lookup`),
+        url: getTDPLookupUrl(gene.db, 'gene_items'),
         data: (params: any) => {
           return {
             column: 'symbol',
@@ -194,7 +194,7 @@ function generateFilter(d: IDataSourceConfig) {
     useSession: true,
     options: {
       sessionKeySuffix: '-' + d.base,
-      badgeProvider: previewFilterHint(`/targid/db/${d.db}/${d.base}`, () => ({ filter_species: getSelectedSpecies()})),
+      badgeProvider: previewFilterHint(d.db, d.base, () => ({ filter_species: getSelectedSpecies()})),
       defaultSelection: false,
       uniqueKeys: true,
       entries: [{
@@ -203,7 +203,7 @@ function generateFilter(d: IDataSourceConfig) {
         type: FormElementType.SELECT2,
         multiple: true,
         return: 'id',
-        optionsData: cachedLazy(d.base + '_tumortypes', () => getAPIJSON(`/targid/db/${d.db}/${d.base}_unique_all`, {
+        optionsData: cachedLazy(d.base + '_tumortypes', () => getTDPData<{text: string}>(d.db, `${d.base}_unique_all`, {
           column: 'tumortype',
           species: getSelectedSpecies()
         }).then((r) => r.map((d) => d.text)))
@@ -213,7 +213,7 @@ function generateFilter(d: IDataSourceConfig) {
         type: FormElementType.SELECT2,
         multiple: true,
         return: 'id',
-        optionsData: cachedLazy(d.base + '_organs', () => getAPIJSON(`/targid/db/${d.db}/${d.base}_unique_all`, {
+        optionsData: cachedLazy(d.base + '_organs', () => getTDPData<{text: string}>(d.db, `${d.base}_unique_all`, {
           column: 'organ',
           species: getSelectedSpecies()
         }).then((r) => r.map((d) => d.text)))
@@ -223,7 +223,7 @@ function generateFilter(d: IDataSourceConfig) {
         type: FormElementType.SELECT2,
         multiple: true,
         return: 'id',
-        optionsData: cachedLazy(d.base + '_gender', () => getAPIJSON(`/targid/db/${d.db}/${d.base}_unique_all`, {
+        optionsData: cachedLazy(d.base + '_gender', () => getTDPData<{text: string}>(d.db, `${d.base}_unique_all`, {
           column: 'gender',
           species: getSelectedSpecies()
         }).then((r) => r.map((d) => d.text)))
@@ -245,7 +245,7 @@ function generateFilter(d: IDataSourceConfig) {
         type: FormElementType.SELECT2,
         multiple: true,
         ajax: {
-          url: api2absURL(`/targid/db/${gene.db}/${d.base}_items/lookup`),
+          url: getTDPLookupUrl(gene.db, `${d.base}_items`),
           data: (params: any) => {
             return {
               column: d.entityName,
