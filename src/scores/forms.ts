@@ -42,7 +42,7 @@ export const FORM_AGGREGATED_SCORE = [
       if (dependantValues[0].id === '') {
         return false;
       }
-      const agg = dependantValues[1].value;
+      const agg = dependantValues[1] ? dependantValues[1].value : null;
       const {dataSubType} = splitTypes(dependantValues[0].id);
       return (agg === 'frequency' || agg === 'count') && dataSubType.type === dataSubtypes.number;
     },
@@ -61,7 +61,7 @@ export const FORM_AGGREGATED_SCORE = [
       if (dependantValues[0].id === '') {
         return false;
       }
-      const agg = dependantValues[1].value;
+      const agg = dependantValues[1] ? dependantValues[1].value : null;
       const {dataSubType} = splitTypes(dependantValues[0].id);
       return (agg === 'frequency' || agg === 'count') && dataSubType.type === dataSubtypes.number;
     },
