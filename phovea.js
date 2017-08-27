@@ -308,7 +308,7 @@ module.exports = function (registry) {
   //gene_(Tissue|Celline)
   ['Tissue', 'Cellline'].forEach(function (oppositeIDType) {
     const prefix = 'gene_' + oppositeIDType.toLowerCase();
-    registry.push('ordinoScore', prefix + '_aggregated_score', function () {
+    registry.push('tdpScore', prefix + '_aggregated_score', function () {
       return import('./src/scores');
     }, {
       name: 'Aggregated ' + oppositeIDType + ' Score',
@@ -316,14 +316,14 @@ module.exports = function (registry) {
       primaryType: 'Ensembl',
       oppositeType: oppositeIDType
     });
-    registry.push('ordinoScoreImpl', prefix + '_aggregated_score', function () {
+    registry.push('tdpScoreImpl', prefix + '_aggregated_score', function () {
       return import('./src/scores');
     }, {
       factory: 'createScore',
       primaryType: 'Ensembl',
       oppositeType: oppositeIDType
     });
-    registry.push('ordinoScore', prefix + '_single_score', function () {
+    registry.push('tdpScore', prefix + '_single_score', function () {
       return import('./src/scores/SingleScore');
     }, {
       name: 'Single ' + oppositeIDType + ' Score',
@@ -331,7 +331,7 @@ module.exports = function (registry) {
       primaryType: 'Ensembl',
       oppositeType: oppositeIDType
     });
-    registry.push('ordinoScoreImpl', prefix + '_single_score', function () {
+    registry.push('tdpScoreImpl', prefix + '_single_score', function () {
       return import('./src/scores/SingleScore');
     }, {
       factory: 'createScore',
@@ -344,7 +344,7 @@ module.exports = function (registry) {
   ['Tissue', 'Cellline'].forEach(function (idType) {
     const prefix = idType.toLowerCase() + '_gene';
 
-    registry.push('ordinoScore', prefix + '_aggregated_score', function () {
+    registry.push('tdpScore', prefix + '_aggregated_score', function () {
       return import('./src/scores');
     }, {
       name: 'Aggregated Score',
@@ -352,14 +352,14 @@ module.exports = function (registry) {
       primaryType: idType,
       oppositeType: 'Ensembl'
     });
-    registry.push('ordinoScoreImpl', prefix + '_aggregated_score', function () {
+    registry.push('tdpScoreImpl', prefix + '_aggregated_score', function () {
       return import('./src/scores');
     }, {
       factory: 'createScore',
       primaryType: idType,
       oppositeType: 'Ensembl'
     });
-    registry.push('ordinoScore', prefix + '_single_score', function () {
+    registry.push('tdpScore', prefix + '_single_score', function () {
       return import('./src/scores/SingleScore');
     }, {
       name: 'Single Gene Score',
@@ -367,7 +367,7 @@ module.exports = function (registry) {
       primaryType: idType,
       oppositeType: 'Ensembl'
     });
-    registry.push('ordinoScoreImpl', prefix + '_single_score', function () {
+    registry.push('tdpScoreImpl', prefix + '_single_score', function () {
       return import('./src/scores/SingleScore');
     }, {
       factory: 'createScore',
