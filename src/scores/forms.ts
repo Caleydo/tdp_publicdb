@@ -18,7 +18,7 @@ export const FORM_AGGREGATED_SCORE = [
     dependsOn: [ParameterFormIds.DATA_HIERARCHICAL_SUBTYPE],
     required: true,
     options: {
-      optionsFnc: (selection) => {
+      optionsData: (selection) => {
         if(selection.length === 0 || selection[0].id === '') {
           return NUMERIC_AGGREGATION;
         }
@@ -28,8 +28,7 @@ export const FORM_AGGREGATED_SCORE = [
         } else {
           return NUMERIC_AGGREGATION;
         }
-      },
-      optionsData: []
+      }
     },
     useSession: true
   },
