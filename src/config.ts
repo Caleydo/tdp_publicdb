@@ -52,10 +52,10 @@ export const cellline: IDataSourceConfig = {
       categoricalCol('organ', findCat('organ'), {label: 'Organ'}),
       categoricalCol('gender', findCat('gender'), {label: 'Gender'}),
       categoricalCol('metastatic_site', findCat('metastatic_site'), {label: 'Metastatic Site', visible: false}),
-      categoricalCol('histology_type', findCat('histology_type'), {label: 'Histology Type',  visible: false}),
-      categoricalCol('morphology', findCat('morphology'), {label: 'Morphology',  visible: false}),
-      categoricalCol('growth_type', findCat('growth_type'), {label: 'Growth Type',  visible: false}),
-      categoricalCol('age_at_surgery', findCat('age_at_surgery'), {label: 'Age at Surgery',  visible: false}),
+      categoricalCol('histology_type', findCat('histology_type'), {label: 'Histology Type', visible: false}),
+      categoricalCol('morphology', findCat('morphology'), {label: 'Morphology', visible: false}),
+      categoricalCol('growth_type', findCat('growth_type'), {label: 'Growth Type', visible: false}),
+      categoricalCol('age_at_surgery', findCat('age_at_surgery'), {label: 'Age at Surgery', visible: false}),
     ];
   }
 };
@@ -109,8 +109,8 @@ export const gene: IDataSourceConfig = {
       stringCol('chromosome', {label: 'Chromosome', width: 150}),
       categoricalCol('biotype', columns.find((d) => d.column === 'biotype').categories, {label: 'Biotype'}),
       categoricalCol('strand', [{ label: 'reverse strand', name:String(-1)}, { label: 'forward strand', name:String(1)}], {label: 'Strand', visible: false}),
-      stringCol('seqregionstart', {label: 'Seq Region Start'}),
-      stringCol('seqregionend', {label: 'Seq Region End'})
+      stringCol('seqregionstart', {label: 'Seq Region Start', visible: false}),
+      stringCol('seqregionend', {label: 'Seq Region End', visible: false})
     ];
   }
 };
