@@ -22,7 +22,7 @@ class GeneSearchProvider extends SearchProvider {
   }
 
   format?(item: IResult): string {
-    return (item.id) ? `${item.text || ''} <span class="ensg">${(<any>item).name}</span>` : item.text;
+    return (item.id) ? `${item.text || ''} <span class="ensg">${item.id}</span>` : item.text;
   }
 
   validate(query: string[]): Promise<IResult[]> {
