@@ -2,7 +2,7 @@
   "name": "tdp_publicdb",
   "description": "",
   "homepage": "https://phovea.caleydo.org",
-  "version": "2.1.2-SNAPSHOT",
+  "version": "2.1.3-SNAPSHOT",
   "private": true,
   "author": {
     "name": "The Caleydo Team",
