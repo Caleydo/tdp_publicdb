@@ -14,7 +14,6 @@ module.exports = function (registry) {
     return import('./src/menu/GeneSubSection');
   }, {
     name: 'Genes',
-    factory: 'new',
     viewId: 'celllinedb_start',
     idType: 'Ensembl',
     selection: 'none',
@@ -26,7 +25,6 @@ module.exports = function (registry) {
     return import('./src/menu/SampleSubSection');
   }, {
     name: 'Tissues',
-    factory: 'new',
     viewId: 'bioinfodb_tissue_start',
     idType: 'Tissue',
     selection: 'none',
@@ -39,7 +37,6 @@ module.exports = function (registry) {
     return import('./src/menu/SampleSubSection');
   }, {
     name: 'Cell Lines',
-    factory: 'new',
     viewId: 'celllinedb_cellline',
     idType: 'Cellline',
     selection: 'none',
@@ -54,7 +51,6 @@ module.exports = function (registry) {
       return import('./src/views/GeneList');
     }, {
       name: 'Genes',
-      factory: 'new',
       idtype: 'Ensembl',
       selection: 'none'
     });
@@ -116,7 +112,6 @@ module.exports = function (registry) {
       return import('./src/views/OncoPrint');
     }, {
       name: 'OncoPrint',
-      factory: 'new',
       idtype: 'Ensembl',
       selection: 'some',
       group: {
@@ -129,7 +124,6 @@ module.exports = function (registry) {
       return import('./src/views/ExpressionVsCopyNumber');
     }, {
       name: 'Expression vs. Copy Number',
-      factory: 'new',
       idtype: 'Ensembl',
       selection: 'some',
       group: {
@@ -142,7 +136,6 @@ module.exports = function (registry) {
       return import('./src/views/CoExpression');
     }, {
       name: 'Co-Expression',
-      factory: 'new',
       idtype: 'Ensembl',
       selection: 'some',
       group: {
@@ -155,7 +148,6 @@ module.exports = function (registry) {
       return import('./src/views/CombinedDependentSampleTable');
     }, {
       name: 'Combined View',
-      factory: 'create',
       idtype: 'Ensembl',
       selection: 'some',
       group: {
@@ -202,7 +194,6 @@ module.exports = function (registry) {
       return import('./src/views/' + idType + 'List');
     }, {
       name: label,
-      factory: 'new',
       idtype: idType,
       selection: 'none',
       sampleType: idType
@@ -254,7 +245,6 @@ module.exports = function (registry) {
       return import('./src/views/CombinedDependentGeneTable');
     }, {
       name: 'Combined View',
-      factory: 'new',
       idtype: idType,
       selection: 'some',
       group: {
