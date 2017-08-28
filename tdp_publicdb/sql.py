@@ -10,7 +10,7 @@ cellline_columns = [_primary_cellline, 'species', 'tumortype', 'organ', 'gender'
 
 idtype_tissue = 'Tissue'
 _primary_tissue = 'tissuename'
-tissue_columns = [_primary_tissue, 'species', 'tumortype', 'organ', 'gender']
+tissue_columns = [_primary_tissue, 'species', 'tumortype', 'organ', 'gender', 'tumortype_adjacent', 'vendorname', 'race', 'ethnicity', 'age', 'days_to_last_followup', 'days_to_death', 'vital_status', 'height', 'weight', 'bmi']
 
 idtype_gene = 'Ensembl'
 _primary_gene = 'ensg'
@@ -157,12 +157,21 @@ def create_cellline_specific(query):
 
 def create_tissue_specific(query):
   return query \
+    .column('species', type='categorical') \
     .column('tumortype', type='categorical') \
     .column('organ', type='categorical') \
     .column('gender', type='categorical') \
+    .column('tumortype_adjacent', type='string') \
     .column('vendorname', type='categorical') \
     .column('race', type='categorical') \
     .column('ethnicity', type='categorical') \
+    .column('age', type='number') \
+    .column('days_to_death', type='number') \
+    .column('days_to_last_followup', type='number') \
+    .column('vital_status', type='categorical') \
+    .column('height', type='number') \
+    .column('weight', type='number') \
+    .column('bmi', type='number')
 
 
 def create_sample(result, basename, idtype, primary, base_columns, columns):
