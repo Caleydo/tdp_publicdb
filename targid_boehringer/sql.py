@@ -86,6 +86,7 @@ def create_gene_score(result, other_prefix, other_primary, other_columns):
            GROUP BY ensg""".format(primary=other_primary, base=other_prefix)) \
     .replace("table", tables).replace('attribute', attributes).replace('and_where') \
     .filters(other_columns) \
+    .filter(other_primary, 'c.' + other_primary + ' %(operator)s %(value)s') \
     .query('panel', filter_panel) \
     .query('panel_ensg', filter_gene_panel_d) \
     .query('ensg', 'd.ensg %(operator)s %(value)s') \
