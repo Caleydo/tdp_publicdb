@@ -88,7 +88,7 @@ def create_gene_score(result, other_prefix, other_primary, other_columns):
     .filters(other_columns) \
     .query('panel', filter_panel) \
     .query('panel_ensg', filter_gene_panel_d) \
-    .query('ensg', 'd.ensg %(operator)s %(value)s') \
+    .filter('ensg', 'd.ensg %(operator)s %(value)s') \
     .filter(other_primary, 'c.'+ other_primary + ' %(operator)s %(value)s') \
     .arg("species").build()
 
