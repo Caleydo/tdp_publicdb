@@ -307,20 +307,20 @@ def create_sample(result, basename, idtype, primary, base, columns):
   result[basename + '_gene_score'] = DBViewBuilder().idtype(idtype).query("""
           SELECT D.{primary} AS id, %(agg_score)s AS score
           FROM {base}.targid_%(table)s D
-          INNER JOIN public.targid_gene C ON D.ensg = C.ensg
-          WHERE C.species = :species %(and_where)s
+          INNER JOIN public.targid_gene g ON D.ensg = g.ensg
+          WHERE g.species = :species %(and_where)s
           GROUP BY D.{primary}""".format(primary=primary, base=basename)) \
     .query('count', """
               SELECT count(DISTINCT {primary})
               FROM {base}.targid_%(table)s D
-              INNER JOIN public.targid_gene C ON D.ensg = C.ensg
-              WHERE C.species = :species %(and_where)s
+              INNER JOIN public.targid_gene g ON D.ensg = g.ensg
+              WHERE g.species = :species %(and_where)s
               GROUP BY D.{primary}""".format(primary=primary, base=basename)) \
     .filters(gene_columns) \
     .filter('panel', filter_gene_panel) \
     .filter('panel_' + primary, filter_panel_d) \
     .filter(primary, 'd.' + primary + ' %(operator)s %(value)s') \
-    .filter('ensg', 'c.ensg %(operator)s %(value)s') \
+    .filter('ensg', 'g.ensg %(operator)s %(value)s') \
     .replace('table', tables).replace('agg_score').replace('and_where').arg('species').build()
 
   result[basename + '_check_ids'] = DBViewBuilder().query("""
