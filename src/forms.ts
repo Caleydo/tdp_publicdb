@@ -34,6 +34,7 @@ export class ParameterFormIds {
   static AGGREGATION = 'aggregation';
   static COMPARISON_OPERATOR = 'comparison_operator';
   static COMPARISON_VALUE = 'comparison_value';
+  static COMPARISON_CN = 'comparison_cn';
   static SCORE_FORCE_DATASET_SIZE = 'maxDirectFilterRows';
 }
 

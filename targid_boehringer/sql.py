@@ -28,7 +28,7 @@ agg_score = DBViewBuilder().query('%(agg)s(%(data_subtype)s)') \
 
 tables = ['expression', 'mutation', 'copynumber']
 attributes = ['relativecopynumber', 'totalabscopynumber', 'copynumberclass', 'aa_mutated', 'aamutation', 'dna_mutated', 'dnamutation', 'tpm', 'counts']
-operators = ['<', '>', '>=', '<=', '=', '<>']
+operators = ['<', '>', '>=', '<=', '=', '<>', 'in']
 
 def _create_common(result, prefix, table, primary, idtype, columns):
   # lookup for the id and primary names the table
@@ -99,6 +99,20 @@ def create_gene_score(result, other_prefix, other_primary, other_columns):
            WHERE c.species = :species %(and_where)s 
            GROUP BY ensg""".format(primary=other_primary, base=other_prefix)) \
     .replace("table", tables).replace('and_where').replace("attribute", attributes).replace("operator", operators).arg("value") \
+    .filters(other_columns) \
+    .filter('panel', filter_panel) \
+    .filter('panel_ensg', filter_gene_panel_d) \
+    .filter('ensg', 'd.ensg %(operator)s %(value)s') \
+    .filter(other_primary, 'c.'+ other_primary + ' %(operator)s %(value)s') \
+    .arg("species").build()
+
+  result[basename + '_frequency_copynumberclass_score'] = DBViewBuilder().idtype(idtype_gene).query("""
+           SELECT ensg AS id, SUM((%(attribute)s in (%(value)s))::INT4) as count, COUNT(%(attribute)s) as total
+           FROM {base}.targid_%(table)s d
+           INNER JOIN {base}.targid_{base} c ON c.{primary} = d.{primary}
+           WHERE c.species = :species %(and_where)s 
+           GROUP BY ensg""".format(primary=other_primary, base=other_prefix)) \
+    .replace("table", tables).replace('and_where').replace("attribute", attributes).replace("value", re.compile('([-\d]+)(,[-\d])*')) \
     .filters(other_columns) \
     .filter('panel', filter_panel) \
     .filter('panel_ensg', filter_gene_panel_d) \
@@ -283,6 +297,20 @@ def create_sample(result, basename, idtype, primary, base, columns):
            WHERE g.species = :species %(and_where)s
            GROUP BY d.{primary}""".format(primary=primary, base=basename)) \
     .replace("table", tables).replace('attribute', attributes).replace('and_where') \
+    .filters(gene_columns) \
+    .filter('panel', filter_gene_panel) \
+    .filter('panel_' + primary, filter_panel_d) \
+    .filter(primary, 'd.' + primary + ' %(operator)s %(value)s') \
+    .filter('ensg', 'g.ensg %(operator)s %(value)s') \
+    .arg("species").build()
+
+  result[basename + '_gene_frequency_copynumberclass_score'] = DBViewBuilder().idtype(idtype).query("""
+        SELECT d.{primary} AS id, SUM((%(attribute)s in (%(value)s))::INT4) as count, COUNT(%(attribute)s) as total
+           FROM {base}.targid_%(table)s d
+         INNER JOIN public.targid_gene g ON g.ensg = d.ensg
+           WHERE g.species = :species %(and_where)s
+           GROUP BY d.{primary}""".format(primary=primary, base=basename)) \
+    .replace("table", tables).replace('and_where').replace("attribute", attributes).replace("value", re.compile('([-\d]+)(,[-\d])*')) \
     .filters(gene_columns) \
     .filter('panel', filter_gene_panel) \
     .filter('panel_' + primary, filter_panel_d) \
