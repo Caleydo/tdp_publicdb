@@ -8,12 +8,13 @@ import {IDataSourceConfig, dataSubtypes, MAX_FILTER_SCORE_ROWS_BEFORE_ALL} from 
 import {IScore, IScoreRow} from 'tdp_core/src/extensions';
 import {createDesc, toFilterString} from './utils';
 import AScore, {ICommonScoreParam} from './AScore';
-import {toFilter, limitScoreRows, convertLog2ToLinear} from 'tdp_gene/src/utils';
+import {limitScoreRows, convertLog2ToLinear} from 'tdp_gene/src/utils';
 import {IBoxPlotData} from 'lineupjs/src/model/BoxPlotColumn';
 import {INamedSet} from 'tdp_core/src/storage';
 import {resolve} from 'phovea_core/src/idtype';
 import {getTDPScore} from 'tdp_core/src/rest';
 import IDType from 'phovea_core/src/idtype/IDType';
+import {toFilter} from 'tdp_core/src/lineup';
 
 interface IAggregatedScoreParam extends ICommonScoreParam {
   aggregation: string;
@@ -57,9 +58,9 @@ export default class AggregatedScore extends AScore implements IScore<number> {
     };
     const maxDirectRows = typeof this.parameter.maxDirectFilterRows === 'number' ? this.parameter.maxDirectFilterRows : MAX_FILTER_SCORE_ROWS_BEFORE_ALL;
     limitScoreRows(param, ids, idtype, this.dataSource.entityName, maxDirectRows, namedSet);
-    toFilter(param, this.parameter.filter);
+    const filters = toFilter(this.parameter.filter);
 
-    let rows: IScoreRow<any>[] = await getTDPScore(this.dataSource.db, `${this.dataSource.base}_${this.oppositeDataSource.base}_score`, param);
+    let rows: IScoreRow<any>[] = await getTDPScore(this.dataSource.db, `${this.dataSource.base}_${this.oppositeDataSource.base}_score`, param, filters);
     if (this.parameter.aggregation === 'boxplot') {
       rows = rows.filter((d) => d.score !== null);
       rows.forEach((row) => row.score = array2boxplotData(row.score));

@@ -6,13 +6,15 @@ import {IDataSubtypeConfig, dataSubtypes, cellline, tissue, gene, IDataSourceCon
 import {IBoxPlotData} from 'lineupjs/src/model/BoxPlotColumn';
 import {IPluginDesc} from 'phovea_core/src/plugin';
 import {FORM_GENE_FILTER, FORM_TISSUE_FILTER, FORM_CELLLINE_FILTER} from '../forms';
-import {toFilterString as toFilterStringImpl} from 'tdp_gene/src/utils';
+import {toFilterString as toFilterStringImpl} from 'tdp_core/src/lineup';
+import {IFormMultiMap} from 'tdp_core/src/form';
 
 /**
  * creates a lineup config out of a IDataSubtypeConfig
  * @param type force a specific type
  * @param label the column label
  * @param subtype specific infos
+ * @param description optional description of the column
  * @return {any}
  */
 export function createDesc(type: string, label: string, subtype: IDataSubtypeConfig, description = ''): any {
@@ -82,7 +84,7 @@ function toFilterDesc(ds: IDataSourceConfig) {
   }
 }
 
-export function toFilterString(filter: any, ds: IDataSourceConfig) {
+export function toFilterString(filter: IFormMultiMap, ds: IDataSourceConfig) {
   const key2name = new Map<string, string>();
 
   const filterDesc = toFilterDesc(ds);

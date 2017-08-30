@@ -9,10 +9,11 @@ import {IDataSourceConfig, dataSubtypes, mutation, MAX_FILTER_SCORE_ROWS_BEFORE_
 import {IScore} from 'tdp_core/src/extensions';
 import {createDesc, toFilterString} from './utils';
 import AScore, {ICommonScoreParam} from './AScore';
-import {toFilter, limitScoreRows} from 'tdp_gene/src/utils';
+import {limitScoreRows} from 'tdp_gene/src/utils';
 import {INamedSet} from 'tdp_core/src/storage';
 import {resolve} from 'phovea_core/src/idtype';
 import {getTDPScore} from 'tdp_core/src/rest';
+import {toFilter} from 'tdp_core/src/lineup';
 
 interface IFrequencyScoreParam extends ICommonScoreParam {
   comparison_operator: string;
@@ -52,9 +53,9 @@ export default class FrequencyScore extends AScore implements IScore<number> {
     }
     const maxDirectRows = typeof this.parameter.maxDirectFilterRows === 'number' ? this.parameter.maxDirectFilterRows : MAX_FILTER_SCORE_ROWS_BEFORE_ALL;
     limitScoreRows(param, ids, idtype, this.dataSource.entityName, maxDirectRows, namedSet);
-    toFilter(param, this.parameter.filter);
+    const filters = toFilter(this.parameter.filter);
 
-    const rows: any[] = await getTDPScore(this.dataSource.db, `${this.dataSource.base}_${this.oppositeDataSource.base}_frequency_${isMutation? 'mutation_' : ''}score`, param);
+    const rows: any[] = await getTDPScore(this.dataSource.db, `${this.dataSource.base}_${this.oppositeDataSource.base}_frequency_${isMutation? 'mutation_' : ''}score`, param, filters);
     rows.forEach((row) => row.score = this.countOnly ? row.count : row.count / row.total);
     return rows;
   }

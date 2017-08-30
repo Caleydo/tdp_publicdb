@@ -3,7 +3,6 @@
 import {ACommonList, IACommonListOptions} from 'tdp_gene/src/views/ACommonList';
 import {ISelection, IViewContext} from 'tdp_core/src/views';
 import {cellline} from '../config';
-import {categoricalCol, stringCol} from 'tdp_core/src/lineup';
 import {IServerColumn} from 'tdp_core/src/rest';
 
 export default class CelllineList extends ACommonList {

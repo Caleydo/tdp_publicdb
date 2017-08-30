@@ -8,7 +8,7 @@ import {FormElementType, IFormElement} from 'tdp_core/src/form';
 import {cachedLazy} from 'tdp_core/src/cached';
 import {gene, IDataSourceConfig, tissue, cellline, dataSources, dataTypes, dataSubtypes} from './config';
 import {listNamedSetsAsOptions} from 'tdp_core/src/storage';
-import {previewFilterHint} from 'tdp_gene/src/utils';
+import {previewFilterHint} from 'tdp_core/src/lineup';
 import {getTDPData, getTDPLookupUrl} from 'tdp_core/src/rest';
 
 /**

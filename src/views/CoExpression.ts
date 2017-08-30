@@ -2,16 +2,16 @@
  * Created by sam on 16.02.2017.
  */
 
-import {FormElementType, IFormSelectDesc, convertRow2MultiMap} from 'tdp_core/src/form';
+import {FormElementType, IFormSelectDesc} from 'tdp_core/src/form';
 import ACoExpression, {IDataFormatRow, IGeneOption} from 'tdp_gene/src/views/ACoExpression';
 import {getSelectedSpecies} from 'tdp_gene/src/common';
 import {expression, IDataSourceConfig, IDataSubtypeConfig} from '../config';
 import {ParameterFormIds, FORM_TISSUE_OR_CELLLINE_FILTER, FORM_DATA_SOURCE} from '../forms';
 import {loadGeneList, loadFirstName} from './utils';
-import {toFilter} from 'tdp_gene/src/utils';
 import {resolve} from 'phovea_core/src/idtype/manager';
 import Range from 'phovea_core/src/range/Range';
-import {getTDPData} from 'tdp_core/src/rest';
+import {getTDPData, IParams, mergeParamAndFilters} from 'tdp_core/src/rest';
+import {toFilter} from 'tdp_core/src/lineup';
 
 
 export default class CoExpression extends ACoExpression {
@@ -46,13 +46,12 @@ export default class CoExpression extends ACoExpression {
 
   loadData(ensg: string): Promise<IDataFormatRow[]> {
     const ds = this.dataSource;
-    const param: any = {
+    const param: IParams = {
       ensg,
       attribute: this.dataSubType.id,
       species: getSelectedSpecies()
     };
-    toFilter(param, convertRow2MultiMap(this.getParameter('filter')));
-    return getTDPData(ds.db, `${ds.base}_co_expression/filter`, param);
+    return getTDPData(ds.db, `${ds.base}_co_expression/filter`, mergeParamAndFilters(param, toFilter(this.getParameter('filter'))));
   }
 
   loadFirstName(ensg: string) {

@@ -12,12 +12,12 @@ import {
   IDataSourceConfig, IDataSubtypeConfig
 } from '../config';
 import {ParameterFormIds, FORM_DATA_SOURCE, FORM_TISSUE_OR_CELLLINE_FILTER} from '../forms';
-import {toFilter} from 'tdp_gene/src/utils';
-import {FormElementType, convertRow2MultiMap} from 'tdp_core/src/form';
+import {FormElementType} from 'tdp_core/src/form';
 import {ISelection, IViewContext} from 'tdp_core/src/views';
 import {getTDPDesc, getTDPFilteredRows, getTDPScore, IServerColumn} from 'tdp_core/src/rest';
 import {resolve} from 'phovea_core/src/idtype';
 import {loadFirstName, postProcessScore, subTypeDesc} from './utils';
+import {toFilter} from 'tdp_core/src/lineup';
 
 export default class DependentSampleTable extends ARankingView {
 
@@ -81,10 +81,8 @@ export default class DependentSampleTable extends ARankingView {
 
   protected loadRows() {
     const dataSource = this.dataSource;
-    const filter = {
-      species: getSelectedSpecies()
-    };
-    toFilter(filter, convertRow2MultiMap(this.getParameter('filter')));
+    const filter = toFilter(this.getParameter('filter'));
+    filter.species = getSelectedSpecies();
     return getTDPFilteredRows(dataSource.db, dataSource.base, {}, filter);
   }
 
@@ -98,8 +96,7 @@ export default class DependentSampleTable extends ARankingView {
       species: getSelectedSpecies()
     };
     const filter = {};
-    toFilter(filter, convertRow2MultiMap(this.getParameter('filter')));
-    return getTDPScore(dataSource.db, `${dataSource.base}_gene_single_score`, param, filter).then(postProcessScore(subType));
+    return getTDPScore(dataSource.db, `${dataSource.base}_gene_single_score`, param, toFilter(this.getParameter('filter'))).then(postProcessScore(subType));
   }
 }
 

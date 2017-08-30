@@ -1,4 +1,3 @@
-import {getAPIJSON} from 'phovea_core/src/ajax';
 import {chooseDataSource} from './config';
 import {getTDPData} from 'tdp_core/src/rest';
 

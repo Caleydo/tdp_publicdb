@@ -6,14 +6,13 @@ import {
   splitTypes
 } from '../config';
 import {ParameterFormIds, FORM_DATA_HIERARCHICAL_SUBTYPE} from '../forms';
-import {toFilter} from 'tdp_gene/src/utils';
 import {ARankingView, multi} from 'tdp_core/src/lineup';
-import {getTDPDesc, getTDPFilteredRows, getTDPScore, IServerColumn} from 'tdp_core/src/rest';
+import {getTDPDesc, getTDPFilteredRows, getTDPScore, IParams, IServerColumn} from 'tdp_core/src/rest';
 import {IAdditionalColumnDesc} from 'tdp_core/src/lineup/desc';
-import {convertRow2MultiMap} from 'tdp_core/src/form';
 import {postProcessScore, subTypeDesc} from './utils';
 import {IScoreRow} from 'tdp_core/src/extensions';
 import {resolve} from 'phovea_core/src/idtype';
+import {toFilter} from 'tdp_core/src/lineup';
 
 
 abstract class ACombinedDependentTable extends ARankingView {
@@ -81,11 +80,9 @@ abstract class ACombinedDependentTable extends ARankingView {
   }
 
   protected loadRows() {
-    const filter = {
-      species: getSelectedSpecies()
-    };
-    toFilter(filter, convertRow2MultiMap(this.getParameter('filter')));
-    return getTDPFilteredRows(this.dataSource.db, this.oppositeDataSource.tableName, {},filter);
+    const filter = toFilter(this.getParameter('filter'));
+    filter.species = getSelectedSpecies();
+    return getTDPFilteredRows(this.dataSource.db, this.oppositeDataSource.tableName, {}, filter);
   }
 
   protected getSelectionColumnLabel(name: string): Promise<string>|string {
@@ -102,9 +99,8 @@ abstract class ACombinedDependentTable extends ARankingView {
   }
 
   protected loadSelectionColumnData(name: string, descs: IAdditionalColumnDesc[]): Promise<IScoreRow<any>[]>[] {
-    const filter = {};
-    toFilter(filter, convertRow2MultiMap(this.getParameter('filter')));
-    const param = {
+    const filter = toFilter(this.getParameter('filter'));
+    const param: IParams = {
       name,
       species: getSelectedSpecies()
     };

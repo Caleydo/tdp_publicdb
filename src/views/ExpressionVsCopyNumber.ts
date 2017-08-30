@@ -2,7 +2,7 @@
  * Created by sam on 16.02.2017.
  */
 
-import {IFormSelectDesc, convertRow2MultiMap} from 'tdp_core/src/form';
+import {IFormSelectDesc} from 'tdp_core/src/form';
 import AExpressionVsCopyNumber, {IDataFormatRow} from 'tdp_gene/src/views/AExpressionVsCopyNumber';
 import {getSelectedSpecies} from 'tdp_gene/src/common';
 import Range from 'phovea_core/src/range/Range';
@@ -10,8 +10,8 @@ import {expression, copyNumber, IDataSourceConfig} from '../config';
 import {ParameterFormIds, FORM_TISSUE_OR_CELLLINE_FILTER, FORM_DATA_SOURCE} from '../forms';
 import {resolve} from 'phovea_core/src/idtype';
 import {loadFirstName} from './utils';
-import {toFilter} from 'tdp_gene/src/utils';
-import {getTDPData} from 'tdp_core/src/rest';
+import {getTDPData, IParams, mergeParamAndFilters} from 'tdp_core/src/rest';
+import {toFilter} from 'tdp_core/src/lineup';
 
 export default class ExpressionVsCopyNumber extends AExpressionVsCopyNumber {
 
@@ -32,14 +32,13 @@ export default class ExpressionVsCopyNumber extends AExpressionVsCopyNumber {
 
   loadData(ensg: string): Promise<IDataFormatRow[]> {
     const ds = this.dataSource;
-    const param: any = {
+    const param: IParams = {
       ensg,
       expression_subtype: this.getParameterData(ParameterFormIds.EXPRESSION_SUBTYPE).id,
       copynumber_subtype: this.getParameterData(ParameterFormIds.COPYNUMBER_SUBTYPE).id,
       species: getSelectedSpecies()
     };
-    toFilter(param, convertRow2MultiMap(this.getParameter('filter')));
-    return getTDPData(ds.db, `${ds.base}_expression_vs_copynumber/filter`, param);
+    return getTDPData(ds.db, `${ds.base}_expression_vs_copynumber/filter`, mergeParamAndFilters(param, toFilter(this.getParameter('filter'))));
   }
 
   protected getExpressionValues() {
