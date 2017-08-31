@@ -2,7 +2,8 @@
  * Created by Samuel Gratzl on 27.04.2016.
  */
 
-import {AD3View, IViewContext, ISelection, IView, resolveIds} from 'tdp_core/src/views';
+import {IViewContext, ISelection, IView, resolveIds} from 'tdp_core/src/views';
+import AD3View from 'tdp_core/src/views/AD3View';
 import {getSelectedSpecies} from 'tdp_gene/src/common';
 import {IDataSourceConfig, cellline, tissue, gene} from '../config';
 import {Primitive, transpose as d3Transpose, Selection} from 'd3';

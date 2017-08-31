@@ -184,20 +184,26 @@ module.exports = function (registry) {
   }
 
 
+  registry.push('tdpView', 'bioinfodb_cellline_start', function () {
+    return import('./src/views/CelllineList');
+  }, {
+    name: 'Cell lines',
+    idtype: 'Cellline',
+    selection: 'none',
+    sampleType: 'Cellline'
+  });
+  registry.push('tdpView', 'bioinfodb_tissue_start', function () {
+    return import('./src/views/TissueList');
+  }, {
+    name: 'Tissues',
+    idtype: 'Tissue',
+    selection: 'none',
+    sampleType: 'Tissue'
+  });
   //views
   ['Tissue', 'Cellline'].forEach(function (idType) {
     const plain = idType.toLowerCase();
     const label = idType === 'Tissue' ? 'Tissues' : 'Cell lines';
-
-
-    registry.push('tdpView', 'bioinfodb_' + plain + '_start', function () {
-      return import('./src/views/' + idType + 'List');
-    }, {
-      name: label,
-      idtype: idType,
-      selection: 'none',
-      sampleType: idType
-    });
 
     registry.push('tdpView', plain + '_inverted_expressiontable', function () {
       return import('./src/views/DependentGeneTable');
