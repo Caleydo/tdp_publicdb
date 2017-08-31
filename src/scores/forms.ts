@@ -4,7 +4,7 @@ import {
 } from '../forms';
 import {FormElementType} from 'tdp_core/src/form';
 import {MAX_FILTER_SCORE_ROWS_BEFORE_ALL, splitTypes, dataSubtypes} from '../config';
-import {copyNumberCat, unknownMutationValue} from 'targid_common/src/constants';
+import {copyNumberCat, unknownMutationValue} from 'tdp_gene/src/constants';
 /**
  * Created by Samuel Gratzl on 15.03.2017.
  */
