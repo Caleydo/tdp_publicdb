@@ -4,6 +4,7 @@ import {
 } from '../forms';
 import {FormElementType} from 'tdp_core/src/form';
 import {MAX_FILTER_SCORE_ROWS_BEFORE_ALL, splitTypes, dataSubtypes} from '../config';
+import {copyNumberCat, unknownMutationValue} from 'targid_common/src/constants';
 /**
  * Created by Samuel Gratzl on 15.03.2017.
  */
@@ -68,6 +69,28 @@ export const FORM_AGGREGATED_SCORE = [
     useSession: true,
     options: {
       type: 'number'
+    }
+  },
+  {
+    type: FormElementType.SELECT2_MULTIPLE,
+    label: 'Copy Number Class is',
+    id: ParameterFormIds.COMPARISON_CN,
+    attributes: {
+      style: 'width:100%'
+    },
+    required: true,
+    dependsOn: [ParameterFormIds.DATA_HIERARCHICAL_SUBTYPE, ParameterFormIds.AGGREGATION],
+    showIf: (dependantValues) => { // show form element for expression and copy number frequencies
+      if (dependantValues[0].id === '') {
+        return false;
+      }
+      const agg = dependantValues[1].value;
+      const {dataSubType} = splitTypes(dependantValues[0].id);
+      return (agg === 'frequency' || agg === 'count') && dataSubType.id  === 'copynumberclass';
+    },
+    useSession: true,
+    options: {
+      data: copyNumberCat.filter((d) => d.value !== unknownMutationValue).map((d) => ({text: d.name, id: String(d.value)}))
     }
   }
 ];

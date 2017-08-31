@@ -48,6 +48,12 @@ export function create(pluginDesc: IPluginDesc, extras: any, countHint?: number)
     delete data[ParameterFormIds.DATA_HIERARCHICAL_SUBTYPE];
     data.data_type = dataType.id;
     data.data_subtype = dataSubType.id;
+    if (dataSubType.id === 'copynumberclass') {
+      // cornercase in case of copynumber class we have an in :class list case
+      data.comparison_value = `${(data.comparison_cn || []).map((d) => d.id).join(',')}`;
+    } else {
+      delete data.comparison_cn;
+    }
     data.filter = convertRow2MultiMap(data.filter);
     return data;
   });
