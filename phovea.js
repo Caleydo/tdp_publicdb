@@ -184,7 +184,7 @@ module.exports = function (registry) {
   }
 
 
-  registry.push('tdpView', 'bioinfodb_cellline_start', function () {
+  registry.push('tdpView', 'celllinedb_cellline', function () {
     return import('./src/views/CelllineList');
   }, {
     name: 'Cell lines',
