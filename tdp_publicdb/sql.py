@@ -185,7 +185,7 @@ def create_tissue_specific(query):
     .column('age', type='number') \
     .column('days_to_death', type='number') \
     .column('days_to_last_followup', type='number') \
-    .column('vital_status', type='categorical') \
+    .column('vital_status', type='categorical', categories=[dict(name='true', label='Alive', color='white'), dict(name='false', label='Deceased', color='black')]) \
     .column('height', type='number') \
     .column('weight', type='number') \
     .column('bmi', type='number')
