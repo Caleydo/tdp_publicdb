@@ -92,51 +92,48 @@ def create_gene_score(result, other_prefix, other_primary, other_columns):
 
   result[basename + '_frequency_mutation_score'] = DBViewBuilder().idtype(idtype_gene).query("""
            SELECT ensg AS id, SUM({{attribute}}::integer) as count, COUNT({{attribute}}) as total
-           FROM {base}.targid_{{table}} d
-           INNER JOIN {base}.targid_{base} c ON c.{primary} = d.{primary}
-           WHERE c.species = :species
+           FROM {base}.targid_{{table}} c
+           WHERE {primary} = ANY(ARRAY(SELECT {primary} FROM {base}.targid_{base} WHERE species = :species {{and_other_where}}))
+           {{and_where}}
            GROUP BY ensg""".format(primary=other_primary, base=other_prefix)) \
     .replace('table', tables).replace('attribute', attributes)\
-    .call(inject_where) \
     .arg('species') \
-    .filters(other_columns) \
+    .filters(other_columns, group = 'other') \
+    .filter(other_primary) \
     .filter('panel', filter_panel) \
-    .filter('panel_ensg', filter_gene_panel_d) \
-    .filter('ensg', table='d') \
-    .filter(other_primary, table = 'c') \
+    .filter('panel_ensg', filter_gene_panel_no) \
+    .filter('ensg') \
     .build()
 
   result[basename + '_frequency_score'] = DBViewBuilder().idtype(idtype_gene).query("""
            SELECT ensg AS id, SUM(({{attribute}} {{operator}} :value)::INT4) as count, COUNT({{attribute}}) as total
-           FROM {base}.targid_{{table}} d
-           INNER JOIN {base}.targid_{base} c ON c.{primary} = d.{primary}
-           WHERE c.species = :species  
+           FROM {base}.targid_{{table}} c
+           WHERE {primary} = ANY(ARRAY(SELECT {primary} FROM {base}.targid_{base} WHERE species = :species {{and_other_where}}))
+           {{and_where}}
            GROUP BY ensg""".format(primary=other_primary, base=other_prefix)) \
     .replace('table', tables).replace('attribute', attributes).replace('operator', operators) \
-    .call(inject_where) \
     .arg('value').arg('species') \
-    .filters(other_columns) \
+    .filters(other_columns, group = 'other') \
+    .filter(other_primary) \
     .filter('panel', filter_panel) \
-    .filter('panel_ensg', filter_gene_panel_d) \
-    .filter('ensg', table='d') \
-    .filter(other_primary, table='c')\
+    .filter('panel_ensg', filter_gene_panel_no) \
+    .filter('ensg') \
     .build()
 
   result[basename + '_frequency_copynumberclass_score'] = DBViewBuilder().idtype(idtype_gene).query("""
-             SELECT ensg AS id, SUM(({{attribute}} in ({{value}}))::INT4) as count, COUNT({{attribute}}) as total
-             FROM {base}.targid_{{table}} d
-             INNER JOIN {base}.targid_{base} c ON c.{primary} = d.{primary}
-             WHERE c.species = :species %(and_where)s 
-             GROUP BY ensg""".format(primary=other_primary, base=other_prefix)) \
+           SELECT ensg AS id, SUM(({{attribute}} in ({{value}}))::INT4) as count, COUNT({{attribute}}) as total
+           FROM {base}.targid_{{table}} c
+           WHERE {primary} = ANY(ARRAY(SELECT {primary} FROM {base}.targid_{base} WHERE species = :species {{and_other_where}}))
+           {{and_where}}
+           GROUP BY ensg""".format(primary=other_primary, base=other_prefix)) \
     .replace('table', tables).replace('attribute', attributes).replace('value', re.compile(
     '([-\d]+)(,[-\d])*')) \
-    .call(inject_where) \
     .arg('species') \
-    .filters(other_columns) \
+    .filters(other_columns, group = 'other') \
+    .filter(other_primary) \
     .filter('panel', filter_panel) \
-    .filter('panel_ensg', filter_gene_panel_d) \
-    .filter('ensg', table='d') \
-    .filter(other_primary, table='c') \
+    .filter('panel_ensg', filter_gene_panel_no) \
+    .filter('ensg') \
     .build()
 
   result[basename + '_score'] = DBViewBuilder().idtype(idtype_gene).query("""
@@ -298,50 +295,47 @@ def create_sample(result, basename, idtype, primary, base_columns, columns):
 
   result[basename + '_gene_frequency_mutation_score'] = DBViewBuilder().idtype(idtype).query("""
         SELECT d.{primary} AS id, SUM({{attribute}}::integer) as count, COUNT({{attribute}}) as total
-           FROM {base}.targid_{{table}} d
-         INNER JOIN public.targid_gene g ON g.ensg = d.ensg
-           WHERE g.species = :species
-           GROUP BY d.{primary}""".format(primary=primary, base=basename)) \
+        FROM {base}.targid_{{table}} d
+        WHERE ensg = ANY(ARRAY(SELECT ensg FROM public.targid_gene WHERE species = :species {{and_other_where}}))
+        {{and_where}}
+        GROUP BY d.{primary}""".format(primary=primary, base=basename)) \
     .replace('table', tables).replace('attribute', attributes) \
-    .call(inject_where) \
     .arg('species')\
-    .filters(gene_columns) \
-    .filter('panel', filter_gene_panel) \
+    .filters(gene_columns, group = 'other') \
+    .filter('panel', filter_gene_panel_d) \
     .filter('panel_' + primary, filter_panel_d) \
-    .filter(primary, table='d') \
-    .filter('ensg', table='g') \
+    .filter(primary) \
+    .filter('ensg') \
     .build()
 
   result[basename + '_gene_frequency_score'] = DBViewBuilder().idtype(idtype).query("""
         SELECT d.{primary} AS id, SUM(({{attribute}} {{operator}} :value)::INT4) as count, COUNT({{attribute}}) as total
-           FROM {base}.targid_{{table}} d
-         INNER JOIN public.targid_gene g ON g.ensg = d.ensg
-           WHERE g.species = :species
-           GROUP BY d.{primary}""".format(primary=primary, base=basename)) \
+        FROM {base}.targid_{{table}} d
+        WHERE ensg = ANY(ARRAY(SELECT ensg FROM public.targid_gene WHERE species = :species {{and_other_where}}))
+        {{and_where}}
+        GROUP BY d.{primary}""".format(primary=primary, base=basename)) \
     .replace('table', tables).replace('attribute', attributes).replace('operator', operators)\
-    .call(inject_where) \
     .arg('value').arg('species') \
-    .filters(gene_columns) \
-    .filter('panel', filter_gene_panel) \
+    .filters(gene_columns, group = 'other') \
+    .filter('panel', filter_gene_panel_d) \
     .filter('panel_' + primary, filter_panel_d) \
-    .filter(primary, table='d') \
-    .filter('ensg', table='g') \
+    .filter(primary) \
+    .filter('ensg') \
     .build()
 
   result[basename + '_gene_frequency_copynumberclass_score'] = DBViewBuilder().idtype(idtype).query("""
         SELECT d.{primary} AS id, SUM(({{attribute}} in ({{value}}))::INT4) as count, COUNT({{attribute}}) as total
-           FROM {base}.targid_{{table}} d
-         INNER JOIN public.targid_gene g ON g.ensg = d.ensg
-           WHERE g.species = :species %(and_where)s
-           GROUP BY d.{primary}""".format(primary=primary, base=basename)) \
+        FROM {base}.targid_{{table}} d
+        WHERE ensg = ANY(ARRAY(SELECT ensg FROM public.targid_gene WHERE species = :species {{and_other_where}}))
+        {{and_where}}
+        GROUP BY d.{primary}""".format(primary=primary, base=basename)) \
     .replace('table', tables).replace('attribute', attributes).replace('value', re.compile('([-\d]+)(,[-\d])*')) \
-    .call(inject_where) \
     .arg('species') \
-    .filters(gene_columns) \
-    .filter('panel', filter_gene_panel) \
+    .filters(gene_columns, group = 'other') \
+    .filter('panel', filter_gene_panel_d) \
     .filter('panel_' + primary, filter_panel_d) \
-    .filter(primary, table='d') \
-    .filter('ensg', table='g') \
+    .filter(primary) \
+    .filter('ensg') \
     .build()
 
   result[basename + '_gene_score'] = DBViewBuilder().idtype(idtype).query("""
