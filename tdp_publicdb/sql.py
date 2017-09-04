@@ -71,8 +71,9 @@ def _create_common(result, prefix, table, primary, idtype, columns):
 
 
 def create_gene_score(result, other_prefix, other_primary, other_columns):
-  filter_panel = 'c.{primary} = ANY(SELECT {primary} FROM {base}.targid_panelassignment WHERE panel {{operator}} {{value}})'.format(
+  filter_panel_no = '{primary} = ANY(SELECT {primary} FROM {base}.targid_panelassignment WHERE panel {{operator}} {{value}})'.format(
     primary=other_primary, base=other_prefix)
+  filter_panel = 'c.' + filter_panel_no
   basename = 'gene_' + other_prefix
 
   result[basename + '_single_score'] = DBViewBuilder().idtype(idtype_gene).query("""
@@ -96,7 +97,8 @@ def create_gene_score(result, other_prefix, other_primary, other_columns):
            WHERE {primary} = ANY(ARRAY(SELECT {primary} FROM {base}.targid_{base} WHERE species = :species {{and_other_where}}))
            {{and_where}}
            GROUP BY ensg""".format(primary=other_primary, base=other_prefix)) \
-    .replace('table', tables).replace('attribute', attributes)\
+    .replace('table', tables).replace('attribute', attributes) \
+    .replace('and_other_where').replace('and_where') \
     .arg('species') \
     .filters(other_columns, group = 'other') \
     .filter(other_primary) \
@@ -112,10 +114,11 @@ def create_gene_score(result, other_prefix, other_primary, other_columns):
            {{and_where}}
            GROUP BY ensg""".format(primary=other_primary, base=other_prefix)) \
     .replace('table', tables).replace('attribute', attributes).replace('operator', operators) \
+    .replace('and_other_where').replace('and_where')  \
     .arg('value').arg('species') \
     .filters(other_columns, group = 'other') \
     .filter(other_primary) \
-    .filter('panel', filter_panel) \
+    .filter('panel', filter_panel_no) \
     .filter('panel_ensg', filter_gene_panel_no) \
     .filter('ensg') \
     .build()
@@ -126,12 +129,12 @@ def create_gene_score(result, other_prefix, other_primary, other_columns):
            WHERE {primary} = ANY(ARRAY(SELECT {primary} FROM {base}.targid_{base} WHERE species = :species {{and_other_where}}))
            {{and_where}}
            GROUP BY ensg""".format(primary=other_primary, base=other_prefix)) \
-    .replace('table', tables).replace('attribute', attributes).replace('value', re.compile(
-    '([-\d]+)(,[-\d])*')) \
+    .replace('table', tables).replace('attribute', attributes).replace('value', re.compile('([-\d]+)(,[-\d])*')) \
+    .replace('and_other_where').replace('and_where') \
     .arg('species') \
     .filters(other_columns, group = 'other') \
+    .filter('panel', filter_panel_no) \
     .filter(other_primary) \
-    .filter('panel', filter_panel) \
     .filter('panel_ensg', filter_gene_panel_no) \
     .filter('ensg') \
     .build()
@@ -139,21 +142,22 @@ def create_gene_score(result, other_prefix, other_primary, other_columns):
   result[basename + '_score'] = DBViewBuilder().idtype(idtype_gene).query("""
             SELECT D.ensg AS id, {{agg_score}} AS score
             FROM {base}.targid_{{table}} D
-            INNER JOIN {base}.targid_{base} C ON D.{primary} = C.{primary}
-            WHERE C.species = :species {{and_where}}
-            GROUP BY D.ensg""".format(primary=other_primary, base=other_prefix)) \
+            WHERE {primary} = ANY(ARRAY(SELECT {primary} FROM {base}.targid_{base} WHERE species = :species {{and_other_where}}))
+            {{and_where}}
+            GROUP BY ensg""".format(primary=other_primary, base=other_prefix)) \
     .query('count', """
-              SELECT count(DISTINCT D.{primary})
-              FROM {base}.targid_{{table}} D
-              INNER JOIN {base}.targid_{base} C ON D.{primary} = C.{primary}
-              WHERE C.species = :species {{and_where}}""".format(primary=other_primary, base=other_prefix))\
-    .replace('table', tables).replace('agg_score').replace('and_where')\
+            SELECT count(DISTINCT D.{primary})
+            FROM {base}.targid_{{table}} D
+            WHERE {primary} = ANY(ARRAY(SELECT {primary} FROM {base}.targid_{base} WHERE species = :species {{and_other_where}}))
+            {{and_where}}""".format(primary=other_primary, base=other_prefix))\
+    .replace('table', tables).replace('agg_score') \
+    .replace('and_other_where').replace('and_where') \
     .arg('species') \
-    .filters(other_columns) \
-    .filter('panel', filter_panel) \
-    .filter('panel_ensg', filter_gene_panel_d) \
-    .filter('ensg', table='d') \
-    .filter(other_primary, table='d') \
+    .filters(other_columns, group = 'other') \
+    .filter('panel', filter_panel_no) \
+    .filter(other_primary) \
+    .filter('panel_ensg', filter_gene_panel_no) \
+    .filter('ensg') \
     .build()
 
 
@@ -192,11 +196,11 @@ def create_sample(result, basename, idtype, primary, base_columns, columns):
   table = '{base}.targid_{base}'.format(base=basename)
   _create_common(result, basename, table, primary, idtype, columns)
 
+  filter_panel_no = '{primary} = ANY(SELECT {primary} FROM {base}.targid_panelassignment WHERE panel {{operator}} {{value}})'.format(
+    primary=primary, base=basename)
 
-  filter_panel = 'c.{primary} = ANY(SELECT {primary} FROM {base}.targid_panelassignment WHERE panel {{operator}} {{value}})'.format(
-    primary=primary, base=basename)
-  filter_panel_d = 'd.{primary} = ANY(SELECT {primary} FROM {base}.targid_panelassignment WHERE panel {{operator}} {{value}})'.format(
-    primary=primary, base=basename)
+  filter_panel = 'c.' + filter_panel_no
+  filter_panel_d = 'd.' + filter_panel_no
 
   result[basename] = DBViewBuilder().idtype(idtype).table(table) \
     .query("""
@@ -300,12 +304,13 @@ def create_sample(result, basename, idtype, primary, base_columns, columns):
         {{and_where}}
         GROUP BY d.{primary}""".format(primary=primary, base=basename)) \
     .replace('table', tables).replace('attribute', attributes) \
+    .replace('and_other_where').replace('and_where') \
     .arg('species')\
     .filters(gene_columns, group = 'other') \
-    .filter('panel', filter_gene_panel_d) \
-    .filter('panel_' + primary, filter_panel_d) \
-    .filter(primary) \
     .filter('ensg') \
+    .filter('panel', filter_gene_panel_no) \
+    .filter(primary) \
+    .filter('panel_' + primary, filter_panel_no) \
     .build()
 
   result[basename + '_gene_frequency_score'] = DBViewBuilder().idtype(idtype).query("""
@@ -315,12 +320,13 @@ def create_sample(result, basename, idtype, primary, base_columns, columns):
         {{and_where}}
         GROUP BY d.{primary}""".format(primary=primary, base=basename)) \
     .replace('table', tables).replace('attribute', attributes).replace('operator', operators)\
+    .replace('and_other_where').replace('and_where') \
     .arg('value').arg('species') \
     .filters(gene_columns, group = 'other') \
-    .filter('panel', filter_gene_panel_d) \
-    .filter('panel_' + primary, filter_panel_d) \
-    .filter(primary) \
     .filter('ensg') \
+    .filter('panel', filter_gene_panel_no) \
+    .filter(primary) \
+    .filter('panel_' + primary, filter_panel_no) \
     .build()
 
   result[basename + '_gene_frequency_copynumberclass_score'] = DBViewBuilder().idtype(idtype).query("""
@@ -330,33 +336,35 @@ def create_sample(result, basename, idtype, primary, base_columns, columns):
         {{and_where}}
         GROUP BY d.{primary}""".format(primary=primary, base=basename)) \
     .replace('table', tables).replace('attribute', attributes).replace('value', re.compile('([-\d]+)(,[-\d])*')) \
+    .replace('and_other_where').replace('and_where') \
     .arg('species') \
     .filters(gene_columns, group = 'other') \
-    .filter('panel', filter_gene_panel_d) \
-    .filter('panel_' + primary, filter_panel_d) \
-    .filter(primary) \
     .filter('ensg') \
+    .filter('panel', filter_gene_panel_no) \
+    .filter(primary) \
+    .filter('panel_' + primary, filter_panel_no) \
     .build()
 
   result[basename + '_gene_score'] = DBViewBuilder().idtype(idtype).query("""
-          SELECT D.{primary} AS id, {{agg_score}} AS score
-          FROM {base}.targid_{{table}} D
-          INNER JOIN public.targid_gene g ON D.ensg = g.ensg
-          WHERE g.species = :species {{and_where}}
-          GROUP BY D.{primary}""".format(primary=primary, base=basename)) \
+        SELECT D.{primary} AS id, {{agg_score}} AS score
+        FROM {base}.targid_{{table}} D
+        WHERE ensg = ANY(ARRAY(SELECT ensg FROM public.targid_gene WHERE species = :species {{and_other_where}}))
+        {{and_where}}
+        GROUP BY D.{primary}""".format(primary=primary, base=basename)) \
     .query('count', """
               SELECT count(DISTINCT {primary})
               FROM {base}.targid_{{table}} D
-              INNER JOIN public.targid_gene g ON D.ensg = g.ensg
-              WHERE g.species = :species {{and_where}}
+              WHERE ensg = ANY(ARRAY(SELECT ensg FROM public.targid_gene WHERE species = :species {{and_other_where}}))
+              {{and_where}}
               GROUP BY D.{primary}""".format(primary=primary, base=basename)) \
-    .replace('table', tables).replace('agg_score').replace('and_where')\
-    .arg('species')\
-    .filters(gene_columns) \
-    .filter('panel', filter_gene_panel) \
-    .filter('panel_' + primary, filter_panel_d) \
-    .filter(primary, table='d') \
-    .filter('ensg', table='g') \
+    .replace('table', tables).replace('agg_score') \
+    .replace('and_other_where').replace('and_where') \
+    .arg('species') \
+    .filters(gene_columns, group = 'other') \
+    .filter('ensg') \
+    .filter('panel', filter_gene_panel_no) \
+    .filter(primary) \
+    .filter('panel_' + primary, filter_panel_no) \
     .build()
 
   result[basename + '_check_ids'] = DBViewBuilder().query("""
