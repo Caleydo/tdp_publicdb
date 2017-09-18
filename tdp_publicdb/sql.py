@@ -15,8 +15,8 @@ tissue_columns = [_primary_tissue, 'species', 'tumortype', 'organ', 'gender', 't
 idtype_gene = 'Ensembl'
 _primary_gene = 'ensg'
 gene_columns = [_primary_gene, 'symbol', 'species', 'chromosome', 'strand', 'biotype', 'seqregionstart', 'seqregionend']
-_column_query_gene = 'targidid as _id, t.ensg as id, symbol, species, chromosome, strand, biotype, seqregionstart, seqregionend, name'
-filter_gene_panel_no = 'ensg = ANY(SELECT ensg FROM public.targid_geneassignment WHERE genesetname {operator} {value})'
+_column_query_gene = 'tdpid as _id, t.ensg as id, symbol, species, chromosome, strand, biotype, seqregionstart, seqregionend, name'
+filter_gene_panel_no = 'ensg = ANY(SELECT ensg FROM public.tdp_geneassignment WHERE genesetname {operator} {value})'
 filter_gene_panel = 'g.'+ filter_gene_panel_no
 filter_gene_panel_d = 'd.'+ filter_gene_panel_no
 
@@ -34,7 +34,7 @@ def _create_common(result, prefix, table, primary, idtype, columns):
   # lookup for the id and primary names the table
 
   result[prefix + '_items'] = DBViewBuilder().idtype(idtype).query("""
-      SELECT targidid, {primary} as id, {{column}} AS text
+      SELECT tdpid, {primary} as id, {{column}} AS text
       FROM {table} WHERE LOWER({{column}}) LIKE :query AND species = :species
       ORDER BY {{column}} ASC""".format(table=table, primary=primary)) \
     .replace('column', columns)\
@@ -71,16 +71,16 @@ def _create_common(result, prefix, table, primary, idtype, columns):
 
 
 def create_gene_score(result, other_prefix, other_primary, other_columns):
-  filter_panel_no = '{primary} = ANY(SELECT {primary} FROM {base}.targid_panelassignment WHERE panel {{operator}} {{value}})'.format(
+  filter_panel_no = '{primary} = ANY(SELECT {primary} FROM {base}.tdp_panelassignment WHERE panel {{operator}} {{value}})'.format(
     primary=other_primary, base=other_prefix)
   filter_panel = 'c.' + filter_panel_no
   basename = 'gene_' + other_prefix
 
   result[basename + '_single_score'] = DBViewBuilder().idtype(idtype_gene).query("""
           SELECT D.ensg AS id, D.{{attribute}} AS score
-          FROM {base}.targid_{{table}} D
-          INNER JOIN {base}.targid_{base} C ON D.{primary} = C.{primary}
-          INNER JOIN public.targid_gene G ON G.ensg = D.ensg
+          FROM {base}.tdp_{{table}} D
+          INNER JOIN {base}.tdp_{base} C ON D.{primary} = C.{primary}
+          INNER JOIN public.tdp_gene G ON G.ensg = D.ensg
           WHERE C.species = :species AND C.{primary} = :name""".format(primary=other_primary, base=other_prefix)) \
     .replace('table', tables).replace('attribute', attributes)\
     .call(inject_where)\
@@ -93,8 +93,8 @@ def create_gene_score(result, other_prefix, other_primary, other_columns):
 
   result[basename + '_frequency_mutation_score'] = DBViewBuilder().idtype(idtype_gene).query("""
            SELECT ensg AS id, SUM({{attribute}}::integer) as count, COUNT({{attribute}}) as total
-           FROM {base}.targid_{{table}} c
-           WHERE {primary} = ANY(ARRAY(SELECT {primary} FROM {base}.targid_{base} WHERE species = :species {{and_other_where}}))
+           FROM {base}.tdp_{{table}} c
+           WHERE {primary} = ANY(ARRAY(SELECT {primary} FROM {base}.tdp_{base} WHERE species = :species {{and_other_where}}))
            {{and_where}}
            GROUP BY ensg""".format(primary=other_primary, base=other_prefix)) \
     .replace('table', tables).replace('attribute', attributes) \
@@ -109,8 +109,8 @@ def create_gene_score(result, other_prefix, other_primary, other_columns):
 
   result[basename + '_frequency_score'] = DBViewBuilder().idtype(idtype_gene).query("""
            SELECT ensg AS id, SUM(({{attribute}} {{operator}} :value)::INT4) as count, COUNT({{attribute}}) as total
-           FROM {base}.targid_{{table}} c
-           WHERE {primary} = ANY(ARRAY(SELECT {primary} FROM {base}.targid_{base} WHERE species = :species {{and_other_where}}))
+           FROM {base}.tdp_{{table}} c
+           WHERE {primary} = ANY(ARRAY(SELECT {primary} FROM {base}.tdp_{base} WHERE species = :species {{and_other_where}}))
            {{and_where}}
            GROUP BY ensg""".format(primary=other_primary, base=other_prefix)) \
     .replace('table', tables).replace('attribute', attributes).replace('operator', operators) \
@@ -125,8 +125,8 @@ def create_gene_score(result, other_prefix, other_primary, other_columns):
 
   result[basename + '_frequency_copynumberclass_score'] = DBViewBuilder().idtype(idtype_gene).query("""
            SELECT ensg AS id, SUM(({{attribute}} in ({{value}}))::INT4) as count, COUNT({{attribute}}) as total
-           FROM {base}.targid_{{table}} c
-           WHERE {primary} = ANY(ARRAY(SELECT {primary} FROM {base}.targid_{base} WHERE species = :species {{and_other_where}}))
+           FROM {base}.tdp_{{table}} c
+           WHERE {primary} = ANY(ARRAY(SELECT {primary} FROM {base}.tdp_{base} WHERE species = :species {{and_other_where}}))
            {{and_where}}
            GROUP BY ensg""".format(primary=other_primary, base=other_prefix)) \
     .replace('table', tables).replace('attribute', attributes).replace('value', re.compile('([-\d]+)(,[-\d])*')) \
@@ -141,14 +141,14 @@ def create_gene_score(result, other_prefix, other_primary, other_columns):
 
   result[basename + '_score'] = DBViewBuilder().idtype(idtype_gene).query("""
             SELECT D.ensg AS id, {{agg_score}} AS score
-            FROM {base}.targid_{{table}} D
-            WHERE {primary} = ANY(ARRAY(SELECT {primary} FROM {base}.targid_{base} WHERE species = :species {{and_other_where}}))
+            FROM {base}.tdp_{{table}} D
+            WHERE {primary} = ANY(ARRAY(SELECT {primary} FROM {base}.tdp_{base} WHERE species = :species {{and_other_where}}))
             {{and_where}}
             GROUP BY ensg""".format(primary=other_primary, base=other_prefix)) \
     .query('count', """
             SELECT count(DISTINCT D.{primary})
-            FROM {base}.targid_{{table}} D
-            WHERE {primary} = ANY(ARRAY(SELECT {primary} FROM {base}.targid_{base} WHERE species = :species {{and_other_where}}))
+            FROM {base}.tdp_{{table}} D
+            WHERE {primary} = ANY(ARRAY(SELECT {primary} FROM {base}.tdp_{base} WHERE species = :species {{and_other_where}}))
             {{and_where}}""".format(primary=other_primary, base=other_prefix))\
     .replace('table', tables).replace('agg_score') \
     .replace('and_other_where').replace('and_where') \
@@ -193,10 +193,10 @@ def create_tissue_specific(query):
 
 
 def create_sample(result, basename, idtype, primary, base_columns, columns):
-  table = '{base}.targid_{base}'.format(base=basename)
+  table = '{base}.tdp_{base}'.format(base=basename)
   _create_common(result, basename, table, primary, idtype, columns)
 
-  filter_panel_no = '{primary} = ANY(SELECT {primary} FROM {base}.targid_panelassignment WHERE panel {{operator}} {{value}})'.format(
+  filter_panel_no = '{primary} = ANY(SELECT {primary} FROM {base}.tdp_panelassignment WHERE panel {{operator}} {{value}})'.format(
     primary=primary, base=basename)
 
   filter_panel = 'c.' + filter_panel_no
@@ -204,7 +204,7 @@ def create_sample(result, basename, idtype, primary, base_columns, columns):
 
   result[basename] = DBViewBuilder().idtype(idtype).table(table) \
     .query("""
-      SELECT targidid as _id, {primary} as id, *
+      SELECT tdpid as _id, {primary} as id, *
       FROM {table} c
       ORDER BY {primary} ASC""".format(table=table, primary=primary)) \
     .derive_columns()\
@@ -218,13 +218,13 @@ def create_sample(result, basename, idtype, primary, base_columns, columns):
 
   result[basename + '_panel'] = DBViewBuilder().query("""
   SELECT panel as id, paneldescription as description
-  FROM {base}.targid_panel ORDER BY panel ASC""".format(base=basename)).build()
+  FROM {base}.tdp_panel ORDER BY panel ASC""".format(base=basename)).build()
 
   co_expression = DBViewBuilder().idtype(idtype_gene).query("""
-     SELECT c.targidid AS _id, a.ensg AS id, g.symbol, C.{primary} as samplename, a.{{attribute}} AS expression
-        FROM {base}.targid_expression AS a
-        INNER JOIN PUBLIC.targid_gene g ON a.ensg = g.ensg
-        INNER JOIN {base}.targid_{base} C ON a.{primary} = C.{primary}
+     SELECT c.tdpid AS _id, a.ensg AS id, g.symbol, C.{primary} as samplename, a.{{attribute}} AS expression
+        FROM {base}.tdp_expression AS a
+        INNER JOIN PUBLIC.tdp_gene g ON a.ensg = g.ensg
+        INNER JOIN {base}.tdp_{base} C ON a.{primary} = C.{primary}
         WHERE a.ensg = :ensg""".format(primary=primary, base=basename))\
     .replace('attribute', attributes)\
     .call(inject_where)\
@@ -236,11 +236,11 @@ def create_sample(result, basename, idtype, primary, base_columns, columns):
 
   result[basename + '_co_expression'] = co_expression
   expression_vs_copynumber = DBViewBuilder().idtype(idtype_gene).query("""
-   SELECT c.targidid AS _id, a.ensg AS id, g.symbol, c.{primary} as samplename, a.{{expression_subtype}} AS expression, b.{{copynumber_subtype}} AS cn
-       FROM {base}.targid_expression AS a
-       INNER JOIN {base}.targid_copynumber AS b ON a.ensg = b.ensg AND a.{primary} = b.{primary}
-       INNER JOIN PUBLIC.targid_gene g ON a.ensg = g.ensg
-       INNER JOIN {base}.targid_{base} C ON a.{primary} = C.{primary}
+   SELECT c.tdpid AS _id, a.ensg AS id, g.symbol, c.{primary} as samplename, a.{{expression_subtype}} AS expression, b.{{copynumber_subtype}} AS cn
+       FROM {base}.tdp_expression AS a
+       INNER JOIN {base}.tdp_copynumber AS b ON a.ensg = b.ensg AND a.{primary} = b.{primary}
+       INNER JOIN PUBLIC.tdp_gene g ON a.ensg = g.ensg
+       INNER JOIN {base}.tdp_{base} C ON a.{primary} = C.{primary}
        WHERE a.ensg = :ensg""".format(primary=primary, base=basename)) \
     .replace('expression_subtype', attributes).replace('copynumber_subtype', attributes)\
     .call(inject_where)\
@@ -253,10 +253,10 @@ def create_sample(result, basename, idtype, primary, base_columns, columns):
   result[basename + '_expression_vs_copynumber'] = expression_vs_copynumber
 
   onco_print = DBViewBuilder().idtype(idtype_gene).query("""
-     SELECT g.targidid AS _id, d.ensg AS id, d.{primary} AS name, copynumberclass AS cn, D.tpm AS expr, D.aa_mutated, g.symbol
-       FROM {base}.targid_data D
-       INNER JOIN {base}.targid_{base} C ON D.{primary} = C.{primary}
-       INNER JOIN PUBLIC.targid_gene g ON D.ensg = g.ensg
+     SELECT g.tdpid AS _id, d.ensg AS id, d.{primary} AS name, copynumberclass AS cn, D.tpm AS expr, D.aa_mutated, g.symbol
+       FROM {base}.tdp_data D
+       INNER JOIN {base}.tdp_{base} C ON D.{primary} = C.{primary}
+       INNER JOIN PUBLIC.tdp_gene g ON D.ensg = g.ensg
        WHERE D.ensg = :ensg AND C.species = :species""".format(primary=primary, base=basename))\
     .call(inject_where) \
     .arg('ensg').arg('species') \
@@ -269,8 +269,8 @@ def create_sample(result, basename, idtype, primary, base_columns, columns):
   result[basename + '_onco_print'] = onco_print
 
   onco_print_sample_list = DBViewBuilder().idtype(idtype).query("""
-       SELECT C.targidid AS _id, C.{primary} AS id
-     FROM {base}.targid_{base} C
+       SELECT C.tdpid AS _id, C.{primary} AS id
+     FROM {base}.tdp_{base} C
      WHERE C.species = :species""".format(primary=primary, base=basename)) \
     .call(inject_where)\
     .arg('species') \
@@ -284,9 +284,9 @@ def create_sample(result, basename, idtype, primary, base_columns, columns):
 
   result[basename + '_gene_single_score'] = DBViewBuilder().idtype(idtype).query("""
         SELECT D.{primary} AS id, D.{{attribute}} AS score
-        FROM {base}.targid_{{table}} D
-        INNER JOIN public.targid_gene g ON D.ensg = g.ensg
-       INNER JOIN {base}.targid_{base} C ON d.{primary} = C.{primary}
+        FROM {base}.tdp_{{table}} D
+        INNER JOIN public.tdp_gene g ON D.ensg = g.ensg
+       INNER JOIN {base}.tdp_{base} C ON d.{primary} = C.{primary}
         WHERE g.species = :species AND g.ensg = :name""".format(primary=primary, base=basename)) \
     .replace('table', tables).replace('attribute', attributes)\
     .call(inject_where)\
@@ -299,8 +299,8 @@ def create_sample(result, basename, idtype, primary, base_columns, columns):
 
   result[basename + '_gene_frequency_mutation_score'] = DBViewBuilder().idtype(idtype).query("""
         SELECT d.{primary} AS id, SUM({{attribute}}::integer) as count, COUNT({{attribute}}) as total
-        FROM {base}.targid_{{table}} d
-        WHERE ensg = ANY(ARRAY(SELECT ensg FROM public.targid_gene WHERE species = :species {{and_other_where}}))
+        FROM {base}.tdp_{{table}} d
+        WHERE ensg = ANY(ARRAY(SELECT ensg FROM public.tdp_gene WHERE species = :species {{and_other_where}}))
         {{and_where}}
         GROUP BY d.{primary}""".format(primary=primary, base=basename)) \
     .replace('table', tables).replace('attribute', attributes) \
@@ -315,8 +315,8 @@ def create_sample(result, basename, idtype, primary, base_columns, columns):
 
   result[basename + '_gene_frequency_score'] = DBViewBuilder().idtype(idtype).query("""
         SELECT d.{primary} AS id, SUM(({{attribute}} {{operator}} :value)::INT4) as count, COUNT({{attribute}}) as total
-        FROM {base}.targid_{{table}} d
-        WHERE ensg = ANY(ARRAY(SELECT ensg FROM public.targid_gene WHERE species = :species {{and_other_where}}))
+        FROM {base}.tdp_{{table}} d
+        WHERE ensg = ANY(ARRAY(SELECT ensg FROM public.tdp_gene WHERE species = :species {{and_other_where}}))
         {{and_where}}
         GROUP BY d.{primary}""".format(primary=primary, base=basename)) \
     .replace('table', tables).replace('attribute', attributes).replace('operator', operators)\
@@ -331,8 +331,8 @@ def create_sample(result, basename, idtype, primary, base_columns, columns):
 
   result[basename + '_gene_frequency_copynumberclass_score'] = DBViewBuilder().idtype(idtype).query("""
         SELECT d.{primary} AS id, SUM(({{attribute}} in ({{value}}))::INT4) as count, COUNT({{attribute}}) as total
-        FROM {base}.targid_{{table}} d
-        WHERE ensg = ANY(ARRAY(SELECT ensg FROM public.targid_gene WHERE species = :species {{and_other_where}}))
+        FROM {base}.tdp_{{table}} d
+        WHERE ensg = ANY(ARRAY(SELECT ensg FROM public.tdp_gene WHERE species = :species {{and_other_where}}))
         {{and_where}}
         GROUP BY d.{primary}""".format(primary=primary, base=basename)) \
     .replace('table', tables).replace('attribute', attributes).replace('value', re.compile('([-\d]+)(,[-\d])*')) \
@@ -347,14 +347,14 @@ def create_sample(result, basename, idtype, primary, base_columns, columns):
 
   result[basename + '_gene_score'] = DBViewBuilder().idtype(idtype).query("""
         SELECT D.{primary} AS id, {{agg_score}} AS score
-        FROM {base}.targid_{{table}} D
-        WHERE ensg = ANY(ARRAY(SELECT ensg FROM public.targid_gene WHERE species = :species {{and_other_where}}))
+        FROM {base}.tdp_{{table}} D
+        WHERE ensg = ANY(ARRAY(SELECT ensg FROM public.tdp_gene WHERE species = :species {{and_other_where}}))
         {{and_where}}
         GROUP BY D.{primary}""".format(primary=primary, base=basename)) \
     .query('count', """
               SELECT count(DISTINCT {primary})
-              FROM {base}.targid_{{table}} D
-              WHERE ensg = ANY(ARRAY(SELECT ensg FROM public.targid_gene WHERE species = :species {{and_other_where}}))
+              FROM {base}.tdp_{{table}} D
+              WHERE ensg = ANY(ARRAY(SELECT ensg FROM public.tdp_gene WHERE species = :species {{and_other_where}}))
               {{and_where}}
               GROUP BY D.{primary}""".format(primary=primary, base=basename)) \
     .replace('table', tables).replace('agg_score') \
@@ -368,13 +368,13 @@ def create_sample(result, basename, idtype, primary, base_columns, columns):
     .build()
 
   result[basename + '_check_ids'] = DBViewBuilder().query("""
-    SELECT COUNT(*) AS matches FROM {base}.targid_{base}
+    SELECT COUNT(*) AS matches FROM {base}.tdp_{base}
   """.format(primary=primary, base=basename))\
     .call(inject_where)\
     .build()
 
   result[basename + '_all_columns'] = DBViewBuilder().query("""
-    SELECT {primary} as id, * FROM {base}.targid_{base}
+    SELECT {primary} as id, * FROM {base}.tdp_{base}
   """.format(base=basename, primary=primary))\
     .call(inject_where)\
     .build()
@@ -382,22 +382,22 @@ def create_sample(result, basename, idtype, primary, base_columns, columns):
 
 
 views = dict(
-  gene=DBViewBuilder().idtype(idtype_gene).table('public.targid_gene').query("""
-  SELECT targidid as _id, {primary} as id, *
-  FROM public.targid_gene t
+  gene=DBViewBuilder().idtype(idtype_gene).table('public.tdp_gene').query("""
+  SELECT tdpid as _id, {primary} as id, *
+  FROM public.tdp_gene t
   ORDER BY t.symbol ASC""".format(primary=_primary_gene))
     .derive_columns()
     .column(_primary_gene, label='id', type='string')
     .call(inject_where)
-    .filter('panel', 'ensg = ANY(SELECT ensg FROM public.targid_geneassignment WHERE genesetname {operator} {value})')
+    .filter('panel', 'ensg = ANY(SELECT ensg FROM public.tdp_geneassignment WHERE genesetname {operator} {value})')
     .build(),
   gene_panel=DBViewBuilder().query("""
-    SELECT genesetname AS id, species AS description FROM public.targid_geneset ORDER BY genesetname ASC""")
+    SELECT genesetname AS id, species AS description FROM public.tdp_geneset ORDER BY genesetname ASC""")
     .build(),
 
   gene_gene_items=DBViewBuilder().idtype(idtype_gene).query("""
-      SELECT targidid, ensg as id, symbol AS text
-      FROM public.targid_gene WHERE (LOWER(symbol) LIKE :query OR LOWER(ensg) LIKE :query) AND species = :species
+      SELECT tdpid, ensg as id, symbol AS text
+      FROM public.tdp_gene WHERE (LOWER(symbol) LIKE :query OR LOWER(ensg) LIKE :query) AND species = :species
       ORDER BY ensg ASC""") \
     .call(limit_offset) \
     .arg('query').arg('species')
@@ -405,34 +405,34 @@ views = dict(
 
   gene_gene_items_verify=DBViewBuilder().idtype(idtype_gene).query("""
       SELECT ensg as id, symbol AS text
-       FROM public.targid_gene WHERE species = :species""") \
+       FROM public.tdp_gene WHERE species = :species""") \
     .call(inject_where)
     .arg('species') \
     .filter('symbol', '(lower(ensg) {operator} {value} or lower(symbol) {operator} {value})')
     .build(),
 
   gene_map_ensgs=DBViewBuilder().idtype(idtype_gene).query("""
-    SELECT targidid AS _id, ensg AS id, symbol
-    FROM public.targid_gene WHERE ensg IN ({ensgs}) AND species = :species
+    SELECT tdpid AS _id, ensg AS id, symbol
+    FROM public.tdp_gene WHERE ensg IN ({ensgs}) AND species = :species
     ORDER BY symbol ASC""")
     .replace('ensgs', re.compile('(\'[\w]+\')(,\'[\w]+\')*'))
     .arg('species')
     .build(),
 
   gene_all_columns=DBViewBuilder().query("""
-    SELECT symbol as id, * FROM public.targid_gene
+    SELECT symbol as id, * FROM public.tdp_gene
   """)
     .call(inject_where)
     .build(),
 
   gene_match_symbols=DBViewBuilder().query("""
-    SELECT COUNT(*) as matches FROM public.targid_gene
+    SELECT COUNT(*) as matches FROM public.tdp_gene
   """)
     .call(inject_where)
     .build()
 )
 
-_create_common(views, 'gene', 'public.targid_gene', _primary_gene, idtype_gene, gene_columns)
+_create_common(views, 'gene', 'public.tdp_gene', _primary_gene, idtype_gene, gene_columns)
 create_gene_score(views, 'cellline', _primary_cellline, cellline_columns)
 create_gene_score(views, 'tissue', _primary_tissue, tissue_columns)
 
