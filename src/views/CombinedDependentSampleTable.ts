@@ -29,6 +29,14 @@ export class CombinedDependentSampleTable extends ACombinedTable {
     return base;
   }
 
+  protected parameterChanged(name: string) {
+    if (name === FORM_DATA_SOURCE.id) {
+      this.rebuild();
+      return; // early abort since there is nothing worse than building from scratch
+    }
+    super.parameterChanged(name);
+  }
+
   protected getSelectionColumnLabel(ensg: string) {
     return loadFirstName(ensg);
   }
