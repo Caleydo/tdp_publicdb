@@ -268,6 +268,14 @@ export const mutation: IDataTypeConfig = {
       id: 'dnamutation', name: 'DNA Mutation', type: dataSubtypes.string, useForAggregation: '',
       domain: [0, 100],
       missingValue: NaN
+    },
+    {
+      id: 'zygosity',
+      name: 'Zygosity',
+      type: dataSubtypes.number,
+      domain: [0, 15],
+      missingValue: NaN,
+      useForAggregation: 'totalabscopynumber'
     }
   ]
 };

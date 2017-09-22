@@ -39,7 +39,7 @@ export const COMPARISON_OPERATORS = [
   {name: '&gt; greater than', value: '>', data: '>'}
 ];
 
-export const MUTATION_AGGREGATION = [
+export const CATEGORICAL_AGGREGATION = [
   {name: 'Frequency', value: 'frequency', data: 'frequency'},
   {name: 'Count', value: 'count', data: 'count'}
 ];

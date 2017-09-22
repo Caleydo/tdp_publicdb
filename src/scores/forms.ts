@@ -1,10 +1,10 @@
 import {
-  ParameterFormIds, MUTATION_AGGREGATION, NUMERIC_AGGREGATION, COMPARISON_OPERATORS,
+  ParameterFormIds, CATEGORICAL_AGGREGATION, NUMERIC_AGGREGATION, COMPARISON_OPERATORS,
   FORM_DATA_HIERARCHICAL_SUBTYPE, FORM_DATA_HIERARCHICAL_SUBTYPE_AGGREGATED_SELECTION
 } from '../forms';
 import {FormElementType} from 'tdp_core/src/form';
 import {MAX_FILTER_SCORE_ROWS_BEFORE_ALL, splitTypes, dataSubtypes} from '../config';
-import {copyNumberCat, unknownMutationValue} from 'tdp_gene/src/constants';
+import {copyNumberCat, unknownCopyNumberValue} from 'tdp_gene/src/constants';
 /**
  * Created by Samuel Gratzl on 15.03.2017.
  */
@@ -25,7 +25,7 @@ export const FORM_AGGREGATED_SCORE = [
         }
         const {dataSubType} = splitTypes(selection[0].id);
         if (dataSubType.type === dataSubtypes.cat) {
-          return MUTATION_AGGREGATION;
+          return CATEGORICAL_AGGREGATION;
         } else {
           return NUMERIC_AGGREGATION;
         }
@@ -90,7 +90,7 @@ export const FORM_AGGREGATED_SCORE = [
     },
     useSession: true,
     options: {
-      data: copyNumberCat.filter((d) => d.value !== unknownMutationValue).map((d) => ({text: d.name, id: String(d.value)}))
+      data: copyNumberCat.filter((d) => d.value !== unknownCopyNumberValue).map((d) => ({text: d.name, id: String(d.value)}))
     }
   }
 ];
