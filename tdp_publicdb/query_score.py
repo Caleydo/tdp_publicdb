@@ -20,7 +20,7 @@ def create_gene_sample_score(views, gene, sample, data):
           FROM {d.schema}.tdp_{{table}} d
           INNER JOIN {s.table} s ON d.{s.id} = s.{s.id}
           INNER JOIN {g.table} g ON d.{g.id} = g.{g.id}
-          WHERE g.species = :species AND d.{g.id} = :name""".format(g=gene, s=sample, d=data)) \
+          WHERE g.species = :species AND d.{s.id} = :name""".format(g=gene, s=sample, d=data)) \
     .replace('attribute', data.attributes) \
     .call(inject_where) \
     .arg('name') \
