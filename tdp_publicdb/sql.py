@@ -15,7 +15,7 @@ tissue_columns = [_primary_tissue, 'species', 'tumortype', 'organ', 'gender', 't
 idtype_gene = 'Ensembl'
 _primary_gene = 'ensg'
 gene_columns = [_primary_gene, 'symbol', 'species', 'chromosome', 'strand', 'biotype', 'seqregionstart', 'seqregionend']
-_column_query_gene = 'tdpid as _id, t.ensg as id, symbol, species, chromosome, strand, biotype, seqregionstart, seqregionend, name'
+_column_query_gene = 't.ensg as id, symbol, species, chromosome, strand, biotype, seqregionstart, seqregionend, name'
 filter_gene_panel_no = 'ensg = ANY(SELECT ensg FROM public.tdp_geneassignment WHERE genesetname {operator} {value})'
 filter_gene_panel = 'g.'+ filter_gene_panel_no
 filter_gene_panel_d = 'd.'+ filter_gene_panel_no
@@ -34,18 +34,20 @@ def _create_common(result, prefix, table, primary, idtype, columns):
   # lookup for the id and primary names the table
 
   result[prefix + '_items'] = DBViewBuilder().idtype(idtype).query("""
-      SELECT tdpid, {primary} as id, {{column}} AS text
+      SELECT {primary} as id, {{column}} AS text
       FROM {table} WHERE LOWER({{column}}) LIKE :query AND species = :species
       ORDER BY {{column}} ASC""".format(table=table, primary=primary)) \
     .replace('column', columns)\
     .call(limit_offset) \
+    .assign_ids() \
     .arg('query').arg('species')\
     .build()
 
   result[prefix + '_items_verify'] = DBViewBuilder().idtype(idtype).query("""
-      SELECT {primary} as id,{{column}} AS text
+      SELECT {primary} as id, {{column}} AS text
        FROM {table} WHERE species = :species""".format(table=table, primary=primary))\
     .call(inject_where)\
+    .assign_ids() \
     .arg('column') \
     .arg('species')\
     .build()
@@ -200,14 +202,14 @@ def create_sample(result, basename, idtype, primary, base_columns, columns):
     primary=primary, base=basename)
 
   filter_panel = 'c.' + filter_panel_no
-  filter_panel_d = 'd.' + filter_panel_no
 
   result[basename] = DBViewBuilder().idtype(idtype).table(table) \
     .query("""
-      SELECT tdpid as _id, {primary} as id, *
+      SELECT {primary} as id, *
       FROM {table} c
       ORDER BY {primary} ASC""".format(table=table, primary=primary)) \
     .derive_columns()\
+    .assign_ids() \
     .call(inject_where) \
     .call(base_columns) \
     .column(primary, label='id', type='string') \
@@ -221,13 +223,14 @@ def create_sample(result, basename, idtype, primary, base_columns, columns):
   FROM {base}.tdp_panel ORDER BY panel ASC""".format(base=basename)).build()
 
   co_expression = DBViewBuilder().idtype(idtype_gene).query("""
-     SELECT c.tdpid AS _id, a.ensg AS id, g.symbol, C.{primary} as samplename, a.{{attribute}} AS expression
+     SELECT a.ensg AS id, g.symbol, C.{primary} as samplename, a.{{attribute}} AS expression
         FROM {base}.tdp_expression AS a
         INNER JOIN PUBLIC.tdp_gene g ON a.ensg = g.ensg
         INNER JOIN {base}.tdp_{base} C ON a.{primary} = C.{primary}
         WHERE a.ensg = :ensg""".format(primary=primary, base=basename))\
     .replace('attribute', attributes)\
     .call(inject_where)\
+    .assign_ids() \
     .arg('ensg') \
     .filters(columns) \
     .filter('panel', filter_panel) \
@@ -236,7 +239,7 @@ def create_sample(result, basename, idtype, primary, base_columns, columns):
 
   result[basename + '_co_expression'] = co_expression
   expression_vs_copynumber = DBViewBuilder().idtype(idtype_gene).query("""
-   SELECT c.tdpid AS _id, a.ensg AS id, g.symbol, c.{primary} as samplename, a.{{expression_subtype}} AS expression, b.{{copynumber_subtype}} AS cn
+   SELECT a.ensg AS id, g.symbol, c.{primary} as samplename, a.{{expression_subtype}} AS expression, b.{{copynumber_subtype}} AS cn
        FROM {base}.tdp_expression AS a
        INNER JOIN {base}.tdp_copynumber AS b ON a.ensg = b.ensg AND a.{primary} = b.{primary}
        INNER JOIN PUBLIC.tdp_gene g ON a.ensg = g.ensg
@@ -244,6 +247,7 @@ def create_sample(result, basename, idtype, primary, base_columns, columns):
        WHERE a.ensg = :ensg""".format(primary=primary, base=basename)) \
     .replace('expression_subtype', attributes).replace('copynumber_subtype', attributes)\
     .call(inject_where)\
+    .assign_ids() \
     .arg('ensg')\
     .filters(columns) \
     .filter('panel', filter_panel) \
@@ -253,13 +257,14 @@ def create_sample(result, basename, idtype, primary, base_columns, columns):
   result[basename + '_expression_vs_copynumber'] = expression_vs_copynumber
 
   onco_print = DBViewBuilder().idtype(idtype_gene).query("""
-     SELECT g.tdpid AS _id, d.ensg AS id, d.{primary} AS name, copynumberclass AS cn, D.tpm AS expr, D.aa_mutated, g.symbol
+     SELECT d.ensg AS id, d.{primary} AS name, copynumberclass AS cn, D.tpm AS expr, D.aa_mutated, g.symbol
        FROM {base}.tdp_data D
        INNER JOIN {base}.tdp_{base} C ON D.{primary} = C.{primary}
        INNER JOIN PUBLIC.tdp_gene g ON D.ensg = g.ensg
        WHERE D.ensg = :ensg AND C.species = :species""".format(primary=primary, base=basename))\
     .call(inject_where) \
     .arg('ensg').arg('species') \
+    .assign_ids() \
     .filters(columns) \
     .filter('panel', filter_panel) \
     .filter(primary, table='c') \
@@ -269,10 +274,11 @@ def create_sample(result, basename, idtype, primary, base_columns, columns):
   result[basename + '_onco_print'] = onco_print
 
   onco_print_sample_list = DBViewBuilder().idtype(idtype).query("""
-       SELECT C.tdpid AS _id, C.{primary} AS id
+       SELECT C.{primary} AS id
      FROM {base}.tdp_{base} C
      WHERE C.species = :species""".format(primary=primary, base=basename)) \
     .call(inject_where)\
+    .assign_ids() \
     .arg('species') \
     .filters(columns) \
     .filter('panel', filter_panel) \
@@ -383,11 +389,12 @@ def create_sample(result, basename, idtype, primary, base_columns, columns):
 
 views = dict(
   gene=DBViewBuilder().idtype(idtype_gene).table('public.tdp_gene').query("""
-  SELECT tdpid as _id, {primary} as id, *
+  SELECT {primary} as id, *
   FROM public.tdp_gene t
   ORDER BY t.symbol ASC""".format(primary=_primary_gene))
     .derive_columns()
     .column(_primary_gene, label='id', type='string')
+    .assign_ids() \
     .call(inject_where)
     .filter('panel', 'ensg = ANY(SELECT ensg FROM public.tdp_geneassignment WHERE genesetname {operator} {value})')
     .build(),
@@ -396,10 +403,11 @@ views = dict(
     .build(),
 
   gene_gene_items=DBViewBuilder().idtype(idtype_gene).query("""
-      SELECT tdpid, ensg as id, symbol AS text
+      SELECT ensg as id, symbol AS text
       FROM public.tdp_gene WHERE (LOWER(symbol) LIKE :query OR LOWER(ensg) LIKE :query) AND species = :species
       ORDER BY ensg ASC""") \
     .call(limit_offset) \
+    .assign_ids() \
     .arg('query').arg('species')
     .build(),
 
@@ -412,9 +420,10 @@ views = dict(
     .build(),
 
   gene_map_ensgs=DBViewBuilder().idtype(idtype_gene).query("""
-    SELECT tdpid AS _id, ensg AS id, symbol
+    SELECT ensg AS id, symbol
     FROM public.tdp_gene WHERE ensg IN ({ensgs}) AND species = :species
     ORDER BY symbol ASC""")
+    .assign_ids() \
     .replace('ensgs', re.compile('(\'[\w]+\')(,\'[\w]+\')*'))
     .arg('species')
     .build(),
