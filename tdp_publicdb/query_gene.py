@@ -1,4 +1,5 @@
 from tdp_core.dbview import DBViewBuilder, inject_where, limit_offset
+import re
 
 
 def create_gene(result, gene):
