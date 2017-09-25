@@ -1,6 +1,7 @@
 from tdp_core.dbview import DBViewBuilder, inject_where
 import re
 
+
 def create_gene_sample_score(views, gene, sample, data):
   basename = '{g}_{s}'.format(g=gene.prefix, s=sample.prefix)
 
