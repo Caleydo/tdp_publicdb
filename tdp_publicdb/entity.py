@@ -5,8 +5,8 @@ __author__ = 'Samuel Gratzl'
 
 Entity = namedtuple('Entity', ['prefix', 'idtype', 'id', 'schema', 'table', 'columns', 'panel', 'sort', 'column_def'])
 
-# alias
-# d ... data
+# common alias
+# d ... data ... assumed for panels
 # s ... sample
 # g ... gene
 

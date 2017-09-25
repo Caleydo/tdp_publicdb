@@ -1,9 +1,9 @@
 from tdp_core.dbview import DBViewBuilder, inject_where
 
 
-def create_sample(result, sample, gene, data):
+def create_sample(views, sample, gene, data):
   # panel
-  result[sample.prefix + '_panel'] = DBViewBuilder().query("""
+  views[sample.prefix + '_panel'] = DBViewBuilder().query("""
   SELECT panel as id, paneldescription as description
   FROM {s.schema}.tdp_panel ORDER BY panel ASC""".format(s=sample)).build()
 
@@ -26,7 +26,7 @@ def create_sample(result, sample, gene, data):
     .call(_common_vis) \
     .build()
 
-  result[sample.prefix + '_co_expression'] = co_expression
+  views[sample.prefix + '_co_expression'] = co_expression
 
   expression_vs_copynumber = DBViewBuilder().idtype(gene.idtype).query("""
    SELECT d.{g.id} AS id, g.symbol, s.{s.id} as samplename, d.{{expression_subtype}} AS expression, d2.{{copynumber_subtype}} AS cn
@@ -39,7 +39,7 @@ def create_sample(result, sample, gene, data):
     .call(_common_vis) \
     .build()
 
-  result[sample.prefix + '_expression_vs_copynumber'] = expression_vs_copynumber
+  views[sample.prefix + '_expression_vs_copynumber'] = expression_vs_copynumber
 
   onco_print = DBViewBuilder().idtype(gene.idtype).query("""
      SELECT d.{g.id} AS id, d.{s.id} AS name, copynumberclass AS cn, D.tpm AS expr, D.aa_mutated, g.symbol
@@ -51,7 +51,7 @@ def create_sample(result, sample, gene, data):
     .call(_common_vis) \
     .build()
 
-  result[sample.prefix + '_onco_print'] = onco_print
+  views[sample.prefix + '_onco_print'] = onco_print
 
   onco_print_sample_list = DBViewBuilder().idtype(sample.idtype).query("""
        SELECT d.{s.id} AS id
@@ -65,4 +65,4 @@ def create_sample(result, sample, gene, data):
     .filter(sample.id, table='d') \
     .build()
 
-  result[sample.prefix + '_onco_print_sample_list'] = onco_print_sample_list
+  views[sample.prefix + '_onco_print_sample_list'] = onco_print_sample_list
