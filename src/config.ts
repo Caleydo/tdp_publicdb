@@ -275,7 +275,7 @@ export const mutation: IDataTypeConfig = {
       type: dataSubtypes.number,
       domain: [0, 15],
       missingValue: NaN,
-      useForAggregation: 'totalabscopynumber'
+      useForAggregation: 'zygosity'
     }
   ]
 };
@@ -292,9 +292,13 @@ function toLineUpCategories(arr: { name: string, value: any, color: string }[]) 
 export function splitTypes(toSplit: string): { dataType: IDataTypeConfig, dataSubType: IDataSubtypeConfig } {
   console.assert(toSplit.includes('-'), 'The splitTypes method requires the string to contain a dash ("-")');
   const [type, subtype] = toSplit.split('-');
+  return resolveDataTypes(type, subtype);
+}
+
+export function resolveDataTypes(dataTypeId: string, dataSubTypeId: string) {
   let dataType: IDataTypeConfig;
 
-  switch (type) {
+  switch (dataTypeId) {
     case mutation.id:
       dataType = mutation;
       break;
@@ -306,7 +310,7 @@ export function splitTypes(toSplit: string): { dataType: IDataTypeConfig, dataSu
       break;
   }
 
-  const dataSubType = dataType.dataSubtypes.find((element) => element.id === subtype);
+  const dataSubType = dataType.dataSubtypes.find((element) => element.id === dataSubTypeId);
   return {
     dataType,
     dataSubType
