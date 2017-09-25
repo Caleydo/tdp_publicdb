@@ -7,6 +7,7 @@ def create_gene_sample_score(views, gene, sample, data):
   def _common(builder):
     return builder \
       .arg('species') \
+      .replace('table', data.tables) \
       .filter('panel', sample.panel) \
       .filter(sample.id, table='d') \
       .filter('panel_' + sample.id, sample.panel) \
@@ -38,7 +39,6 @@ def create_gene_sample_score(views, gene, sample, data):
             FROM {d.schema}.tdp_{{table}} d
             WHERE d.{s.id} = ANY(ARRAY(SELECT {s.id} FROM {s.table} WHERE species = :species {{and_sample_where}}))
             {{and_where}}""".format(g=gene, s=sample, d=data))
-    b.replace('table', data.tables)
     b.replace('and_sample_where').replace('and_where')
     b.filters(sample.columns, group='sample')
     b.call(_common)

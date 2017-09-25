@@ -50,7 +50,7 @@ tissue = Entity('tissue',
                 columns=['tissuename', 'species', 'tumortype', 'organ', 'gender', 'tumortype_adjacent', 'vendorname',
                          'race', 'ethnicity', 'age', 'days_to_last_followup', 'days_to_death', 'vital_status', 'height',
                          'weight', 'bmi'],
-                panel='d.tissuename = ANY(SELECT tissuename FROM tissue.tdp_panelassignment WHERE panel {{operator}} {{value}})',
+                panel='d.tissuename = ANY(SELECT tissuename FROM tissue.tdp_panelassignment WHERE panel {operator} {value})',
                 sort='tissuename',
                 column_def=_tissue_columns)
 
@@ -74,6 +74,6 @@ cellline = Entity('cellline',
                   table='cellline.tdp_cellline',
                   columns=['celllinename', 'species', 'tumortype', 'organ', 'gender', 'metastatic_site',
                            'histology_type', 'morphology', 'growth_type', 'age_at_surgery'],
-                  panel='d.celllinename = ANY(SELECT celllinename FROM cellline.tdp_panelassignment WHERE panel {{operator}} {{value}})',
+                  panel='d.celllinename = ANY(SELECT celllinename FROM cellline.tdp_panelassignment WHERE panel {operator} {value})',
                   sort='celllinename',
                   column_def=_cellline_columns)
