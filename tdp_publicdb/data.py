@@ -3,7 +3,7 @@ from .entity import cellline, tissue
 
 tables = ['expression', 'mutation', 'copynumber']
 attributes = ['relativecopynumber', 'totalabscopynumber', 'copynumberclass', 'aa_mutated', 'aamutation', 'dna_mutated',
-              'dnamutation', 'tpm', 'counts']
+              'dnamutation', 'tpm', 'counts', 'zygosity']
 operators = ['<', '>', '>=', '<=', '=', '<>']
 
 DataEntity = namedtuple('DataEntity', ['schema', 'tables', 'attributes', 'operators'])
