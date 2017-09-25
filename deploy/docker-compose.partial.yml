@@ -8,10 +8,10 @@ services:
   db_publicdb:
     image: postgres:9.6-alpine
     environment:
-       POSTGRES_USER: bioinfodb
-       POSTGRES_PASSWORD: bioinfodb
-       POSTGRES_DB: bioinfodb
+       POSTGRES_USER: publicdb
+       POSTGRES_PASSWORD: publicdb
+       POSTGRES_DB: publicdb
     volumes:
     - db_bioinfodb_data:/var/lib/postgresql/data
 volumes:
-  db_bioinfodb_data:
+  db_publicdb_data:
