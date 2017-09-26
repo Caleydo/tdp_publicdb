@@ -72,7 +72,7 @@ export abstract class AInfoTable extends AD3View {
     dbResults.forEach((datum) => {
       header.push(datum.id || 'Values');
       Object.keys(datum).forEach((key) => {
-        if(key === 'id' || key === 'targidid') {
+        if(key === 'id' || key === 'tdpid') {
           return;
         }
         if(!dataMap.has(key)) {
