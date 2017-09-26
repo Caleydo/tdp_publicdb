@@ -13,7 +13,8 @@ def create_gene(views, gene):
           ORDER BY {g.id} ASC""".format(g=gene)) \
     .call(limit_offset) \
     .assign_ids() \
-    .arg('query').arg('species') \
+    .arg('query') \
+    .arg('species') \
     .build()
 
   views[gene.prefix + '_gene_items_verify'] = DBViewBuilder().idtype(gene.idtype).query("""
