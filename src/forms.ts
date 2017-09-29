@@ -9,7 +9,7 @@ import {cachedLazy} from 'tdp_core/src/cached';
 import {gene, IDataSourceConfig, tissue, cellline, dataSources, dataTypes, dataSubtypes} from './config';
 import {listNamedSetsAsOptions} from 'tdp_core/src/storage';
 import {previewFilterHint} from 'tdp_core/src/lineup';
-import {getTDPData, getTDPLookupUrl} from 'tdp_core/src/rest';
+import {getTDPData, getTDPLookupUrl, IServerColumn} from 'tdp_core/src/rest';
 
 /**
  * List of ids for parameter form elements
@@ -29,6 +29,7 @@ export class ParameterFormIds {
   static COMPARISON_VALUE = 'comparison_value';
   static COMPARISON_CN = 'comparison_cn';
   static SCORE_FORCE_DATASET_SIZE = 'maxDirectFilterRows';
+  static COLOR_CODING = 'form_color_coding';
 }
 
 export const COMPARISON_OPERATORS = [
@@ -412,9 +413,9 @@ export const FORM_TISSUE_OR_CELLLINE_FILTER = {
     badgeProvider: (filter: any, dataSource: IFormElement) => {
       const value = dataSource.value;
       const data = value ? value.data : null;
-      if (data === tissue || data === tissue.id) {
+      if (data === tissue || data === tissue.name) {
         return FORM_TISSUE_FILTER.options.badgeProvider(filter);
-      } else if (data === cellline || data === cellline.id) {
+      } else if (data === cellline || data === cellline.name) {
         return FORM_CELLLINE_FILTER.options.badgeProvider(filter);
       }
       return '';
@@ -422,15 +423,50 @@ export const FORM_TISSUE_OR_CELLLINE_FILTER = {
     entries: (dataSource: IFormElement) => {
       const value = dataSource.value;
       const data = value ? value.data : null;
-      if (data === tissue || data === tissue.id) {
+      if (data === tissue || data === tissue.name) {
         return FORM_TISSUE_FILTER.options.entries;
-      } else if (data === cellline || data === cellline.id) {
+      } else if (data === cellline || data === cellline.name) {
         return FORM_CELLLINE_FILTER.options.entries;
       }
       return [];
     }
   }
 };
+
+export const FORM_COLOR_CODING = {
+  type: FormElementType.SELECT,
+  label: 'Color Coding',
+  id: ParameterFormIds.COLOR_CODING,
+  dependsOn: [ParameterFormIds.DATA_SOURCE],
+  options: {
+    optionsData: (depends) => {
+      const value = depends[0];
+      const data = value ? value.data : null;
+      if (data === tissue || data === tissue.name) {
+        return selectCategoricalColumn(tissue);
+      } else if (data === cellline || data === cellline.name) {
+        return selectCategoricalColumn(cellline);
+      }
+      return [];
+    }
+  },
+  useSession: false
+};
+
+function selectCategoricalColumn(ds: IDataSourceConfig) {
+  const dummy: IServerColumn = {
+    type: 'string',
+    column: '',
+    label: '',
+    categories: [],
+    min: 0,
+    max: 1
+  };
+  const cats = ds.columns(() => dummy).filter((d) => d.type === 'categorical');
+
+  return cats.map((c) => ({name: c.label, value: (<any>c).column, data: (<any>c).column}));
+}
+
 
 
 export const FORM_DATA_HIERARCHICAL_SUBTYPE = {
