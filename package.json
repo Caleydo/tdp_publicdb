@@ -73,7 +73,7 @@
     "node": ">= 6"
   },
   "dependencies": {
-    "tdp_gene": "github:Caleydo/tdp_gene#develop"
+    "tdp_gene": "github:Caleydo/tdp_gene#sgratzl/colored_plot"
   },
   "optionalDependencies": {
     "ordino": "github:Caleydo/ordino#develop",
