@@ -2,15 +2,15 @@
  * Created by sam on 16.02.2017.
  */
 
-import {FormElementType, IFormSelectDesc} from 'tdp_core/src/form';
+import {FormElementType, IFormElement, IFormSelectDesc} from 'tdp_core/src/form';
 import ACoExpression, {IDataFormatRow, IGeneOption} from 'tdp_gene/src/views/ACoExpression';
 import {getSelectedSpecies} from 'tdp_gene/src/common';
-import {expression, IDataSourceConfig, IDataSubtypeConfig} from '../config';
-import {ParameterFormIds, FORM_TISSUE_OR_CELLLINE_FILTER, FORM_DATA_SOURCE} from '../forms';
+import {cellline, expression, IDataSourceConfig, IDataSubtypeConfig, tissue} from '../config';
+import {ParameterFormIds, FORM_TISSUE_OR_CELLLINE_FILTER, FORM_DATA_SOURCE, FORM_COLOR_CODING} from '../forms';
 import {loadGeneList, loadFirstName} from './utils';
 import {resolve} from 'phovea_core/src/idtype/manager';
 import Range from 'phovea_core/src/range/Range';
-import {getTDPData, IParams, mergeParamAndFilters} from 'tdp_core/src/rest';
+import {getTDPData, IParams, IServerColumn, mergeParamAndFilters} from 'tdp_core/src/rest';
 import {toFilter} from 'tdp_core/src/lineup';
 
 
@@ -29,7 +29,7 @@ export default class CoExpression extends ACoExpression {
         })
       },
       useSession: false
-    },FORM_TISSUE_OR_CELLLINE_FILTER);
+    }, FORM_COLOR_CODING, FORM_TISSUE_OR_CELLLINE_FILTER);
     return base;
   }
 
@@ -49,7 +49,8 @@ export default class CoExpression extends ACoExpression {
     const param: IParams = {
       ensg,
       attribute: this.dataSubType.id,
-      species: getSelectedSpecies()
+      species: getSelectedSpecies(),
+      color: this.getParameterData(ParameterFormIds.COLOR_CODING)
     };
     return getTDPData(ds.db, `${ds.base}_co_expression/filter`, mergeParamAndFilters(param, toFilter(this.getParameter('filter'))));
   }

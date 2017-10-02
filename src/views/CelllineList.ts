@@ -12,6 +12,6 @@ export default class CelllineList extends ACommonList {
   }
 
   protected getColumnDescs(columns: IServerColumn[]) {
-    return cellline.columns(columns);
+    return cellline.columns((c) => columns.find((d) => d.column === c));
   }
 }

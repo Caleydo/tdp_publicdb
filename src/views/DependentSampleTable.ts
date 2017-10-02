@@ -76,7 +76,7 @@ export default class DependentSampleTable extends ARankingView {
   }
 
   protected getColumnDescs(columns: IServerColumn[]) {
-    return this.dataSource.columns(columns);
+    return this.dataSource.columns((c) => columns.find((d) => d.column === c));
   }
 
   protected loadRows() {
