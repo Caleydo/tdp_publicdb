@@ -128,7 +128,7 @@ export const dataSources = [cellline, tissue];
 export function chooseDataSource(desc: any): IDataSourceConfig {
 
   if (typeof(desc) === 'object') {
-    return desc.sampleType === 'Tissue' ? tissue : cellline;
+    return desc.sampleType === 'Tissue' || desc.idtype === 'Tissue' ? tissue : cellline;
   }
 
   switch (desc) {
