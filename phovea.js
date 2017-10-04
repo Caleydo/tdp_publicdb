@@ -400,6 +400,76 @@ module.exports = function (registry) {
     }
   });
 
+  //(Tissue|Celline)_gene scores
+  ['Cellline'].forEach(function (idType) {
+    const prefix = idType.toLowerCase() + '_gene';
+
+    registry.push('tdpScore', prefix + '_depletion_aggregated_score', function () {
+      return import('./src/scores');
+    }, {
+      name: 'Aggregated RNAi Screen Score',
+      idtype: idType,
+      primaryType: idType,
+      oppositeType: 'Ensembl'
+    });
+    registry.push('tdpScoreImpl', prefix + '_depletion_aggregated_score', function () {
+      return import('./src/scores');
+    }, {
+      factory: 'createScore',
+      primaryType: idType,
+      oppositeType: 'Ensembl'
+    });
+    registry.push('tdpScore', prefix + '_depletion_single_score', function () {
+      return import('./src/scores/SingleScore');
+    }, {
+      name: 'Single RNAi Screen Score',
+      idtype: idType,
+      primaryType: idType,
+      oppositeType: 'Ensembl'
+    });
+    registry.push('tdpScoreImpl', prefix + '_depletion_single_score', function () {
+      return import('./src/scores/SingleScore');
+    }, {
+      factory: 'createScore',
+      primaryType: idType,
+      oppositeType: 'Ensembl'
+    });
+  });
+
+    //gene_(Tissue|Celline)
+  ['Cellline'].forEach(function (oppositeIDType) {
+    const prefix = 'gene_' + oppositeIDType.toLowerCase();
+    registry.push('tdpScore', prefix + '_depletion_aggregated_score', function () {
+      return import('./src/scores');
+    }, {
+      name: 'Aggregated RNAi Screen Score',
+      idtype: 'Ensembl',
+      primaryType: 'Ensembl',
+      oppositeType: oppositeIDType
+    });
+    registry.push('tdpScoreImpl', prefix + '_depletion_aggregated_score', function () {
+      return import('./src/scores');
+    }, {
+      factory: 'createScore',
+      primaryType: 'Ensembl',
+      oppositeType: oppositeIDType
+    });
+    registry.push('tdpScore', prefix + '_depletion_single_score', function () {
+      return import('./src/scores/SingleScore');
+    }, {
+      name: 'Single RNAi Screen Score',
+      idtype: 'Ensembl',
+      primaryType: 'Ensembl',
+      oppositeType: oppositeIDType
+    });
+    registry.push('tdpScoreImpl', prefix + '_depletion_single_score', function () {
+      return import('./src/scores/SingleScore');
+    }, {
+      factory: 'createScore',
+      primaryType: 'Ensembl',
+      oppositeType: oppositeIDType
+    });
+  });
 
   // generator-phovea:end
 };
