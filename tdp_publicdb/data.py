@@ -8,5 +8,9 @@ operators = ['<', '>', '>=', '<=', '=', '<>']
 
 DataEntity = namedtuple('DataEntity', ['schema', 'tables', 'attributes', 'operators'])
 
+depletion_tables = ['depletionscore']
+depletion_attributes = ['rsa', 'ataris']
+
 cellline_data = DataEntity(cellline.schema, tables, attributes, operators)
 tissue_data = DataEntity(tissue.schema, tables, attributes, operators)
+cellline_depletion = DataEntity(cellline.schema, depletion_tables, depletion_attributes, operators)
