@@ -32,8 +32,8 @@ create_sample(views, tissue, gene, tissue_data)
 create_gene_sample_score(views, gene, tissue, tissue_data)
 create_gene_sample_score(views, tissue, gene, tissue_data)
 
-create_gene_sample_score(views, gene, cellline, cellline_depletion)
-create_gene_sample_score(views, cellline, gene, cellline_depletion)
+create_gene_sample_score(views, gene, cellline, cellline_depletion, 'depletion')
+create_gene_sample_score(views, cellline, gene, cellline_depletion, 'depletion')
 
 
 
