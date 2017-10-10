@@ -2,7 +2,7 @@
  * Created by sam on 06.03.2017.
  */
 
-import {IDataSubtypeConfig, dataSubtypes, cellline, tissue, gene, IDataSourceConfig} from '../config';
+import {IDataSubtypeConfig, dataSubtypes, cellline, tissue, gene, IDataSourceConfig, depletion} from '../config';
 import {IBoxPlotData} from 'lineupjs/src/model/BoxPlotColumn';
 import {IPluginDesc} from 'phovea_core/src/plugin';
 import {FORM_GENE_FILTER, FORM_TISSUE_FILTER, FORM_CELLLINE_FILTER} from '../forms';

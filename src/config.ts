@@ -316,7 +316,7 @@ export const depletion: IDataTypeConfig = {
 };
 
 
-export const dataTypes: IDataTypeConfig[] = [expression, copyNumber, mutation, depletion];
+export const dataTypes: IDataTypeConfig[] = [expression, copyNumber, mutation];
 
 function toLineUpCategories(arr: { name: string, value: any, color: string }[]) {
   return arr.map((a) => ({label: a.name, name: String(a.value), color: a.color}));

@@ -3,7 +3,7 @@ import re
 
 
 def create_gene_sample_score(views, gene, sample, data, prefix=''):
-  basename = '{prefix}_{g}_{s}'.format(g=gene.prefix, s=sample.prefix, prefix=prefix)
+  basename = '{view_prefix}{g}_{s}'.format(g=gene.prefix, s=sample.prefix, view_prefix=prefix)
 
   def _common(builder):
     return builder \

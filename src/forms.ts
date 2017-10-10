@@ -2,11 +2,11 @@
  * Created by sam on 06.03.2017.
  */
 
-import {SPECIES_SESSION_KEY, getSelectedSpecies} from 'tdp_gene/src/common';
+import {getSelectedSpecies} from 'tdp_gene/src/common';
 import {FORM_EXPRESSION_SUBTYPE_ID, FORM_COPYNUMBER_SUBTYPE_ID} from 'tdp_gene/src/forms';
 import {FormElementType, IFormElement} from 'tdp_core/src/form';
 import {cachedLazy} from 'tdp_core/src/cached';
-import {gene, IDataSourceConfig, tissue, cellline, dataSources, dataTypes, dataSubtypes} from './config';
+import {gene, IDataSourceConfig, tissue, cellline, dataSources, dataTypes, dataSubtypes, depletion} from './config';
 import {listNamedSetsAsOptions} from 'tdp_core/src/storage';
 import {previewFilterHint} from 'tdp_core/src/lineup';
 import {getTDPData, getTDPLookupUrl, IServerColumn} from 'tdp_core/src/rest';
@@ -510,6 +510,41 @@ export const FORM_DATA_HIERARCHICAL_SUBTYPE_AGGREGATED_SELECTION = {
         }))
       };
     })
+  },
+  useSession: true
+};
+
+
+export const FORM_DATA_HIERARCHICAL_SUBTYPE_DEPLETION = {
+  type: FormElementType.SELECT2_MULTIPLE,
+  label: 'Data Type',
+  id: ParameterFormIds.DATA_HIERARCHICAL_SUBTYPE,
+  attributes: {
+    style: 'width:100%'
+  },
+  required: true,
+  options: {
+    data: depletion.dataSubtypes.map((dss) => ({
+      id: `${depletion.id}-${dss.id}`,
+      text: dss.name
+    }))
+  },
+  useSession: true
+};
+
+export const FORM_DATA_HIERARCHICAL_SUBTYPE_AGGREGATED_SELECTION_DEPLETION = {
+  type: FormElementType.SELECT2,
+  label: 'Data Type',
+  id: ParameterFormIds.DATA_HIERARCHICAL_SUBTYPE,
+  attributes: {
+    style: 'width:100%'
+  },
+  required: true,
+  options: {
+    data: depletion.dataSubtypes.filter((d) => d.type !== dataSubtypes.string).map((dss) => ({
+      id: `${depletion.id}-${dss.id}`,
+      text: dss.name
+    }))
   },
   useSession: true
 };
