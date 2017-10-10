@@ -37,7 +37,7 @@ export class AggregatedScore extends AAggregatedScore implements IScore<number> 
     super(parameter, dataSource, oppositeDataSource);
   }
 
-  protected getURLPrefix() {
+  protected getViewPrefix() {
     return '';
   }
 }
@@ -47,7 +47,7 @@ export class AggregatedDepletionScore extends AAggregatedScore implements IScore
     super(parameter, dataSource, oppositeDataSource);
   }
 
-  protected getURLPrefix() {
+  protected getViewPrefix() {
     return 'depletion_';
   }
 }
