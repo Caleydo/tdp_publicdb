@@ -426,12 +426,13 @@ module.exports = function (registry) {
       name: 'Single RNAi Screen Score',
       idtype: idType,
       primaryType: idType,
-      oppositeType: 'Ensembl'
+      oppositeType: 'Ensembl',
+      factory: 'createSingleDepletionScoreDialog'
     });
     registry.push('tdpScoreImpl', prefix + '_depletion_single_score', function () {
       return import('./src/scores/SingleScore');
     }, {
-      factory: 'createScore',
+      factory: 'createSingleDepletionScore',
       primaryType: idType,
       oppositeType: 'Ensembl'
     });
@@ -462,12 +463,13 @@ module.exports = function (registry) {
       name: 'Single RNAi Screen Score',
       idtype: 'Ensembl',
       primaryType: 'Ensembl',
-      oppositeType: oppositeIDType
+      oppositeType: oppositeIDType,
+      factory: 'createSingleDepletionScoreDialog'
     });
     registry.push('tdpScoreImpl', prefix + '_depletion_single_score', function () {
       return import('./src/scores/SingleScore');
     }, {
-      factory: 'createScore',
+      factory: 'createSingleDepletionScore',
       primaryType: 'Ensembl',
       oppositeType: oppositeIDType
     });
