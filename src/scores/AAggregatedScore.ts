@@ -34,7 +34,7 @@ function array2boxplotData(arr: number[]) {
 
 abstract class AAggregatedScore extends AScore implements IScore<number> {
 
-  constructor(protected readonly parameter: IAggregatedScoreParam, protected readonly dataSource: IDataSourceConfig, protected readonly oppositeDataSource: IDataSourceConfig) {
+  constructor(private readonly parameter: IAggregatedScoreParam, private readonly dataSource: IDataSourceConfig, private readonly oppositeDataSource: IDataSourceConfig) {
     super(parameter);
   }
 
