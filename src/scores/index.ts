@@ -59,7 +59,7 @@ export function createScoreDialog(pluginDesc: IPluginDesc, extras: any, formDesc
   });
 }
 
-function initializeScore(data, pluginDesc: IPluginDesc, initAggregatedScore: (data, primary: IDataSourceConfig, opposite: IDataSourceConfig) => AAggregatedScore) {
+function initializeScore(data, pluginDesc: IPluginDesc, aggregatedScoreFactory: (data, primary: IDataSourceConfig, opposite: IDataSourceConfig) => AAggregatedScore) {
   const {primary, opposite} = selectDataSources(pluginDesc);
   const aggregation = data[ParameterFormIds.AGGREGATION];
   if (aggregation === 'frequency' || aggregation === 'count') {
@@ -67,7 +67,7 @@ function initializeScore(data, pluginDesc: IPluginDesc, initAggregatedScore: (da
     const countOnly = aggregation === 'count';
     return new FrequencyScore(data, primary, opposite, countOnly);
   }
-  return initAggregatedScore(data, primary, opposite);
+  return aggregatedScoreFactory(data, primary, opposite);
 }
 
 export function createScore(data, pluginDesc: IPluginDesc): IScore<number> {
