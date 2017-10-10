@@ -6,7 +6,7 @@ import {IPluginDesc} from 'phovea_core/src/plugin';
 import {ParameterFormIds, FORM_GENE_FILTER, FORM_TISSUE_FILTER, FORM_CELLLINE_FILTER} from '../forms';
 import {IScore} from 'tdp_core/src/extensions';
 import {AggregatedScore, AggregatedDepletionScore} from './AggregatedScore';
-import FrequencyScore from './FrequencyScore';
+import {FrequencyScore, FrequencyDepletionScore} from './FrequencyScore';
 import {
   FORCE_COMPUTE_ALL_CELLLINE, FORCE_COMPUTE_ALL_GENES, FORCE_COMPUTE_ALL_TISSUE,
   FORM_AGGREGATED_SCORE, FORM_AGGREGATED_SCORE_DEPLETION
@@ -15,6 +15,7 @@ import {gene, tissue, cellline, splitTypes, MAX_FILTER_SCORE_ROWS_BEFORE_ALL, ID
 import {selectDataSources} from './utils';
 import {FormDialog, convertRow2MultiMap, IFormElementDesc}  from 'tdp_core/src/form';
 import AAggregatedScore from './AAggregatedScore';
+import AFrequencyScore from './AFrequencyScore';
 
 
 export function createScoreDialog(pluginDesc: IPluginDesc, extras: any, formDesc: IFormElementDesc[], countHint?: number) {
@@ -59,19 +60,19 @@ export function createScoreDialog(pluginDesc: IPluginDesc, extras: any, formDesc
   });
 }
 
-function initializeScore(data, pluginDesc: IPluginDesc, aggregatedScoreFactory: (data, primary: IDataSourceConfig, opposite: IDataSourceConfig) => AAggregatedScore) {
+function initializeScore(data, pluginDesc: IPluginDesc, aggregatedScoreFactory: (data, primary: IDataSourceConfig, opposite: IDataSourceConfig) => AAggregatedScore, frequencyScoreFactory: (data, primary: IDataSourceConfig, opposite: IDataSourceConfig, countOnly: boolean) => AFrequencyScore) {
   const {primary, opposite} = selectDataSources(pluginDesc);
   const aggregation = data[ParameterFormIds.AGGREGATION];
   if (aggregation === 'frequency' || aggregation === 'count') {
     // boolean to indicate that the resulting score does not need to be divided by the total count
     const countOnly = aggregation === 'count';
-    return new FrequencyScore(data, primary, opposite, countOnly);
+    return frequencyScoreFactory(data, primary, opposite, countOnly);
   }
   return aggregatedScoreFactory(data, primary, opposite);
 }
 
 export function createScore(data, pluginDesc: IPluginDesc): IScore<number> {
-  return initializeScore(data, pluginDesc, (data, primary, opposite) => new AggregatedScore(data, primary, opposite));
+  return initializeScore(data, pluginDesc, (data, primary, opposite) => new AggregatedScore(data, primary, opposite), (data, primary, opposite, countOnly) => new FrequencyScore(data, primary, opposite, countOnly));
 }
 
 
@@ -81,7 +82,7 @@ export function create(pluginDesc: IPluginDesc, extras: any, countHint?: number)
 
 // Factories for depletion scores for DRIVE data
 export function createAggregatedDepletionScore(data, pluginDesc: IPluginDesc): IScore<number> {
-  return initializeScore(data, pluginDesc, (data, primary, opposite) => new AggregatedDepletionScore(data, primary, opposite));
+  return initializeScore(data, pluginDesc, (data, primary, opposite) => new AggregatedDepletionScore(data, primary, opposite), (data, primary, opposite, countOnly) => new FrequencyDepletionScore(data, primary, opposite, countOnly));
 }
 
 export function createAggregatedDepletionScoreDialog(pluginDesc: IPluginDesc, extras: any, countHint?: number) {
