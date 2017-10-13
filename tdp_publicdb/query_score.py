@@ -9,7 +9,7 @@ def create_gene_sample_score(views, gene, sample, data, prefix=''):
     return builder \
       .arg('species') \
       .replace('table', data.tables) \
-      .filter('panel', sample.panel) \
+      .filter('panel', gene.panel) \
       .filter(sample.id, table='d') \
       .filter('panel_' + sample.id, sample.panel) \
       .filter(gene.id, table='d') \
