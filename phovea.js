@@ -400,6 +400,80 @@ module.exports = function (registry) {
     }
   });
 
+  //(Tissue|Celline)_gene scores
+  ['Cellline'].forEach(function (idType) {
+    const prefix = idType.toLowerCase() + '_gene';
+
+    registry.push('tdpScore', prefix + '_depletion_aggregated_score', function () {
+      return import('./src/scores');
+    }, {
+      name: 'Aggregated RNAi Screen Score',
+      idtype: idType,
+      primaryType: idType,
+      oppositeType: 'Ensembl',
+      factory: 'createAggregatedDepletionScoreDialog'
+    });
+    registry.push('tdpScoreImpl', prefix + '_depletion_aggregated_score', function () {
+      return import('./src/scores');
+    }, {
+      primaryType: idType,
+      oppositeType: 'Ensembl',
+      factory: 'createAggregatedDepletionScore'
+    });
+    registry.push('tdpScore', prefix + '_depletion_single_score', function () {
+      return import('./src/scores/SingleScore');
+    }, {
+      name: 'Single RNAi Screen Score',
+      idtype: idType,
+      primaryType: idType,
+      oppositeType: 'Ensembl',
+      factory: 'createSingleDepletionScoreDialog'
+    });
+    registry.push('tdpScoreImpl', prefix + '_depletion_single_score', function () {
+      return import('./src/scores/SingleScore');
+    }, {
+      factory: 'createSingleDepletionScore',
+      primaryType: idType,
+      oppositeType: 'Ensembl'
+    });
+  });
+
+    //gene_(Tissue|Celline)
+  ['Cellline'].forEach(function (oppositeIDType) {
+    const prefix = 'gene_' + oppositeIDType.toLowerCase();
+    registry.push('tdpScore', prefix + '_depletion_aggregated_score', function () {
+      return import('./src/scores');
+    }, {
+      name: 'Aggregated RNAi Screen Score',
+      idtype: 'Ensembl',
+      primaryType: 'Ensembl',
+      oppositeType: oppositeIDType,
+      factory: 'createAggregatedDepletionScoreDialog'
+    });
+    registry.push('tdpScoreImpl', prefix + '_depletion_aggregated_score', function () {
+      return import('./src/scores');
+    }, {
+      primaryType: 'Ensembl',
+      oppositeType: oppositeIDType,
+      factory: 'createAggregatedDepletionScore'
+    });
+    registry.push('tdpScore', prefix + '_depletion_single_score', function () {
+      return import('./src/scores/SingleScore');
+    }, {
+      name: 'Single RNAi Screen Score',
+      idtype: 'Ensembl',
+      primaryType: 'Ensembl',
+      oppositeType: oppositeIDType,
+      factory: 'createSingleDepletionScoreDialog'
+    });
+    registry.push('tdpScoreImpl', prefix + '_depletion_single_score', function () {
+      return import('./src/scores/SingleScore');
+    }, {
+      factory: 'createSingleDepletionScore',
+      primaryType: 'Ensembl',
+      oppositeType: oppositeIDType
+    });
+  });
 
   // generator-phovea:end
 };

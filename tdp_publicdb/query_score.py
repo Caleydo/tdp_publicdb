@@ -2,8 +2,8 @@ from tdp_core.dbview import DBViewBuilder, inject_where
 import re
 
 
-def create_gene_sample_score(views, gene, sample, data):
-  basename = '{g}_{s}'.format(g=gene.prefix, s=sample.prefix)
+def create_gene_sample_score(views, gene, sample, data, prefix=''):
+  basename = '{view_prefix}{g}_{s}'.format(g=gene.prefix, s=sample.prefix, view_prefix=prefix)
 
   def _common(builder):
     return builder \

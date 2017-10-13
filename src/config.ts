@@ -288,6 +288,34 @@ export const mutation: IDataTypeConfig = {
   ]
 };
 
+export const depletion: IDataTypeConfig = {
+  id: 'depletion',
+  name: 'RNAi Screen',
+  tableName: 'depletionscore',
+  query: 'depletion_score',
+  dataSubtypes: [
+    {
+      id: 'rsa',
+      name: 'DRIVE RSA (ER McDonald III et al., Cell, 2017)',
+      type: dataSubtypes.number,
+      domain: [-3, 3],
+      missingValue: NaN,
+      constantDomain: false,
+      useForAggregation: 'rsa'
+    },
+    {
+      id: 'ataris',
+      name: 'DRIVE ATARiS (ER McDonald III et al., Cell, 2017)',
+      type: dataSubtypes.number,
+      domain: [0, 10000],
+      missingValue: NaN,
+      constantDomain: false,
+      useForAggregation: 'ataris'
+    }
+  ]
+};
+
+
 export const dataTypes: IDataTypeConfig[] = [expression, copyNumber, mutation];
 
 function toLineUpCategories(arr: { name: string, value: any, color: string }[]) {
@@ -315,6 +343,9 @@ export function resolveDataTypes(dataTypeId: string, dataSubTypeId: string) {
       break;
     case copyNumber.id:
       dataType = copyNumber;
+      break;
+    case depletion.id:
+      dataType = depletion;
       break;
   }
 

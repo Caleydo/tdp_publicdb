@@ -2,26 +2,19 @@
  * Created by sam on 06.03.2017.
  */
 
-import {Range, RangeLike} from 'phovea_core/src/range';
-import {resolve, IDType} from 'phovea_core/src/idtype';
-import {getSelectedSpecies} from 'tdp_gene/src/common';
 import {IDataSourceConfig, gene, tissue, cellline, MAX_FILTER_SCORE_ROWS_BEFORE_ALL, splitTypes} from '../config';
-import {convertLog2ToLinear, limitScoreRows} from 'tdp_gene/src/utils';
 import {IScore} from 'tdp_core/src/extensions';
-import {createDesc} from './utils';
 import {IFormElementDesc, FormElementType} from 'tdp_core/src/form';
 import {ParameterFormIds, FORM_GENE_NAME, FORM_TISSUE_NAME, FORM_CELLLINE_NAME} from '../forms';
 import {IPluginDesc} from 'phovea_core/src/plugin';
-import AScore from './AScore';
 import {
   FORCE_COMPUTE_ALL_CELLLINE, FORCE_COMPUTE_ALL_GENES, FORCE_COMPUTE_ALL_TISSUE,
-  FORM_SINGLE_SCORE
+  FORM_SINGLE_SCORE, FORM_SINGLE_SCORE_DEPLETION
 } from './forms';
 import {selectDataSources} from './utils';
 import {mixin} from 'phovea_core/src';
-import {INamedSet} from 'tdp_core/src/storage';
 import {FormDialog} from 'tdp_core/src/form';
-import {getTDPScore} from 'tdp_core/src/rest';
+import ASingleScore from './ASingleScore';
 
 interface ISingleScoreParam {
   name: {id: string, text: string};
@@ -33,39 +26,6 @@ interface ISingleScoreParam {
   maxDirectFilterRows?: number;
 }
 
-export default class SingleScore extends AScore implements IScore<any> {
-  constructor(private parameter: ISingleScoreParam, private readonly dataSource: IDataSourceConfig, private readonly oppositeDataSource: IDataSourceConfig) {
-    super(parameter);
-  }
-
-  get idType() {
-    return resolve(this.dataSource.idType);
-  }
-
-  createDesc(): any {
-    return createDesc(this.dataSubType.type, `${this.dataSubType.name} of ${this.parameter.name.text}`, this.dataSubType,
-    `${this.oppositeDataSource.name} Name: "${this.parameter.name.text}"\nData Type: ${this.dataType.name}\nData Subtype: ${this.dataSubType.name}`);
-  }
-
-  async compute(ids:RangeLike, idtype:IDType, namedSet?: INamedSet):Promise<any[]> {
-    const param: any = {
-      table: this.dataType.tableName,
-      attribute: this.dataSubType.id,
-      name: this.parameter.name.id,
-      species: getSelectedSpecies(),
-      target: idtype.id
-    };
-    const maxDirectRows = typeof this.parameter.maxDirectFilterRows === 'number' ? this.parameter.maxDirectFilterRows : MAX_FILTER_SCORE_ROWS_BEFORE_ALL;
-    limitScoreRows(param, ids, idtype, this.dataSource.entityName, maxDirectRows, namedSet);
-
-    const rows = await getTDPScore(this.dataSource.db, `${this.dataSource.base}_${this.oppositeDataSource.base}_single_score`, param);
-    if (this.dataSubType.useForAggregation.indexOf('log2') !== -1) {
-      return convertLog2ToLinear(rows, 'score');
-    }
-    return rows;
-  }
-}
-
 function enableMultiple(desc: any): any {
   return mixin({}, desc, {
     type: FormElementType.SELECT2_MULTIPLE,
@@ -73,10 +33,30 @@ function enableMultiple(desc: any): any {
   });
 }
 
-export function create(pluginDesc: IPluginDesc, extra: any, countHint?: number) {
+
+class SingleScore extends ASingleScore implements IScore<any> {
+  constructor(parameter: ISingleScoreParam, dataSource: IDataSourceConfig, oppositeDataSource: IDataSourceConfig) {
+    super(parameter, dataSource, oppositeDataSource);
+  }
+
+  protected getViewPrefix(): string {
+    return '';
+  }
+}
+
+class SingleDepletionScore extends ASingleScore implements IScore<any> {
+  constructor(parameter: ISingleScoreParam, dataSource: IDataSourceConfig, oppositeDataSource: IDataSourceConfig) {
+    super(parameter, dataSource, oppositeDataSource);
+  }
+
+  protected getViewPrefix(): string {
+    return 'depletion_';
+  }
+}
+
+export function createScoreDialog(pluginDesc: IPluginDesc, extra: any, formDesc: IFormElementDesc[], countHint?: number) {
   const {primary, opposite} = selectDataSources(pluginDesc);
   const dialog = new FormDialog('Add Single Score Column', 'Add Single Score Column');
-  const formDesc:IFormElementDesc[] = FORM_SINGLE_SCORE.slice();
   switch(opposite) {
     case gene:
       formDesc.unshift(enableMultiple(FORM_GENE_NAME));
@@ -135,14 +115,14 @@ export function create(pluginDesc: IPluginDesc, extra: any, countHint?: number) 
 }
 
 
-export function createScore(data: ISingleScoreParam, pluginDesc: IPluginDesc): IScore<number>|IScore<any>[] {
+export function initializeScore(data: ISingleScoreParam, pluginDesc: IPluginDesc, singleScoreFactory: (parameter: ISingleScoreParam, dataSource: IDataSourceConfig, oppositeDataSource: IDataSourceConfig) => ASingleScore): IScore<number>|IScore<any>[] {
   const {primary, opposite} = selectDataSources(pluginDesc);
   const configs = (<any>data).data_types;
   function defineScore(name: {id: string, text: string}) {
     if (configs) {
-      return configs.map((ds) => new SingleScore({name, data_type: ds[0], data_subtype: ds[1], maxDirectFilterRows: data.maxDirectFilterRows}, primary, opposite));
+      return configs.map((ds) => singleScoreFactory({name, data_type: ds[0], data_subtype: ds[1], maxDirectFilterRows: data.maxDirectFilterRows}, primary, opposite));
     } else {
-      return new SingleScore(Object.assign({}, data, { name }), primary, opposite);
+      return singleScoreFactory(Object.assign({}, data, { name }), primary, opposite);
     }
   }
   if (Array.isArray(data.name)) {
@@ -150,4 +130,23 @@ export function createScore(data: ISingleScoreParam, pluginDesc: IPluginDesc): I
   } else {
     return defineScore(data.name);
   }
+}
+
+
+export function create(pluginDesc: IPluginDesc, extra: any, countHint?: number) {
+  return createScoreDialog(pluginDesc, extra, FORM_SINGLE_SCORE.slice(), countHint);
+}
+
+export function createScore(data: ISingleScoreParam, pluginDesc: IPluginDesc): IScore<number>|IScore<any>[] {
+  return initializeScore(data, pluginDesc, (parameter, dataSource, oppositeDataSource) => new SingleScore(parameter, dataSource, oppositeDataSource));
+}
+
+
+// Factories for depletion scores for DRIVE data
+export function createSingleDepletionScoreDialog(pluginDesc: IPluginDesc, extra: any, countHint?: number) {
+  return createScoreDialog(pluginDesc, extra, FORM_SINGLE_SCORE_DEPLETION.slice(), countHint);
+}
+
+export function createSingleDepletionScore(data: ISingleScoreParam, pluginDesc: IPluginDesc): IScore<number>|IScore<any>[] {
+  return initializeScore(data, pluginDesc, (parameter, dataSource, oppositeDataSource) => new SingleDepletionScore(parameter, dataSource, oppositeDataSource));
 }

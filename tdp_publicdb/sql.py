@@ -2,7 +2,7 @@
 from tdp_core.dbview import DBConnector
 from .pg_agg_score import agg_score
 from .entity import cellline, gene, tissue
-from .data import cellline_data, tissue_data
+from .data import cellline_data, tissue_data, cellline_depletion
 from .query_common import create_common
 from .query_gene import create_gene
 from .query_sample import create_sample
@@ -31,6 +31,11 @@ create_sample(views, tissue, gene, tissue_data)
 # scores tissue x gene
 create_gene_sample_score(views, gene, tissue, tissue_data)
 create_gene_sample_score(views, tissue, gene, tissue_data)
+
+# depletion scores
+create_gene_sample_score(views, gene, cellline, cellline_depletion, 'depletion_')
+create_gene_sample_score(views, cellline, gene, cellline_depletion, 'depletion_')
+
 
 
 def create():
