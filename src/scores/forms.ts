@@ -103,22 +103,22 @@ const FORM_COMPUTE_BASE = {
   type: FormElementType.CHECKBOX,
   id: ParameterFormIds.SCORE_FORCE_DATASET_SIZE,
   options: {
-    checked: -1,
-    unchecked: MAX_FILTER_SCORE_ROWS_BEFORE_ALL
+    checked: MAX_FILTER_SCORE_ROWS_BEFORE_ALL,
+    unchecked: -1
   },
   useSession: true
 };
 
 export const FORCE_COMPUTE_ALL_GENES = Object.assign({
-  label: 'Compute score for all genes and not only for the selected subset'
+  label: 'Compute only for selected subset of genes and not for all'
 }, FORM_COMPUTE_BASE);
 
 export const FORCE_COMPUTE_ALL_TISSUE = Object.assign({
-  label: 'Compute score for all tissues and not only for the selected subset'
+  label: 'Compute only for selected subset of tissues and not for all'
 }, FORM_COMPUTE_BASE);
 
 export const FORCE_COMPUTE_ALL_CELLLINE = Object.assign({
-  label: 'Compute score for all celllines and not only for the selected subset'
+  label: 'Compute only for selected subset of cell lines and not for all'
 }, FORM_COMPUTE_BASE);
 
 
