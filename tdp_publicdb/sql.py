@@ -22,7 +22,7 @@ create_sample(views, cellline, gene, cellline_data)
 
 # scores cellline x gene
 create_gene_sample_score(views, gene, cellline, cellline_data)
-create_gene_sample_score(views, cellline, gene, cellline_data)
+create_gene_sample_score(views, cellline, gene, cellline_data, inline_aggregate_sample_filter=True)
 
 # tissue
 create_common(views, tissue)
@@ -30,11 +30,11 @@ create_sample(views, tissue, gene, tissue_data)
 
 # scores tissue x gene
 create_gene_sample_score(views, gene, tissue, tissue_data)
-create_gene_sample_score(views, tissue, gene, tissue_data)
+create_gene_sample_score(views, tissue, gene, tissue_data, inline_aggregate_sample_filter=True)
 
 # depletion scores
 create_gene_sample_score(views, gene, cellline, cellline_depletion, 'depletion_')
-create_gene_sample_score(views, cellline, gene, cellline_depletion, 'depletion_')
+create_gene_sample_score(views, cellline, gene, cellline_depletion, 'depletion_', inline_aggregate_sample_filter=True)
 
 
 

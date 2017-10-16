@@ -2,7 +2,7 @@ from tdp_core.dbview import DBViewBuilder, inject_where
 import re
 
 
-def create_gene_sample_score(views, gene, sample, data, prefix=''):
+def create_gene_sample_score(views, gene, sample, data, prefix='', inline_aggregate_sample_filter=False):
   basename = '{view_prefix}{g}_{s}'.format(g=gene.prefix, s=sample.prefix, view_prefix=prefix)
 
   def _common(builder):
@@ -30,20 +30,37 @@ def create_gene_sample_score(views, gene, sample, data, prefix=''):
 
   def aggregate(attr):
     b = DBViewBuilder().idtype(gene.idtype)
-    b.query("""SELECT d.{g.id} AS id, {attr}
-           FROM {d.schema}.tdp_{{table}} d
-           {{joins}}
-           WHERE d.{s.id} = ANY(ARRAY(SELECT {s.id} FROM {s.table} WHERE species = :species {{and_sample_where}}))
-           {{and_where}}
-           GROUP BY d.{g.id}""".format(g=gene, s=sample, d=data, attr=attr))
-    b.query('count', """
-            SELECT count(DISTINCT d.{s.id})
-            FROM {d.schema}.tdp_{{table}} d
-            {{joins}}
-            WHERE d.{s.id} = ANY(ARRAY(SELECT {s.id} FROM {s.table} WHERE species = :species {{and_sample_where}}))
-            {{and_where}}""".format(g=gene, s=sample, d=data))
+    if inline_aggregate_sample_filter:
+      b.query("""SELECT d.{g.id} AS id, {attr}
+                   FROM {d.schema}.tdp_{{table}} d
+                   INNER JOIN {s.table} s ON d.{s.id} = s.{s.id}
+                   {{joins}}
+                   WHERE s.species = :species
+                   {{and_where}}
+                   GROUP BY d.{g.id}""".format(g=gene, s=sample, d=data, attr=attr))
+      b.query('count', """
+                    SELECT count(DISTINCT d.{s.id})
+                    FROM {d.schema}.tdp_{{table}} d
+                    INNER JOIN {s.table} s ON d.{s.id} = s.{s.id}
+                    {{joins}}
+                    WHERE s.species = :species
+                    {{and_where}}""".format(g=gene, s=sample, d=data))
+      b.filters(sample.columns, table='s')
+    else:
+      b.query("""SELECT d.{g.id} AS id, {attr}
+             FROM {d.schema}.tdp_{{table}} d
+             {{joins}}
+             WHERE d.{s.id} = ANY(ARRAY(SELECT {s.id} FROM {s.table} WHERE species = :species {{and_sample_where}}))
+             {{and_where}}
+             GROUP BY d.{g.id}""".format(g=gene, s=sample, d=data, attr=attr))
+      b.query('count', """
+              SELECT count(DISTINCT d.{s.id})
+              FROM {d.schema}.tdp_{{table}} d
+              {{joins}}
+              WHERE d.{s.id} = ANY(ARRAY(SELECT {s.id} FROM {s.table} WHERE species = :species {{and_sample_where}}))
+              {{and_where}}""".format(g=gene, s=sample, d=data))
+      b.filters(sample.columns, group='sample')
     b.replace('and_sample_where').replace('and_where').replace('joins')
-    b.filters(sample.columns, group='sample')
     b.call(_common)
     return b
 
