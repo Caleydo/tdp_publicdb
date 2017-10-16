@@ -13,7 +13,8 @@ def create_sample(views, sample, gene, data):
       .assign_ids() \
       .arg('ensg') \
       .filters(sample.columns) \
-      .filter('panel', sample.panel) \
+      .filter('panel', sample.panel, join=sample.panel_join) \
+      .filter('panel_' + sample.id, sample.panel, join=sample.panel_join) \
       .filter(sample.id, table='d') \
       .filter(gene.id, table='d')
 
@@ -21,7 +22,7 @@ def create_sample(views, sample, gene, data):
      SELECT s.{s.id} AS id, g.symbol, s.{s.id} as samplename, d.{{attribute}} AS expression, s.{{color}} as color
         FROM {d.schema}.tdp_expression AS d
         INNER JOIN {g.table} g ON d.{g.id} = g.{g.id}
-        INNER JOIN {s.table} s ON d.{s.id} = s.{s.id}
+        INNER JOIN {s.table} s ON d.{s.id} = s.{s.id} 
         WHERE d.{g.id} = :ensg""".format(s=sample, g=gene, d=data)) \
     .replace('attribute', data.attributes).replace('color', sample.columns) \
     .call(_common_vis) \
@@ -62,7 +63,8 @@ def create_sample(views, sample, gene, data):
     .assign_ids() \
     .arg('species') \
     .filters(sample.columns) \
-    .filter('panel', sample.panel) \
+    .filter('panel', sample.panel, join=sample.panel_join) \
+    .filter('panel_' +  sample.id, sample.panel, join=sample.panel_join) \
     .filter(sample.id, table='d') \
     .build()
 

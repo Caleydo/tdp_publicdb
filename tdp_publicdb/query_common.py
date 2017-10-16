@@ -11,7 +11,8 @@ def create_common(views, entity):
     .call(entity.column_def) \
     .assign_ids() \
     .call(inject_where) \
-    .filter('panel', entity.panel) \
+    .filter('panel', entity.panel, join=entity.panel_join) \
+    .filter('panel_' + entity.id, entity.panel, join=entity.panel_join) \
     .build()
 
   # lookup for the id and primary names the table

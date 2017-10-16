@@ -12,7 +12,7 @@ import {limitScoreRows, convertLog2ToLinear} from 'tdp_gene/src/utils';
 import {IBoxPlotData} from 'lineupjs/src/model/BoxPlotColumn';
 import {INamedSet} from 'tdp_core/src/storage';
 import {resolve} from 'phovea_core/src/idtype';
-import {getTDPScore} from 'tdp_core/src/rest';
+import {getTDPScore, IParams} from 'tdp_core/src/rest';
 import {toFilter} from 'tdp_core/src/lineup';
 import IDType from 'phovea_core/src/idtype/IDType';
 
@@ -59,7 +59,7 @@ abstract class AAggregatedScore extends AScore implements IScore<number> {
     };
     const maxDirectRows = typeof this.parameter.maxDirectFilterRows === 'number' ? this.parameter.maxDirectFilterRows : MAX_FILTER_SCORE_ROWS_BEFORE_ALL;
     limitScoreRows(param, ids, idtype, this.dataSource.entityName, maxDirectRows, namedSet);
-    const filters = toFilter(this.parameter.filter);
+    const filters = compatibilityFilter(toFilter(this.parameter.filter), this.oppositeDataSource.entityName);
 
     let rows: IScoreRow<any>[] = await getTDPScore(this.dataSource.db, `${this.getViewPrefix()}${this.dataSource.base}_${this.oppositeDataSource.base}_score`, param, filters);
     if (this.parameter.aggregation === 'boxplot') {
@@ -73,6 +73,22 @@ abstract class AAggregatedScore extends AScore implements IScore<number> {
   }
 
   protected abstract getViewPrefix(): string;
+}
+
+/**
+ * by convention the 'panel' filter key refers to the panel used for the returning entity, e.g. a list of genes will be returned -> panel = gene panel
+ * however, in the score case panel would refer to sample, while the form itself is fixed for old provenance graph this method is needed
+ * @param {IParams} filter
+ * @param {string} oppositeEntityName
+ */
+function compatibilityFilter(filter: IParams, oppositeEntityName: string) {
+  if (!filter.hasOwnProperty('panel')) {
+    return filter;
+  }
+  const old = filter.panel;
+  delete filter.panel;
+  filter['panel_' + oppositeEntityName] = old;
+  return filter;
 }
 
 export default AAggregatedScore;

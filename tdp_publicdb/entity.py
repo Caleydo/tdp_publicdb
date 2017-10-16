@@ -3,7 +3,7 @@ from collections import namedtuple
 
 __author__ = 'Samuel Gratzl'
 
-Entity = namedtuple('Entity', ['prefix', 'idtype', 'id', 'schema', 'table', 'columns', 'panel', 'sort', 'column_def'])
+Entity = namedtuple('Entity', ['prefix', 'idtype', 'id', 'schema', 'table', 'columns', 'panel', 'panel_join', 'sort', 'column_def'])
 
 # common alias
 # d ... data ... assumed for panels
@@ -17,7 +17,8 @@ gene = Entity('gene',
               table='public.tdp_gene',
               columns=['ensg', 'symbol', 'species', 'chromosome', 'strand', 'biotype', 'seqregionstart',
                        'seqregionend', 'name'],
-              panel='d.ensg = ANY(ARRAY(SELECT ensg FROM public.tdp_geneassignment WHERE genesetname {operator} {value}))',
+              panel='ga.genesetname {operator} {value}',
+              panel_join='LEFT JOIN public.tdp_geneassignment ga ON (d.ensg = ga.ensg)',
               sort='symbol',
               column_def=lambda b: b)
 
@@ -51,6 +52,7 @@ tissue = Entity('tissue',
                          'race', 'ethnicity', 'age', 'days_to_last_followup', 'days_to_death', 'vital_status', 'height',
                          'weight', 'bmi'],
                 panel='d.tissuename = ANY(ARRAY(SELECT tissuename FROM tissue.tdp_panelassignment WHERE panel {operator} {value}))',
+                panel_join=None,
                 sort='tissuename',
                 column_def=_tissue_columns)
 
@@ -75,5 +77,6 @@ cellline = Entity('cellline',
                   columns=['celllinename', 'species', 'tumortype', 'organ', 'gender', 'metastatic_site',
                            'histology_type', 'morphology', 'growth_type', 'age_at_surgery'],
                   panel='d.celllinename = ANY(ARRAY(SELECT celllinename FROM cellline.tdp_panelassignment WHERE panel {operator} {value}))',
+                  panel_join=None,
                   sort='celllinename',
                   column_def=_cellline_columns)

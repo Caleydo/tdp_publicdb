@@ -88,7 +88,8 @@ export default class DependentGeneTable extends ARankingView {
       name,
       species: getSelectedSpecies()
     };
-    return getTDPScore(gene.db, `gene_${this.dataSource.base}_single_score`, param, toFilter(this.getParameter('filter'))).then(postProcessScore(subType));
+    const filter = toFilter(this.getParameter('filter'));
+    return getTDPScore(gene.db, `gene_${this.dataSource.base}_single_score`, param, filter).then(postProcessScore(subType));
   }
 }
 

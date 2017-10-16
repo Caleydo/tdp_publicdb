@@ -9,11 +9,11 @@ def create_gene_sample_score(views, gene, sample, data, prefix=''):
     return builder \
       .arg('species') \
       .replace('table', data.tables) \
-      .filter('panel', gene.panel) \
+      .filter('panel', gene.panel, join=gene.panel_join) \
       .filter(sample.id, table='d') \
-      .filter('panel_' + sample.id, sample.panel) \
+      .filter('panel_' + sample.id, sample.panel, join=sample.panel_join) \
       .filter(gene.id, table='d') \
-      .filter('panel_' + gene.id, gene.panel)
+      .filter('panel_' + gene.id, gene.panel, join=gene.panel_join)
 
   views[basename + '_single_score'] = DBViewBuilder().idtype(gene.idtype).query("""
           SELECT d.{g.id} AS id, d.{{attribute}} AS score
@@ -32,15 +32,17 @@ def create_gene_sample_score(views, gene, sample, data, prefix=''):
     b = DBViewBuilder().idtype(gene.idtype)
     b.query("""SELECT d.{g.id} AS id, {attr}
            FROM {d.schema}.tdp_{{table}} d
+           {{joins}}
            WHERE d.{s.id} = ANY(ARRAY(SELECT {s.id} FROM {s.table} WHERE species = :species {{and_sample_where}}))
            {{and_where}}
-           GROUP BY {g.id}""".format(g=gene, s=sample, d=data, attr=attr))
+           GROUP BY d.{g.id}""".format(g=gene, s=sample, d=data, attr=attr))
     b.query('count', """
             SELECT count(DISTINCT d.{s.id})
             FROM {d.schema}.tdp_{{table}} d
+            {{joins}}
             WHERE d.{s.id} = ANY(ARRAY(SELECT {s.id} FROM {s.table} WHERE species = :species {{and_sample_where}}))
             {{and_where}}""".format(g=gene, s=sample, d=data))
-    b.replace('and_sample_where').replace('and_where')
+    b.replace('and_sample_where').replace('and_where').replace('joins')
     b.filters(sample.columns, group='sample')
     b.call(_common)
     return b
