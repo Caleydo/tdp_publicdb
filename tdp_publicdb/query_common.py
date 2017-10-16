@@ -3,7 +3,7 @@ from tdp_core.dbview import DBViewBuilder, limit_offset, inject_where
 
 def create_common(views, entity):
   views[entity.prefix] = DBViewBuilder().idtype(entity.idtype).table(entity.table).query("""
-      SELECT {id} as id, *
+      SELECT d.{id} as id, d.*
       FROM {table} d
       ORDER BY {sort} ASC""".format(id=entity.id, table=entity.table, sort=entity.sort)) \
     .derive_columns() \
