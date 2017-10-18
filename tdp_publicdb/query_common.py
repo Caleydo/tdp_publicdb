@@ -29,9 +29,9 @@ def create_common(views, entity):
   views[entity.prefix + '_items_verify'] = DBViewBuilder().idtype(entity.idtype).query("""
       SELECT {id} as id, {{column}} AS text
        FROM {table} WHERE species = :species""".format(table=entity.table, id=entity.id)) \
+    .replace('column', entity.columns) \
     .call(inject_where) \
     .assign_ids() \
-    .arg('column') \
     .arg('species') \
     .build()
 
