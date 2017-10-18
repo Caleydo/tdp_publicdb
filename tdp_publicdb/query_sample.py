@@ -13,7 +13,8 @@ def create_sample(views, sample, gene, data):
       .assign_ids() \
       .arg('ensg') \
       .filters(sample.columns) \
-      .filter('panel', sample.panel) \
+      .filter('panel', sample.panel, join=sample.panel_join) \
+      .filter('panel_' + sample.id, sample.panel, join=sample.panel_join) \
       .filter(sample.id, table='d') \
       .filter(gene.id, table='d')
 
@@ -62,7 +63,8 @@ def create_sample(views, sample, gene, data):
     .assign_ids() \
     .arg('species') \
     .filters(sample.columns) \
-    .filter('panel', sample.panel) \
+    .filter('panel', sample.panel, join=sample.panel_join) \
+    .filter('panel_' + sample.id, sample.panel, join=sample.panel_join) \
     .filter(sample.id, table='d') \
     .build()
 
