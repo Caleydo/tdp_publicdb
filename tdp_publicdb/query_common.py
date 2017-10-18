@@ -33,6 +33,7 @@ def create_common(views, entity):
     .call(inject_where) \
     .assign_ids() \
     .arg('species') \
+    .filter(entity.id, 'LOWER(' + entity.id + ') {operator} {value}') \
     .build()
 
   # lookup for unique / distinct categorical values in a table
