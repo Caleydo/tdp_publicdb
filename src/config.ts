@@ -80,7 +80,7 @@ export const tissue: IDataSourceConfig = {
       categoricalCol('tumortype', find('tumortype').categories, {label: 'Tumor Type'}),
       categoricalCol('organ',find('organ').categories, {label: 'Organ'}),
       categoricalCol('gender', find('gender').categories, {label: 'Gender'}),
-      categoricalCol('tumortype_adjacent', find('tumortype_adjacent').categories, {label: 'Tumor Type adjacent', visible: false}),
+      stringCol('tumortype_adjacent', {label: 'Tumor Type adjacent', visible: false}),
       categoricalCol('vendorname', find('vendorname').categories, {label: 'Vendor name', visible: false}),
       categoricalCol('race',find('race').categories, {label: 'Race', visible: false}),
       categoricalCol('ethnicity', find('ethnicity').categories, {label: 'Ethnicity',  visible: false}),
