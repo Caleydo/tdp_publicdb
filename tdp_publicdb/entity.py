@@ -3,12 +3,19 @@ from collections import namedtuple
 
 __author__ = 'Samuel Gratzl'
 
-Entity = namedtuple('Entity', ['prefix', 'idtype', 'id', 'schema', 'table', 'columns', 'panel', 'panel_join', 'sort', 'column_def'])
+Entity = namedtuple('Entity', ['prefix', 'idtype', 'id', 'schema', 'table', 'columns', 'panel', 'panel_join', 'sort',
+                               'column_def'])
+
 
 # common alias
 # d ... data ... assumed for panels
 # s ... sample
 # g ... gene
+
+def _gene_columns(query):
+  return query \
+    .column('biotype', type='categorical')
+
 
 gene = Entity('gene',
               idtype='Ensembl',
@@ -20,7 +27,7 @@ gene = Entity('gene',
               panel='ga.genesetname {operator} {value}',
               panel_join='LEFT JOIN public.tdp_geneassignment ga ON (d.ensg = ga.ensg)',
               sort='symbol',
-              column_def=lambda b: b)
+              column_def=_gene_columns)
 
 
 def _tissue_columns(query):
