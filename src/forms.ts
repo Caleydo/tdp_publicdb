@@ -159,7 +159,7 @@ export const FORM_GENE_FILTER = {
       }).then((r) => r.map((d) => d.text.toString())))
     }, {
       name: 'Predefined Named Sets',
-      value: 'panel',
+      value: 'panel_ensg',
       type: FormElementType.SELECT2,
       multiple: true,
       optionsData: cachedLazy('gene_predefined_namedsets', buildPredefinedNamedSets.bind(null, gene))
@@ -354,7 +354,7 @@ function generateFilter(d: IDataSourceConfig) {
       ...specificFilters,
       {
         name: 'Predefined Named Sets',
-        value: 'panel',
+        value: 'panel_' + d.entityName,
         type: FormElementType.SELECT2,
         multiple: true,
         optionsData: cachedLazy(d.base + '_predefined_namedsets', buildPredefinedNamedSets.bind(null, d))
