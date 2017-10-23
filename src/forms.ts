@@ -4,7 +4,7 @@
 
 import {getSelectedSpecies} from 'tdp_gene/src/common';
 import {FORM_EXPRESSION_SUBTYPE_ID, FORM_COPYNUMBER_SUBTYPE_ID} from 'tdp_gene/src/forms';
-import {FormElementType, IFormElement} from 'tdp_core/src/form';
+import {FormElementType, IFormElement, IFormSelectOption} from 'tdp_core/src/form';
 import {cachedLazy} from 'tdp_core/src/cached';
 import {gene, IDataSourceConfig, tissue, cellline, dataSources, dataTypes, dataSubtypes, depletion} from './config';
 import {listNamedSetsAsOptions} from 'tdp_core/src/storage';
@@ -443,9 +443,9 @@ export const FORM_COLOR_CODING = {
       const value = depends[0];
       const data = value ? value.data : null;
       if (data === tissue || data === tissue.name) {
-        return selectCategoricalColumn(tissue);
+        return addEmptyOption(selectCategoricalColumn(tissue));
       } else if (data === cellline || data === cellline.name) {
-        return selectCategoricalColumn(cellline);
+        return addEmptyOption(selectCategoricalColumn(cellline));
       }
       return [];
     }
@@ -467,6 +467,9 @@ function selectCategoricalColumn(ds: IDataSourceConfig) {
   return cats.map((c) => ({name: c.label, value: (<any>c).column, data: (<any>c).column}));
 }
 
+function addEmptyOption(options: IFormSelectOption[]) {
+  return [{name: '', value: '', data: null}].concat(options);
+}
 
 
 export const FORM_DATA_HIERARCHICAL_SUBTYPE = {

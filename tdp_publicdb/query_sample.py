@@ -27,7 +27,18 @@ def create_sample(views, sample, gene, data):
     .call(_common_vis) \
     .build()
 
+  co_expression_plain = DBViewBuilder().query("""
+       SELECT s.{s.id} AS id, g.symbol, s.{s.id} as samplename, d.{{attribute}} AS expression
+          FROM {d.schema}.tdp_expression AS d
+          INNER JOIN {g.table} g ON d.{g.id} = g.{g.id}
+          INNER JOIN {s.table} s ON d.{s.id} = s.{s.id}
+          WHERE d.{g.id} = :ensg""".format(s=sample, g=gene, d=data)) \
+    .replace('attribute', data.attributes) \
+    .call(_common_vis) \
+    .build()
+
   views[sample.prefix + '_co_expression'] = co_expression
+  views[sample.prefix + '_co_expression_plain'] = co_expression_plain
 
   expression_vs_copynumber = DBViewBuilder().query("""
    SELECT s.{s.id} AS id, g.symbol, s.{s.id} as samplename, d.{{expression_subtype}} AS expression, d2.{{copynumber_subtype}} AS cn, s.{{color}} as color
@@ -40,7 +51,19 @@ def create_sample(views, sample, gene, data):
     .call(_common_vis) \
     .build()
 
+  expression_vs_copynumber_plain = DBViewBuilder().query("""
+     SELECT s.{s.id} AS id, g.symbol, s.{s.id} as samplename, d.{{expression_subtype}} AS expression, d2.{{copynumber_subtype}} AS cn
+         FROM {d.schema}.tdp_expression AS d
+         INNER JOIN {d.schema}.tdp_copynumber AS d2 ON d.{g.id} = d2.{g.id} AND d.{s.id} = d2.{s.id}
+         INNER JOIN {g.table} g ON d.{g.id} = g.{g.id}
+         INNER JOIN {s.table} s ON d.{s.id} = s.{s.id}
+         WHERE d.{g.id} = :ensg""".format(s=sample, g=gene, d=data)) \
+    .replace('expression_subtype', data.attributes).replace('copynumber_subtype', data.attributes) \
+    .call(_common_vis) \
+    .build()
+
   views[sample.prefix + '_expression_vs_copynumber'] = expression_vs_copynumber
+  views[sample.prefix + '_expression_vs_copynumber_plain'] = expression_vs_copynumber_plain
 
   onco_print = DBViewBuilder().query("""
      SELECT d.{s.id} AS id, d.{s.id} AS name, copynumberclass AS cn, D.tpm AS expr, D.aa_mutated, g.symbol
