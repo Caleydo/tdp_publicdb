@@ -25,7 +25,7 @@ gene = Entity('gene',
               columns=['ensg', 'symbol', 'species', 'chromosome', 'strand', 'biotype', 'seqregionstart',
                        'seqregionend', 'name'],
               panel='ga.genesetname {operator} {value}',
-              panel_join='INNER JOIN public.tdp_geneassignment ga ON (d.ensg = ga.ensg)',
+              panel_join='INNER JOIN public.tdp_geneassignment ga ON d.ensg = ga.ensg',
               sort='symbol',
               column_def=_gene_columns)
 
