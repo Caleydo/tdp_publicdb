@@ -304,10 +304,11 @@ module.exports = function (registry) {
   //gene_(Tissue|Celline)
   ['Tissue', 'Cellline'].forEach(function (oppositeIDType) {
     const prefix = 'gene_' + oppositeIDType.toLowerCase();
+    const label = oppositeIDType === 'Tissue'? oppositeIDType : 'Cell Line';
     registry.push('tdpScore', prefix + '_aggregated_score', function () {
       return import('./src/scores');
     }, {
-      name: 'Aggregated ' + oppositeIDType + ' Score',
+      name: 'Aggregated ' + label + ' Score',
       idtype: 'Ensembl',
       primaryType: 'Ensembl',
       oppositeType: oppositeIDType
@@ -322,7 +323,7 @@ module.exports = function (registry) {
     registry.push('tdpScore', prefix + '_single_score', function () {
       return import('./src/scores/SingleScore');
     }, {
-      name: 'Single ' + oppositeIDType + ' Score',
+      name: 'Single ' + label + ' Score',
       idtype: 'Ensembl',
       primaryType: 'Ensembl',
       oppositeType: oppositeIDType
@@ -343,7 +344,7 @@ module.exports = function (registry) {
     registry.push('tdpScore', prefix + '_aggregated_score', function () {
       return import('./src/scores');
     }, {
-      name: 'Aggregated Score',
+      name: 'Aggregated Gene Score',
       idtype: idType,
       primaryType: idType,
       oppositeType: 'Ensembl'
