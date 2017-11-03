@@ -37,10 +37,13 @@ export default class ExpressionVsCopyNumber extends AExpressionVsCopyNumber {
       ensg,
       expression_subtype: this.getParameterData(ParameterFormIds.EXPRESSION_SUBTYPE).id,
       copynumber_subtype: this.getParameterData(ParameterFormIds.COPYNUMBER_SUBTYPE).id,
-      species: getSelectedSpecies(),
-      color: this.getParameterData(ParameterFormIds.COLOR_CODING)
+      species: getSelectedSpecies()
     };
-    return getTDPData(ds.db, `${ds.base}_expression_vs_copynumber/filter`, mergeParamAndFilters(param, toFilter(this.getParameter('filter'))));
+    const color = this.getParameterData(ParameterFormIds.COLOR_CODING);
+    if (color) {
+      param.color = color;
+    }
+    return getTDPData(ds.db, `${ds.base}_expression_vs_copynumber${!color ? '_plain': ''}/filter`, mergeParamAndFilters(param, toFilter(this.getParameter('filter'))));
   }
 
   protected getExpressionValues() {

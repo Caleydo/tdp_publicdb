@@ -10,7 +10,7 @@ def create_gene(views, gene):
   views[gene.prefix + '_gene_items'] = DBViewBuilder().idtype(gene.idtype).query("""
           SELECT {g.id} as id, symbol AS text
           FROM {g.table} WHERE (LOWER(symbol) LIKE :query OR LOWER(ensg) LIKE :query) AND species = :species
-          ORDER BY {g.id} ASC""".format(g=gene)) \
+          ORDER BY symbol ASC""".format(g=gene)) \
     .call(limit_offset) \
     .assign_ids() \
     .arg('query') \

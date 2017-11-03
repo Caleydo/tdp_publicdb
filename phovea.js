@@ -373,17 +373,16 @@ module.exports = function (registry) {
     });
   });
 
-  registry.push('chooserConfig', 'chooser_header_order', function () {
+  registry.push('tdpViewGroups', 'chooser_header_order', function () {
   }, {
-    order: {
-      'General': 5,
-      'Sample overview': 10,
-      'Gene overview': 20,
-      'Visualization': 30,
-      'Internal resources': 40,
-      'External resources': 50,
-      'Other': 1000
-    }
+    groups: [
+      {name: 'General', order: 5},
+      {name: 'Sample overview', order: 10},
+      {name: 'Gene overview', order: 20},
+      {name: 'Visualization', order: 30},
+      {name: 'Internal resources', order: 40},
+      {name: 'External resources', order: 50}
+    ]
   });
 
   registry.push('tdpView', 'pubmed', function () {

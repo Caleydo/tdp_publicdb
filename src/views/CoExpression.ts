@@ -46,13 +46,17 @@ export default class CoExpression extends ACoExpression {
 
   loadData(ensg: string): Promise<IDataFormatRow[]> {
     const ds = this.dataSource;
+
     const param: IParams = {
       ensg,
       attribute: this.dataSubType.id,
-      species: getSelectedSpecies(),
-      color: this.getParameterData(ParameterFormIds.COLOR_CODING)
+      species: getSelectedSpecies()
     };
-    return getTDPData(ds.db, `${ds.base}_co_expression/filter`, mergeParamAndFilters(param, toFilter(this.getParameter('filter'))));
+    const color = this.getParameterData(ParameterFormIds.COLOR_CODING);
+    if (color) {
+      param.color = color;
+    }
+    return getTDPData(ds.db, `${ds.base}_co_expression${!color ? '_plain': ''}/filter`, mergeParamAndFilters(param, toFilter(this.getParameter('filter'))));
   }
 
   loadFirstName(ensg: string) {

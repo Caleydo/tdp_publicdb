@@ -21,8 +21,8 @@ class GeneSearchProvider extends SearchProvider {
     return `${this.dataSource.base}_gene_items_verify`;
   }
 
-  format?(item: IResult): string {
-    return (item.id) ? `${item.text || ''} <span class="ensg">${item.id}</span>` : item.text;
+  format(item: IResult, node: HTMLElement, mode: 'result'|'selection', currentSearchQuery: string): string {
+    return (item.id && mode === 'result') ? `${item.text || ''} <span class="ensg">${item.id}</span>` : item.text;
   }
 
   validate(query: string[]): Promise<IResult[]> {
