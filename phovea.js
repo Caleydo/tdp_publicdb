@@ -172,8 +172,8 @@ module.exports = function (registry) {
     });
     /// #endif
 
-    /// #if include('bob')
-    registry.push('bobSearchProvider', 'gene', function () {
+    /// #if include('dTiles')
+    registry.push('dTilesSearchProvider', 'gene', function () {
       return import('./src/SearchProvider')
     }, {
       factory: 'createGene',
@@ -276,8 +276,8 @@ module.exports = function (registry) {
     });
 
 
-    /// #if include('bob')
-    registry.push('bobSearchProvider', idType.toLowerCase(), function () {
+    /// #if include('dTiles')
+    registry.push('dTilesSearchProvider', idType.toLowerCase(), function () {
       return import('./src/SearchProvider')
     }, {
       factory: 'create' + idType,

@@ -77,7 +77,7 @@
   },
   "optionalDependencies": {
     "ordino": "github:Caleydo/ordino#develop",
-    "bob": "github:datavisyn/bob#develop"
+    "dTiles": "github:datavisyn/dTiles#develop"
   },
   "devDependencies": {
     "@types/jasmine": "2.5.41",
