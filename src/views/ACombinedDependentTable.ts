@@ -76,7 +76,7 @@ abstract class ACombinedDependentTable extends ARankingView {
     return getTDPDesc(this.dataSource.db, this.oppositeDataSource.base);
   }
   protected getColumnDescs(columns: IServerColumn[]) {
-    return this.oppositeDataSource.columns(columns);
+    return this.oppositeDataSource.columns((c) => columns.find((d) => d.column === c));
   }
 
   protected loadRows() {

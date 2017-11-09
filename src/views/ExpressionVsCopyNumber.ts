@@ -7,7 +7,7 @@ import AExpressionVsCopyNumber, {IDataFormatRow} from 'tdp_gene/src/views/AExpre
 import {getSelectedSpecies} from 'tdp_gene/src/common';
 import Range from 'phovea_core/src/range/Range';
 import {expression, copyNumber, IDataSourceConfig} from '../config';
-import {ParameterFormIds, FORM_TISSUE_OR_CELLLINE_FILTER, FORM_DATA_SOURCE} from '../forms';
+import {ParameterFormIds, FORM_TISSUE_OR_CELLLINE_FILTER, FORM_DATA_SOURCE, FORM_COLOR_CODING} from '../forms';
 import {resolve} from 'phovea_core/src/idtype';
 import {loadFirstName} from './utils';
 import {getTDPData, IParams, mergeParamAndFilters} from 'tdp_core/src/rest';
@@ -18,6 +18,7 @@ export default class ExpressionVsCopyNumber extends AExpressionVsCopyNumber {
   protected getParameterFormDescs(): IFormSelectDesc[] {
     const base = super.getParameterFormDescs();
     base.unshift(FORM_DATA_SOURCE);
+    base.push(FORM_COLOR_CODING);
     base.push(FORM_TISSUE_OR_CELLLINE_FILTER);
     return base;
   }
@@ -38,7 +39,11 @@ export default class ExpressionVsCopyNumber extends AExpressionVsCopyNumber {
       copynumber_subtype: this.getParameterData(ParameterFormIds.COPYNUMBER_SUBTYPE).id,
       species: getSelectedSpecies()
     };
-    return getTDPData(ds.db, `${ds.base}_expression_vs_copynumber/filter`, mergeParamAndFilters(param, toFilter(this.getParameter('filter'))));
+    const color = this.getParameterData(ParameterFormIds.COLOR_CODING);
+    if (color) {
+      param.color = color;
+    }
+    return getTDPData(ds.db, `${ds.base}_expression_vs_copynumber${!color ? '_plain': ''}/filter`, mergeParamAndFilters(param, toFilter(this.getParameter('filter'))));
   }
 
   protected getExpressionValues() {

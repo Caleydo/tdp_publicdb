@@ -13,6 +13,6 @@ export default class GeneList extends ACommonList {
   }
 
   protected getColumnDescs(columns: IServerColumn[]) {
-    return gene.columns(columns);
+    return gene.columns((c) => columns.find((d) => d.column === c));
   }
 }

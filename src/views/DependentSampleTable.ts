@@ -76,7 +76,7 @@ export default class DependentSampleTable extends ARankingView {
   }
 
   protected getColumnDescs(columns: IServerColumn[]) {
-    return this.dataSource.columns(columns);
+    return this.dataSource.columns((c) => columns.find((d) => d.column === c));
   }
 
   protected loadRows() {
@@ -95,8 +95,8 @@ export default class DependentSampleTable extends ARankingView {
       name,
       species: getSelectedSpecies()
     };
-    const filter = {};
-    return getTDPScore(dataSource.db, `${dataSource.base}_gene_single_score`, param, toFilter(this.getParameter('filter'))).then(postProcessScore(subType));
+    const filter = toFilter(this.getParameter('filter'));
+    return getTDPScore(dataSource.db, `${dataSource.base}_gene_single_score`, param, filter).then(postProcessScore(subType));
   }
 }
 

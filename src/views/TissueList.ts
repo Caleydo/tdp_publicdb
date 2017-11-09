@@ -12,6 +12,6 @@ export default class TissueList extends ACommonList {
   }
 
   protected getColumnDescs(columns: IServerColumn[]) {
-    return tissue.columns(columns);
+    return tissue.columns((c) => columns.find((d) => d.column === c));
   }
 }

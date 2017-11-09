@@ -1,17 +1,16 @@
 import {
-  ParameterFormIds, MUTATION_AGGREGATION, NUMERIC_AGGREGATION, COMPARISON_OPERATORS,
-  FORM_DATA_HIERARCHICAL_SUBTYPE, FORM_DATA_HIERARCHICAL_SUBTYPE_AGGREGATED_SELECTION
+  ParameterFormIds, CATEGORICAL_AGGREGATION, NUMERIC_AGGREGATION, COMPARISON_OPERATORS,
+  FORM_DATA_HIERARCHICAL_SUBTYPE, FORM_DATA_HIERARCHICAL_SUBTYPE_AGGREGATED_SELECTION,
+  FORM_DATA_HIERARCHICAL_SUBTYPE_DEPLETION, FORM_DATA_HIERARCHICAL_SUBTYPE_AGGREGATED_SELECTION_DEPLETION
 } from '../forms';
 import {FormElementType} from 'tdp_core/src/form';
 import {MAX_FILTER_SCORE_ROWS_BEFORE_ALL, splitTypes, dataSubtypes} from '../config';
-import {copyNumberCat, unknownMutationValue} from 'tdp_gene/src/constants';
+import {copyNumberCat, unknownCopyNumberValue} from 'tdp_gene/src/constants';
 /**
  * Created by Samuel Gratzl on 15.03.2017.
  */
 
-
-export const FORM_AGGREGATED_SCORE = [
-  FORM_DATA_HIERARCHICAL_SUBTYPE_AGGREGATED_SELECTION,
+const COMMON_AGGREGATED_SCORE_FORM_ELEMENTS = [
   {
     type: FormElementType.SELECT,
     label: 'Aggregation',
@@ -25,7 +24,7 @@ export const FORM_AGGREGATED_SCORE = [
         }
         const {dataSubType} = splitTypes(selection[0].id);
         if (dataSubType.type === dataSubtypes.cat) {
-          return MUTATION_AGGREGATION;
+          return CATEGORICAL_AGGREGATION;
         } else {
           return NUMERIC_AGGREGATION;
         }
@@ -70,7 +69,12 @@ export const FORM_AGGREGATED_SCORE = [
     options: {
       type: 'number'
     }
-  },
+  }
+];
+
+export const FORM_AGGREGATED_SCORE = [
+  FORM_DATA_HIERARCHICAL_SUBTYPE_AGGREGATED_SELECTION,
+  ...COMMON_AGGREGATED_SCORE_FORM_ELEMENTS,
   {
     type: FormElementType.SELECT2_MULTIPLE,
     label: 'Copy Number Class is',
@@ -90,7 +94,7 @@ export const FORM_AGGREGATED_SCORE = [
     },
     useSession: true,
     options: {
-      data: copyNumberCat.filter((d) => d.value !== unknownMutationValue).map((d) => ({text: d.name, id: String(d.value)}))
+      data: copyNumberCat.filter((d) => d.value !== unknownCopyNumberValue).map((d) => ({text: d.name, id: String(d.value)}))
     }
   }
 ];
@@ -99,25 +103,36 @@ const FORM_COMPUTE_BASE = {
   type: FormElementType.CHECKBOX,
   id: ParameterFormIds.SCORE_FORCE_DATASET_SIZE,
   options: {
-    checked: -1,
-    unchecked: MAX_FILTER_SCORE_ROWS_BEFORE_ALL
+    checked: MAX_FILTER_SCORE_ROWS_BEFORE_ALL,
+    unchecked: -1
   },
   useSession: true
 };
 
 export const FORCE_COMPUTE_ALL_GENES = Object.assign({
-  label: 'Compute score for all genes and not only for the selected subset'
+  label: 'Compute only for selected subset of genes and not for all'
 }, FORM_COMPUTE_BASE);
 
 export const FORCE_COMPUTE_ALL_TISSUE = Object.assign({
-  label: 'Compute score for all tissues and not only for the selected subset'
+  label: 'Compute only for selected subset of tissues and not for all'
 }, FORM_COMPUTE_BASE);
 
 export const FORCE_COMPUTE_ALL_CELLLINE = Object.assign({
-  label: 'Compute score for all celllines and not only for the selected subset'
+  label: 'Compute only for selected subset of cell lines and not for all'
 }, FORM_COMPUTE_BASE);
 
 
 export const FORM_SINGLE_SCORE = [
   FORM_DATA_HIERARCHICAL_SUBTYPE
+];
+
+
+export const FORM_AGGREGATED_SCORE_DEPLETION = [
+  FORM_DATA_HIERARCHICAL_SUBTYPE_AGGREGATED_SELECTION_DEPLETION,
+  ...COMMON_AGGREGATED_SCORE_FORM_ELEMENTS
+];
+
+
+export const FORM_SINGLE_SCORE_DEPLETION = [
+  FORM_DATA_HIERARCHICAL_SUBTYPE_DEPLETION
 ];
