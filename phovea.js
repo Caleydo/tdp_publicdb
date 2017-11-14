@@ -62,6 +62,7 @@ module.exports = function (registry) {
       factory: 'createExpressionTable',
       idtype: 'Ensembl',
       selection: 'some',
+      preview: function() { return import('./src/assets/previews/expression.jpg') },
       group: {
         name: 'Sample overview',
         order: 10
@@ -75,6 +76,7 @@ module.exports = function (registry) {
       factory: 'createCopyNumberTable',
       idtype: 'Ensembl',
       selection: 'some',
+      preview: function() { return import('./src/assets/previews/copy_number.jpg') },
       group: {
         name: 'Sample overview',
         order: 0
@@ -88,6 +90,7 @@ module.exports = function (registry) {
       factory: 'createMutationTable',
       idtype: 'Ensembl',
       selection: 'some',
+      preview: function() { return import('./src/assets/previews/mutation.jpg') },
       group: {
         name: 'Sample overview',
         order: 20
@@ -101,6 +104,7 @@ module.exports = function (registry) {
       factory: 'new GeneInfoTable',
       idtype: 'Ensembl',
       selection: 'multiple',
+      preview: function() { return import('./src/assets/previews/database_info.jpg') },
       group: {
         name: 'General',
         order: 0
@@ -114,6 +118,7 @@ module.exports = function (registry) {
       name: 'OncoPrint',
       idtype: 'Ensembl',
       selection: 'some',
+      preview: function() { return import('./src/assets/previews/onco_print.jpg') },
       group: {
         name: 'Sample overview',
         order: 40
@@ -126,6 +131,7 @@ module.exports = function (registry) {
       name: 'Expression vs. Copy Number',
       idtype: 'Ensembl',
       selection: 'some',
+      preview: function() { return import('./src/assets/previews/expression_vs_copynumber.jpg') },
       group: {
         name: 'Visualization',
         order: 10
@@ -138,6 +144,7 @@ module.exports = function (registry) {
       name: 'Co-Expression',
       idtype: 'Ensembl',
       selection: 'some',
+      preview: function() { return import('./src/assets/previews/co_expression.jpg') },
       group: {
         name: 'Visualization',
         order: 0
@@ -150,6 +157,7 @@ module.exports = function (registry) {
       name: 'Combined View',
       idtype: 'Ensembl',
       selection: 'some',
+      preview: function() { return import('./src/assets/previews/combined_view.jpg') },
       group: {
         name: 'Sample overview',
         order: 40
@@ -213,6 +221,7 @@ module.exports = function (registry) {
       idtype: idType,
       sampleType: idType,
       selection: 'some',
+      preview: function() { return import('./src/assets/previews/expression.jpg') },
       group: {
         name: 'Gene overview',
         order: 20
@@ -227,6 +236,7 @@ module.exports = function (registry) {
       idtype: idType,
       sampleType: idType,
       selection: 'some',
+      preview: function() { return import('./src/assets/previews/copy_number.jpg') },
       group: {
         name: 'Gene overview',
         order: 0
@@ -241,6 +251,7 @@ module.exports = function (registry) {
       idtype: idType,
       sampleType: idType,
       selection: 'some',
+      preview: function() { return import('./src/assets/previews/mutation.jpg') },
       group: {
         name: 'Gene overview',
         order: 20
@@ -253,6 +264,7 @@ module.exports = function (registry) {
       name: 'Combined View',
       idtype: idType,
       selection: 'some',
+      preview: function() { return import('./src/assets/previews/combined_view.jpg') },
       group: {
         name: 'Gene overview',
         order: 40
@@ -269,6 +281,7 @@ module.exports = function (registry) {
       factory: 'new ' + idType + 'InfoTable',
       idtype: idType,
       selection: 'multiple',
+      preview: function() { return import('./src/assets/previews/database_info.jpg') },
       group: {
         name: 'General',
         order: 0
@@ -394,6 +407,7 @@ module.exports = function (registry) {
     argument: 'gene',
     idtype: 'Ensembl',
     selection: 'chooser',
+      preview: function() { return import('./src/assets/previews/pubmed.jpg') },
     group: {
       name: 'External resources'
       // order: 60
