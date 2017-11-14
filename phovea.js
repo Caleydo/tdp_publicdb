@@ -101,6 +101,7 @@ module.exports = function (registry) {
       factory: 'new GeneInfoTable',
       idtype: 'Ensembl',
       selection: 'multiple',
+      preview: function() { return import('./src/assets/previews/database_info.jpg') },
       group: {
         name: 'General',
         order: 0
@@ -269,6 +270,7 @@ module.exports = function (registry) {
       factory: 'new ' + idType + 'InfoTable',
       idtype: idType,
       selection: 'multiple',
+      preview: function() { return import('./src/assets/previews/database_info.jpg') },
       group: {
         name: 'General',
         order: 0
