@@ -66,7 +66,7 @@ module.exports = function (registry) {
         name: 'Sample overview',
         order: 10
       },
-      description: 'Shows a ranking with the expression scores'
+      description: 'Shows a ranking with expression scores'
     });
 
     registry.push('tdpView', 'copynumbertable', function () {
@@ -80,7 +80,7 @@ module.exports = function (registry) {
         name: 'Sample overview',
         order: 0
       },
-      description: 'Shows a ranking with the copy number scores'
+      description: 'Shows a ranking with copy number scores'
     });
 
     registry.push('tdpView', 'mutationtable', function () {
@@ -94,7 +94,7 @@ module.exports = function (registry) {
         name: 'Sample overview',
         order: 20
       },
-      description: 'Shows a ranking with the mutation scores'
+      description: 'Shows a ranking with mutation scores'
     });
 
     registry.push('tdpView', 'gene_generic_detail_view', function () {
@@ -225,7 +225,7 @@ module.exports = function (registry) {
         name: 'Gene overview',
         order: 20
       },
-      description: 'Shows a ranking with the expression scores for '
+      description: 'Shows a ranking with the expression scores'
     });
 
     registry.push('tdpView', plain + '_inverted_copynumbertable', function () {
@@ -240,7 +240,7 @@ module.exports = function (registry) {
         name: 'Gene overview',
         order: 0
       },
-      description: 'Shows a ranking with the copy number scores for '
+      description: 'Shows a ranking with copy number scores'
     });
 
     registry.push('tdpView', plain + '_inverted_mutationtable', function () {
@@ -255,7 +255,7 @@ module.exports = function (registry) {
         name: 'Gene overview',
         order: 20
       },
-      description: 'Shows a ranking with the mutation scores for '
+      description: 'Shows a ranking with mutation scores'
     });
 
     registry.push('tdpView', plain + '_combined_lineup', function () {
@@ -271,7 +271,7 @@ module.exports = function (registry) {
       filter: {
         species: 'human'
       },
-      description: 'Shows a ranking with expression, copy number and mutation scores for '
+      description: 'Shows a ranking with expression, copy number and mutation scores'
     });
 
     registry.push('tdpView', plain + '_generic_detail_view', function () {
@@ -285,7 +285,7 @@ module.exports = function (registry) {
         name: 'General',
         order: 0
       },
-      description: 'Shows all information from the database for the searched '
+      description: 'Shows all information from the database'
     });
 
 
