@@ -311,6 +311,15 @@ export const depletion: IDataTypeConfig = {
       missingValue: NaN,
       constantDomain: false,
       useForAggregation: 'ataris'
+    },
+    {
+      id: 'ceres',
+      name: 'Avana CERES (Robin M. Meyers et al., Nature Genetics, 2017)',
+      type: dataSubtypes.number,
+      domain: [0, 10000],
+      missingValue: NaN,
+      constantDomain: false,
+      useForAggregation: 'ceres'
     }
   ]
 };
