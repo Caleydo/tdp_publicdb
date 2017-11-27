@@ -2,19 +2,11 @@
  * Created by sam on 06.03.2017.
  */
 
-import {RangeLike} from 'phovea_core/src/range';
-import {getSelectedSpecies} from 'tdp_gene/src/common';
-import {IDataSourceConfig, dataSubtypes, MAX_FILTER_SCORE_ROWS_BEFORE_ALL} from '../config';
-import {IScore, IScoreRow} from 'tdp_core/src/extensions';
-import {createDesc, toFilterString} from './utils';
-import AScore, {ICommonScoreParam} from './AScore';
-import {limitScoreRows, convertLog2ToLinear} from 'tdp_gene/src/utils';
+import {IDataSourceConfig} from '../config';
+import {IScore} from 'tdp_core/src/extensions';
+import {ICommonScoreParam} from './AScore';
 import {IBoxPlotData} from 'lineupjs/src/model/BoxPlotColumn';
-import {INamedSet} from 'tdp_core/src/storage';
-import {resolve} from 'phovea_core/src/idtype';
-import {getTDPScore} from 'tdp_core/src/rest';
-import IDType from 'phovea_core/src/idtype/IDType';
-import {toFilter} from 'tdp_core/src/lineup';
+import {IParams} from 'tdp_core/src/rest';
 import AAggregatedScore from './AAggregatedScore';
 
 interface IAggregatedScoreParam extends ICommonScoreParam {
@@ -49,5 +41,11 @@ export class AggregatedDepletionScore extends AAggregatedScore implements IScore
 
   protected getViewPrefix() {
     return 'depletion_';
+  }
+
+  protected createFilter(): IParams {
+    return {
+      depletionscreen: this.dataSubType.id === 'ceres' ? 'Avana' : 'Drive'
+    };
   }
 }

@@ -59,7 +59,7 @@ abstract class AAggregatedScore extends AScore implements IScore<number> {
     };
     const maxDirectRows = typeof this.parameter.maxDirectFilterRows === 'number' ? this.parameter.maxDirectFilterRows : MAX_FILTER_SCORE_ROWS_BEFORE_ALL;
     limitScoreRows(param, ids, idtype, this.dataSource.entityName, maxDirectRows, namedSet);
-    const filters = compatibilityFilter(toFilter(this.parameter.filter), this.oppositeDataSource.entityName);
+    const filters = Object.assign(compatibilityFilter(toFilter(this.parameter.filter), this.oppositeDataSource.entityName), this.createFilter());
 
     let rows: IScoreRow<any>[] = await getTDPScore(this.dataSource.db, `${this.getViewPrefix()}${this.dataSource.base}_${this.oppositeDataSource.base}_score`, param, filters);
     if (this.parameter.aggregation === 'boxplot') {
@@ -73,6 +73,10 @@ abstract class AAggregatedScore extends AScore implements IScore<number> {
   }
 
   protected abstract getViewPrefix(): string;
+
+  protected createFilter(): IParams {
+    return {};
+  }
 }
 
 /**
