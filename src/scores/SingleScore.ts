@@ -15,6 +15,7 @@ import {selectDataSources} from './utils';
 import {mixin} from 'phovea_core/src';
 import {FormDialog} from 'tdp_core/src/form';
 import ASingleScore from './ASingleScore';
+import {IParams} from 'tdp_core/src/rest';
 
 interface ISingleScoreParam {
   name: {id: string, text: string};
@@ -51,6 +52,12 @@ class SingleDepletionScore extends ASingleScore implements IScore<any> {
 
   protected getViewPrefix(): string {
     return 'depletion_';
+  }
+
+  protected createFilter(): IParams {
+    return {
+      depletionscreen: this.dataSubType.id === 'ceres' ? 'Avana' : 'Drive'
+    };
   }
 }
 

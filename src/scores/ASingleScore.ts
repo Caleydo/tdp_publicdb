@@ -5,13 +5,13 @@
 import {Range, RangeLike} from 'phovea_core/src/range';
 import {resolve, IDType} from 'phovea_core/src/idtype';
 import {getSelectedSpecies} from 'tdp_gene/src/common';
-import {IDataSourceConfig, gene, tissue, cellline, MAX_FILTER_SCORE_ROWS_BEFORE_ALL, splitTypes} from '../config';
+import {IDataSourceConfig, MAX_FILTER_SCORE_ROWS_BEFORE_ALL} from '../config';
 import {convertLog2ToLinear, limitScoreRows} from 'tdp_gene/src/utils';
 import {IScore} from 'tdp_core/src/extensions';
 import {createDesc} from './utils';
 import AScore from './AScore';
 import {INamedSet} from 'tdp_core/src/storage';
-import {getTDPScore} from 'tdp_core/src/rest';
+import {getTDPScore, IParams} from 'tdp_core/src/rest';
 
 interface ISingleScoreParam {
   name: {id: string, text: string};
@@ -37,6 +37,10 @@ abstract class ASingleScore extends AScore implements IScore<any> {
     `${this.oppositeDataSource.name} Name: "${this.parameter.name.text}"\nData Type: ${this.dataType.name}\nData Subtype: ${this.dataSubType.name}`);
   }
 
+  protected createFilter(): IParams {
+    return {};
+  }
+
   async compute(ids:RangeLike, idtype:IDType, namedSet?: INamedSet):Promise<any[]> {
     const param: any = {
       table: this.dataType.tableName,
@@ -48,7 +52,9 @@ abstract class ASingleScore extends AScore implements IScore<any> {
     const maxDirectRows = typeof this.parameter.maxDirectFilterRows === 'number' ? this.parameter.maxDirectFilterRows : MAX_FILTER_SCORE_ROWS_BEFORE_ALL;
     limitScoreRows(param, ids, idtype, this.dataSource.entityName, maxDirectRows, namedSet);
 
-    const rows = await getTDPScore(this.dataSource.db, `${this.getViewPrefix()}${this.dataSource.base}_${this.oppositeDataSource.base}_single_score`, param);
+    const filters = this.createFilter();
+
+    const rows = await getTDPScore(this.dataSource.db, `${this.getViewPrefix()}${this.dataSource.base}_${this.oppositeDataSource.base}_single_score`, param, filters);
     if (this.dataSubType.useForAggregation.indexOf('log2') !== -1) {
       return convertLog2ToLinear(rows, 'score');
     }
