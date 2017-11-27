@@ -2,7 +2,7 @@ from tdp_core.dbview import DBViewBuilder, inject_where
 import re
 
 
-def create_gene_sample_score(views, gene, sample, data, prefix='', inline_aggregate_sample_filter=False):
+def create_gene_sample_score(views, gene, sample, data, prefix='', inline_aggregate_sample_filter=False, callback=None):
   basename = '{view_prefix}{g}_{s}'.format(g=gene.prefix, s=sample.prefix, view_prefix=prefix)
 
   def _common(builder):
@@ -24,6 +24,7 @@ def create_gene_sample_score(views, gene, sample, data, prefix='', inline_aggreg
     .replace('attribute', data.attributes) \
     .call(inject_where) \
     .arg('name') \
+    .call(callback) \
     .filters(sample.columns) \
     .call(_common) \
     .build()
@@ -61,7 +62,7 @@ def create_gene_sample_score(views, gene, sample, data, prefix='', inline_aggreg
               {{and_where}}""".format(g=gene, s=sample, d=data))
       b.filters(sample.columns, group='sample')
     b.replace('and_sample_where').replace('and_where').replace('joins')
-    b.call(_common)
+    b.call(_common).call(callback)
     return b
 
   views[basename + '_frequency_mutation_score'] = aggregate(
