@@ -109,7 +109,7 @@ export const gene: IDataSourceConfig = {
       stringCol('symbol', {label: 'Symbol', width: 100}),
       stringCol('id', {label: 'Ensembl', width: 120}),
       stringCol('name', {label: 'Name'}),
-      stringCol('chromosome', {label: 'Chromosome', width: 150}),
+      categoricalCol('chromosome', find('chromosome').categories, {label: 'Chromosome'}),
       categoricalCol('biotype', find('biotype').categories, {label: 'Biotype'}),
       categoricalCol('strand', [{ label: 'reverse strand', name:String(-1)}, { label: 'forward strand', name:String(1)}], {label: 'Strand', visible: false}),
       stringCol('seqregionstart', {label: 'Seq Region Start', visible: false}),

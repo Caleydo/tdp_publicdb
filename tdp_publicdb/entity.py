@@ -14,7 +14,8 @@ Entity = namedtuple('Entity', ['prefix', 'idtype', 'id', 'schema', 'table', 'col
 
 def _gene_columns(query):
   return query \
-    .column('biotype', type='categorical')
+    .column('biotype', type='categorical') \
+    .column('chromosome', type='categorical')
 
 
 gene = Entity('gene',

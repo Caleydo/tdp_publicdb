@@ -4,7 +4,7 @@ from tdp_core.dbview import DBViewBuilder, inject_where
 def create_sample(views, sample, gene, data):
   # panel
   views[sample.prefix + '_panel'] = DBViewBuilder().query("""
-  SELECT panel as id, paneldescription as description
+  SELECT panel as id, paneldescription as description, species
   FROM {s.schema}.tdp_panel ORDER BY panel ASC""".format(s=sample)).build()
 
   def _common_vis(builder):
