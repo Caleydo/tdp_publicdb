@@ -52,7 +52,8 @@ export const NUMERIC_AGGREGATION = [
   {name: 'Max', value: 'max', data: 'max'},
   {name: 'Frequency', value: 'frequency', data: 'frequency'},
   {name: 'Count', value: 'count', data: 'count'},
-  {name: 'Boxplot', value: 'boxplot', data: 'boxplot'}
+  {name: 'Boxplot', value: 'boxplot', data: 'boxplot'},
+  {name: 'Raw Matrix', value: 'numbers', data: 'numbers'}
 ];
 
 

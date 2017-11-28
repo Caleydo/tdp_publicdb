@@ -43,7 +43,18 @@ export function createDesc(type: string, label: string, subtype: IDataSubtypeCon
         domain: [1, 100],
         lazyLoaded: true,
         sort: 'median', // sort by default by median
-        missingValue: null,
+        missingValue: null
+      };
+    case 'numbers':
+      return {
+        type: 'numbers',
+        label,
+        description,
+        domain: [1, 100],
+        colorRange: ['white', 'black'],
+        lazyLoaded: true,
+        sort: 'median', // sort by default by median
+        missingValue: null
       };
     default:
       return {
