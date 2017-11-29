@@ -62,6 +62,8 @@ def create_gene_sample_score(views, gene, sample, data, prefix='', inline_aggreg
               {{and_where}}""".format(g=gene, s=sample, d=data))
       b.filters(sample.columns, group='sample')
     b.replace('and_sample_where').replace('and_where').replace('joins')
+    # specific to have the proper key
+    b.query('agg_score_numbers', 'json_object_agg(d.{s.id}, {{data_subtype}})'.format(s=sample))
     b.call(_common).call(callback)
     return b
 
