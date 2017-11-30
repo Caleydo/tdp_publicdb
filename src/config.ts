@@ -290,7 +290,7 @@ export const mutation: IDataTypeConfig = {
 
 export const depletion: IDataTypeConfig = {
   id: 'depletion',
-  name: 'RNAi Screen',
+  name: 'Depletion Screen ',
   tableName: 'depletionscore',
   query: 'depletion_score',
   dataSubtypes: [
