@@ -32,7 +32,7 @@ export default class AnnotationColumn extends ABooleanScore implements IScore<nu
     return `${this.dataSource.name} contained in ${(<IAnnotationColumnParam>this.params).panel}`;
   }
 
-  protected get dbView() {
+  protected get columnName() {
     return 'namedset_containment';
   }
 

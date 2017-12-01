@@ -27,7 +27,7 @@ abstract class ABooleanScore implements IScore<number> {
    */
   createDesc() {
     const label = this.label;
-    return booleanCol('', {label});
+    return booleanCol(this.columnName, {label, width: 50});
   }
 
   /**
@@ -36,11 +36,11 @@ abstract class ABooleanScore implements IScore<number> {
    */
   compute(): Promise<IScoreRow<number>[]> {
     const params = Object.assign({}, this.params);
-    return getTDPScore(this.dataSource.db, `${this.dataSource.base}_${this.dbView}_score`, params);
+    return getTDPScore(this.dataSource.db, `${this.dataSource.base}_${this.columnName}_score`, params);
   }
 
   protected abstract get label(): string;
-  protected abstract get dbView(): string;
+  protected abstract get columnName(): string;
 }
 
 export default ABooleanScore;
