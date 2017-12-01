@@ -435,7 +435,7 @@ module.exports = function (registry) {
     registry.push('tdpScore', prefix + '_depletion_aggregated_score', function () {
       return import('./src/scores');
     }, {
-      name: 'Aggregated RNAi Screen Score',
+      name: 'Aggregated Depletion Screen Score',
       idtype: idType,
       primaryType: idType,
       oppositeType: 'Ensembl',
@@ -451,7 +451,7 @@ module.exports = function (registry) {
     registry.push('tdpScore', prefix + '_depletion_single_score', function () {
       return import('./src/scores/SingleScore');
     }, {
-      name: 'Single RNAi Screen Score',
+      name: 'Single Depletion Screen Score',
       idtype: idType,
       primaryType: idType,
       oppositeType: 'Ensembl',
@@ -472,7 +472,7 @@ module.exports = function (registry) {
     registry.push('tdpScore', prefix + '_depletion_aggregated_score', function () {
       return import('./src/scores');
     }, {
-      name: 'Aggregated RNAi Screen Score',
+      name: 'Aggregated Depletion Screen Score',
       idtype: 'Ensembl',
       primaryType: 'Ensembl',
       oppositeType: oppositeIDType,
@@ -488,7 +488,7 @@ module.exports = function (registry) {
     registry.push('tdpScore', prefix + '_depletion_single_score', function () {
       return import('./src/scores/SingleScore');
     }, {
-      name: 'Single RNAi Screen Score',
+      name: 'Single Depletion Screen Score',
       idtype: 'Ensembl',
       primaryType: 'Ensembl',
       oppositeType: oppositeIDType,
