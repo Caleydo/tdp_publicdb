@@ -30,6 +30,7 @@ export class ParameterFormIds {
   static COMPARISON_CN = 'comparison_cn';
   static SCORE_FORCE_DATASET_SIZE = 'maxDirectFilterRows';
   static COLOR_CODING = 'form_color_coding';
+  static PANEL = 'panel';
 }
 
 export const COMPARISON_OPERATORS = [
