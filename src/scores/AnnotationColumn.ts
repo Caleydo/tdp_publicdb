@@ -1,11 +1,10 @@
-import {IScore, IScoreRow} from 'tdp_core/src/extensions';
+import {IScore} from 'tdp_core/src/extensions';
 import {FormDialog} from 'tdp_core/src/form';
 import ABooleanScore from './ABooleanScore';
 import {IDataSourceConfig} from '../config';
 import {ICommonScoreParam} from './AScore';
 import {FormElementType} from 'tdp_core/src/form';
-import {getSelectedSpecies} from 'tdp_gene/src/common';
-import {api2absURL} from 'phovea_core/src/ajax';
+import {getAPIJSON} from 'phovea_core/src/ajax';
 import {IPluginDesc} from 'phovea_core/src/plugin';
 import {ParameterFormIds} from '../forms';
 import {selectDataSources} from './utils';
@@ -49,44 +48,17 @@ export function createScore(data, pluginDesc: IPluginDesc) {
  * builder function for building the parameters of the score
  * @returns {Promise<IAnnotationColumnParam>} a promise for the parameter
  */
-export function create(pluginDesc: IPluginDesc) {
-  /**
-   * a formDialog is a modal dialog showing a form to the user. The first argument is the dialog title, the second the label of the submit button
-   * @type {FormDialog}
-   */
+export async function create(pluginDesc: IPluginDesc) {
   const dialog = new FormDialog('Add Annotation Column', 'Add');
 
-  // dialog.append({
-  //   type: FormElementType.SELECT2,
-  //   label: 'Named Set',
-  //   id: ParameterFormIds.PANEL,
-  //   attributes: {
-  //     style: 'width:100%'
-  //   },
-  //   required: true,
-  //   options: {
-  //     optionsData: [],
-  //     ajax: {
-  //       url: api2absURL(`/tdp/db/publicdb/${pluginDesc.idtype.toLowerCase()}_panel`),
-  //       data: (params: any) => {
-  //         return {
-  //           species: getSelectedSpecies(),
-  //           query: params.term === undefined ? '' : params.term,
-  //           page: params.page === undefined ? 0 : params.page
-  //         };
-  //       },
-  //       processResults: (data) => {
-  //         return data.map((item) => {
-  //           item.text = item.id;
-  //           return item;
-  //         });
-  //       }
-  //     }
-  //   }
-  // });
+  const idType = pluginDesc.idtype;
+  const type = idType === 'Cellline' || idType === 'Tissue'? idType : 'gene';
+
+  const data = await getAPIJSON(`/tdp/db/publicdb/${type.toLowerCase()}_panel`);
+  const optionsData = data.map((item) => ({ name: item.id, value: item.id }));
 
   dialog.append({
-    type: FormElementType.SELECT2,
+    type: FormElementType.SELECT,
     label: 'Named Set',
     id: ParameterFormIds.PANEL,
     attributes: {
@@ -94,15 +66,13 @@ export function create(pluginDesc: IPluginDesc) {
     },
     required: true,
     options: {
-      data: [{id: 'Hello', text: 'World'}]
+      optionsData
     }
   });
 
   return dialog.showAsPromise((r) => {
-    // retrieve the entered values, each one identified by its formID
+    // returning the whole data object, since there it contains all needed for the score
     const data = r.getElementValues();
-    return <IAnnotationColumnParam>{
-      panel: 'Eurofins320'
-    };
+    return <IAnnotationColumnParam>data;
   });
 }

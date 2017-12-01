@@ -2,7 +2,7 @@ import {IScore, IScoreRow} from 'tdp_core/src/extensions';
 import {resolve} from 'phovea_core/src/idtype';
 import {booleanCol} from 'tdp_core/src/lineup';
 import {getTDPScore} from 'tdp_core/src/rest';
-import AScore, {ICommonScoreParam} from './AScore';
+import {ICommonScoreParam} from './AScore';
 import {IDataSourceConfig} from '../config';
 
 
