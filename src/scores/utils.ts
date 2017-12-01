@@ -53,6 +53,7 @@ export function createDesc(type: string, label: string, subtype: IDataSubtypeCon
         domain: [1, 100],
         colorRange: ['white', 'black'],
         lazyLoaded: true,
+        dataLength: 10, // initial width
         sort: 'median', // sort by default by median
         missingValue: null
       };
