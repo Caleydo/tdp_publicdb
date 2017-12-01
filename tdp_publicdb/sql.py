@@ -1,5 +1,5 @@
 # flake8: noqa
-from tdp_core.dbview import DBViewBuilder, DBConnector, add_common_queries, inject_where, DBMapping
+from tdp_core.dbview import DBConnector, DBMapping
 from .pg_agg_score import agg_score
 from .entity import cellline, gene, tissue
 from .data import cellline_data, tissue_data, cellline_depletion
