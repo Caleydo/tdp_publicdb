@@ -59,7 +59,7 @@ export async function create(pluginDesc: IPluginDesc) {
   dialog.append({
     type: FormElementType.SELECT,
     label: 'Named Set',
-    id: ParameterFormIds.PANEL,
+    id: 'panel',
     attributes: {
       style: 'width:100%'
     },
