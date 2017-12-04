@@ -109,7 +109,7 @@ export const gene: IDataSourceConfig = {
       stringCol('symbol', {label: 'Symbol', width: 100}),
       stringCol('id', {label: 'Ensembl', width: 120}),
       stringCol('name', {label: 'Name'}),
-      stringCol('chromosome', {label: 'Chromosome', width: 150}),
+      categoricalCol('chromosome', find('chromosome').categories, {label: 'Chromosome'}),
       categoricalCol('biotype', find('biotype').categories, {label: 'Biotype'}),
       categoricalCol('strand', [{ label: 'reverse strand', name:String(-1)}, { label: 'forward strand', name:String(1)}], {label: 'Strand', visible: false}),
       stringCol('seqregionstart', {label: 'Seq Region Start', visible: false}),
@@ -126,9 +126,14 @@ export const gene: IDataSourceConfig = {
 export const dataSources = [cellline, tissue];
 
 export function chooseDataSource(desc: any): IDataSourceConfig {
-
   if (typeof(desc) === 'object') {
-    return desc.sampleType === 'Tissue' || desc.idtype === 'Tissue' ? tissue : cellline;
+    if(desc.sampleType === 'Tissue' || desc.idtype === 'Tissue' || desc.idType === 'Tissue') {
+      return tissue;
+    } else if(desc.sampleType === 'Cellline' || desc.idtype === 'Cellline' || desc.idType === 'Cellline') {
+      return cellline;
+    } else {
+      return gene;
+    }
   }
 
   switch (desc) {
@@ -136,6 +141,8 @@ export function chooseDataSource(desc: any): IDataSourceConfig {
       return cellline;
     case tissue.name:
       return tissue;
+    case gene.name:
+      return gene;
   }
 }
 
@@ -290,7 +297,7 @@ export const mutation: IDataTypeConfig = {
 
 export const depletion: IDataTypeConfig = {
   id: 'depletion',
-  name: 'RNAi Screen',
+  name: 'Depletion Screen ',
   tableName: 'depletionscore',
   query: 'depletion_score',
   dataSubtypes: [
@@ -311,6 +318,15 @@ export const depletion: IDataTypeConfig = {
       missingValue: NaN,
       constantDomain: false,
       useForAggregation: 'ataris'
+    },
+    {
+      id: 'ceres',
+      name: 'Avana CERES (Robin M. Meyers et al., Nature Genetics, 2017)',
+      type: dataSubtypes.number,
+      domain: [0, 10000],
+      missingValue: NaN,
+      constantDomain: false,
+      useForAggregation: 'ceres'
     }
   ]
 };

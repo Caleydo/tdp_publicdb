@@ -12,7 +12,7 @@ import AScore, {ICommonScoreParam} from './AScore';
 import {limitScoreRows} from 'tdp_gene/src/utils';
 import {INamedSet} from 'tdp_core/src/storage';
 import {resolve} from 'phovea_core/src/idtype';
-import {getTDPScore} from 'tdp_core/src/rest';
+import {getTDPScore, IParams} from 'tdp_core/src/rest';
 import {toFilter} from 'tdp_core/src/lineup';
 
 interface IFrequencyScoreParam extends ICommonScoreParam {
@@ -64,11 +64,15 @@ abstract class AFrequencyScore extends AScore implements IScore<number> {
     }
     const maxDirectRows = typeof this.parameter.maxDirectFilterRows === 'number' ? this.parameter.maxDirectFilterRows : MAX_FILTER_SCORE_ROWS_BEFORE_ALL;
     limitScoreRows(param, ids, idtype, this.dataSource.entityName, maxDirectRows, namedSet);
-    const filters = toFilter(this.parameter.filter);
+    const filters = Object.assign(toFilter(this.parameter.filter), this.createFilter());
 
     const rows: any[] = await getTDPScore(this.dataSource.db, `${this.getViewPrefix()}${this.dataSource.base}_${this.oppositeDataSource.base}_frequency_${isMutation? 'mutation_' : ''}${isCopyNumberClass? 'copynumberclass_' : ''}score`, param, filters);
     rows.forEach((row) => row.score = this.countOnly ? row.count : row.count / row.total);
     return rows;
+  }
+
+  protected createFilter(): IParams {
+    return {};
   }
 
   protected abstract getViewPrefix(): string;

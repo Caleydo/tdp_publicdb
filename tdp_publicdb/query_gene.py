@@ -4,7 +4,7 @@ import re
 
 def create_gene(views, gene):
   views[gene.prefix + '_panel'] = DBViewBuilder().query("""
-      SELECT genesetname AS id, species AS description FROM public.tdp_geneset ORDER BY genesetname ASC""") \
+      SELECT genesetname AS id, species AS description, species FROM public.tdp_geneset ORDER BY genesetname ASC""") \
     .build()
 
   views[gene.prefix + '_gene_items'] = DBViewBuilder().idtype(gene.idtype).query("""

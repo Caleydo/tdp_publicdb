@@ -3,7 +3,7 @@ from collections import namedtuple
 
 __author__ = 'Samuel Gratzl'
 
-Entity = namedtuple('Entity', ['prefix', 'idtype', 'id', 'schema', 'table', 'columns', 'panel', 'panel_join', 'sort',
+Entity = namedtuple('Entity', ['prefix', 'idtype', 'id', 'schema', 'table', 'columns', 'panel_table', 'panel_name', 'panel', 'panel_join', 'sort',
                                'column_def'])
 
 
@@ -14,7 +14,8 @@ Entity = namedtuple('Entity', ['prefix', 'idtype', 'id', 'schema', 'table', 'col
 
 def _gene_columns(query):
   return query \
-    .column('biotype', type='categorical')
+    .column('biotype', type='categorical') \
+    .column('chromosome', type='categorical')
 
 
 gene = Entity('gene',
@@ -24,6 +25,8 @@ gene = Entity('gene',
               table='public.tdp_gene',
               columns=['ensg', 'symbol', 'species', 'chromosome', 'strand', 'biotype', 'seqregionstart',
                        'seqregionend', 'name'],
+              panel_table='public.tdp_geneassignment',
+              panel_name='genesetname',
               panel='ga.genesetname {operator} {value}',
               panel_join='INNER JOIN public.tdp_geneassignment ga ON d.ensg = ga.ensg',
               sort='symbol',
@@ -58,6 +61,8 @@ tissue = Entity('tissue',
                 columns=['tissuename', 'species', 'tumortype', 'organ', 'gender', 'tumortype_adjacent', 'vendorname',
                          'race', 'ethnicity', 'age', 'days_to_last_followup', 'days_to_death', 'vital_status', 'height',
                          'weight', 'bmi'],
+                panel_table='tissue.tdp_panelassignment',
+                panel_name='panel',
                 panel='d.tissuename = ANY(ARRAY(SELECT tissuename FROM tissue.tdp_panelassignment WHERE panel {operator} {value}))',
                 panel_join=None,
                 sort='tissuename',
@@ -83,6 +88,8 @@ cellline = Entity('cellline',
                   table='cellline.tdp_cellline',
                   columns=['celllinename', 'species', 'tumortype', 'organ', 'gender', 'metastatic_site',
                            'histology_type', 'morphology', 'growth_type', 'age_at_surgery'],
+                  panel_table='cellline.tdp_panelassignment',
+                  panel_name='panel',
                   panel='d.celllinename = ANY(ARRAY(SELECT celllinename FROM cellline.tdp_panelassignment WHERE panel {operator} {value}))',
                   panel_join=None,
                   sort='celllinename',

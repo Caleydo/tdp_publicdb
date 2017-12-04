@@ -62,10 +62,12 @@ module.exports = function (registry) {
       factory: 'createExpressionTable',
       idtype: 'Ensembl',
       selection: 'some',
+      preview: function() { return import('./src/assets/previews/expression.jpg') },
       group: {
         name: 'Sample overview',
         order: 10
-      }
+      },
+      description: 'Shows a ranking with expression scores'
     });
 
     registry.push('tdpView', 'copynumbertable', function () {
@@ -75,10 +77,12 @@ module.exports = function (registry) {
       factory: 'createCopyNumberTable',
       idtype: 'Ensembl',
       selection: 'some',
+      preview: function() { return import('./src/assets/previews/copy_number.jpg') },
       group: {
         name: 'Sample overview',
         order: 0
-      }
+      },
+      description: 'Shows a ranking with copy number scores'
     });
 
     registry.push('tdpView', 'mutationtable', function () {
@@ -88,10 +92,12 @@ module.exports = function (registry) {
       factory: 'createMutationTable',
       idtype: 'Ensembl',
       selection: 'some',
+      preview: function() { return import('./src/assets/previews/mutation.jpg') },
       group: {
         name: 'Sample overview',
         order: 20
-      }
+      },
+      description: 'Shows a ranking with mutation scores'
     });
 
     registry.push('tdpView', 'gene_generic_detail_view', function () {
@@ -101,10 +107,12 @@ module.exports = function (registry) {
       factory: 'new GeneInfoTable',
       idtype: 'Ensembl',
       selection: 'multiple',
+      preview: function() { return import('./src/assets/previews/database_info.jpg') },
       group: {
         name: 'General',
         order: 0
-      }
+      },
+      description: 'Shows all information from the database for the searched genes'
     });
 
 
@@ -114,10 +122,12 @@ module.exports = function (registry) {
       name: 'OncoPrint',
       idtype: 'Ensembl',
       selection: 'some',
+      preview: function() { return import('./src/assets/previews/onco_print.jpg') },
       group: {
         name: 'Sample overview',
         order: 40
-      }
+      },
+      description: 'Shows the OncoPrint detail view'
     });
 
     registry.push('tdpView', 'celllinedb_expression_vs_copynumber', function () {
@@ -126,10 +136,12 @@ module.exports = function (registry) {
       name: 'Expression vs. Copy Number',
       idtype: 'Ensembl',
       selection: 'some',
+      preview: function() { return import('./src/assets/previews/expression_vs_copynumber.jpg') },
       group: {
         name: 'Visualization',
         order: 10
-      }
+      },
+      description: 'Renders scatterplots showing the relationship between the expression and copy number values'
     });
 
     registry.push('tdpView', 'celllinedb_co_expression', function () {
@@ -138,10 +150,12 @@ module.exports = function (registry) {
       name: 'Co-Expression',
       idtype: 'Ensembl',
       selection: 'some',
+      preview: function() { return import('./src/assets/previews/co_expression.jpg') },
       group: {
         name: 'Visualization',
         order: 0
-      }
+      },
+      description: 'Renders scatterplots showing the relationship between expression values of different genes'
     });
 
     registry.push('tdpView', 'gene_combined_lineup', function () {
@@ -150,13 +164,15 @@ module.exports = function (registry) {
       name: 'Combined View',
       idtype: 'Ensembl',
       selection: 'some',
+      preview: function() { return import('./src/assets/previews/combined_view.jpg') },
       group: {
         name: 'Sample overview',
         order: 40
       },
       filter: {
         species: 'human'
-      }
+      },
+      description: 'Shows a ranking with expression, copy number and mutation scores'
     });
 
     /// #if include('uploader')
@@ -213,10 +229,12 @@ module.exports = function (registry) {
       idtype: idType,
       sampleType: idType,
       selection: 'some',
+      preview: function() { return import('./src/assets/previews/expression.jpg') },
       group: {
         name: 'Gene overview',
         order: 20
-      }
+      },
+      description: 'Shows a ranking with the expression scores'
     });
 
     registry.push('tdpView', plain + '_inverted_copynumbertable', function () {
@@ -227,10 +245,12 @@ module.exports = function (registry) {
       idtype: idType,
       sampleType: idType,
       selection: 'some',
+      preview: function() { return import('./src/assets/previews/copy_number.jpg') },
       group: {
         name: 'Gene overview',
         order: 0
-      }
+      },
+      description: 'Shows a ranking with copy number scores'
     });
 
     registry.push('tdpView', plain + '_inverted_mutationtable', function () {
@@ -241,10 +261,12 @@ module.exports = function (registry) {
       idtype: idType,
       sampleType: idType,
       selection: 'some',
+      preview: function() { return import('./src/assets/previews/mutation.jpg') },
       group: {
         name: 'Gene overview',
         order: 20
-      }
+      },
+      description: 'Shows a ranking with mutation scores'
     });
 
     registry.push('tdpView', plain + '_combined_lineup', function () {
@@ -253,13 +275,15 @@ module.exports = function (registry) {
       name: 'Combined View',
       idtype: idType,
       selection: 'some',
+      preview: function() { return import('./src/assets/previews/combined_view.jpg') },
       group: {
         name: 'Gene overview',
         order: 40
       },
       filter: {
         species: 'human'
-      }
+      },
+      description: 'Shows a ranking with expression, copy number and mutation scores'
     });
 
     registry.push('tdpView', plain + '_generic_detail_view', function () {
@@ -269,10 +293,12 @@ module.exports = function (registry) {
       factory: 'new ' + idType + 'InfoTable',
       idtype: idType,
       selection: 'multiple',
+      preview: function() { return import('./src/assets/previews/database_info.jpg') },
       group: {
         name: 'General',
         order: 0
-      }
+      },
+      description: 'Shows all information from the database'
     });
 
 
@@ -394,10 +420,12 @@ module.exports = function (registry) {
     argument: 'gene',
     idtype: 'Ensembl',
     selection: 'chooser',
+      preview: function() { return import('./src/assets/previews/pubmed.jpg') },
     group: {
       name: 'External resources'
       // order: 60
-    }
+    },
+    description: 'Show information on your search from PubMed'
   });
 
   //(Tissue|Celline)_gene scores
@@ -407,7 +435,7 @@ module.exports = function (registry) {
     registry.push('tdpScore', prefix + '_depletion_aggregated_score', function () {
       return import('./src/scores');
     }, {
-      name: 'Aggregated RNAi Screen Score',
+      name: 'Aggregated Depletion Screen Score',
       idtype: idType,
       primaryType: idType,
       oppositeType: 'Ensembl',
@@ -423,7 +451,7 @@ module.exports = function (registry) {
     registry.push('tdpScore', prefix + '_depletion_single_score', function () {
       return import('./src/scores/SingleScore');
     }, {
-      name: 'Single RNAi Screen Score',
+      name: 'Single Depletion Screen Score',
       idtype: idType,
       primaryType: idType,
       oppositeType: 'Ensembl',
@@ -444,7 +472,7 @@ module.exports = function (registry) {
     registry.push('tdpScore', prefix + '_depletion_aggregated_score', function () {
       return import('./src/scores');
     }, {
-      name: 'Aggregated RNAi Screen Score',
+      name: 'Aggregated Depletion Screen Score',
       idtype: 'Ensembl',
       primaryType: 'Ensembl',
       oppositeType: oppositeIDType,
@@ -460,7 +488,7 @@ module.exports = function (registry) {
     registry.push('tdpScore', prefix + '_depletion_single_score', function () {
       return import('./src/scores/SingleScore');
     }, {
-      name: 'Single RNAi Screen Score',
+      name: 'Single Depletion Screen Score',
       idtype: 'Ensembl',
       primaryType: 'Ensembl',
       oppositeType: oppositeIDType,
@@ -475,5 +503,18 @@ module.exports = function (registry) {
     });
   });
 
+  // Common scores for all IDTypes
+  ['Cellline', 'Tissue', 'Ensembl'].forEach(function (idType) {
+    const prefix = idType.toLowerCase();
+    registry.push('tdpScore', prefix + 'AnnotationColumn', function() { return import('./src/scores/AnnotationColumn'); }, {
+      'idtype': idType,
+      'name': 'Annotation Column'
+     });
+
+      registry.push('tdpScoreImpl', prefix + 'AnnotationColumn', function() { return import('./src/scores/AnnotationColumn'); }, {
+        'factory': 'createScore',
+        'primaryType': idType
+     });
+  });
   // generator-phovea:end
 };

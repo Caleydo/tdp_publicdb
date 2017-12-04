@@ -33,8 +33,8 @@ create_gene_sample_score(views, gene, tissue, tissue_data)
 create_gene_sample_score(views, tissue, gene, tissue_data, inline_aggregate_sample_filter=True)
 
 # depletion scores
-create_gene_sample_score(views, gene, cellline, cellline_depletion, 'depletion_')
-create_gene_sample_score(views, cellline, gene, cellline_depletion, 'depletion_', inline_aggregate_sample_filter=True)
+create_gene_sample_score(views, gene, cellline, cellline_depletion, 'depletion_', callback=lambda x: x.filter('depletionscreen'))
+create_gene_sample_score(views, cellline, gene, cellline_depletion, 'depletion_', inline_aggregate_sample_filter=True, callback=lambda x: x.filter('depletionscreen'))
 
 
 
