@@ -5,9 +5,8 @@ import {IDataSourceConfig} from '../config';
 import {FormElementType} from 'tdp_core/src/form';
 import {getAPIJSON} from 'phovea_core/src/ajax';
 import {IPluginDesc} from 'phovea_core/src/plugin';
-import {ParameterFormIds} from '../forms';
 import {selectDataSources} from './utils';
-
+import {chooseDataSource} from '../config';
 
 
 /**
@@ -50,10 +49,9 @@ export function createScore(data, pluginDesc: IPluginDesc) {
 export async function create(pluginDesc: IPluginDesc) {
   const dialog = new FormDialog('Add Annotation Column', 'Add');
 
-  const idType = pluginDesc.idtype;
-  const type = idType === 'Cellline' || idType === 'Tissue'? idType : 'gene';
+  const dataSource = chooseDataSource(pluginDesc);
 
-  const data = await getAPIJSON(`/tdp/db/publicdb/${type.toLowerCase()}_panel`);
+  const data = await getAPIJSON(`/tdp/db/publicdb/${dataSource.base}_panel`);
   const optionsData = data.map((item) => ({ name: item.id, value: item.id }));
 
   dialog.append({
