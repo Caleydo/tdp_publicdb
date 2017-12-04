@@ -7,7 +7,25 @@
     "modules": [
       "ordino"
     ],
-    "extensions": [],
+    "extensions": [
+      {
+        "type": "tdpScore",
+        "id": "annotationColumn",
+        "module": "AnnotationColumn",
+        "extras": {
+          "idtype": "Cellline",
+          "name": "Annotation Column"
+        }
+      },
+      {
+        "type": "tdpScoreImpl",
+        "id": "annotationColumn",
+        "module": "AnnotationColumn",
+        "extras": {
+          "factory": "new"
+        }
+      }
+    ],
     "sextensions": [
       {
         "type": "targid-sql-database-definition",
