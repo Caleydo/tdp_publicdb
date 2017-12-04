@@ -27,7 +27,7 @@ export default class AnnotationColumn extends ABooleanScore implements IScore<nu
   }
 
   protected get label() {
-    return `${this.dataSource.name} contained in ${(<IAnnotationColumnParam>this.params).panel}`;
+    return `${this.dataSource.name} contained in ${this.params.panel}`;
   }
 
   protected get columnName() {
