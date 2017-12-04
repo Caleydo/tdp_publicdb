@@ -55,6 +55,7 @@ export const cellline: IDataSourceConfig = {
       categoricalCol('morphology', find('morphology').categories, {label: 'Morphology', visible: false}),
       categoricalCol('growth_type', find('growth_type').categories, {label: 'Growth Type', visible: false}),
       categoricalCol('age_at_surgery', find('age_at_surgery').categories, {label: 'Age at Surgery', visible: false}),
+      stringCol('cosmicid', {label: 'COSMIC', width: 120, visible: false})
     ];
   },
   columnInfo: {
