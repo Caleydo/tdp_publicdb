@@ -88,7 +88,7 @@ def create_gene_sample_score(views, gene, sample, data, prefix='', inline_aggreg
   views[gene.prefix + '_namedset_containment_score'] = DBViewBuilder().idtype(gene.idtype).query("""
       SELECT {g.id} as id, TRUE as score
       FROM {g.panel_table}
-      WHERE {g.panel_name} = :panel ORDER BY score DESC
+      WHERE {g.panel_name} = :panel
     """.format(g=gene)) \
     .arg('panel') \
     .build()
