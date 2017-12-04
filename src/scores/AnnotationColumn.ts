@@ -1,8 +1,7 @@
 import {IScore} from 'tdp_core/src/extensions';
 import {FormDialog} from 'tdp_core/src/form';
-import ABooleanScore from './ABooleanScore';
+import ABooleanScore, {IBooleanScoreParams} from './ABooleanScore';
 import {IDataSourceConfig} from '../config';
-import {ICommonScoreParam} from './AScore';
 import {FormElementType} from 'tdp_core/src/form';
 import {getAPIJSON} from 'phovea_core/src/ajax';
 import {IPluginDesc} from 'phovea_core/src/plugin';
@@ -14,7 +13,7 @@ import {selectDataSources} from './utils';
 /**
  * interface describing the parameter needed for MyScore
  */
-export interface IAnnotationColumnParam extends ICommonScoreParam {
+export interface IAnnotationColumnParam extends IBooleanScoreParams {
   panel: string;
 }
 

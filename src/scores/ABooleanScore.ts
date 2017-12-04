@@ -6,6 +6,10 @@ import {ICommonScoreParam} from './AScore';
 import {IDataSourceConfig} from '../config';
 
 
+export interface IBooleanScoreParams {
+  [key: string]: any;
+}
+
 /**
  * score implementation in this case a numeric score is computed
  */
@@ -19,7 +23,7 @@ abstract class ABooleanScore implements IScore<number> {
     return resolve(this.dataSource.idType);
   }
 
-  constructor(protected readonly params: ICommonScoreParam, protected readonly dataSource: IDataSourceConfig) {}
+  constructor(protected readonly params: IBooleanScoreParams, protected readonly dataSource: IDataSourceConfig) {}
 
   /**
    * creates the column description used within LineUp to create the oclumn
@@ -35,8 +39,7 @@ abstract class ABooleanScore implements IScore<number> {
    * @returns {Promise<IScoreRow<number>[]>}
    */
   compute(): Promise<IScoreRow<number>[]> {
-    const params = Object.assign({}, this.params);
-    return getTDPScore(this.dataSource.db, `${this.dataSource.base}_${this.columnName}_score`, params);
+    return getTDPScore(this.dataSource.db, `${this.dataSource.base}_${this.columnName}_score`, this.params);
   }
 
   protected abstract get label(): string;
