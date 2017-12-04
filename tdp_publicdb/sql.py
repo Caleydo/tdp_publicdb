@@ -10,9 +10,6 @@ from .query_score import create_gene_sample_score
 
 __author__ = 'Samuel Gratzl'
 
-# cosmic idtype
-idtype = 'Cosmic'
-
 views = dict()
 
 # gene
@@ -39,9 +36,9 @@ create_gene_sample_score(views, tissue, gene, tissue_data, inline_aggregate_samp
 create_gene_sample_score(views, gene, cellline, cellline_depletion, 'depletion_', callback=lambda x: x.filter('depletionscreen'))
 create_gene_sample_score(views, cellline, gene, cellline_depletion, 'depletion_', inline_aggregate_sample_filter=True, callback=lambda x: x.filter('depletionscreen'))
 
+# idtype mappings
 mappings = [
-  # TODO: throws error: DBMapping('Cellline', 'Cosmic', """SELECT celllinename as f, cosmicid as t FROM cellline.tdp_cellline WHERE celllinename in :ids""")
-  DBMapping('Cellline', 'Cosmic', """SELECT celllinename as f, cosmicid as t FROM cellline.tdp_cellline""")
+  DBMapping(cellline.idtype, "Cosmic", """SELECT celllinename as f, cosmicid as t FROM cellline.tdp_cellline""")
 ]
 
 def create():

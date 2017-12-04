@@ -216,7 +216,28 @@ module.exports = function (registry) {
     selection: 'none',
     sampleType: 'Tissue'
   });
-  //views
+
+  // cellline views
+  registry.push('tdpView', 'cosmic', function () {
+    return import('tdp_core/src/views/ProxyView');
+  }, {
+     name: 'COSMIC',
+     site: '//cancer.sanger.ac.uk/cell_lines/sample/overview?id={cosmicid}&genome=37',
+     argument: 'cosmicid',
+     idtype: 'Cosmic',
+     selection: 'chooser',
+     preview: function() { return import('./src/assets/previews/cosmic.jpg') },
+     group: {
+       name: 'External resources'
+      // 'order: 0
+    },
+     filter: {
+       species: 'human'
+    },
+    description: 'Show information on your search from COSMIC'
+  });
+
+  // tissue and cellline views
   ['Tissue', 'Cellline'].forEach(function (idType) {
     const plain = idType.toLowerCase();
     const label = idType === 'Tissue' ? 'Tissues' : 'Cell lines';
