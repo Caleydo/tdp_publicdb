@@ -38,8 +38,10 @@ create_gene_sample_score(views, cellline, gene, cellline_depletion, 'depletion_'
 
 # idtype mappings
 mappings = [
-  DBMapping(cellline.idtype, 'Cosmic', """SELECT celllinename as f, cosmicid as t FROM cellline.tdp_cellline WHERE cosmicid is NOT NULL""")
-  #TODO: DBMapping(cellline.idtype, 'Cosmic', """SELECT celllinename as f, cosmicid as t FROM cellline.tdp_cellline WHERE celllinename IN :ids AND cosmicid is NOT NULL """)
+  DBMapping(cellline.idtype, 'Cosmic',
+            """SELECT celllinename as f, cosmicid as t 
+               FROM cellline.tdp_cellline 
+               WHERE celllinename = ANY(:ids) AND cosmicid is NOT NULL""")
 ]
 
 def create():
