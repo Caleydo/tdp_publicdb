@@ -46,6 +46,7 @@ export const cellline: IDataSourceConfig = {
   columns: (find: (column: string)=>IServerColumn) => {
     return [
       stringCol('id', {label: 'Name', width: 120}),
+      stringCol('cosmicid', {label: 'COSMIC', width: 120, visible: false}),
       //categoricalCol('species', desc.columns.species.categories, 'Species', true),
       categoricalCol('tumortype', find('tumortype').categories, {label: 'Tumor Type'}),
       categoricalCol('organ', find('organ').categories, {label: 'Organ'}),
@@ -55,11 +56,10 @@ export const cellline: IDataSourceConfig = {
       categoricalCol('morphology', find('morphology').categories, {label: 'Morphology', visible: false}),
       categoricalCol('growth_type', find('growth_type').categories, {label: 'Growth Type', visible: false}),
       categoricalCol('age_at_surgery', find('age_at_surgery').categories, {label: 'Age at Surgery', visible: false}),
-      stringCol('cosmicid', {label: 'COSMIC', width: 120, visible: false})
     ];
   },
   columnInfo: {
-    string: ['id'],
+    string: ['id', 'cosmicid'],
     number: [],
     categorical: ['organ', 'gender', 'tumortype', 'metastatic_site', 'histology_type', 'morphology', 'growth_type']
   }
