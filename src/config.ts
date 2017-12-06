@@ -127,9 +127,14 @@ export const gene: IDataSourceConfig = {
 export const dataSources = [cellline, tissue];
 
 export function chooseDataSource(desc: any): IDataSourceConfig {
-
   if (typeof(desc) === 'object') {
-    return desc.sampleType === 'Tissue' || desc.idtype === 'Tissue' ? tissue : cellline;
+    if(desc.sampleType === 'Tissue' || desc.idtype === 'Tissue' || desc.idType === 'Tissue') {
+      return tissue;
+    } else if(desc.sampleType === 'Cellline' || desc.idtype === 'Cellline' || desc.idType === 'Cellline') {
+      return cellline;
+    } else {
+      return gene;
+    }
   }
 
   switch (desc) {
@@ -137,6 +142,8 @@ export function chooseDataSource(desc: any): IDataSourceConfig {
       return cellline;
     case tissue.name:
       return tissue;
+    case gene.name:
+      return gene;
   }
 }
 

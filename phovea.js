@@ -524,5 +524,18 @@ module.exports = function (registry) {
     });
   });
 
+  // Common scores for all IDTypes
+  ['Cellline', 'Tissue', 'Ensembl'].forEach(function (idType) {
+    const prefix = idType.toLowerCase();
+    registry.push('tdpScore', prefix + 'AnnotationColumn', function() { return import('./src/scores/AnnotationColumn'); }, {
+      'idtype': idType,
+      'name': 'Annotation Column'
+     });
+
+      registry.push('tdpScoreImpl', prefix + 'AnnotationColumn', function() { return import('./src/scores/AnnotationColumn'); }, {
+        'factory': 'createScore',
+        'primaryType': idType
+     });
+  });
   // generator-phovea:end
 };
