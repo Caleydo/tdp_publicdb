@@ -219,7 +219,7 @@ module.exports = function (registry) {
 
   // cellline views
   registry.push('tdpView', 'cosmic', function () {
-    return import('tdp_core/src/views/ProxyView');
+    return import('./src/views/CosmicProxyView');
   }, {
      name: 'COSMIC',
      site: '//cancer.sanger.ac.uk/cell_lines/sample/overview?id={cosmicid}&genome=37',

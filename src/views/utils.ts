@@ -23,6 +23,12 @@ export function loadGeneList(ensgs: string[]): Promise<{ id: string, symbol: str
   });
 }
 
+export function loadCelllineList(cosmics: string[]): Promise<{ celllinename: string, cosmicid: string }[]> {
+  return getTDPData('publicdb', 'cellline', {
+    cosmics: '\'' + cosmics.join('\',\'') + '\'',
+    species: getSelectedSpecies()
+  });
+}
 
 export function postProcessScore(subType: IDataSubtypeConfig) {
   return (rows: IScoreRow<any>[]) => {
