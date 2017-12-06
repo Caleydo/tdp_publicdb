@@ -3,11 +3,11 @@
  */
 
 import {cellline} from '../config';
-import {getSelectedSpecies} from '../../../tdp_gene/src/common';
-import {getTDPFilteredRows, IParams, IRow} from '../../../tdp_core/src/rest';
-import {resolveIds} from '../../../tdp_core/src/views/resolve';
-import ProxyView from '../../../tdp_core/src/views/ProxyView';
-import {IFormSelectOption} from '../../../tdp_core/src/form/internal/FormSelect';
+import {getSelectedSpecies} from 'tdp_gene/src/common';
+import {getTDPFilteredRows, IParams, IRow} from 'tdp_core/src/rest';
+import {resolveIds} from 'tdp_core/src/views/resolve';
+import ProxyView from 'tdp_core/src/views/ProxyView';
+import {IFormSelectOption} from 'tdp_core/src/form/internal/FormSelect';
 
 interface ICosmicRow extends IRow {
   celllinename: string,
