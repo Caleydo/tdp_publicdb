@@ -126,7 +126,9 @@ const chromosome = Object.assign(categoricalCol('chromosome', [], {label: 'Chrom
     {name: 'm', color: '#cdcf97', value: 25},
     {name: 'na', color: '#dedede', value: 26},
     {name: 'un', color: '#62ce54', value: 27}
-  ]
+  ],
+  rendererType: 'categorical',
+  groupRenderer: 'categorical'
 });
 
 
