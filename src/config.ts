@@ -96,6 +96,40 @@ export const tissue: IDataSourceConfig = {
 };
 
 
+const chromosome = Object.assign(categoricalCol('chromosome', [], {label: 'Chromosome'}), {
+  type: 'ordinal',
+  categories: [
+    {name: '1', color: '#99671f', value: 1},
+    {name: '2', color: '#63641b', value: 2},
+    {name: '3', color: '#929539', value: 3},
+    {name: '4', color: '#d1011c', value: 4},
+    {name: '5', color: '#fe0125', value: 5},
+    {name: '6', color: '#ff00ca', value: 6},
+    {name: '7', color: '#ffcbcc', value: 7},
+    {name: '8', color: '#ff9a32', value: 8},
+    {name: '9', color: '#ffcc39', value: 9},
+    {name: '10', color: '#feff43', value: 10},
+    {name: '11', color: '#c5ff40', value: 11},
+    {name: '12', color: '#00ff3b', value: 12},
+    {name: '13', color: '#26871f', value: 13},
+    {name: '14', color: '#1b00c9', value: 14},
+    {name: '15', color: '#6694fa', value: 15},
+    {name: '16', color: '#95cafc', value: 16},
+    {name: '17', color: '#00fffe', value: 17},
+    {name: '18', color: '#c7fffe', value: 18},
+    {name: '19', color: '#9b00c8', value: 19},
+    {name: '20', color: '#d129f7', value: 20},
+    {name: '21', color: '#d390fa', value: 21},
+    {name: '22', color: '#666666', value: 22},
+    {name: 'x', color: '#989898', value: 23},
+    {name: 'y', color: '#cbcbcb', value: 24},
+    {name: 'm', color: '#cdcf97', value: 25},
+    {name: 'na', color: '#dedede', value: 26},
+    {name: 'un', color: '#62ce54', value: 27}
+  ]
+});
+
+
 export const gene: IDataSourceConfig = {
   idType: GENE_IDTYPE,
   name: 'Gene',
@@ -109,7 +143,7 @@ export const gene: IDataSourceConfig = {
       stringCol('symbol', {label: 'Symbol', width: 100}),
       stringCol('id', {label: 'Ensembl', width: 120}),
       stringCol('name', {label: 'Name'}),
-      categoricalCol('chromosome', find('chromosome').categories, {label: 'Chromosome'}),
+      chromosome,
       categoricalCol('biotype', find('biotype').categories, {label: 'Biotype'}),
       categoricalCol('strand', [{ label: 'reverse strand', name:String(-1)}, { label: 'forward strand', name:String(1)}], {label: 'Strand', visible: false}),
       stringCol('seqregionstart', {label: 'Seq Region Start', visible: false}),
