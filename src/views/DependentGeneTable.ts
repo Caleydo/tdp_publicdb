@@ -51,7 +51,6 @@ export default class DependentGeneTable extends ARankingView {
   }
 
   protected parameterChanged(name: string) {
-    super.parameterChanged(name, false);
     this.rebuild();
   }
 

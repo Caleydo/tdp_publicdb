@@ -59,7 +59,6 @@ export default class DependentSampleTable extends ARankingView {
   }
 
   protected parameterChanged(name: string) {
-    super.parameterChanged(name, false);
     this.rebuild();
   }
 
