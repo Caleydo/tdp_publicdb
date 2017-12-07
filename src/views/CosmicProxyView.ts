@@ -14,6 +14,10 @@ interface ICosmicRow extends IRow {
   cosmicid: string,
 }
 
+/**
+ * Proxy view for the idType Cosmic which fetches the original cell line data based on the mapping from Cell line to
+ * Cosmic.
+ */
 export default class CosmicProxyView extends ProxyView {
 
   protected async getSelectionSelectData(cosmics: string[]): Promise<IFormSelectOption[]> {
@@ -22,12 +26,23 @@ export default class CosmicProxyView extends ProxyView {
       cosmics: '\'' + cosmics + '\'',
       species: getSelectedSpecies()
     };
-    const results = await getTDPFilteredRows(cellline.db, `${cellline.base}`, params, {[cellline.entityName]: ids}, false);
+    const results = await getTDPFilteredRows(cellline.db, `${cellline.base}`, params,
+      {[cellline.entityName]: ids}, false);
 
     return Promise.resolve(results.map((d: ICosmicRow) => ({
       value: d.cosmicid,
-      name: `${d.celllinename} (${d.cosmicid !== null ? d.cosmicid : 'empty'})`,
+      name: `${d.celllinename} (${d.cosmicid !== null ? d.cosmicid : 'N/A'})`,
       data: d.cosmicid,
     })));
+  }
+
+  /**
+   * Specific error message to display.
+   * @param {string} selectedItemId The mapped cosmic id for the selected cell line.
+   */
+  protected showErrorMessage(selectedItemId: string) {
+    this.setBusy(false);
+    this.$node.html(`<p>This cell line is not available in the COSMIC database.</p>`);
+    this.fire(ProxyView.EVENT_LOADING_FINISHED);
   }
 }
