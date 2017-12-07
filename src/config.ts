@@ -122,11 +122,11 @@ const chromosome = Object.assign(categoricalCol('chromosome', [], {label: 'Chrom
     {name: '20', color: '#d129f7', value: 20 * factor},
     {name: '21', color: '#d390fa', value: 21 * factor},
     {name: '22', color: '#666666', value: 22 * factor},
-    {name: 'x', color: '#989898', value: 23 * factor},
-    {name: 'y', color: '#cbcbcb', value: 24 * factor},
-    {name: 'm', color: '#cdcf97', value: 25 * factor},
-    {name: 'na', color: '#dedede', value: 26 * factor},
-    {name: 'un', color: '#62ce54', value: 27 * factor}
+    {name: 'X', color: '#989898', value: 23 * factor},
+    {name: 'Y', color: '#cbcbcb', value: 24 * factor},
+    {name: 'M', color: '#cdcf97', value: 25 * factor},
+    {name: 'NA', color: '#dedede', value: 26 * factor},
+    {name: 'UN', color: '#62ce54', value: 27 * factor}
   ],
   rendererType: 'categorical',
   groupRenderer: 'categorical'
