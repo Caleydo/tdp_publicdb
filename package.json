@@ -73,7 +73,7 @@
     "node": ">= 6"
   },
   "dependencies": {
-    "tdp_gene": "github:Caleydo/tdp_gene#sluger/cosmic_mapping"
+    "tdp_gene": "github:Caleydo/tdp_gene#develop"
   },
   "optionalDependencies": {
     "ordino": "github:Caleydo/ordino#develop",
