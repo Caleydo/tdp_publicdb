@@ -224,7 +224,7 @@ module.exports = function (registry) {
      name: 'COSMIC',
      site: '//cancer.sanger.ac.uk/cell_lines/sample/overview?id={cosmicid}&genome=37',
      argument: 'cosmicid',
-     idtype: 'Cosmic',
+     idtype: 'Cellline',
      selection: 'chooser',
      preview: function() { return import('./src/assets/previews/cosmic.jpg') },
      group: {

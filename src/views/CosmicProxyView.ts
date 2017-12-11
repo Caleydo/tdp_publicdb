@@ -2,17 +2,9 @@
  * Created by Stefan Luger on 06.12.17
  */
 
-import {cellline} from '../config';
-import {getSelectedSpecies} from 'tdp_gene/src/common';
-import {getTDPFilteredRows, IParams, IRow} from 'tdp_core/src/rest';
 import {resolveIds} from 'tdp_core/src/views/resolve';
 import ProxyView from 'tdp_core/src/views/ProxyView';
 import {IFormSelectOption} from 'tdp_core/src/form/internal/FormSelect';
-
-interface ICosmicRow extends IRow {
-  celllinename: string,
-  cosmicid: string,
-}
 
 /**
  * Proxy view for the idType Cosmic which fetches the original cell line data based on the mapping from Cell line to
@@ -20,19 +12,13 @@ interface ICosmicRow extends IRow {
  */
 export default class CosmicProxyView extends ProxyView {
 
-  protected async getSelectionSelectData(cosmics: string[]): Promise<IFormSelectOption[]> {
-    const ids = await resolveIds(this.selection.idtype, this.selection.range, cellline.idType);
-    const params: IParams = {
-      cosmics: '\'' + cosmics + '\'',
-      species: getSelectedSpecies()
-    };
-    const results = await getTDPFilteredRows(cellline.db, `${cellline.base}`, params,
-      {[cellline.entityName]: ids}, false);
+  protected async getSelectionSelectData(names: string[]): Promise<IFormSelectOption[]> {
+    const cosmics = await resolveIds(this.selection.idtype, this.selection.range,'Cosmic');
 
-    return Promise.resolve(results.map((d: ICosmicRow) => ({
-      value: d.cosmicid,
-      name: `${d.celllinename} (${d.cosmicid !== null ? d.cosmicid : 'N/A'})`,
-      data: d.cosmicid,
+    return Promise.resolve(cosmics.map((cosmicId: string, index: number) => ({
+      value: cosmicId,
+      name: `${names[index]} (${cosmicId || 'N/A'})`, // checks for empty string, undefined, and null
+      data: cosmicId,
     })));
   }
 
@@ -41,8 +27,7 @@ export default class CosmicProxyView extends ProxyView {
    * @param {string} selectedItemId The mapped cosmic id for the selected cell line.
    */
   protected showErrorMessage(selectedItemId: string) {
-    this.setBusy(false);
+    super.showErrorMessage(selectedItemId);
     this.$node.html(`<p>This cell line is not available in the COSMIC database.</p>`);
-    this.fire(ProxyView.EVENT_LOADING_FINISHED);
   }
 }
