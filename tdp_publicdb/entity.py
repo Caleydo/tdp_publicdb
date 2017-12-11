@@ -78,7 +78,8 @@ def _cellline_columns(query):
     .column('histology_type', type='categorical') \
     .column('morphology', type='categorical') \
     .column('growth_type', type='categorical') \
-    .column('age_at_surgery', type='categorical')
+    .column('age_at_surgery', type='categorical') \
+    .column('cosmicid', type='number')
 
 
 cellline = Entity('cellline',
@@ -86,7 +87,7 @@ cellline = Entity('cellline',
                   id='celllinename',
                   schema='cellline',
                   table='cellline.tdp_cellline',
-                  columns=['celllinename', 'species', 'tumortype', 'organ', 'gender', 'metastatic_site',
+                  columns=['celllinename', 'cosmicid', 'species', 'tumortype', 'organ', 'gender', 'metastatic_site',
                            'histology_type', 'morphology', 'growth_type', 'age_at_surgery'],
                   panel_table='cellline.tdp_panelassignment',
                   panel_name='panel',
