@@ -25,7 +25,7 @@ export default class DependentSampleTable extends ARankingView {
     super(context, selection, parent, Object.assign({
       additionalScoreParameter: () => this.dataSource,
       itemName: () => this.dataSource.name,
-    }, options));
+    }, Object.assign(options, { enableSidePanel: 'collapsed' })));
   }
 
   protected getParameterFormDescs() {
