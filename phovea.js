@@ -216,7 +216,28 @@ module.exports = function (registry) {
     selection: 'none',
     sampleType: 'Tissue'
   });
-  //views
+
+  // cellline views
+  registry.push('tdpView', 'cosmic', function () {
+    return import('./src/views/CosmicProxyView');
+  }, {
+     name: 'COSMIC',
+     site: '//cancer.sanger.ac.uk/cell_lines/sample/overview?id={cosmicid}&genome=37',
+     argument: 'cosmicid',
+     idtype: 'Cellline',
+     selection: 'chooser',
+     preview: function() { return import('./src/assets/previews/cosmic.jpg') },
+     group: {
+       name: 'External resources'
+      // 'order: 0
+    },
+     filter: {
+       species: 'human'
+    },
+    description: 'Show information on your search from COSMIC'
+  });
+
+  // tissue and cellline views
   ['Tissue', 'Cellline'].forEach(function (idType) {
     const plain = idType.toLowerCase();
     const label = idType === 'Tissue' ? 'Tissues' : 'Cell lines';
@@ -435,7 +456,7 @@ module.exports = function (registry) {
     registry.push('tdpScore', prefix + '_depletion_aggregated_score', function () {
       return import('./src/scores');
     }, {
-      name: 'Aggregated RNAi Screen Score',
+      name: 'Aggregated Depletion Screen Score',
       idtype: idType,
       primaryType: idType,
       oppositeType: 'Ensembl',
@@ -451,7 +472,7 @@ module.exports = function (registry) {
     registry.push('tdpScore', prefix + '_depletion_single_score', function () {
       return import('./src/scores/SingleScore');
     }, {
-      name: 'Single RNAi Screen Score',
+      name: 'Single Depletion Screen Score',
       idtype: idType,
       primaryType: idType,
       oppositeType: 'Ensembl',
@@ -472,7 +493,7 @@ module.exports = function (registry) {
     registry.push('tdpScore', prefix + '_depletion_aggregated_score', function () {
       return import('./src/scores');
     }, {
-      name: 'Aggregated RNAi Screen Score',
+      name: 'Aggregated Depletion Screen Score',
       idtype: 'Ensembl',
       primaryType: 'Ensembl',
       oppositeType: oppositeIDType,
@@ -488,7 +509,7 @@ module.exports = function (registry) {
     registry.push('tdpScore', prefix + '_depletion_single_score', function () {
       return import('./src/scores/SingleScore');
     }, {
-      name: 'Single RNAi Screen Score',
+      name: 'Single Depletion Screen Score',
       idtype: 'Ensembl',
       primaryType: 'Ensembl',
       oppositeType: oppositeIDType,
@@ -503,5 +524,18 @@ module.exports = function (registry) {
     });
   });
 
+  // Common scores for all IDTypes
+  ['Cellline', 'Tissue', 'Ensembl'].forEach(function (idType) {
+    const prefix = idType.toLowerCase();
+    registry.push('tdpScore', prefix + 'AnnotationColumn', function() { return import('./src/scores/AnnotationColumn'); }, {
+      'idtype': idType,
+      'name': 'Annotation Column'
+     });
+
+      registry.push('tdpScoreImpl', prefix + 'AnnotationColumn', function() { return import('./src/scores/AnnotationColumn'); }, {
+        'factory': 'createScore',
+        'primaryType': idType
+     });
+  });
   // generator-phovea:end
 };
