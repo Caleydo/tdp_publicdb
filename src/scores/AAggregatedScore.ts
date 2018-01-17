@@ -45,7 +45,12 @@ abstract class AAggregatedScore extends AScore implements IScore<number> {
   createDesc() {
     const ds = this.oppositeDataSource;
     const desc = `${ds.name} Filter: ${toFilterString(this.parameter.filter, ds)}\nData Type: ${this.dataType.name}\nData Subtype: ${this.dataSubType.name}\nAggregation: ${this.parameter.aggregation}`;
-    return createDesc(this.parameter.aggregation === 'boxplot' ? 'boxplot' : dataSubtypes.number, `${this.parameter.aggregation} ${this.dataSubType.name}`, this.dataSubType, desc);
+
+    let type = dataSubtypes.number;
+    if (this.parameter.aggregation === 'boxplot' || this.parameter.aggregation === 'numbers') {
+      type = this.parameter.aggregation;
+    }
+    return createDesc(type, `${this.parameter.aggregation} ${this.dataSubType.name}`, this.dataSubType, desc);
   }
 
   async compute(ids: RangeLike, idtype: IDType, namedSet?: INamedSet): Promise<any[]> {
@@ -65,6 +70,17 @@ abstract class AAggregatedScore extends AScore implements IScore<number> {
     if (this.parameter.aggregation === 'boxplot') {
       rows = rows.filter((d) => d.score !== null);
       rows.forEach((row) => row.score = array2boxplotData(row.score));
+    } else if (this.parameter.aggregation === 'numbers') {
+      // we got a dict to consider missing values property
+      rows = rows.filter((d) => d.score !== null);
+      // collect all keys
+      const keys = new Set<string>();
+      rows.forEach((row) => {
+        Object.keys(row.score).forEach((k) => keys.add(k));
+      });
+      const columns = Array.from(keys).sort();
+      // create an array with missing entries
+      rows.forEach((row) => row.score = columns.map((c) => row.score.hasOwnProperty(c) ? row.score[c] : NaN));
     }
     if (this.dataSubType.useForAggregation.indexOf('log2') !== -1) {
       return convertLog2ToLinear(rows, 'score');
