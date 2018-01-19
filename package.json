@@ -68,10 +68,6 @@
     "dist:web": "mkdirp dist && cd build && tar cvzf ../dist/tdp_publicdb.tar.gz *",
     "dist:python": "python setup.py bdist_egg"
   },
-  "engines": {
-    "npm": ">= 3",
-    "node": ">= 6"
-  },
   "dependencies": {
     "tdp_gene": "github:Caleydo/tdp_gene#develop"
   },
