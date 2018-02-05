@@ -64,7 +64,7 @@ module.exports = function (registry) {
       selection: 'some',
       preview: function() { return import('./src/assets/previews/expression.jpg') },
       group: {
-        name: 'Sample overview',
+        name: 'Sample Overview',
         order: 10
       },
       description: 'Shows a ranking with expression scores'
@@ -79,7 +79,7 @@ module.exports = function (registry) {
       selection: 'some',
       preview: function() { return import('./src/assets/previews/copy_number.jpg') },
       group: {
-        name: 'Sample overview',
+        name: 'Sample Overview',
         order: 0
       },
       description: 'Shows a ranking with copy number scores'
@@ -94,7 +94,7 @@ module.exports = function (registry) {
       selection: 'some',
       preview: function() { return import('./src/assets/previews/mutation.jpg') },
       group: {
-        name: 'Sample overview',
+        name: 'Sample Overview',
         order: 20
       },
       description: 'Shows a ranking with mutation scores'
@@ -124,7 +124,7 @@ module.exports = function (registry) {
       selection: 'some',
       preview: function() { return import('./src/assets/previews/onco_print.jpg') },
       group: {
-        name: 'Sample overview',
+        name: 'Sample Overview',
         order: 40
       },
       description: 'Shows the OncoPrint detail view'
@@ -166,7 +166,7 @@ module.exports = function (registry) {
       selection: 'some',
       preview: function() { return import('./src/assets/previews/combined_view.jpg') },
       group: {
-        name: 'Sample overview',
+        name: 'Sample Overview',
         order: 40
       },
       filter: {
@@ -228,7 +228,7 @@ module.exports = function (registry) {
      selection: 'chooser',
      preview: function() { return import('./src/assets/previews/cosmic.jpg') },
      group: {
-       name: 'External resources'
+       name: 'External Resources'
       // 'order: 0
     },
      filter: {
@@ -252,7 +252,7 @@ module.exports = function (registry) {
       selection: 'some',
       preview: function() { return import('./src/assets/previews/expression.jpg') },
       group: {
-        name: 'Gene overview',
+        name: 'Gene Overview',
         order: 20
       },
       description: 'Shows a ranking with the expression scores'
@@ -268,7 +268,7 @@ module.exports = function (registry) {
       selection: 'some',
       preview: function() { return import('./src/assets/previews/copy_number.jpg') },
       group: {
-        name: 'Gene overview',
+        name: 'Gene Overview',
         order: 0
       },
       description: 'Shows a ranking with copy number scores'
@@ -284,7 +284,7 @@ module.exports = function (registry) {
       selection: 'some',
       preview: function() { return import('./src/assets/previews/mutation.jpg') },
       group: {
-        name: 'Gene overview',
+        name: 'Gene Overview',
         order: 20
       },
       description: 'Shows a ranking with mutation scores'
@@ -298,7 +298,7 @@ module.exports = function (registry) {
       selection: 'some',
       preview: function() { return import('./src/assets/previews/combined_view.jpg') },
       group: {
-        name: 'Gene overview',
+        name: 'Gene Overview',
         order: 40
       },
       filter: {
@@ -424,11 +424,11 @@ module.exports = function (registry) {
   }, {
     groups: [
       {name: 'General', order: 5},
-      {name: 'Sample overview', order: 10},
-      {name: 'Gene overview', order: 20},
+      {name: 'Sample Overview', order: 10},
+      {name: 'Gene Overview', order: 20},
       {name: 'Visualization', order: 30},
-      {name: 'Internal resources', order: 40},
-      {name: 'External resources', order: 50}
+      {name: 'Internal Resources', order: 40},
+      {name: 'External Resources', order: 50}
     ]
   });
 
@@ -443,7 +443,7 @@ module.exports = function (registry) {
     selection: 'chooser',
       preview: function() { return import('./src/assets/previews/pubmed.jpg') },
     group: {
-      name: 'External resources'
+      name: 'External Resources'
       // order: 60
     },
     description: 'Show information on your search from PubMed'
