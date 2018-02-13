@@ -355,7 +355,7 @@ module.exports = function (registry) {
     registry.push('tdpScore', prefix + '_aggregated_score', function () {
       return import('./src/scores');
     }, {
-      name: 'Aggregated ' + label + ' Score',
+      name: label + ' Score (Aggregated)',
       idtype: 'Ensembl',
       primaryType: 'Ensembl',
       oppositeType: oppositeIDType
@@ -370,7 +370,7 @@ module.exports = function (registry) {
     registry.push('tdpScore', prefix + '_single_score', function () {
       return import('./src/scores/SingleScore');
     }, {
-      name: 'Single ' + label + ' Score',
+      name: label + ' Score (Single)',
       idtype: 'Ensembl',
       primaryType: 'Ensembl',
       oppositeType: oppositeIDType
@@ -391,7 +391,7 @@ module.exports = function (registry) {
     registry.push('tdpScore', prefix + '_aggregated_score', function () {
       return import('./src/scores');
     }, {
-      name: 'Aggregated Gene Score',
+      name: 'Gene Score (Aggregated)',
       idtype: idType,
       primaryType: idType,
       oppositeType: 'Ensembl'
@@ -406,7 +406,7 @@ module.exports = function (registry) {
     registry.push('tdpScore', prefix + '_single_score', function () {
       return import('./src/scores/SingleScore');
     }, {
-      name: 'Single Gene Score',
+      name: 'Gene Score (Single)',
       idtype: idType,
       primaryType: idType,
       oppositeType: 'Ensembl'
@@ -456,7 +456,7 @@ module.exports = function (registry) {
     registry.push('tdpScore', prefix + '_depletion_aggregated_score', function () {
       return import('./src/scores');
     }, {
-      name: 'Aggregated Depletion Screen Score',
+      name: 'Depletion Screen Score (Aggregated)',
       idtype: idType,
       primaryType: idType,
       oppositeType: 'Ensembl',
@@ -472,7 +472,7 @@ module.exports = function (registry) {
     registry.push('tdpScore', prefix + '_depletion_single_score', function () {
       return import('./src/scores/SingleScore');
     }, {
-      name: 'Single Depletion Screen Score',
+      name: 'Depletion Screen Score (Single)',
       idtype: idType,
       primaryType: idType,
       oppositeType: 'Ensembl',
@@ -493,7 +493,7 @@ module.exports = function (registry) {
     registry.push('tdpScore', prefix + '_depletion_aggregated_score', function () {
       return import('./src/scores');
     }, {
-      name: 'Aggregated Depletion Screen Score',
+      name: 'Depletion Screen Score (Aggregated)',
       idtype: 'Ensembl',
       primaryType: 'Ensembl',
       oppositeType: oppositeIDType,
@@ -509,7 +509,7 @@ module.exports = function (registry) {
     registry.push('tdpScore', prefix + '_depletion_single_score', function () {
       return import('./src/scores/SingleScore');
     }, {
-      name: 'Single Depletion Screen Score',
+      name: 'Depletion Screen Score (Single)',
       idtype: 'Ensembl',
       primaryType: 'Ensembl',
       oppositeType: oppositeIDType,
@@ -527,9 +527,10 @@ module.exports = function (registry) {
   // Common scores for all IDTypes
   ['Cellline', 'Tissue', 'Ensembl'].forEach(function (idType) {
     const prefix = idType.toLowerCase();
+    const label = idType === 'Ensembl'? 'Gene Set' : (idType === 'Tissue'?idType : 'Cell Line') + ' Panel';
     registry.push('tdpScore', prefix + 'AnnotationColumn', function() { return import('./src/scores/AnnotationColumn'); }, {
       'idtype': idType,
-      'name': 'Annotation Column'
+      'name': label + ' Annotation'
      });
 
       registry.push('tdpScoreImpl', prefix + 'AnnotationColumn', function() { return import('./src/scores/AnnotationColumn'); }, {
