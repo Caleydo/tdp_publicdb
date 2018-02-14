@@ -64,7 +64,7 @@ module.exports = function (registry) {
       selection: 'some',
       preview: function() { return import('./src/assets/previews/expression.jpg') },
       group: {
-        name: 'Sample overview',
+        name: 'Sample Overview',
         order: 10
       },
       description: 'Shows a ranking with expression scores'
@@ -79,7 +79,7 @@ module.exports = function (registry) {
       selection: 'some',
       preview: function() { return import('./src/assets/previews/copy_number.jpg') },
       group: {
-        name: 'Sample overview',
+        name: 'Sample Overview',
         order: 0
       },
       description: 'Shows a ranking with copy number scores'
@@ -94,7 +94,7 @@ module.exports = function (registry) {
       selection: 'some',
       preview: function() { return import('./src/assets/previews/mutation.jpg') },
       group: {
-        name: 'Sample overview',
+        name: 'Sample Overview',
         order: 20
       },
       description: 'Shows a ranking with mutation scores'
@@ -124,7 +124,7 @@ module.exports = function (registry) {
       selection: 'some',
       preview: function() { return import('./src/assets/previews/onco_print.jpg') },
       group: {
-        name: 'Sample overview',
+        name: 'Sample Overview',
         order: 40
       },
       description: 'Shows the OncoPrint detail view'
@@ -166,7 +166,7 @@ module.exports = function (registry) {
       selection: 'some',
       preview: function() { return import('./src/assets/previews/combined_view.jpg') },
       group: {
-        name: 'Sample overview',
+        name: 'Sample Overview',
         order: 40
       },
       filter: {
@@ -216,7 +216,28 @@ module.exports = function (registry) {
     selection: 'none',
     sampleType: 'Tissue'
   });
-  //views
+
+  // cellline views
+  registry.push('tdpView', 'cosmic', function () {
+    return import('./src/views/CosmicProxyView');
+  }, {
+     name: 'COSMIC',
+     site: '//cancer.sanger.ac.uk/cell_lines/sample/overview?id={cosmicid}&genome=37',
+     argument: 'cosmicid',
+     idtype: 'Cellline',
+     selection: 'chooser',
+     preview: function() { return import('./src/assets/previews/cosmic.jpg') },
+     group: {
+       name: 'External Resources'
+      // 'order: 0
+    },
+     filter: {
+       species: 'human'
+    },
+    description: 'Show information on your search from COSMIC'
+  });
+
+  // tissue and cellline views
   ['Tissue', 'Cellline'].forEach(function (idType) {
     const plain = idType.toLowerCase();
     const label = idType === 'Tissue' ? 'Tissues' : 'Cell lines';
@@ -231,7 +252,7 @@ module.exports = function (registry) {
       selection: 'some',
       preview: function() { return import('./src/assets/previews/expression.jpg') },
       group: {
-        name: 'Gene overview',
+        name: 'Gene Overview',
         order: 20
       },
       description: 'Shows a ranking with the expression scores'
@@ -247,7 +268,7 @@ module.exports = function (registry) {
       selection: 'some',
       preview: function() { return import('./src/assets/previews/copy_number.jpg') },
       group: {
-        name: 'Gene overview',
+        name: 'Gene Overview',
         order: 0
       },
       description: 'Shows a ranking with copy number scores'
@@ -263,7 +284,7 @@ module.exports = function (registry) {
       selection: 'some',
       preview: function() { return import('./src/assets/previews/mutation.jpg') },
       group: {
-        name: 'Gene overview',
+        name: 'Gene Overview',
         order: 20
       },
       description: 'Shows a ranking with mutation scores'
@@ -277,7 +298,7 @@ module.exports = function (registry) {
       selection: 'some',
       preview: function() { return import('./src/assets/previews/combined_view.jpg') },
       group: {
-        name: 'Gene overview',
+        name: 'Gene Overview',
         order: 40
       },
       filter: {
@@ -334,7 +355,7 @@ module.exports = function (registry) {
     registry.push('tdpScore', prefix + '_aggregated_score', function () {
       return import('./src/scores');
     }, {
-      name: 'Aggregated ' + label + ' Score',
+      name: label + ' Score (Aggregated)',
       idtype: 'Ensembl',
       primaryType: 'Ensembl',
       oppositeType: oppositeIDType
@@ -349,7 +370,7 @@ module.exports = function (registry) {
     registry.push('tdpScore', prefix + '_single_score', function () {
       return import('./src/scores/SingleScore');
     }, {
-      name: 'Single ' + label + ' Score',
+      name: label + ' Score (Single)',
       idtype: 'Ensembl',
       primaryType: 'Ensembl',
       oppositeType: oppositeIDType
@@ -370,7 +391,7 @@ module.exports = function (registry) {
     registry.push('tdpScore', prefix + '_aggregated_score', function () {
       return import('./src/scores');
     }, {
-      name: 'Aggregated Gene Score',
+      name: 'Gene Score (Aggregated)',
       idtype: idType,
       primaryType: idType,
       oppositeType: 'Ensembl'
@@ -385,7 +406,7 @@ module.exports = function (registry) {
     registry.push('tdpScore', prefix + '_single_score', function () {
       return import('./src/scores/SingleScore');
     }, {
-      name: 'Single Gene Score',
+      name: 'Gene Score (Single)',
       idtype: idType,
       primaryType: idType,
       oppositeType: 'Ensembl'
@@ -403,11 +424,11 @@ module.exports = function (registry) {
   }, {
     groups: [
       {name: 'General', order: 5},
-      {name: 'Sample overview', order: 10},
-      {name: 'Gene overview', order: 20},
+      {name: 'Sample Overview', order: 10},
+      {name: 'Gene Overview', order: 20},
       {name: 'Visualization', order: 30},
-      {name: 'Internal resources', order: 40},
-      {name: 'External resources', order: 50}
+      {name: 'Internal Resources', order: 40},
+      {name: 'External Resources', order: 50}
     ]
   });
 
@@ -422,7 +443,7 @@ module.exports = function (registry) {
     selection: 'chooser',
       preview: function() { return import('./src/assets/previews/pubmed.jpg') },
     group: {
-      name: 'External resources'
+      name: 'External Resources'
       // order: 60
     },
     description: 'Show information on your search from PubMed'
@@ -435,7 +456,7 @@ module.exports = function (registry) {
     registry.push('tdpScore', prefix + '_depletion_aggregated_score', function () {
       return import('./src/scores');
     }, {
-      name: 'Aggregated Depletion Screen Score',
+      name: 'Depletion Screen Score (Aggregated)',
       idtype: idType,
       primaryType: idType,
       oppositeType: 'Ensembl',
@@ -451,7 +472,7 @@ module.exports = function (registry) {
     registry.push('tdpScore', prefix + '_depletion_single_score', function () {
       return import('./src/scores/SingleScore');
     }, {
-      name: 'Single Depletion Screen Score',
+      name: 'Depletion Screen Score (Single)',
       idtype: idType,
       primaryType: idType,
       oppositeType: 'Ensembl',
@@ -472,7 +493,7 @@ module.exports = function (registry) {
     registry.push('tdpScore', prefix + '_depletion_aggregated_score', function () {
       return import('./src/scores');
     }, {
-      name: 'Aggregated Depletion Screen Score',
+      name: 'Depletion Screen Score (Aggregated)',
       idtype: 'Ensembl',
       primaryType: 'Ensembl',
       oppositeType: oppositeIDType,
@@ -488,7 +509,7 @@ module.exports = function (registry) {
     registry.push('tdpScore', prefix + '_depletion_single_score', function () {
       return import('./src/scores/SingleScore');
     }, {
-      name: 'Single Depletion Screen Score',
+      name: 'Depletion Screen Score (Single)',
       idtype: 'Ensembl',
       primaryType: 'Ensembl',
       oppositeType: oppositeIDType,
@@ -506,9 +527,10 @@ module.exports = function (registry) {
   // Common scores for all IDTypes
   ['Cellline', 'Tissue', 'Ensembl'].forEach(function (idType) {
     const prefix = idType.toLowerCase();
+    const label = idType === 'Ensembl'? 'Gene Set' : (idType === 'Tissue'?idType : 'Cell Line') + ' Panel';
     registry.push('tdpScore', prefix + 'AnnotationColumn', function() { return import('./src/scores/AnnotationColumn'); }, {
       'idtype': idType,
-      'name': 'Annotation Column'
+      'name': label + ' Annotation'
      });
 
       registry.push('tdpScoreImpl', prefix + 'AnnotationColumn', function() { return import('./src/scores/AnnotationColumn'); }, {

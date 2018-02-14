@@ -23,7 +23,6 @@ export function loadGeneList(ensgs: string[]): Promise<{ id: string, symbol: str
   });
 }
 
-
 export function postProcessScore(subType: IDataSubtypeConfig) {
   return (rows: IScoreRow<any>[]) => {
     if (subType.useForAggregation.indexOf('log2') !== -1) {

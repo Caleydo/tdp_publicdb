@@ -2,7 +2,7 @@
   "name": "tdp_publicdb",
   "description": "",
   "homepage": "https://phovea.caleydo.org",
-  "version": "3.1.0",
+  "version": "4.0.0",
   "private": true,
   "author": {
     "name": "The Caleydo Team",
@@ -68,15 +68,11 @@
     "dist:web": "mkdirp dist && cd build && tar cvzf ../dist/tdp_publicdb.tar.gz *",
     "dist:python": "python setup.py bdist_egg"
   },
-  "engines": {
-    "npm": ">= 3",
-    "node": ">= 6"
-  },
   "dependencies": {
-    "tdp_gene": "github:Caleydo/tdp_gene#v3.1.0"
+    "tdp_gene": "github:Caleydo/tdp_gene#v4.0.0"
   },
   "optionalDependencies": {
-    "ordino": "github:Caleydo/ordino#v3.1.0",
+    "ordino": "github:Caleydo/ordino#v4.0.0",
     "dTiles": "github:datavisyn/dTiles#develop"
   },
   "devDependencies": {

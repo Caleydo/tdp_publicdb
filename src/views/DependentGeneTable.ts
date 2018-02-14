@@ -28,7 +28,7 @@ export default class DependentGeneTable extends ARankingView {
       additionalScoreParameter: gene,
       itemName: gene.name,
       itemIDType: gene.idType
-    }, options));
+    }, Object.assign(options, { enableSidePanel: 'collapsed' })));
 
     this.dataSource = chooseDataSource(context.desc);
   }
@@ -51,7 +51,6 @@ export default class DependentGeneTable extends ARankingView {
   }
 
   protected parameterChanged(name: string) {
-    super.parameterChanged(name);
     this.rebuild();
   }
 

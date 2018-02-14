@@ -19,11 +19,12 @@ abstract class ACombinedDependentTable extends ARankingView {
 
   protected dataSource: IDataSourceConfig;
 
-  constructor(context: IViewContext, selection: ISelection, parent: HTMLElement, protected readonly dataType: IDataTypeConfig[]) {
-    super(context, selection, parent, {
+  constructor(context: IViewContext, selection: ISelection, parent: HTMLElement, protected readonly dataType: IDataTypeConfig[], options = {}) {
+    super(context, selection, parent, Object.assign(options,{
       additionalScoreParameter: () => this.oppositeDataSource,
-      itemName: () => this.oppositeDataSource.name
-    });
+      itemName: () => this.oppositeDataSource.name,
+      enableSidePanel: 'collapsed'
+    }));
 
     this.dataType = dataType;
   }
