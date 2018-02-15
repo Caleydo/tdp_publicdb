@@ -349,24 +349,10 @@ module.exports = function (registry) {
   //scores
 
   //gene_(Tissue|Celline)
-  ['Tissue', 'Cellline'].forEach(function (oppositeIDType) {
+  ['Cellline', 'Tissue'].forEach(function (oppositeIDType) {
     const prefix = 'gene_' + oppositeIDType.toLowerCase();
     const label = oppositeIDType === 'Tissue'? oppositeIDType : 'Cell Line';
-    registry.push('tdpScore', prefix + '_aggregated_score', function () {
-      return import('./src/scores');
-    }, {
-      name: label + ' Score (Aggregated)',
-      idtype: 'Ensembl',
-      primaryType: 'Ensembl',
-      oppositeType: oppositeIDType
-    });
-    registry.push('tdpScoreImpl', prefix + '_aggregated_score', function () {
-      return import('./src/scores');
-    }, {
-      factory: 'createScore',
-      primaryType: 'Ensembl',
-      oppositeType: oppositeIDType
-    });
+
     registry.push('tdpScore', prefix + '_single_score', function () {
       return import('./src/scores/SingleScore');
     }, {
@@ -382,11 +368,43 @@ module.exports = function (registry) {
       primaryType: 'Ensembl',
       oppositeType: oppositeIDType
     });
+
+    registry.push('tdpScore', prefix + '_aggregated_score', function () {
+      return import('./src/scores');
+    }, {
+      name: label + ' Score (Aggregated)',
+      idtype: 'Ensembl',
+      primaryType: 'Ensembl',
+      oppositeType: oppositeIDType
+    });
+    registry.push('tdpScoreImpl', prefix + '_aggregated_score', function () {
+      return import('./src/scores');
+    }, {
+      factory: 'createScore',
+      primaryType: 'Ensembl',
+      oppositeType: oppositeIDType
+    });
   });
 
   //(Tissue|Celline)_gene scores
-  ['Tissue', 'Cellline'].forEach(function (idType) {
+  ['Cellline', 'Tissue'].forEach(function (idType) {
     const prefix = idType.toLowerCase() + '_gene';
+
+    registry.push('tdpScore', prefix + '_single_score', function () {
+      return import('./src/scores/SingleScore');
+    }, {
+      name: 'Gene Score (Single)',
+      idtype: idType,
+      primaryType: idType,
+      oppositeType: 'Ensembl'
+    });
+    registry.push('tdpScoreImpl', prefix + '_single_score', function () {
+      return import('./src/scores/SingleScore');
+    }, {
+      factory: 'createScore',
+      primaryType: idType,
+      oppositeType: 'Ensembl'
+    });
 
     registry.push('tdpScore', prefix + '_aggregated_score', function () {
       return import('./src/scores');
@@ -398,21 +416,6 @@ module.exports = function (registry) {
     });
     registry.push('tdpScoreImpl', prefix + '_aggregated_score', function () {
       return import('./src/scores');
-    }, {
-      factory: 'createScore',
-      primaryType: idType,
-      oppositeType: 'Ensembl'
-    });
-    registry.push('tdpScore', prefix + '_single_score', function () {
-      return import('./src/scores/SingleScore');
-    }, {
-      name: 'Gene Score (Single)',
-      idtype: idType,
-      primaryType: idType,
-      oppositeType: 'Ensembl'
-    });
-    registry.push('tdpScoreImpl', prefix + '_single_score', function () {
-      return import('./src/scores/SingleScore');
     }, {
       factory: 'createScore',
       primaryType: idType,
@@ -453,22 +456,6 @@ module.exports = function (registry) {
   ['Cellline'].forEach(function (idType) {
     const prefix = idType.toLowerCase() + '_gene';
 
-    registry.push('tdpScore', prefix + '_depletion_aggregated_score', function () {
-      return import('./src/scores');
-    }, {
-      name: 'Depletion Screen Score (Aggregated)',
-      idtype: idType,
-      primaryType: idType,
-      oppositeType: 'Ensembl',
-      factory: 'createAggregatedDepletionScoreDialog'
-    });
-    registry.push('tdpScoreImpl', prefix + '_depletion_aggregated_score', function () {
-      return import('./src/scores');
-    }, {
-      primaryType: idType,
-      oppositeType: 'Ensembl',
-      factory: 'createAggregatedDepletionScore'
-    });
     registry.push('tdpScore', prefix + '_depletion_single_score', function () {
       return import('./src/scores/SingleScore');
     }, {
@@ -485,27 +472,29 @@ module.exports = function (registry) {
       primaryType: idType,
       oppositeType: 'Ensembl'
     });
-  });
 
-    //gene_(Tissue|Celline)
-  ['Cellline'].forEach(function (oppositeIDType) {
-    const prefix = 'gene_' + oppositeIDType.toLowerCase();
     registry.push('tdpScore', prefix + '_depletion_aggregated_score', function () {
       return import('./src/scores');
     }, {
       name: 'Depletion Screen Score (Aggregated)',
-      idtype: 'Ensembl',
-      primaryType: 'Ensembl',
-      oppositeType: oppositeIDType,
+      idtype: idType,
+      primaryType: idType,
+      oppositeType: 'Ensembl',
       factory: 'createAggregatedDepletionScoreDialog'
     });
     registry.push('tdpScoreImpl', prefix + '_depletion_aggregated_score', function () {
       return import('./src/scores');
     }, {
-      primaryType: 'Ensembl',
-      oppositeType: oppositeIDType,
+      primaryType: idType,
+      oppositeType: 'Ensembl',
       factory: 'createAggregatedDepletionScore'
     });
+  });
+
+    //gene_(Tissue|Celline)
+  ['Cellline'].forEach(function (oppositeIDType) {
+    const prefix = 'gene_' + oppositeIDType.toLowerCase();
+
     registry.push('tdpScore', prefix + '_depletion_single_score', function () {
       return import('./src/scores/SingleScore');
     }, {
@@ -521,6 +510,23 @@ module.exports = function (registry) {
       factory: 'createSingleDepletionScore',
       primaryType: 'Ensembl',
       oppositeType: oppositeIDType
+    });
+
+    registry.push('tdpScore', prefix + '_depletion_aggregated_score', function () {
+      return import('./src/scores');
+    }, {
+      name: 'Depletion Screen Score (Aggregated)',
+      idtype: 'Ensembl',
+      primaryType: 'Ensembl',
+      oppositeType: oppositeIDType,
+      factory: 'createAggregatedDepletionScoreDialog'
+    });
+    registry.push('tdpScoreImpl', prefix + '_depletion_aggregated_score', function () {
+      return import('./src/scores');
+    }, {
+      primaryType: 'Ensembl',
+      oppositeType: oppositeIDType,
+      factory: 'createAggregatedDepletionScore'
     });
   });
 
