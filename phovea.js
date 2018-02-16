@@ -351,7 +351,7 @@ module.exports = function (registry) {
   //gene_(Tissue|Celline)
   ['Cellline', 'Tissue'].forEach(function (oppositeIDType) {
     const prefix = 'gene_' + oppositeIDType.toLowerCase();
-    const label = oppositeIDType === 'Tissue'? oppositeIDType : 'Cell Line';
+    const label = oppositeIDType === 'Tissue'? 'Tissue Sample' : 'Cell Line';
 
     registry.push('tdpScore', prefix + '_single_score', function () {
       return import('./src/scores/SingleScore');
