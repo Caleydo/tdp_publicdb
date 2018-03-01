@@ -115,6 +115,15 @@ module.exports = function (registry) {
       description: 'Shows all information from the database for the searched genes'
     });
 
+    registry.push('tdpInstantView', 'gene_instant_view', function () {
+      return import('./src/views/GeneInstantView.ts');
+    }, {
+      name: 'Database Info',
+      idtype: 'Ensembl',
+      selection: 'multiple',
+      description: 'Shows all information from the database for the searched genes'
+    });
+
 
     registry.push('tdpView', 'celllinedb_onco_print', function () {
       return import('./src/views/OncoPrint');
