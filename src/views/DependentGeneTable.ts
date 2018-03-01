@@ -51,7 +51,7 @@ export default class DependentGeneTable extends ARankingView {
   }
 
   protected parameterChanged(name: string) {
-    this.rebuild();
+    return this.rebuild();
   }
 
   protected loadColumnDesc() {
