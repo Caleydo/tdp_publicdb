@@ -10,7 +10,7 @@ import {gene, IDataSourceConfig, tissue, cellline, dataSources, dataTypes, dataS
 import {listNamedSetsAsOptions} from 'tdp_core/src/storage';
 import {previewFilterHint} from 'tdp_core/src/lineup';
 import {getTDPData, getTDPLookupUrl, IServerColumn} from 'tdp_core/src/rest';
-import {formatGene, searchGene, validateGene} from './utils';
+import {format, formatGene, search, searchGene, validate, validateGene} from './utils';
 
 /**
  * List of ids for parameter form elements
@@ -81,7 +81,7 @@ export const FORM_GENE_NAME = {
 
 function generateNameLookup(d: IDataSourceConfig, field: string) {
   return {
-    type: FormElementType.SELECT2,
+    type: FormElementType.SELECT3,
     label: d.name,
     id: field,
     attributes: {
@@ -90,17 +90,9 @@ function generateNameLookup(d: IDataSourceConfig, field: string) {
     required: true,
     options: {
       optionsData: [],
-      ajax: {
-        url: getTDPLookupUrl(d.db, `${d.base}_items`),
-        data: (params: any) => {
-          return {
-            column: d.entityName,
-            species: getSelectedSpecies(),
-            query: params.term === undefined ? '' : params.term,
-            page: params.page === undefined ? 0 : params.page
-          };
-        }
-      }
+      search: (query, page, pageSize) => search(this.dataSource, query, page, pageSize),
+      validate: (query) => validate(this.dataSource, query),
+      format: (item, node, mode, currentSearchQuery) => format(this.dataSource, item, node, mode, currentSearchQuery)
     },
     useSession: true
   };

@@ -2,6 +2,9 @@ import {getSelectedSpecies} from 'tdp_gene/src/common';
 import {highlightMatch, ISelect3Item} from 'tdp_core/src/form/internal/Select3';
 import {gene} from './config';
 import {getTDPData, getTDPLookup} from 'tdp_core/src/rest';
+import {ICommonDBConfig} from 'tdp_gene/src/views/ACommonList';
+
+// Gene
 
 /**
  * Search and autocomplete of the input string for Select3
@@ -48,6 +51,34 @@ export function formatGene(item: ISelect3Item<IdTextPair>, node: HTMLElement, mo
   if (mode === 'result' && currentSearchQuery) {
     //highlight match
     return `${item.text.replace(currentSearchQuery!, highlightMatch)} <span class="ensg">${item.id}</span>`;
+  }
+  return item.text;
+}
+
+// Cellline and Tissue Select3 options methods
+
+export function search(dataSource: ICommonDBConfig, query: string, page: number, pageSize: number): Promise<{ more: boolean, items: Readonly<IdTextPair>[] }> {
+  return getTDPLookup(dataSource.db, `${dataSource.base}_items`, {
+    column: dataSource.entityName,
+    species: getSelectedSpecies(),
+    query,
+    page,
+    limit: pageSize
+  });
+}
+
+export function validate(dataSource: ICommonDBConfig, query: string[]): Promise<Readonly<IdTextPair>[]> {
+  return getTDPData(dataSource.db, `${dataSource.base}_items_verify/filter`, {
+    column: dataSource.entityName,
+    species: getSelectedSpecies(),
+    [`filter_${dataSource.entityName}`]: query,
+  });
+}
+
+export function format(dataSource: ICommonDBConfig, item: ISelect3Item<IdTextPair>, node: HTMLElement, mode: 'result' | 'selection', currentSearchQuery?: RegExp) {
+  if (mode === 'result' && currentSearchQuery) {
+    //highlight match
+    return `${item.text.replace(currentSearchQuery!, highlightMatch)}`;
   }
   return item.text;
 }
