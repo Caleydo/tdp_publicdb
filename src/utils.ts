@@ -6,10 +6,10 @@ import {getTDPData, getTDPLookup} from 'tdp_core/src/rest';
 /**
  * Search and autocomplete of the input string for Select3
  *
- * @param {string} query
- * @param {number} page
- * @param {number} pageSize
- * @returns {Promise<{more: boolean; items: Readonly<IdTextPair>[]}>}
+ * @param {string} query An array of gene symbols
+ * @param {number} page Server-side pagination page number
+ * @param {number} pageSize Server-side pagination page size
+ * @returns {Promise<{more: boolean; items: Readonly<IdTextPair>[]}>} Select3 conformant data structure.
  */
 export function searchGene(query: string, page: number, pageSize: number): Promise<{ more: boolean, items: Readonly<IdTextPair>[] }> {
   return getTDPLookup(gene.db, `${gene.base}_items`, {
