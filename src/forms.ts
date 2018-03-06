@@ -10,6 +10,7 @@ import {gene, IDataSourceConfig, tissue, cellline, dataSources, dataTypes, dataS
 import {listNamedSetsAsOptions} from 'tdp_core/src/storage';
 import {previewFilterHint} from 'tdp_core/src/lineup';
 import {getTDPData, getTDPLookupUrl, IServerColumn} from 'tdp_core/src/rest';
+import {formatGene, searchGene, validateGene} from './utils';
 
 /**
  * List of ids for parameter form elements
@@ -62,7 +63,7 @@ function buildPredefinedNamedSets(ds: IDataSourceConfig) {
 }
 
 export const FORM_GENE_NAME = {
-  type: FormElementType.SELECT2,
+  type: FormElementType.SELECT3,
   label: 'Gene Symbol',
   id: ParameterFormIds.GENE_SYMBOL,
   attributes: {
@@ -71,19 +72,9 @@ export const FORM_GENE_NAME = {
   required: true,
   options: {
     optionsData: [],
-    ajax: {
-      url: getTDPLookupUrl(gene.db, `${gene.base}_items`),
-      data: (params: any) => {
-        return {
-          column: 'symbol',
-          species: getSelectedSpecies(),
-          query: params.term === undefined ? '' : params.term,
-          page: params.page === undefined ? 0 : params.page
-        };
-      }
-    },
-    templateResult: (item: any) => (item.id) ? `${item.text} <span class="ensg">${item.id}</span>` : item.text,
-    templateSelection: (item: any) => (item.id) ? `${item.text} <span class="ensg">${item.id}</span>` : item.text
+    search: searchGene,
+    validate: validateGene,
+    format: formatGene
   },
   useSession: true
 };
