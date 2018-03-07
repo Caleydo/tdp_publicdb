@@ -1,6 +1,6 @@
 import {getSelectedSpecies} from 'tdp_gene/src/common';
 import {highlightMatch, ISelect3Item} from 'tdp_core/src/form/internal/Select3';
-import {gene} from './config';
+import {gene, IDataSourceConfig} from './config';
 import {getTDPData, getTDPLookup} from 'tdp_core/src/rest';
 import {ICommonDBConfig} from 'tdp_gene/src/views/ACommonList';
 
@@ -57,9 +57,9 @@ export function formatGene(item: ISelect3Item<IdTextPair>, node: HTMLElement, mo
 
 // Cellline and Tissue Select3 options methods
 
-export function search(dataSource: ICommonDBConfig, query: string, page: number, pageSize: number): Promise<{ more: boolean, items: Readonly<IdTextPair>[] }> {
-  return getTDPLookup(dataSource.db, `${dataSource.base}_items`, {
-    column: dataSource.entityName,
+export function search(config: IDataSourceConfig | ICommonDBConfig, query: string, page: number, pageSize: number): Promise<{ more: boolean, items: Readonly<IdTextPair>[] }> {
+  return getTDPLookup(config.db, `${config.base}_items`, {
+    column: config.entityName,
     species: getSelectedSpecies(),
     query,
     page,
@@ -67,15 +67,15 @@ export function search(dataSource: ICommonDBConfig, query: string, page: number,
   });
 }
 
-export function validate(dataSource: ICommonDBConfig, query: string[]): Promise<Readonly<IdTextPair>[]> {
-  return getTDPData(dataSource.db, `${dataSource.base}_items_verify/filter`, {
-    column: dataSource.entityName,
+export function validate(config: IDataSourceConfig | ICommonDBConfig, query: string[]): Promise<Readonly<IdTextPair>[]> {
+  return getTDPData(config.db, `${config.base}_items_verify/filter`, {
+    column: config.entityName,
     species: getSelectedSpecies(),
-    [`filter_${dataSource.entityName}`]: query,
+    [`filter_${config.entityName}`]: query,
   });
 }
 
-export function format(dataSource: ICommonDBConfig, item: ISelect3Item<IdTextPair>, node: HTMLElement, mode: 'result' | 'selection', currentSearchQuery?: RegExp) {
+export function format(item: ISelect3Item<IdTextPair>, node: HTMLElement, mode: 'result' | 'selection', currentSearchQuery?: RegExp) {
   if (mode === 'result' && currentSearchQuery) {
     //highlight match
     return `${item.text.replace(currentSearchQuery!, highlightMatch)}`;

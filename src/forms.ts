@@ -90,9 +90,9 @@ function generateNameLookup(d: IDataSourceConfig, field: string) {
     required: true,
     options: {
       optionsData: [],
-      search: (query, page, pageSize) => search(this.dataSource, query, page, pageSize),
-      validate: (query) => validate(this.dataSource, query),
-      format: (item, node, mode, currentSearchQuery) => format(this.dataSource, item, node, mode, currentSearchQuery)
+      search: (query, page, pageSize) => search(d, query, page, pageSize),
+      validate: (query) => validate(d, query),
+      format: format
     },
     useSession: true
   };
