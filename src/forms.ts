@@ -343,19 +343,11 @@ function generateFilter(d: IDataSourceConfig) {
       }, {
         name: d.name,
         value: d.entityName,
-        type: FormElementType.SELECT2,
+        type: FormElementType.SELECT3,
         multiple: true,
-        ajax: {
-          url: getTDPLookupUrl(gene.db, `${d.base}_items`),
-          data: (params: any) => {
-            return {
-              column: d.entityName,
-              species: getSelectedSpecies(),
-              query: params.term === undefined ? '' : params.term,
-              page: params.page === undefined ? 0 : params.page
-            };
-          }
-        }
+        search: (query, page, pageSize) => search(d, query, page, pageSize),
+        validate: (query) => validate(d, query),
+        format: format,
       }]
     }
   };
