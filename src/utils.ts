@@ -15,7 +15,7 @@ import {ICommonDBConfig} from 'tdp_gene/src/views/ACommonList';
  * @returns {Promise<{more: boolean; items: Readonly<IdTextPair>[]}>} Select3 conformant data structure.
  */
 export function searchGene(query: string, page: number, pageSize: number): Promise<{ more: boolean, items: Readonly<IdTextPair>[] }> {
-  return getTDPLookup(gene.db, `${gene.base}_items`, {
+  return getTDPLookup(gene.db, `${gene.base}_gene_items`, {
     column: 'symbol',
     species: getSelectedSpecies(),
     query,
@@ -34,7 +34,7 @@ export function validateGene(query: string[]): Promise<Readonly<IdTextPair>[]> {
   return getTDPData(gene.db, `${gene.base}_gene_items_verify/filter`, {
     column: 'symbol',
     species: getSelectedSpecies(),
-    [`filter_symbol`]: query,
+    filter_symbol: query,
   });
 }
 
@@ -48,7 +48,7 @@ export function validateGene(query: string[]): Promise<Readonly<IdTextPair>[]> {
  * @returns {string} The string how the gene is actually rendered.
  */
 export function formatGene(item: ISelect3Item<IdTextPair>, node: HTMLElement, mode: 'result' | 'selection', currentSearchQuery?: RegExp) {
-  if (mode === 'result' && currentSearchQuery) {
+  if (mode === 'result') {
     //highlight match
     return `${item.text.replace(currentSearchQuery!, highlightMatch)} <span class="ensg">${item.id}</span>`;
   }
