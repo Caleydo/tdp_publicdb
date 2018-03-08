@@ -158,21 +158,11 @@ export const FORM_GENE_FILTER = {
     }, {
       name: 'Gene Symbol',
       value: 'ensg',
-      type: FormElementType.SELECT2,
+      type: FormElementType.SELECT3,
       multiple: true,
-      ajax: {
-        url: getTDPLookupUrl(gene.db, 'gene_items'),
-        data: (params: any) => {
-          return {
-            column: 'symbol',
-            species: getSelectedSpecies(),
-            query: params.term === undefined ? '' : params.term,
-            page: params.page === undefined ? 0 : params.page
-          };
-        }
-      },
-      templateResult: (item: any) => (item.id) ? `${item.text} <span class="ensg">${item.id}</span>` : item.text,
-      templateSelection: (item: any) => (item.id) ? `${item.text} <span class="ensg">${item.id}</span>` : item.text
+      search: searchGene,
+      validate: validateGene,
+      format: formatGene,
     }]
   }
 };
