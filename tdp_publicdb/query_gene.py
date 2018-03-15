@@ -7,7 +7,7 @@ def create_gene(views, gene):
       SELECT genesetname AS id, species AS description, species FROM public.tdp_geneset ORDER BY genesetname ASC""") \
     .build()
 
-  views[gene.prefix + '_gene_items'] = DBViewBuilder().idtype(gene.idtype).query("""
+  views[gene.prefix + '_gene_items'] = DBViewBuilder('helper').idtype(gene.idtype).query("""
           SELECT {g.id} as id, symbol AS text
           FROM {g.table} WHERE (LOWER(symbol) LIKE :query OR LOWER(ensg) LIKE :query) AND species = :species
           ORDER BY symbol ASC""".format(g=gene)) \
@@ -17,7 +17,7 @@ def create_gene(views, gene):
     .arg('species') \
     .build()
 
-  views[gene.prefix + '_gene_items_verify'] = DBViewBuilder().idtype(gene.idtype).query("""
+  views[gene.prefix + '_gene_items_verify'] = DBViewBuilder('helper').idtype(gene.idtype).query("""
           SELECT {g.id} as id, symbol AS text
           FROM {g.table} WHERE species = :species""".format(g=gene)) \
     .call(inject_where) \
@@ -25,7 +25,7 @@ def create_gene(views, gene):
     .filter('symbol', '(lower(ensg) {operator} {value} or lower(symbol) {operator} {value})') \
     .build()
 
-  views[gene.prefix + '_map_ensgs'] = DBViewBuilder().idtype(gene.idtype).query("""
+  views[gene.prefix + '_map_ensgs'] = DBViewBuilder('helper').idtype(gene.idtype).query("""
         SELECT {g.id} AS id, symbol
         FROM {g.table} WHERE {g.id} IN ({{ensgs}}) AND species = :species
         ORDER BY symbol ASC""".format(g=gene)) \
@@ -34,7 +34,7 @@ def create_gene(views, gene):
     .arg('species') \
     .build()
 
-  views[gene.prefix + '_match_symbols'] = DBViewBuilder().query("""
+  views[gene.prefix + '_match_symbols'] = DBViewBuilder('helper').query("""
         SELECT COUNT(*) as matches FROM public.tdp_gene
       """) \
     .call(inject_where) \

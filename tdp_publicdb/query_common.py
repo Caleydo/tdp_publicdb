@@ -17,7 +17,7 @@ def create_common(views, entity):
 
   # lookup for the id and primary names the table
 
-  views[entity.prefix + '_items'] = DBViewBuilder().idtype(entity.idtype).query("""
+  views[entity.prefix + '_items'] = DBViewBuilder('helper').idtype(entity.idtype).query("""
       SELECT {id} as id, {{column}} AS text
       FROM {table} WHERE LOWER({{column}}) LIKE :query AND species = :species
       ORDER BY {{column}} ASC""".format(table=entity.table, id=entity.id)) \
@@ -27,7 +27,7 @@ def create_common(views, entity):
     .arg('query').arg('species') \
     .build()
 
-  views[entity.prefix + '_items_verify'] = DBViewBuilder().idtype(entity.idtype).query("""
+  views[entity.prefix + '_items_verify'] = DBViewBuilder('helper').idtype(entity.idtype).query("""
       SELECT {id} as id, {{column}} AS text
        FROM {table} WHERE species = :species""".format(table=entity.table, id=entity.id)) \
     .replace('column', entity.columns) \
@@ -38,7 +38,7 @@ def create_common(views, entity):
     .build()
 
   # lookup for unique / distinct categorical values in a table
-  views[entity.prefix + '_unique'] = DBViewBuilder().query("""
+  views[entity.prefix + '_unique'] = DBViewBuilder('helper').query("""
         SELECT s as id, s as text
         FROM (SELECT distinct {{column}} AS s
               FROM {table} WHERE LOWER({{column}}) LIKE :query AND species = :species)
@@ -49,7 +49,7 @@ def create_common(views, entity):
     .build()
 
   # lookup for unique / distinct categorical values in a table
-  views[entity.prefix + '_unique_all'] = DBViewBuilder().query("""
+  views[entity.prefix + '_unique_all'] = DBViewBuilder('helper').query("""
         SELECT distinct {{column}} AS text
         FROM {table} WHERE species = :species AND {{column}} is not null
         ORDER BY {{column}} ASC""".format(table=entity.table)) \
@@ -58,14 +58,14 @@ def create_common(views, entity):
     .build()
 
   # use in database info
-  views[entity.prefix + '_all_columns'] = DBViewBuilder().query("""
+  views[entity.prefix + '_all_columns'] = DBViewBuilder('helper').query("""
     SELECT {sort} as id, * FROM {table}
   """.format(sort=entity.sort, table=entity.table)) \
     .call(inject_where) \
     .build()
 
   # used for guessing id types
-  views[entity.prefix + '_check_ids'] = DBViewBuilder().query("""
+  views[entity.prefix + '_check_ids'] = DBViewBuilder('helper').query("""
     SELECT COUNT(*) AS matches FROM {table}
   """.format(table=entity.table)) \
     .call(inject_where) \
