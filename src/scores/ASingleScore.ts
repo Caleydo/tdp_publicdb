@@ -33,7 +33,7 @@ abstract class ASingleScore extends AScore implements IScore<any> {
   }
 
   createDesc(): any {
-    return createDesc(this.dataSubType.type, `${this.dataSubType.name} of ${this.parameter.name.text}`, this.dataSubType,
+    return createDesc(this.dataSubType.type, `${this.parameter.name.text}: ${this.dataSubType.name}`, this.dataSubType,
     `${this.oppositeDataSource.name} Name: "${this.parameter.name.text}"\nData Type: ${this.dataType.name}\nData Subtype: ${this.dataSubType.name}`);
   }
 
