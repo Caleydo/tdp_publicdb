@@ -11,7 +11,7 @@ module.exports = function (registry) {
 
   /// #if include('ordino')
   registry.push('ordinoStartMenuSubSection', 'celllinedb_genes_start', function () {
-    return import('./src/menu/GeneSubSection');
+    return import ('./src/menu/GeneSubSection');
   }, {
     name: 'Genes',
     viewId: 'celllinedb_start',
@@ -22,7 +22,7 @@ module.exports = function (registry) {
   });
 
   registry.push('ordinoStartMenuSubSection', 'bioinfodb_tissue_start', function () {
-    return import('./src/menu/SampleSubSection');
+    return import ('./src/menu/SampleSubSection');
   }, {
     name: 'Tissues',
     viewId: 'bioinfodb_tissue_start',
@@ -34,7 +34,7 @@ module.exports = function (registry) {
   });
 
   registry.push('ordinoStartMenuSubSection', 'celllinedb_cellline_start', function () {
-    return import('./src/menu/SampleSubSection');
+    return import ('./src/menu/SampleSubSection');
   }, {
     name: 'Cell Lines',
     viewId: 'celllinedb_cellline',
@@ -48,7 +48,7 @@ module.exports = function (registry) {
   //gene views
   {
     registry.push('tdpView', 'celllinedb_start', function () {
-      return import('./src/views/GeneList');
+      return import ('./src/views/GeneList');
     }, {
       name: 'Genes',
       idtype: 'Ensembl',
@@ -56,67 +56,79 @@ module.exports = function (registry) {
     });
 
     registry.push('tdpView', 'expressiontable', function () {
-      return import('./src/views/DependentSampleTable');
+      return import ('./src/views/DependentSampleTable');
     }, {
       name: 'Expression',
       factory: 'createExpressionTable',
       idtype: 'Ensembl',
       selection: 'some',
-      preview: function() { return import('./src/assets/previews/expression.jpg') },
+      preview: function () {
+        return import ('./src/assets/previews/expression.jpg')
+      },
       group: {
         name: 'Sample Overview',
         order: 10
       },
-      description: 'Shows a ranking with expression scores'
+      description: 'Shows a ranking with expression scores',
+      topics: ['tcga', 'tissue', 'cellline', 'expression']
     });
 
     registry.push('tdpView', 'copynumbertable', function () {
-      return import('./src/views/DependentSampleTable');
+      return import ('./src/views/DependentSampleTable');
     }, {
       name: 'Copy Number',
       factory: 'createCopyNumberTable',
       idtype: 'Ensembl',
       selection: 'some',
-      preview: function() { return import('./src/assets/previews/copy_number.jpg') },
+      preview: function () {
+        return import ('./src/assets/previews/copy_number.jpg')
+      },
       group: {
         name: 'Sample Overview',
         order: 0
       },
-      description: 'Shows a ranking with copy number scores'
+      description: 'Shows a ranking with copy number scores',
+      topics: ['tcga', 'tissue', 'cellline', 'copy-number']
     });
 
     registry.push('tdpView', 'mutationtable', function () {
-      return import('./src/views/DependentSampleTable');
+      return import ('./src/views/DependentSampleTable');
     }, {
       name: 'Mutation',
       factory: 'createMutationTable',
       idtype: 'Ensembl',
       selection: 'some',
-      preview: function() { return import('./src/assets/previews/mutation.jpg') },
+      preview: function () {
+        return import ('./src/assets/previews/mutation.jpg')
+      },
       group: {
         name: 'Sample Overview',
         order: 20
       },
-      description: 'Shows a ranking with mutation scores'
+      description: 'Shows a ranking with mutation scores',
+      topics: ['tcga', 'tissue', 'cellline', 'mutation']
     });
 
     registry.push('tdpView', 'gene_generic_detail_view', function () {
-      return import('./src/views/InfoTable.ts');
+      return import ('./src/views/InfoTable.ts');
     }, {
       name: 'Database Info',
       factory: 'new GeneInfoTable',
       idtype: 'Ensembl',
       selection: 'multiple',
-      preview: function() { return import('./src/assets/previews/database_info.jpg') },
+      preview: function () {
+        return import ('./src/assets/previews/database_info.jpg')
+      },
       group: {
         name: 'General',
         order: 0
       },
-      description: 'Shows all information from the database for the searched genes'
+      description: 'Shows all information from the database for the searched genes',
+      topics: ['tcga', 'information']
     });
 
     registry.push('tdpInstantView', 'gene_instant_view', function () {
-      return import('./src/views/GeneInstantView.ts');
+      return import ('./src/views/GeneInstantView.ts');
     }, {
       name: 'Database Info',
       idtype: 'Ensembl',
@@ -126,54 +138,65 @@ module.exports = function (registry) {
 
 
     registry.push('tdpView', 'celllinedb_onco_print', function () {
-      return import('./src/views/OncoPrint');
+      return import ('./src/views/OncoPrint');
     }, {
       name: 'OncoPrint',
       idtype: 'Ensembl',
       selection: 'some',
-      preview: function() { return import('./src/assets/previews/onco_print.jpg') },
+      preview: function () {
+        return import ('./src/assets/previews/onco_print.jpg')
+      },
       group: {
         name: 'Sample Overview',
         order: 40
       },
-      description: 'Shows the OncoPrint detail view'
+      description: 'Shows the OncoPrint detail view',
+      topics: ['tcga', 'tissue', 'cellline', 'expression', 'copy-number', 'mutation']
     });
 
     registry.push('tdpView', 'celllinedb_expression_vs_copynumber', function () {
-      return import('./src/views/ExpressionVsCopyNumber');
+      return import ('./src/views/ExpressionVsCopyNumber');
     }, {
       name: 'Expression vs. Copy Number',
       idtype: 'Ensembl',
       selection: 'some',
-      preview: function() { return import('./src/assets/previews/expression_vs_copynumber.jpg') },
+      preview: function () {
+        return import ('./src/assets/previews/expression_vs_copynumber.jpg')
+      },
       group: {
         name: 'Visualization',
         order: 10
       },
-      description: 'Renders scatterplots showing the relationship between the expression and copy number values'
+      description: 'Renders scatterplots showing the relationship between the expression and copy number values',
+      topics: ['tcga', 'tissue', 'cellline', 'expression', 'copy-number']
     });
 
     registry.push('tdpView', 'celllinedb_co_expression', function () {
-      return import('./src/views/CoExpression');
+      return import ('./src/views/CoExpression');
     }, {
       name: 'Co-Expression',
       idtype: 'Ensembl',
       selection: 'some',
-      preview: function() { return import('./src/assets/previews/co_expression.jpg') },
+      preview: function () {
+        return import ('./src/assets/previews/co_expression.jpg')
+      },
       group: {
         name: 'Visualization',
         order: 0
       },
-      description: 'Renders scatterplots showing the relationship between expression values of different genes'
+      description: 'Renders scatterplots showing the relationship between expression values of different genes',
+      topics: ['tcga', 'tissue', 'cellline', 'expression']
     });
 
     registry.push('tdpView', 'gene_combined_lineup', function () {
-      return import('./src/views/CombinedDependentSampleTable');
+      return import ('./src/views/CombinedDependentSampleTable');
     }, {
       name: 'Combined View',
       idtype: 'Ensembl',
       selection: 'some',
-      preview: function() { return import('./src/assets/previews/combined_view.jpg') },
+      preview: function () {
+        return import ('./src/assets/previews/combined_view.jpg')
+      },
       group: {
         name: 'Sample Overview',
         order: 40
@@ -181,12 +204,13 @@ module.exports = function (registry) {
       filter: {
         species: 'human'
       },
-      description: 'Shows a ranking with expression, copy number and mutation scores'
+      description: 'Shows a ranking with expression, copy number and mutation scores',
+      topics: ['tcga', 'tissue', 'cellline', 'expression', 'copy-number', 'mutation']
     });
 
     /// #if include('uploader')
     registry.push('idTypeDetector', 'geneSymbol', function () {
-      return import('./src/GeneSymbolDetector');
+      return import ('./src/GeneSymbolDetector');
     }, {
       factory: 'human',
       name: 'GeneSymbol',
@@ -199,7 +223,7 @@ module.exports = function (registry) {
 
     /// #if include('dTiles')
     registry.push('dTilesSearchProvider', 'gene', function () {
-      return import('./src/SearchProvider')
+      return import ('./src/SearchProvider')
     }, {
       factory: 'createGene',
       idType: 'Ensembl',
@@ -210,7 +234,7 @@ module.exports = function (registry) {
 
 
   registry.push('tdpView', 'celllinedb_cellline', function () {
-    return import('./src/views/CelllineList');
+    return import ('./src/views/CelllineList');
   }, {
     name: 'Cell lines',
     idtype: 'Cellline',
@@ -218,7 +242,7 @@ module.exports = function (registry) {
     sampleType: 'Cellline'
   });
   registry.push('tdpView', 'bioinfodb_tissue_start', function () {
-    return import('./src/views/TissueList');
+    return import ('./src/views/TissueList');
   }, {
     name: 'Tissues',
     idtype: 'Tissue',
@@ -228,22 +252,25 @@ module.exports = function (registry) {
 
   // cellline views
   registry.push('tdpView', 'cosmic', function () {
-    return import('./src/views/CosmicProxyView');
+    return import ('./src/views/CosmicProxyView');
   }, {
-     name: 'COSMIC',
-     site: '//cancer.sanger.ac.uk/cell_lines/sample/overview?id={cosmicid}&genome=37',
-     argument: 'cosmicid',
-     idtype: 'Cellline',
-     selection: 'chooser',
-     preview: function() { return import('./src/assets/previews/cosmic.jpg') },
-     group: {
-       name: 'External Resources'
+    name: 'COSMIC',
+    site: '//cancer.sanger.ac.uk/cell_lines/sample/overview?id={cosmicid}&genome=37',
+    argument: 'cosmicid',
+    idtype: 'Cellline',
+    selection: 'chooser',
+    preview: function () {
+      return import ('./src/assets/previews/cosmic.jpg')
+    },
+    group: {
+      name: 'External Resources'
       // 'order: 0
     },
-     filter: {
-       species: 'human'
+    filter: {
+      species: 'human'
     },
-    description: 'Show information on your search from COSMIC'
+    description: 'Show information on your search from COSMIC',
+    topics: ['cellline', 'external']
   });
 
   // tissue and cellline views
@@ -252,60 +279,71 @@ module.exports = function (registry) {
     const label = idType === 'Tissue' ? 'Tissues' : 'Cell lines';
 
     registry.push('tdpView', plain + '_inverted_expressiontable', function () {
-      return import('./src/views/DependentGeneTable');
+      return import ('./src/views/DependentGeneTable');
     }, {
       name: 'Expression',
       factory: 'createExpressionTable',
       idtype: idType,
       sampleType: idType,
       selection: 'some',
-      preview: function() { return import('./src/assets/previews/expression.jpg') },
+      preview: function () {
+        return import ('./src/assets/previews/expression.jpg')
+      },
       group: {
         name: 'Gene Overview',
         order: 20
       },
-      description: 'Shows a ranking with the expression scores'
+      description: 'Shows a ranking with the expression scores',
+      topics: ['tcga', plain, 'expression']
     });
 
     registry.push('tdpView', plain + '_inverted_copynumbertable', function () {
-      return import('./src/views/DependentGeneTable');
+      return import ('./src/views/DependentGeneTable');
     }, {
       name: 'Copy Number',
       factory: 'createCopyNumberTable',
       idtype: idType,
       sampleType: idType,
       selection: 'some',
-      preview: function() { return import('./src/assets/previews/copy_number.jpg') },
+      preview: function () {
+        return import ('./src/assets/previews/copy_number.jpg')
+      },
       group: {
         name: 'Gene Overview',
         order: 0
       },
-      description: 'Shows a ranking with copy number scores'
+      description: 'Shows a ranking with copy number scores',
+      topics: ['tcga', plain, 'copy-number']
     });
 
     registry.push('tdpView', plain + '_inverted_mutationtable', function () {
-      return import('./src/views/DependentGeneTable');
+      return import ('./src/views/DependentGeneTable');
     }, {
       name: 'Mutation',
       factory: 'createMutationTable',
       idtype: idType,
       sampleType: idType,
       selection: 'some',
-      preview: function() { return import('./src/assets/previews/mutation.jpg') },
+      preview: function () {
+        return import ('./src/assets/previews/mutation.jpg')
+      },
       group: {
         name: 'Gene Overview',
         order: 20
       },
-      description: 'Shows a ranking with mutation scores'
+      description: 'Shows a ranking with mutation scores',
+      topics: ['tcga', plain, 'mutation']
     });
 
     registry.push('tdpView', plain + '_combined_lineup', function () {
-      return import('./src/views/CombinedDependentGeneTable');
+      return import ('./src/views/CombinedDependentGeneTable');
     }, {
       name: 'Combined View',
       idtype: idType,
       selection: 'some',
-      preview: function() { return import('./src/assets/previews/combined_view.jpg') },
+      preview: function () {
+        return import ('./src/assets/previews/combined_view.jpg')
+      },
       group: {
         name: 'Gene Overview',
         order: 40
@@ -313,28 +351,32 @@ module.exports = function (registry) {
       filter: {
         species: 'human'
       },
-      description: 'Shows a ranking with expression, copy number and mutation scores'
+      description: 'Shows a ranking with expression, copy number and mutation scores',
+      topics: ['tcga', plain, 'expression', 'copy-number', 'mutation']
     });
 
     registry.push('tdpView', plain + '_generic_detail_view', function () {
-      return import('./src/views/InfoTable.ts');
+      return import ('./src/views/InfoTable.ts');
     }, {
       name: 'Database Info',
       factory: 'new ' + idType + 'InfoTable',
       idtype: idType,
       selection: 'multiple',
-      preview: function() { return import('./src/assets/previews/database_info.jpg') },
+      preview: function () {
+        return import ('./src/assets/previews/database_info.jpg')
+      },
       group: {
         name: 'General',
         order: 0
       },
-      description: 'Shows all information from the database'
+      description: 'Shows all information from the database',
+      topics: [plain, 'information']
     });
 
 
     /// #if include('dTiles')
     registry.push('dTilesSearchProvider', idType.toLowerCase(), function () {
-      return import('./src/SearchProvider')
+      return import ('./src/SearchProvider')
     }, {
       factory: 'create' + idType,
       idType: idType,
@@ -344,7 +386,7 @@ module.exports = function (registry) {
 
 
     registry.push('idTypeDetector', plain + 'IDTypeDetector', function () {
-      return import('./src/IDTypeDetector');
+      return import ('./src/IDTypeDetector');
     }, {
       factory: 'create',
       name: label + ' IDType Detector',
@@ -360,10 +402,10 @@ module.exports = function (registry) {
   //gene_(Tissue|Celline)
   ['Cellline', 'Tissue'].forEach(function (oppositeIDType) {
     const prefix = 'gene_' + oppositeIDType.toLowerCase();
-    const label = oppositeIDType === 'Tissue'? 'Tissue Sample' : 'Cell Line';
+    const label = oppositeIDType === 'Tissue' ? 'Tissue Sample' : 'Cell Line';
 
     registry.push('tdpScore', prefix + '_single_score', function () {
-      return import('./src/scores/SingleScore');
+      return import ('./src/scores/SingleScore');
     }, {
       name: label + ' Score (Single)',
       idtype: 'Ensembl',
@@ -371,7 +413,7 @@ module.exports = function (registry) {
       oppositeType: oppositeIDType
     });
     registry.push('tdpScoreImpl', prefix + '_single_score', function () {
-      return import('./src/scores/SingleScore');
+      return import ('./src/scores/SingleScore');
     }, {
       factory: 'createScore',
       primaryType: 'Ensembl',
@@ -379,7 +421,7 @@ module.exports = function (registry) {
     });
 
     registry.push('tdpScore', prefix + '_aggregated_score', function () {
-      return import('./src/scores');
+      return import ('./src/scores');
     }, {
       name: label + ' Score (Aggregated)',
       idtype: 'Ensembl',
@@ -387,7 +429,7 @@ module.exports = function (registry) {
       oppositeType: oppositeIDType
     });
     registry.push('tdpScoreImpl', prefix + '_aggregated_score', function () {
-      return import('./src/scores');
+      return import ('./src/scores');
     }, {
       factory: 'createScore',
       primaryType: 'Ensembl',
@@ -400,7 +442,7 @@ module.exports = function (registry) {
     const prefix = idType.toLowerCase() + '_gene';
 
     registry.push('tdpScore', prefix + '_single_score', function () {
-      return import('./src/scores/SingleScore');
+      return import ('./src/scores/SingleScore');
     }, {
       name: 'Gene Score (Single)',
       idtype: idType,
@@ -408,7 +450,7 @@ module.exports = function (registry) {
       oppositeType: 'Ensembl'
     });
     registry.push('tdpScoreImpl', prefix + '_single_score', function () {
-      return import('./src/scores/SingleScore');
+      return import ('./src/scores/SingleScore');
     }, {
       factory: 'createScore',
       primaryType: idType,
@@ -416,7 +458,7 @@ module.exports = function (registry) {
     });
 
     registry.push('tdpScore', prefix + '_aggregated_score', function () {
-      return import('./src/scores');
+      return import ('./src/scores');
     }, {
       name: 'Gene Score (Aggregated)',
       idtype: idType,
@@ -424,7 +466,7 @@ module.exports = function (registry) {
       oppositeType: 'Ensembl'
     });
     registry.push('tdpScoreImpl', prefix + '_aggregated_score', function () {
-      return import('./src/scores');
+      return import ('./src/scores');
     }, {
       factory: 'createScore',
       primaryType: idType,
@@ -432,20 +474,36 @@ module.exports = function (registry) {
     });
   });
 
-  registry.push('tdpViewGroups', 'chooser_header_order', function () {
-  }, {
-    groups: [
-      {name: 'General', order: 5},
-      {name: 'Sample Overview', order: 10},
-      {name: 'Gene Overview', order: 20},
-      {name: 'Visualization', order: 30},
-      {name: 'Internal Resources', order: 40},
-      {name: 'External Resources', order: 50}
+  registry.push('tdpViewGroups', 'chooser_header_order', function () {}, {
+    groups: [{
+        name: 'General',
+        order: 5
+      },
+      {
+        name: 'Sample Overview',
+        order: 10
+      },
+      {
+        name: 'Gene Overview',
+        order: 20
+      },
+      {
+        name: 'Visualization',
+        order: 30
+      },
+      {
+        name: 'Internal Resources',
+        order: 40
+      },
+      {
+        name: 'External Resources',
+        order: 50
+      }
     ]
   });
 
   registry.push('tdpView', 'pubmed', function () {
-    return import('./src/views/GeneSymbolProxyView');
+    return import ('./src/views/GeneSymbolProxyView');
   }, {
     name: 'PubMed',
     factory: 'new',
@@ -453,7 +511,9 @@ module.exports = function (registry) {
     argument: 'gene',
     idtype: 'Ensembl',
     selection: 'chooser',
-      preview: function() { return import('./src/assets/previews/pubmed.jpg') },
+    preview: function () {
+      return import ('./src/assets/previews/pubmed.jpg')
+    },
     group: {
       name: 'External Resources'
       // order: 60
@@ -466,7 +526,7 @@ module.exports = function (registry) {
     const prefix = idType.toLowerCase() + '_gene';
 
     registry.push('tdpScore', prefix + '_depletion_single_score', function () {
-      return import('./src/scores/SingleScore');
+      return import ('./src/scores/SingleScore');
     }, {
       name: 'Depletion Screen Score (Single)',
       idtype: idType,
@@ -475,7 +535,7 @@ module.exports = function (registry) {
       factory: 'createSingleDepletionScoreDialog'
     });
     registry.push('tdpScoreImpl', prefix + '_depletion_single_score', function () {
-      return import('./src/scores/SingleScore');
+      return import ('./src/scores/SingleScore');
     }, {
       factory: 'createSingleDepletionScore',
       primaryType: idType,
@@ -483,7 +543,7 @@ module.exports = function (registry) {
     });
 
     registry.push('tdpScore', prefix + '_depletion_aggregated_score', function () {
-      return import('./src/scores');
+      return import ('./src/scores');
     }, {
       name: 'Depletion Screen Score (Aggregated)',
       idtype: idType,
@@ -492,7 +552,7 @@ module.exports = function (registry) {
       factory: 'createAggregatedDepletionScoreDialog'
     });
     registry.push('tdpScoreImpl', prefix + '_depletion_aggregated_score', function () {
-      return import('./src/scores');
+      return import ('./src/scores');
     }, {
       primaryType: idType,
       oppositeType: 'Ensembl',
@@ -500,12 +560,12 @@ module.exports = function (registry) {
     });
   });
 
-    //gene_(Tissue|Celline)
+  //gene_(Tissue|Celline)
   ['Cellline'].forEach(function (oppositeIDType) {
     const prefix = 'gene_' + oppositeIDType.toLowerCase();
 
     registry.push('tdpScore', prefix + '_depletion_single_score', function () {
-      return import('./src/scores/SingleScore');
+      return import ('./src/scores/SingleScore');
     }, {
       name: 'Depletion Screen Score (Single)',
       idtype: 'Ensembl',
@@ -514,7 +574,7 @@ module.exports = function (registry) {
       factory: 'createSingleDepletionScoreDialog'
     });
     registry.push('tdpScoreImpl', prefix + '_depletion_single_score', function () {
-      return import('./src/scores/SingleScore');
+      return import ('./src/scores/SingleScore');
     }, {
       factory: 'createSingleDepletionScore',
       primaryType: 'Ensembl',
@@ -522,7 +582,7 @@ module.exports = function (registry) {
     });
 
     registry.push('tdpScore', prefix + '_depletion_aggregated_score', function () {
-      return import('./src/scores');
+      return import ('./src/scores');
     }, {
       name: 'Depletion Screen Score (Aggregated)',
       idtype: 'Ensembl',
@@ -531,7 +591,7 @@ module.exports = function (registry) {
       factory: 'createAggregatedDepletionScoreDialog'
     });
     registry.push('tdpScoreImpl', prefix + '_depletion_aggregated_score', function () {
-      return import('./src/scores');
+      return import ('./src/scores');
     }, {
       primaryType: 'Ensembl',
       oppositeType: oppositeIDType,
@@ -542,16 +602,20 @@ module.exports = function (registry) {
   // Common scores for all IDTypes
   ['Cellline', 'Tissue', 'Ensembl'].forEach(function (idType) {
     const prefix = idType.toLowerCase();
-    const label = idType === 'Ensembl'? 'Gene Set' : (idType === 'Tissue'?idType : 'Cell Line') + ' Panel';
-    registry.push('tdpScore', prefix + 'AnnotationColumn', function() { return import('./src/scores/AnnotationColumn'); }, {
+    const label = idType === 'Ensembl' ? 'Gene Set' : (idType === 'Tissue' ? idType : 'Cell Line') + ' Panel';
+    registry.push('tdpScore', prefix + 'AnnotationColumn', function () {
+      return import ('./src/scores/AnnotationColumn');
+    }, {
       'idtype': idType,
       'name': label + ' Annotation'
-     });
+    });
 
-      registry.push('tdpScoreImpl', prefix + 'AnnotationColumn', function() { return import('./src/scores/AnnotationColumn'); }, {
-        'factory': 'createScore',
-        'primaryType': idType
-     });
+    registry.push('tdpScoreImpl', prefix + 'AnnotationColumn', function () {
+      return import ('./src/scores/AnnotationColumn');
+    }, {
+      'factory': 'createScore',
+      'primaryType': idType
+    });
   });
   // generator-phovea:end
 };
