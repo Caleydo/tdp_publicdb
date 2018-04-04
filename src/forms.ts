@@ -92,7 +92,8 @@ function generateNameLookup(d: IDataSourceConfig, field: string) {
       optionsData: [],
       search: (query, page, pageSize) => search(d, query, page, pageSize),
       validate: (query) => validate(d, query),
-      format
+      format,
+      tokenSeparators: /[;,]+/mg
     },
     useSession: true
   };
@@ -348,6 +349,7 @@ function generateFilter(d: IDataSourceConfig) {
         search: (query, page, pageSize) => search(d, query, page, pageSize),
         validate: (query) => validate(d, query),
         format,
+        tokenSeparators: /[;,]+/mg
       }]
     }
   };
