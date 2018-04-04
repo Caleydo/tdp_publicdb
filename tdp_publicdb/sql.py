@@ -48,10 +48,10 @@ mappings = [
                WHERE cosmicid = ANY(:ids)""".format(s=cellline), integer_ids=True),
   DBMapping(gene.idtype, 'GeneSymbol',
             """SELECT {g.id} AS f, symbol as t
-               FROM {g.table} WHERE {g.id} = ANY(:ids)""".format(g=gene))),
+               FROM {g.table} WHERE {g.id} = ANY(:ids)""".format(g=gene)),
   DBMapping('GeneSymbol', gene.idtype,
             """SELECT symbol as f, {g.id} AS t
-               FROM {g.table} WHERE symbol = ANY(:ids)""".format(g=gene)))
+               FROM {g.table} WHERE symbol = ANY(:ids)""".format(g=gene))
 ]
 
 def create():
