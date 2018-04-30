@@ -21,6 +21,7 @@ def create_gene(views, gene):
           SELECT {g.id} as id, symbol AS text
           FROM {g.table} WHERE species = :species""".format(g=gene)) \
     .call(inject_where) \
+    .assign_ids() \
     .arg('species') \
     .filter('symbol', '(lower(ensg) {operator} {value} or lower(symbol) {operator} {value})') \
     .build()
