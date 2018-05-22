@@ -69,7 +69,7 @@ export function createScoreDialog(pluginDesc: IPluginDesc, extras: any, formDesc
 function showSizeWarning(dialog: HTMLElement, data: any, countHint: number = -1) {
   const footer = dialog.querySelector('.modal-footer');
   if (!footer.querySelector('div.alert')) {
-    footer.insertAdjacentHTML('afterbegin', `<div class="alert alert-warning" style="text-align: left" data-size="0">Are you sure</div>`);
+    footer.insertAdjacentHTML('afterbegin', `<div class="alert alert-warning" style="text-align: left" data-size="0">Confirm loading</div>`);
   }
   const alert = <HTMLElement>footer.querySelector('div.alert');
   alert.style.display = 'none';
