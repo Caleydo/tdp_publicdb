@@ -9,7 +9,6 @@ import {IScore, IScoreRow} from 'tdp_core/src/extensions';
 import {createDesc, toFilterString} from './utils';
 import AScore, {ICommonScoreParam} from './AScore';
 import {limitScoreRows, convertLog2ToLinear} from 'tdp_gene/src/utils';
-import {IBoxPlotData} from 'lineupjs/src/model/BoxPlotColumn';
 import {INamedSet} from 'tdp_core/src/storage';
 import {resolve} from 'phovea_core/src/idtype';
 import {getTDPScore, IParams} from 'tdp_core/src/rest';
@@ -17,13 +16,14 @@ import {toFilter} from 'tdp_core/src/lineup';
 import IDType from 'phovea_core/src/idtype/IDType';
 
 
+
 interface IAggregatedScoreParam extends ICommonScoreParam {
   aggregation: string;
 }
 
-function array2boxplotData(arr: number[]) {
+export function array2boxplotData(arr: number[]) {
   //order: 0, 0.25, 0.5, 0.75, 1
-  return <IBoxPlotData>{
+  return {
     min: arr[0],
     q1: arr[1],
     median: arr[2],
