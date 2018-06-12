@@ -12,6 +12,7 @@ import {
 import {IServerColumn} from 'tdp_core/src/rest';
 import {categoricalCol, numberCol, stringCol} from 'tdp_core/src/lineup';
 import {IAdditionalColumnDesc} from 'tdp_core/src/lineup/desc';
+import {ICategory} from 'lineupjs';
 
 
 /**
@@ -95,6 +96,34 @@ export const tissue: IDataSourceConfig = {
   }
 };
 
+function toChromosomes(categories: string[]) {
+  const order = new Map<string, number>();
+  for(let i = 1; i <= 22; ++i) {
+    order.set(String(i), i);
+  }
+  order.set('x', 23);
+  order.set('y', 24);
+  order.set('mt', 25);
+
+  categories.sort((a, b) => {
+    const an = a.toLowerCase();
+    const bn = b.toLowerCase();
+    const ai = order.get(an);
+    const bi = order.get(bn);
+    if (ai === bi) {
+      return an.localeCompare(bn);
+    }
+    if (ai == null) {
+      return 1;
+    }
+    if (bi == null) {
+      return -1;
+    }
+    return ai - bi;
+  });
+
+  return categories.map((d, i) => ({name: d, label: d, value: i}));
+}
 
 export const gene: IDataSourceConfig = {
   idType: GENE_IDTYPE,
@@ -109,7 +138,7 @@ export const gene: IDataSourceConfig = {
       stringCol('symbol', {label: 'Symbol', width: 100}),
       stringCol('id', {label: 'Ensembl', width: 120}),
       stringCol('name', {label: 'Name'}),
-      categoricalCol('chromosome', find('chromosome').categories, {label: 'Chromosome'}),
+      categoricalCol('chromosome', toChromosomes(find('chromosome').categories), {label: 'Chromosome'}),
       categoricalCol('biotype', find('biotype').categories, {label: 'Biotype'}),
       categoricalCol('strand', [{ label: 'reverse strand', name:String(-1)}, { label: 'forward strand', name:String(1)}], {label: 'Strand', visible: false}),
       stringCol('seqregionstart', {label: 'Seq Region Start', visible: false}),
