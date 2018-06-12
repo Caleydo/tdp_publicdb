@@ -12,7 +12,6 @@ import {
 import {IServerColumn} from 'tdp_core/src/rest';
 import {categoricalCol, numberCol, stringCol} from 'tdp_core/src/lineup';
 import {IAdditionalColumnDesc} from 'tdp_core/src/lineup/desc';
-import {ICategory} from 'lineupjs';
 
 
 /**
