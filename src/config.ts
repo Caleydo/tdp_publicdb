@@ -133,6 +133,7 @@ export const gene: IDataSourceConfig = {
   entityName: 'ensg',
   base: 'gene',
   columns: (find: (column: string)=>IServerColumn) => {
+    const maxRegion = Math.max(find('seqregionstart').max, find('seqregionend').max);
     return [
       stringCol('symbol', {label: 'Symbol', width: 100}),
       stringCol('id', {label: 'Ensembl', width: 120}),
@@ -140,8 +141,8 @@ export const gene: IDataSourceConfig = {
       categoricalCol('chromosome', toChromosomes(find('chromosome').categories), {label: 'Chromosome'}),
       categoricalCol('biotype', find('biotype').categories, {label: 'Biotype'}),
       categoricalCol('strand', [{ label: 'reverse strand', name:String(-1)}, { label: 'forward strand', name:String(1)}], {label: 'Strand', visible: false}),
-      stringCol('seqregionstart', {label: 'Seq Region Start', visible: false}),
-      stringCol('seqregionend', {label: 'Seq Region End', visible: false})
+      numberCol('seqregionstart', 0, maxRegion, {label: 'Seq Region Start', visible: false, extras: { renderer: 'default'}}),
+      numberCol('seqregionend', 0, maxRegion, {label: 'Seq Region End', visible: false, extras: { renderer: 'default'}}),
     ];
   },
   columnInfo: {
