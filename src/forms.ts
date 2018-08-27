@@ -376,7 +376,7 @@ export const FORM_TISSUE_OR_CELLLINE_FILTER = {
   id: 'filter',
   useSession: true,
   dependsOn: [ParameterFormIds.DATA_SOURCE],
-  options: {
+  options: <any>{
     sessionKeySuffix: '-choose',
     defaultSelection: false,
     uniqueKeys: true,

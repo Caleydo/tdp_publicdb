@@ -16,7 +16,7 @@ export function loadFirstName(ensg: string): Promise<string> {
   }).then((r) => r.length > 0 ? r[0].symbol || r[0].id : ensg);
 }
 
-export function loadGeneList(ensgs: string[]): Promise<{ id: string, symbol: string }[]> {
+export function loadGeneList(ensgs: string[]): Promise<{ id: string, symbol: string, _id: number }[]> {
   return getTDPData('publicdb', 'gene_map_ensgs', {
     ensgs: '\'' + ensgs.join('\',\'') + '\'',
     species: getSelectedSpecies()

@@ -80,7 +80,11 @@ abstract class AAggregatedScore extends AScore implements IScore<number> {
       });
       const columns = Array.from(keys).sort();
       // create an array with missing entries
-      rows.forEach((row) => row.score = columns.map((c) => row.score.hasOwnProperty(c) ? row.score[c] : NaN));
+      rows.forEach((row) => {
+        row.score = columns.map((c) => row.score.hasOwnProperty(c) ? row.score[c] : NaN);
+      });
+      // hack in the _columns
+      (<any>rows)._columns = columns;
     }
     if (this.dataSubType.useForAggregation.indexOf('log2') !== -1) {
       return convertLog2ToLinear(rows, 'score');
