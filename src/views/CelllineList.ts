@@ -8,7 +8,9 @@ import {IServerColumn} from 'tdp_core/src/rest';
 export default class CelllineList extends ACommonList {
 
   constructor(context:IViewContext, selection: ISelection, parent:HTMLElement, options: IACommonListOptions) {
-    super(context, selection, parent, cellline, options);
+    super(context, selection, parent, cellline, Object.assign({
+      enableAddingColumnGrouping: true
+    }, options));
   }
 
   protected getColumnDescs(columns: IServerColumn[]) {

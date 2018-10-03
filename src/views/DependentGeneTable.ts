@@ -27,7 +27,8 @@ export default class DependentGeneTable extends ARankingView {
     super(context, selection, parent, Object.assign({
       additionalScoreParameter: gene,
       itemName: gene.name,
-      itemIDType: gene.idType
+      itemIDType: gene.idType,
+      enableAddingColumnGrouping: true
     }, Object.assign(options, { enableSidePanel: 'collapsed' })));
 
     this.dataSource = chooseDataSource(context.desc);
