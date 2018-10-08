@@ -42,9 +42,9 @@ export function postProcessScore(subType: IDataSubtypeConfig) {
 
 export function subTypeDesc(dataSubType: IDataSubtypeConfig, id: number, label: string, col = `col_${id}`) {
   if (dataSubType.type === 'boolean' || dataSubType.type === 'string') {
-    return stringCol(col, {label, width: 50});
+    return stringCol(col, {label});
   } else if (dataSubType.type === 'cat') {
-    return categoricalCol(col, dataSubType.categories, {label, width: 50});
+    return categoricalCol(col, dataSubType.categories, {label});
   }
-  return numberCol(col, dataSubType.domain[0], dataSubType.domain[1], {label, width: 50});
+  return numberCol(col, dataSubType.domain[0], dataSubType.domain[1], {label});
 }
