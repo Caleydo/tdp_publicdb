@@ -21,17 +21,6 @@ interface IAggregatedScoreParam extends ICommonScoreParam {
   aggregation: string;
 }
 
-export function array2boxplotData(arr: number[]) {
-  //order: 0, 0.25, 0.5, 0.75, 1
-  return {
-    min: arr[0],
-    q1: arr[1],
-    median: arr[2],
-    q3: arr[3],
-    max: arr[4]
-  };
-}
-
 abstract class AAggregatedScore extends AScore implements IScore<number> {
 
   constructor(private readonly parameter: IAggregatedScoreParam, private readonly dataSource: IDataSourceConfig, private readonly oppositeDataSource: IDataSourceConfig) {
@@ -46,11 +35,10 @@ abstract class AAggregatedScore extends AScore implements IScore<number> {
     const ds = this.oppositeDataSource;
     const desc = `${ds.name} Filter: ${toFilterString(this.parameter.filter, ds)}\nData Type: ${this.dataType.name}\nData Subtype: ${this.dataSubType.name}\nAggregation: ${this.parameter.aggregation}`;
 
-    let type = dataSubtypes.number;
     if (this.parameter.aggregation === 'boxplot' || this.parameter.aggregation === 'numbers') {
-      type = this.parameter.aggregation;
+      return createDesc(this.parameter.aggregation, this.dataSubType.name, this.dataSubType, desc);
     }
-    return createDesc(type, `${this.parameter.aggregation} ${this.dataSubType.name}`, this.dataSubType, desc);
+    return createDesc(dataSubtypes.number, `${this.parameter.aggregation} ${this.dataSubType.name}`, this.dataSubType, desc);
   }
 
   async compute(ids: RangeLike, idtype: IDType, namedSet?: INamedSet): Promise<any[]> {
@@ -67,10 +55,7 @@ abstract class AAggregatedScore extends AScore implements IScore<number> {
     const filters = Object.assign(compatibilityFilter(toFilter(this.parameter.filter), this.oppositeDataSource.entityName), this.createFilter());
 
     let rows: IScoreRow<any>[] = await getTDPScore(this.dataSource.db, `${this.getViewPrefix()}${this.dataSource.base}_${this.oppositeDataSource.base}_score`, param, filters);
-    if (this.parameter.aggregation === 'boxplot') {
-      rows = rows.filter((d) => d.score !== null);
-      rows.forEach((row) => row.score = array2boxplotData(row.score));
-    } else if (this.parameter.aggregation === 'numbers') {
+    if (this.parameter.aggregation === 'numbers') {
       // we got a dict to consider missing values property
       rows = rows.filter((d) => d.score !== null);
       // collect all keys
