@@ -6,7 +6,7 @@ import {IDataSourceConfig} from '../config';
 import {IScore} from 'tdp_core/src/extensions';
 import {ICommonScoreParam} from './AScore';
 import {IParams} from 'tdp_core/src/rest';
-import AAggregatedScore, {array2boxplotData} from './AAggregatedScore';
+import AAggregatedScore from './AAggregatedScore';
 
 interface IAggregatedScoreParam extends ICommonScoreParam {
   aggregation: string;
