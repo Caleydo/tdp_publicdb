@@ -22,9 +22,7 @@ export default class SampleSubSection extends ACommonSubSection {
     return mixin(base, {
       search: (query, page, pageSize) => search(this.dataSource, query, page, pageSize),
       validate: (query) => validate(this.dataSource, query),
-      format,
-      tokenSeparators: /(?<!\\)[\s;,]+/mg,
-      defaultTokenSeparator: ';'
+      format
     });
   }
 }
