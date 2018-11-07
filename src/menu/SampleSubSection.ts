@@ -23,7 +23,8 @@ export default class SampleSubSection extends ACommonSubSection {
       search: (query, page, pageSize) => search(this.dataSource, query, page, pageSize),
       validate: (query) => validate(this.dataSource, query),
       format,
-      tokenSeparators: /[;,]+/mg
+      tokenSeparators: /[\r\n;,]+/mg,
+      defaultTokenSeparator: ';'
     });
   }
 }
