@@ -617,5 +617,12 @@ module.exports = function (registry) {
       'primaryType': idType
     });
   });
+
+
+  registry.push('tdpTour', 'ordinoWelcome', function() { return import('./src/tours'); }, {
+    name: 'Ordino Welcome Tour',
+    multiPage: true,
+    level: 'beginner'
+  });
   // generator-phovea:end
 };
