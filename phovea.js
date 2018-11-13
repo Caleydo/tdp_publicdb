@@ -619,10 +619,12 @@ module.exports = function (registry) {
   });
 
 
+  /// #if include('ordino')
   registry.push('tdpTour', 'ordinoWelcome', function() { return import('./src/tours'); }, {
     name: 'Ordino Welcome Tour',
     multiPage: true,
     level: 'beginner'
   });
+  /// #endif
   // generator-phovea:end
 };
