@@ -104,7 +104,7 @@ export function create(): IStep[] {
       waitFor: () => waitFor('.lineup-engine header section[title^=BT]', Infinity).then(() => <'next'>'next')
     },
     {
-      selector: '.lineup-engine header section[title^=BT], .lineup-engine header section[title^=HCC]',
+      selector: ['.lineup-engine header section[title^=BT], .lineup-engine header section[title^=HCC]'],
       placement: 'right',
       preAction: () => waitFor('.lineup-engine header section[title^=BT]', 10000),
       html: `The copy number information for each selected cell line has been added as additional columns`,
