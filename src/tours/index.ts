@@ -1,14 +1,20 @@
 import {IStep} from 'tdp_core/src/extensions';
-import {waitFor, wait, ensure, waitForSelector, setValueAndTrigger, clickSelector, click, setValueAndTriggerSelector} from 'tdp_core/src/tour/scripter';
+import {waitFor, wait, waitForSelector, setValueAndTrigger, clickSelector, click, keyDownEnter, toggleClass} from 'tdp_core/src/tour/scripter';
 
 export function create(): IStep[] {
-  return [{
+  return [
+    {
       html: `Welcome to this short tour showing the basic features of Ordino`,
     },
     {
-      selector: '.startMenu .closeButton',
+      selector: '.homeButton > a',
       html: `To start an analysis, click on the <i>'Home'</i> button. Subsequently, you can define the list of entities you want to work with`,
       placement: 'right-start',
+      preAction: () => {
+        if (document.querySelector('.startMenu.open')) {
+          click('.startMenu .closeButton');
+        }
+      },
       postAction: clickSelector
     },
 
@@ -24,9 +30,9 @@ export function create(): IStep[] {
       html: `Of the available predefined gene sets, we open a list of known cancer genes, called <i>'Cancer Gene Census'</i>`,
       placement: 'right-start',
       postAction: () => {
-        return waitFor('#entityType_gene-entry-point .predefined-named-sets a[name^="Name: Cancer Gene Census"]').then(click);
+        return waitFor('#entity_gene-entry-point .predefined-named-sets a[title^="Name: Cancer Gene Census"]').then(click);
       },
-      pageBreak: true
+      pageBreak: 'manual'
     },
     {
       selector: '.lineup-engine.lineup-multi-engine',
@@ -44,19 +50,16 @@ export function create(): IStep[] {
       selector: '.lu-search .lu-search-item',
       html: `First, we want to add a metadata column`,
       placement: 'left',
-      postAction: clickSelector
+      postAction: () => {
+        click('.lu-search .lu-search-item');
+        toggleClass('.lu-adder.once', 'once', false);
+      }
     },
     {
       selector: '.modal.in select[name=column]',
       html: `Here we select <i>'Strand'</i> &hellip;`,
       placement: 'right-start',
-      preAction: async () => {
-        const elem = await waitFor('.modal.in select[name=column]');
-        await wait(250);
-        if (elem) {
-          elem.focus();
-        }
-      },
+      preAction: waitForSelector,
       postAction: setValueAndTriggerSelector('strand')
     },
     {
@@ -69,7 +72,7 @@ export function create(): IStep[] {
       selector: '.lineup-engine header section[title=Strand]',
       placement: 'right',
       html: `The strand information was added as a new column`,
-      preAction: waitForSelector
+      preAction: () => waitFor('.lineup-engine header section[title=Strand]').then(() => wait(250))
     },
     {
       selector: '.lu-search .lu-search-group .lu-search-item',
@@ -78,15 +81,18 @@ export function create(): IStep[] {
       preAction: () => {
         click('.lu-side-panel button.fa-plus');
       },
-      postAction: clickSelector
+      postAction: () => {
+        click('.lu-search .lu-search-group .lu-search-item');
+        toggleClass('.lu-adder.once', 'once', false);
+      }
     },
     {
-      selector: '.modal.in .form-group > .select2',
+      selector: '.modal.in .form-group > .select3',
       placement: 'right-start',
-      preAction: () => waitFor('.modal.in'),
+      preAction: () => waitFor('.modal.in').then(() => wait(250)),
       html: `We select the cell lines <i>'HCC-827'</i> and <i>'BT-20'</i>.`,
       postAction: () => {
-        setValueAndTrigger('.modal.in .select3 input.select2-search__field', 'HCC-827;BT-20');
+        setValueAndTrigger('.modal.in .select3 input.select2-search__field', 'HCC-827;BT-20;', 'input');
       }
     },
     {
@@ -94,7 +100,8 @@ export function create(): IStep[] {
       placement: 'right-start',
       html: `As data type, we choose <i>'Relative Copy Number'</i>`,
       postAction: () => {
-        setValueAndTrigger('.form-group > .select2 input.select2-search__field', 'Relative Copy Number');
+        setValueAndTrigger('.form-group > .select2 input.select2-search__field', 'Relative Copy Number', 'input');
+        keyDownEnter('.form-group > .select2 input.select2-search__field'); // since single selection to confirm the selection
       }
     },
     {
@@ -135,7 +142,7 @@ export function create(): IStep[] {
         }
         return r;
       }, Infinity),
-      postAction: () => click('.lu-row[data-meta=first] input[type=checkbox]')
+      postAction: clickSelector
     },
     {
       selector: '.viewWrapper .chooser:not(.hidden)',
