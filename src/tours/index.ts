@@ -1,5 +1,5 @@
 import {IStep} from 'tdp_core/src/extensions';
-import {waitFor, wait, waitForSelector, setValueAndTrigger, clickSelector, click, keyDownEnter, toggleClass} from 'tdp_core/src/tour/scripter';
+import {waitFor, wait, waitForSelector, setValueAndTrigger, clickSelector, click, keyDownEnter, toggleClass, setValueAndTriggerSelector} from 'tdp_core/src/tour/scripter';
 
 export function create(): IStep[] {
   return [
@@ -59,7 +59,7 @@ export function create(): IStep[] {
       selector: '.modal.in select[name=column]',
       html: `Here we select <i>'Strand'</i> &hellip;`,
       placement: 'right-start',
-      preAction: waitForSelector,
+      preAction: () => waitFor('.modal.in select[name=column]').then(() => wait(250)),
       postAction: setValueAndTriggerSelector('strand')
     },
     {
@@ -72,7 +72,7 @@ export function create(): IStep[] {
       selector: '.lineup-engine header section[title=Strand]',
       placement: 'right',
       html: `The strand information was added as a new column`,
-      preAction: () => waitFor('.lineup-engine header section[title=Strand]').then(() => wait(250))
+      preAction: waitForSelector
     },
     {
       selector: '.lu-search .lu-search-group .lu-search-item',
