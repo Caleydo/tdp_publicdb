@@ -122,7 +122,7 @@ export function create(): IStep[] {
       html: `The column headers can be used to sort and filter the list of genes based on any of the available data`,
     },
     {
-      selector: '.lineup-engine header section[title^=BT] i[title^=Sort]',
+      selector: '.lineup-engine header section[title^=HCC] i[title^=Sort]',
       placement: 'right',
       html: `For example, you can use this icon to sort all genes by their copy number in the cell line <i>'HCC-827'</i>`,
       postAction: clickSelector
@@ -141,7 +141,7 @@ export function create(): IStep[] {
           return null;
         }
         return r;
-      }, Infinity),
+      }, Infinity).then(() => wait(500)), // wait for animation to complete
       postAction: clickSelector
     },
     {
