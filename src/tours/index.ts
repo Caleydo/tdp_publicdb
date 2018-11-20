@@ -29,6 +29,7 @@ export function create(): IStep[] {
       selector: '.startMenu.open .speciesSelector .nav-tabs',
       html: `<p>You can choose between the three entity types <i>'Cell Lines'</i>, <i>'Genes'</i>, and <i>'Tissues'</i>.</p> <p>In this example we will work with a list of genes</p>`,
       placement: 'centered',
+      preAction: waitForSelector,
       postAction: () => click('#entityType_gene-entry-point')
     },
 
