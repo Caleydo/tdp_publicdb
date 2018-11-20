@@ -4,7 +4,14 @@ import {waitFor, wait, waitForSelector, setValueAndTrigger, clickSelector, click
 export function create(): IStep[] {
   return [
     {
-      html: `Welcome to this short tour showing the basic features of Ordino`,
+      html: `<p>Welcome to this short tour showing the basic features of Ordino!</p>
+
+      <p>
+        Use the "Next" button to iterate through all the steps. You can use the
+        <i>"Cancel"</i> button at any time to stop the tour and to interact with Ordino.
+        Please note that the tour will load a new analysis session and the current
+        one will be discarded.
+      </p>`,
     },
     {
       selector: '.homeButton > a',
