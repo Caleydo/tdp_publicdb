@@ -623,7 +623,8 @@ module.exports = function (registry) {
   registry.push('tdpTour', 'ordinoWelcome', function() { return import('./src/tours'); }, {
     name: 'Ordino Welcome Tour',
     multiPage: true,
-    level: 'beginner'
+    level: 'beginner',
+    canJumpAround: false
   });
   /// #endif
   // generator-phovea:end
