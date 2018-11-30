@@ -2,7 +2,7 @@
   "name": "tdp_publicdb",
   "description": "",
   "homepage": "https://phovea.caleydo.org",
-  "version": "4.0.2-SNAPSHOT",
+  "version": "5.0.0",
   "private": true,
   "author": {
     "name": "The Caleydo Team",
@@ -69,11 +69,11 @@
     "prebuild:web": "node -e \"process.exit(process.env.PHOVEA_SKIP_TESTS === undefined?1:0)\" || npm run test:web"
   },
   "dependencies": {
-    "tdp_gene": "github:Caleydo/tdp_gene#develop"
+    "tdp_gene": "github:Caleydo/tdp_gene#semver:^5.0.0"
   },
   "optionalDependencies": {
-    "ordino": "github:Caleydo/ordino#develop",
-    "dTiles": "github:datavisyn/dTiles#develop"
+    "ordino": "github:Caleydo/ordino#semver:^5.0.0",
+    "dTiles": "github:datavisyn/dTiles#semver:^3.0.0"
   },
   "devDependencies": {
     "@types/jasmine": "2.5.47",
