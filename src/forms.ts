@@ -10,6 +10,7 @@ import {gene, IDataSourceConfig, tissue, cellline, dataSources, dataTypes, dataS
 import {listNamedSetsAsOptions} from 'tdp_core/src/storage';
 import {previewFilterHint} from 'tdp_core/src/lineup';
 import {getTDPData, getTDPLookupUrl, IServerColumn} from 'tdp_core/src/rest';
+import {format, formatGene, search, searchGene, validate, validateGene} from './utils';
 
 /**
  * List of ids for parameter form elements
@@ -62,7 +63,7 @@ function buildPredefinedNamedSets(ds: IDataSourceConfig) {
 }
 
 export const FORM_GENE_NAME = {
-  type: FormElementType.SELECT2,
+  type: FormElementType.SELECT3,
   label: 'Gene Symbol',
   id: ParameterFormIds.GENE_SYMBOL,
   attributes: {
@@ -71,26 +72,16 @@ export const FORM_GENE_NAME = {
   required: true,
   options: {
     optionsData: [],
-    ajax: {
-      url: getTDPLookupUrl(gene.db, `${gene.base}_items`),
-      data: (params: any) => {
-        return {
-          column: 'symbol',
-          species: getSelectedSpecies(),
-          query: params.term === undefined ? '' : params.term,
-          page: params.page === undefined ? 0 : params.page
-        };
-      }
-    },
-    templateResult: (item: any) => (item.id) ? `${item.text} <span class="ensg">${item.id}</span>` : item.text,
-    templateSelection: (item: any) => (item.id) ? `${item.text} <span class="ensg">${item.id}</span>` : item.text
+    search: searchGene,
+    validate: validateGene,
+    format: formatGene
   },
   useSession: true
 };
 
 function generateNameLookup(d: IDataSourceConfig, field: string) {
   return {
-    type: FormElementType.SELECT2,
+    type: FormElementType.SELECT3,
     label: d.name,
     id: field,
     attributes: {
@@ -99,17 +90,11 @@ function generateNameLookup(d: IDataSourceConfig, field: string) {
     required: true,
     options: {
       optionsData: [],
-      ajax: {
-        url: getTDPLookupUrl(d.db, `${d.base}_items`),
-        data: (params: any) => {
-          return {
-            column: d.entityName,
-            species: getSelectedSpecies(),
-            query: params.term === undefined ? '' : params.term,
-            page: params.page === undefined ? 0 : params.page
-          };
-        }
-      }
+      search: (query, page, pageSize) => search(d, query, page, pageSize),
+      validate: (query) => validate(d, query),
+      format,
+      tokenSeparators: /[\r\n;,]+/mg,
+      defaultTokenSeparator: ';'
     },
     useSession: true
   };
@@ -175,21 +160,11 @@ export const FORM_GENE_FILTER = {
     }, {
       name: 'Gene Symbol',
       value: 'ensg',
-      type: FormElementType.SELECT2,
+      type: FormElementType.SELECT3,
       multiple: true,
-      ajax: {
-        url: getTDPLookupUrl(gene.db, 'gene_items'),
-        data: (params: any) => {
-          return {
-            column: 'symbol',
-            species: getSelectedSpecies(),
-            query: params.term === undefined ? '' : params.term,
-            page: params.page === undefined ? 0 : params.page
-          };
-        }
-      },
-      templateResult: (item: any) => (item.id) ? `${item.text} <span class="ensg">${item.id}</span>` : item.text,
-      templateSelection: (item: any) => (item.id) ? `${item.text} <span class="ensg">${item.id}</span>` : item.text
+      search: searchGene,
+      validate: validateGene,
+      format: formatGene,
     }]
   }
 };
@@ -370,19 +345,13 @@ function generateFilter(d: IDataSourceConfig) {
       }, {
         name: d.name,
         value: d.entityName,
-        type: FormElementType.SELECT2,
+        type: FormElementType.SELECT3,
         multiple: true,
-        ajax: {
-          url: getTDPLookupUrl(gene.db, `${d.base}_items`),
-          data: (params: any) => {
-            return {
-              column: d.entityName,
-              species: getSelectedSpecies(),
-              query: params.term === undefined ? '' : params.term,
-              page: params.page === undefined ? 0 : params.page
-            };
-          }
-        }
+        search: (query, page, pageSize) => search(d, query, page, pageSize),
+        validate: (query) => validate(d, query),
+        format,
+        tokenSeparators: /[\r\n;,]+/mg,
+        defaultTokenSeparator: ';'
       }]
     }
   };
@@ -409,7 +378,7 @@ export const FORM_TISSUE_OR_CELLLINE_FILTER = {
   id: 'filter',
   useSession: true,
   dependsOn: [ParameterFormIds.DATA_SOURCE],
-  options: {
+  options: <any>{
     sessionKeySuffix: '-choose',
     defaultSelection: false,
     uniqueKeys: true,

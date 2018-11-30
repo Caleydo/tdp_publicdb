@@ -39,9 +39,19 @@ create_gene_sample_score(views, cellline, gene, cellline_depletion, 'depletion_'
 # idtype mappings
 mappings = [
   DBMapping(cellline.idtype, 'Cosmic',
-            """SELECT celllinename as f, CAST(cosmicid as text) as t 
-               FROM cellline.tdp_cellline 
-               WHERE celllinename = ANY(:ids) AND cosmicid is NOT NULL""")
+            """SELECT {s.id} as f, CAST(cosmicid as text) as t
+               FROM {s.table}
+               WHERE {s.id} = ANY(:ids) AND cosmicid is NOT NULL""".format(s=cellline)),
+  DBMapping('Cosmic', cellline.idtype,
+            """SELECT CAST(cosmicid as text) as t, {s.id} as t
+               FROM {s.table}
+               WHERE cosmicid = ANY(:ids)""".format(s=cellline), integer_ids=True),
+  DBMapping(gene.idtype, 'GeneSymbol',
+            """SELECT {g.id} AS f, symbol as t
+               FROM {g.table} WHERE {g.id} = ANY(:ids)""".format(g=gene)),
+  DBMapping('GeneSymbol', gene.idtype,
+            """SELECT symbol as f, {g.id} AS t
+               FROM {g.table} WHERE symbol = ANY(:ids)""".format(g=gene))
 ]
 
 def create():

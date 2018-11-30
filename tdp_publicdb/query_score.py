@@ -15,7 +15,7 @@ def create_gene_sample_score(views, gene, sample, data, prefix='', inline_aggreg
       .filter(gene.id, table='d') \
       .filter('panel_' + gene.id, gene.panel, join=gene.panel_join)
 
-  views[basename + '_single_score'] = DBViewBuilder().idtype(gene.idtype).query("""
+  views[basename + '_single_score'] = DBViewBuilder('score').idtype(gene.idtype).query("""
           SELECT d.{g.id} AS id, d.{{attribute}} AS score
           FROM {d.schema}.tdp_{{table}} d
           INNER JOIN {s.table} s ON d.{s.id} = s.{s.id}
@@ -30,7 +30,7 @@ def create_gene_sample_score(views, gene, sample, data, prefix='', inline_aggreg
     .build()
 
   def aggregate(attr):
-    b = DBViewBuilder().idtype(gene.idtype)
+    b = DBViewBuilder('score').idtype(gene.idtype)
     if inline_aggregate_sample_filter:
       b.query("""SELECT d.{g.id} AS id, {attr}
                    FROM {d.schema}.tdp_{{table}} d
@@ -87,7 +87,7 @@ def create_gene_sample_score(views, gene, sample, data, prefix='', inline_aggreg
     .replace('agg_score') \
     .build()
 
-  views[gene.prefix + '_namedset_containment_score'] = DBViewBuilder().idtype(gene.idtype).query("""
+  views[gene.prefix + '_namedset_containment_score'] = DBViewBuilder('score').idtype(gene.idtype).query("""
       SELECT {g.id} as id, TRUE as score
       FROM {g.panel_table}
       WHERE {g.panel_name} = :panel

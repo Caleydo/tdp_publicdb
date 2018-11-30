@@ -45,6 +45,9 @@ export function createScoreDialog(pluginDesc: IPluginDesc, extras: any, formDesc
 
   return dialog.showAsPromise((builder) => {
     const data = builder.getElementData();
+    if (showSizeWarning(dialog.body.parentElement!, data, typeof countHint === 'number' ? countHint : -1)) {
+      return null;
+    }
     const {dataType, dataSubType} = splitTypes(data[ParameterFormIds.DATA_HIERARCHICAL_SUBTYPE].id);
     delete data[ParameterFormIds.DATA_HIERARCHICAL_SUBTYPE];
     data.data_type = dataType.id;
@@ -58,6 +61,41 @@ export function createScoreDialog(pluginDesc: IPluginDesc, extras: any, formDesc
     data.filter = convertRow2MultiMap(data.filter);
     return data;
   });
+}
+
+/**
+ * hacky way to integrate a warning sign if the raw matrix is too big
+ */
+function showSizeWarning(dialog: HTMLElement, data: any, countHint: number = -1) {
+  const footer = dialog.querySelector('.modal-footer');
+  if (!footer.querySelector('div.alert')) {
+    footer.insertAdjacentHTML('afterbegin', `<div class="alert alert-warning" style="text-align: left" data-size="0">Confirm loading</div>`);
+  }
+  const alert = <HTMLElement>footer.querySelector('div.alert');
+  alert.style.display = 'none';
+
+  if (data[ParameterFormIds.AGGREGATION] !== 'numbers') {
+    return false;
+  }
+  // try to find out how many columns we are dealing with
+  const columns = parseInt((<HTMLElement>dialog.querySelector('span.badge')).innerText, 10);
+  if (!columns || isNaN(columns)) {
+    return false;
+  }
+  if (columns <= 8) {
+    return false; //small
+  }
+
+  // show
+  alert.style.display = null;
+  if (parseInt(alert.dataset.size, 10) === columns) {
+    return false; // already showing the alert with the same size -> user confirmed it
+  }
+  alert.dataset.size = String(columns);
+  alert.innerHTML = `Note that this query might take very long.s
+  Loading ${columns} values per row for ${countHint > 0 ? countHint : 'e.g. 1000'} rows results in ${columns * (countHint > 0 ? countHint : 1000)} values that need to be transferred from the database.
+  Confirm that you want to run this query by pressing the button.`;
+  return true;
 }
 
 function initializeScore(data, pluginDesc: IPluginDesc, aggregatedScoreFactory: (data, primary: IDataSourceConfig, opposite: IDataSourceConfig) => AAggregatedScore, frequencyScoreFactory: (data, primary: IDataSourceConfig, opposite: IDataSourceConfig, countOnly: boolean) => AFrequencyScore) {

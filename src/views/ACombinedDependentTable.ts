@@ -23,7 +23,8 @@ abstract class ACombinedDependentTable extends ARankingView {
     super(context, selection, parent, Object.assign(options,{
       additionalScoreParameter: () => this.oppositeDataSource,
       itemName: () => this.oppositeDataSource.name,
-      enableSidePanel: 'collapsed'
+      enableSidePanel: <'collapsed'>'collapsed',
+      enableAddingColumnGrouping: true
     }));
 
     this.dataType = dataType;

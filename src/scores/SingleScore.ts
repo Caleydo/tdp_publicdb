@@ -29,7 +29,7 @@ interface ISingleScoreParam {
 
 function enableMultiple(desc: any): any {
   return mixin({}, desc, {
-    type: FormElementType.SELECT2_MULTIPLE,
+    type: FormElementType.SELECT3_MULTIPLE,
     useSession: false
   });
 }

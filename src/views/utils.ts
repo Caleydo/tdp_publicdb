@@ -16,7 +16,7 @@ export function loadFirstName(ensg: string): Promise<string> {
   }).then((r) => r.length > 0 ? r[0].symbol || r[0].id : ensg);
 }
 
-export function loadGeneList(ensgs: string[]): Promise<{ id: string, symbol: string }[]> {
+export function loadGeneList(ensgs: string[]): Promise<{ id: string, symbol: string, _id: number }[]> {
   return getTDPData('publicdb', 'gene_map_ensgs', {
     ensgs: '\'' + ensgs.join('\',\'') + '\'',
     species: getSelectedSpecies()
@@ -42,9 +42,9 @@ export function postProcessScore(subType: IDataSubtypeConfig) {
 
 export function subTypeDesc(dataSubType: IDataSubtypeConfig, id: number, label: string, col = `col_${id}`) {
   if (dataSubType.type === 'boolean' || dataSubType.type === 'string') {
-    return stringCol(col, {label, width: 50});
+    return stringCol(col, {label});
   } else if (dataSubType.type === 'cat') {
-    return categoricalCol(col, dataSubType.categories, {label, width: 50});
+    return categoricalCol(col, dataSubType.categories, {label});
   }
-  return numberCol(col, dataSubType.domain[0], dataSubType.domain[1], {label, width: 50});
+  return numberCol(col, dataSubType.domain[0], dataSubType.domain[1], {label});
 }

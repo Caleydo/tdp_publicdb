@@ -3,7 +3,6 @@
  */
 
 import {IDataSubtypeConfig, dataSubtypes, cellline, tissue, gene, IDataSourceConfig, depletion} from '../config';
-import {IBoxPlotData} from 'lineupjs/src/model/BoxPlotColumn';
 import {IPluginDesc} from 'phovea_core/src/plugin';
 import {FORM_GENE_FILTER, FORM_TISSUE_FILTER, FORM_CELLLINE_FILTER} from '../forms';
 import {toFilterString as toFilterStringImpl} from 'tdp_core/src/lineup';
