@@ -1,5 +1,5 @@
 import {IStep} from 'tdp_core/src/extensions';
-import {waitFor, wait, waitForSelector, setValueAndTrigger, clickSelector, click, keyDownEnter, toggleClass, setValueAndTriggerSelector} from 'tdp_core/src/tour/scripter';
+import {waitFor, wait, waitForSelector, setValueAndTrigger, clickSelector, click, toggleClass, setValueAndTriggerSelector} from 'tdp_core/src/tour/scripter';
 
 export function create(): IStep[] {
   return [
@@ -108,8 +108,7 @@ export function create(): IStep[] {
       placement: 'centered',
       html: `As data type, we choose <i>'Relative Copy Number'</i>`,
       postAction: () => {
-        setValueAndTrigger('.form-group > .select2 input.select2-search__field', 'Relative Copy Number', 'input');
-        keyDownEnter('.form-group > .select2 input.select2-search__field'); // since single selection to confirm the selection
+        setValueAndTrigger('.form-group > select', 'copy_number-relativecopynumber', 'change');
       }
     },
     {
