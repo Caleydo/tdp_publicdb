@@ -2,7 +2,7 @@
   "name": "tdp_publicdb",
   "description": "",
   "homepage": "https://phovea.caleydo.org",
-  "version": "5.0.1",
+  "version": "5.0.2",
   "private": true,
   "author": {
     "name": "The Caleydo Team",
@@ -72,7 +72,7 @@
     "tdp_gene": "github:Caleydo/tdp_gene#semver:^5.0.0"
   },
   "optionalDependencies": {
-    "ordino": "github:Caleydo/ordino#semver:^5.0.0",
+    "ordino": "github:Caleydo/ordino#semver:^5.0.1",
     "dTiles": "github:datavisyn/dTiles#semver:^3.0.0"
   },
   "devDependencies": {
