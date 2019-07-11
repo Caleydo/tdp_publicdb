@@ -15,7 +15,7 @@ import {
 } from '../config';
 import {ParameterFormIds, FORM_GENE_FILTER} from '../forms';
 import {FormElementType} from 'tdp_core/src/form';
-import {ISelection, IViewContext} from 'tdp_core/src/views';
+import {ISelection, IViewContext, resolveIds} from 'tdp_core/src/views';
 import {getTDPDesc, getTDPFilteredRows, getTDPScore, IServerColumn} from 'tdp_core/src/rest';
 import {postProcessScore, subTypeDesc} from './utils';
 import {toFilter} from 'tdp_core/src/lineup';
@@ -61,8 +61,14 @@ export default class DependentGeneTable extends ARankingView {
 
   protected createSelectionAdapter() {
     return single({
-      createDesc: (_id: number, id: string) => subTypeDesc(this.dataSubType, _id, id),
-      loadData: (_id: number, id: string) => this.loadSelectionColumnData(id)
+      createDesc: async (_id: number, id: string) => {
+        const ids = await resolveIds(this.selection.idtype, [_id], this.dataSource.idType);
+        return subTypeDesc(this.dataSubType, _id, ids[0]);
+      },
+      loadData: async (_id: number, id: string) => {
+        const ids = await resolveIds(this.selection.idtype, [_id], this.dataSource.idType);
+        return this.loadSelectionColumnData(ids[0]);
+      }
     });
   }
 
