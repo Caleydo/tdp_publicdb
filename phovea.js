@@ -220,16 +220,6 @@ module.exports = function (registry) {
       }
     });
     /// #endif
-
-    /// #if include('dTiles')
-    registry.push('dTilesSearchProvider', 'gene', function () {
-      return import ('./src/SearchProvider')
-    }, {
-      factory: 'createGene',
-      idType: 'Ensembl',
-      name: 'Genes'
-    });
-    /// #endif
   }
 
 
@@ -372,17 +362,6 @@ module.exports = function (registry) {
       description: 'Shows all information from the database',
       topics: [plain, 'information']
     });
-
-
-    /// #if include('dTiles')
-    registry.push('dTilesSearchProvider', idType.toLowerCase(), function () {
-      return import ('./src/SearchProvider')
-    }, {
-      factory: 'create' + idType,
-      idType: idType,
-      name: label
-    });
-    /// #endif
 
 
     registry.push('idTypeDetector', plain + 'IDTypeDetector', function () {

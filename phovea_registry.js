@@ -11,11 +11,5 @@ import {register} from 'phovea_core/src/plugin';
  */
 //other modules
 import 'tdp_gene/phovea_registry.js';
-/// #if include('ordino')
-import 'ordino/phovea_registry.js';
-/// #endif
-/// #if include('dTiles')
-import 'dTiles/phovea_registry.js';
-/// #endif
 //self
 register('tdp_publicdb',require('./phovea.js'));
