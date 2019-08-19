@@ -1,5 +1,5 @@
 import {getSelectedSpecies} from 'tdp_gene/src/common';
-import {highlightMatch, ISelect3Item} from 'tdp_core/src/form/internal/Select3';
+import {highlightMatch, ISelect3Item} from 'tdp_core/src/form/elements/Select3';
 import {gene, IDataSourceConfig} from './config';
 import {getTDPData, getTDPLookup} from 'tdp_core/src/rest';
 import {ICommonDBConfig} from 'tdp_gene/src/views/ACommonList';
