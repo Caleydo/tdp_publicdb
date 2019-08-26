@@ -67,7 +67,8 @@ const COMMON_AGGREGATED_SCORE_FORM_ELEMENTS = [
     },
     useSession: true,
     options: {
-      type: 'number'
+      type: 'number',
+      step: 'any'
     }
   }
 ];
