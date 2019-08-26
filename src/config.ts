@@ -218,7 +218,7 @@ export const expression: IDataTypeConfig = {
   dataSubtypes: [
     {
       id: 'tpm',
-      name: 'TPM',
+      name: 'Normalized Gene Expression (TPM Values)',
       type: dataSubtypes.number,
       domain: [-3, 3],
       missingValue: NaN,
