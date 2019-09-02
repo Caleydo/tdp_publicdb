@@ -219,6 +219,22 @@ module.exports = function (registry) {
         sampleType: 'GeneSymbol'
       }
     });
+
+    // Add additional column descriptions to the LineUpStoredData ranking from tdp_uploaded_data
+    registry.push('lineupStoredDataColumnDesc', 'geneColumnDesc', function() {
+      return import('./src/LineupStoredData');
+    }, {
+      factory: 'loadEnsemblColumnDesc',
+      idType: 'Ensembl'
+    });
+
+    // Add additional data rows to the LineUpStoredData ranking from tdp_uploaded_data
+    registry.push('lineupStoredDataRows', 'geneRows', function() {
+      return import('./src/LineupStoredData');
+    }, {
+      factory: 'loadEnsemblRows',
+      idType: 'Ensembl'
+    });
     /// #endif
 
     /// #if include('dTiles')
