@@ -222,7 +222,7 @@ module.exports = function (registry) {
 
     // Add additional column descriptions to the LineUpStoredData ranking from tdp_uploaded_data
     registry.push('lineupStoredDataColumnDesc', 'geneColumnDesc', function() {
-      return import('./src/LineupStoredData');
+      return import('./src/LineUpStoredData');
     }, {
       factory: 'loadEnsemblColumnDesc',
       idType: 'Ensembl'
@@ -230,7 +230,7 @@ module.exports = function (registry) {
 
     // Add additional data rows to the LineUpStoredData ranking from tdp_uploaded_data
     registry.push('lineupStoredDataRows', 'geneRows', function() {
-      return import('./src/LineupStoredData');
+      return import('./src/LineUpStoredData');
     }, {
       factory: 'loadEnsemblRows',
       idType: 'Ensembl'
