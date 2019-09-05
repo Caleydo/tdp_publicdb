@@ -221,7 +221,7 @@ module.exports = function (registry) {
     });
 
     // Add additional column descriptions to the LineUpStoredData ranking from tdp_uploaded_data
-    registry.push('lineupStoredDataColumnDesc', 'geneColumnDesc', function() {
+    registry.push('epTdpUploadedDataLineupColumnDesc', 'geneColumnDesc', function() {
       return import('./src/LineUpStoredData');
     }, {
       factory: 'loadEnsemblColumnDesc',
@@ -229,7 +229,7 @@ module.exports = function (registry) {
     });
 
     // Add additional data rows to the LineUpStoredData ranking from tdp_uploaded_data
-    registry.push('lineupStoredDataRows', 'geneRows', function() {
+    registry.push('epTdpUploadedDataLineupRows', 'geneRows', function() {
       return import('./src/LineUpStoredData');
     }, {
       factory: 'loadEnsemblRows',
