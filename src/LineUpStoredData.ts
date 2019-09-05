@@ -19,7 +19,7 @@ export async function loadEnsemblColumnDesc(idType: string): Promise<IAdditional
  * The list of rows can be filtered by a given list of ids.
  *
  * @param idType idType
- * @param ids List of ids for the given idType that are used as filter
+ * @param ids List of ids for the given idType that are used as filter; if the list is empty all available rows are loaded
  * @returns {Promise<IRow[]>} Returns a promise with a list of data rows
  */
 export async function loadEnsemblRows(idType: string, ids: string[]): Promise<IRow[]> {
