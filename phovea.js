@@ -271,7 +271,7 @@ module.exports = function (registry) {
     return import ('./src/views/CosmicProxyView');
   }, {
     name: 'COSMIC',
-    site: '//cancer.sanger.ac.uk/cell_lines/sample/overview?id={cosmicid}&genome=37',
+    site: '//cancer.sanger.ac.uk/cell_lines/sample/overview?id={cosmicid}&genome=38',
     argument: 'cosmicid',
     idtype: 'Cellline',
     selection: 'chooser',
