@@ -1,4 +1,4 @@
-import {IViewContext, ISelection} from 'tdp_core/src/views';
+import {IViewContext, ISelection, resolveIds} from 'tdp_core/src/views';
 import {getSelectedSpecies} from 'tdp_gene/src/common';
 import {
   IDataTypeConfig,
@@ -61,8 +61,16 @@ abstract class ACombinedDependentTable extends ARankingView {
 
   protected createSelectionAdapter() {
     return multi({
-      createDescs: (_id: number, id: string) => this.getSelectionColumnDesc(_id, id),
-      loadData: (_id: number, id: string, descs: IAdditionalColumnDesc[]) => this.loadSelectionColumnData(id, descs),
+      createDescs: async (_id: number, id: string) => {
+        const ids = await resolveIds(this.selection.idtype, [_id], this.dataSource.idType);
+        return this.getSelectionColumnDesc(_id, ids[0]);
+      },
+      loadData: (_id: number, id: string, descs: IAdditionalColumnDesc[]): Promise<IScoreRow<any>[]>[] => {
+        return descs.map(async (desc) => { // map descs here to return Promise array
+          const ids = await resolveIds(this.selection.idtype, [_id], this.dataSource.idType);
+          return this.loadSelectionColumnData(ids[0], [desc])[0]; // send single desc and pick immediately
+        });
+      },
       getSelectedSubTypes: () => this.subTypes.map((d) => d.id)
     });
   }

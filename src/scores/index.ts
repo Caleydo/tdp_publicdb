@@ -16,6 +16,7 @@ import {selectDataSources} from './utils';
 import {FormDialog, convertRow2MultiMap, IFormElementDesc}  from 'tdp_core/src/form';
 import AAggregatedScore from './AAggregatedScore';
 import AFrequencyScore from './AFrequencyScore';
+import {IForm} from 'tdp_core/src/form/interfaces';
 
 
 export function createScoreDialog(pluginDesc: IPluginDesc, extras: any, formDesc: IFormElementDesc[], countHint?: number) {
@@ -43,8 +44,8 @@ export function createScoreDialog(pluginDesc: IPluginDesc, extras: any, formDesc
 
   dialog.append(...formDesc);
 
-  return dialog.showAsPromise((builder) => {
-    const data = builder.getElementData();
+  return dialog.showAsPromise((form: IForm) => {
+    const data = form.getElementData();
     if (showSizeWarning(dialog.body.parentElement!, data, typeof countHint === 'number' ? countHint : -1)) {
       return null;
     }
