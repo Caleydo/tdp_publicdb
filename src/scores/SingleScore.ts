@@ -16,6 +16,7 @@ import {mixin} from 'phovea_core/src';
 import {FormDialog} from 'tdp_core/src/form';
 import ASingleScore from './ASingleScore';
 import {IParams} from 'tdp_core/src/rest';
+import {IForm} from 'tdp_core/src/form/interfaces';
 
 interface ISingleScoreParam {
   name: {id: string, text: string};
@@ -85,8 +86,8 @@ export function createScoreDialog(pluginDesc: IPluginDesc, extra: any, formDesc:
 
   dialog.append(...formDesc);
 
-  return dialog.showAsPromise((builder) => {
-    const data = <any>builder.getElementData();
+  return dialog.showAsPromise((form: IForm) => {
+    const data = <any>form.getElementData();
 
     {
       const datatypes = data[ParameterFormIds.DATA_HIERARCHICAL_SUBTYPE];
