@@ -25,7 +25,7 @@ def create_gene_sample_score(views, gene, sample, data, prefix='', inline_aggreg
     .call(inject_where) \
     .arg('name') \
     .call(callback) \
-    .filters(sample.columns) \
+    .filters(gene.columns) \
     .call(_common) \
     .build()
 
