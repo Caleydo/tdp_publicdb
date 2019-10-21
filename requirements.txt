@@ -1,2 +1,2 @@
--e git+https://github.com/datavisyn/tdp_core.git@python_3.7#egg=tdp_core
+-e git+https://github.com/datavisyn/tdp_core.git@flask_1.1.1#egg=tdp_core
 psycopg2==2.8.3
