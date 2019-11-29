@@ -30,7 +30,7 @@ export interface IDataSourceConfig {
   entityName: string;
   base: string;
 
-  columns(find: (column: string)=>IServerColumn): IAdditionalColumnDesc[];
+  columns(find: (column: string) => IServerColumn): IAdditionalColumnDesc[];
 
   [key: string]: any;
 }
@@ -43,7 +43,7 @@ export const cellline: IDataSourceConfig = {
   tableName: 'cellline',
   entityName: 'celllinename',
   base: 'cellline',
-  columns: (find: (column: string)=>IServerColumn) => {
+  columns: (find: (column: string) => IServerColumn) => {
     return [
       stringCol('id', {label: 'Name', width: 120}),
       //categoricalCol('species', desc.columns.species.categories, 'Species', true),
@@ -55,12 +55,17 @@ export const cellline: IDataSourceConfig = {
       categoricalCol('morphology', find('morphology').categories, {label: 'Morphology', visible: false}),
       categoricalCol('growth_type', find('growth_type').categories, {label: 'Growth Type', visible: false}),
       categoricalCol('age_at_surgery', find('age_at_surgery').categories, {label: 'Age at Surgery', visible: false}),
+      categoricalCol('microsatellite_stability_class', find('microsatellite_stability_class').categories, {label: 'Micro Satellite Instability (MSI) Status', visible: false}),
+      numberCol('microsatellite_stability_score', 0, find('microsatellite_stability_score').max, {label: 'Micro Satellite Instability Score', visible: false}),
+      categoricalCol('hla_a_allele1', find('hla_a_allele1').categories, {label: 'Human Leukocyte Antigen 1 (HLA)', visible: false}),
+      categoricalCol('hla_a_allele2', find('hla_a_allele2').categories, {label: 'Human Leukocyte Antigen 2 (HLA)', visible: false}),
+      numberCol('mutational_fraction', 0, find('mutational_fraction').max, {label: 'Mutational Burden', visible: false}),
     ];
   },
   columnInfo: {
     string: ['id'],
-    number: [],
-    categorical: ['organ', 'gender', 'tumortype', 'metastatic_site', 'histology_type', 'morphology', 'growth_type']
+    number: ['microsatellite_stability_score', 'mutational_fraction'],
+    categorical: ['organ', 'gender', 'tumortype', 'metastatic_site', 'histology_type', 'morphology', 'growth_type', 'microsatellite_stability_class', 'hla_a_allele1', 'hla_a_allele2']
   }
 };
 
@@ -73,31 +78,31 @@ export const tissue: IDataSourceConfig = {
   tableName: 'tissue',
   entityName: 'tissuename',
   base: 'tissue',
-  columns: (find: (column: string)=>IServerColumn) => {
+  columns: (find: (column: string) => IServerColumn) => {
     return [
       stringCol('id', {label: 'Name', width: 120}),
       //categoricalCol('species', desc.columns.species.categories, 'Species', true),
       categoricalCol('tumortype', find('tumortype').categories, {label: 'Tumor Type'}),
-      categoricalCol('organ',find('organ').categories, {label: 'Organ'}),
+      categoricalCol('organ', find('organ').categories, {label: 'Organ'}),
       categoricalCol('gender', find('gender').categories, {label: 'Gender'}),
       stringCol('tumortype_adjacent', {label: 'Tumor Type adjacent', visible: false}),
       categoricalCol('vendorname', find('vendorname').categories, {label: 'Vendor name', visible: false}),
-      categoricalCol('race',find('race').categories, {label: 'Race', visible: false}),
-      categoricalCol('ethnicity', find('ethnicity').categories, {label: 'Ethnicity',  visible: false}),
-      numberCol('age', find('age').min, find('age').max, {label: 'Age',  visible: false}),
-      numberCol('days_to_death', 0, find('days_to_death').max, {label: 'Days to death',  visible: false}),
-      numberCol('days_to_last_followup', 0, find('days_to_last_followup').max, {label: 'Days to last follow up',  visible: false}),
-      categoricalCol('vital_status', find('vital_status').categories, {label: 'Vital status',  visible: false}),
-      numberCol('height', 0, find('height').max, {label: 'Height',  visible: false}),
-      numberCol('weight', 0, find('weight').max, {label: 'Weight',  visible: false}),
-      numberCol('bmi', 0, find('bmi').max, {label: 'Body Mass Index (BMI)',  visible: false})
+      categoricalCol('race', find('race').categories, {label: 'Race', visible: false}),
+      categoricalCol('ethnicity', find('ethnicity').categories, {label: 'Ethnicity', visible: false}),
+      numberCol('age', find('age').min, find('age').max, {label: 'Age', visible: false}),
+      numberCol('days_to_death', 0, find('days_to_death').max, {label: 'Days to death', visible: false}),
+      numberCol('days_to_last_followup', 0, find('days_to_last_followup').max, {label: 'Days to last follow up', visible: false}),
+      categoricalCol('vital_status', find('vital_status').categories, {label: 'Vital status', visible: false}),
+      numberCol('height', 0, find('height').max, {label: 'Height', visible: false}),
+      numberCol('weight', 0, find('weight').max, {label: 'Weight', visible: false}),
+      numberCol('bmi', 0, find('bmi').max, {label: 'Body Mass Index (BMI)', visible: false})
     ];
   }
 };
 
 function toChromosomes(categories: string[]) {
   const order = new Map<string, number>();
-  for(let i = 1; i <= 22; ++i) {
+  for (let i = 1; i <= 22; ++i) {
     order.set(String(i), i);
   }
   order.set('x', 23);
@@ -132,7 +137,7 @@ export const gene: IDataSourceConfig = {
   tableName: 'gene',
   entityName: 'ensg',
   base: 'gene',
-  columns: (find: (column: string)=>IServerColumn) => {
+  columns: (find: (column: string) => IServerColumn) => {
     const maxRegion = Math.max(find('seqregionstart').max, find('seqregionend').max);
     return [
       stringCol('symbol', {label: 'Symbol', width: 100}),
@@ -140,9 +145,9 @@ export const gene: IDataSourceConfig = {
       stringCol('name', {label: 'Name'}),
       categoricalCol('chromosome', toChromosomes(find('chromosome').categories), {label: 'Chromosome'}),
       categoricalCol('biotype', find('biotype').categories, {label: 'Biotype'}),
-      categoricalCol('strand', [{ label: 'reverse strand', name:String(-1)}, { label: 'forward strand', name:String(1)}], {label: 'Strand', visible: false}),
-      numberCol('seqregionstart', 0, maxRegion, {label: 'Seq Region Start', visible: false, extras: { renderer: 'default'}}),
-      numberCol('seqregionend', 0, maxRegion, {label: 'Seq Region End', visible: false, extras: { renderer: 'default'}}),
+      categoricalCol('strand', [{label: 'reverse strand', name: String(-1)}, {label: 'forward strand', name: String(1)}], {label: 'Strand', visible: false}),
+      numberCol('seqregionstart', 0, maxRegion, {label: 'Seq Region Start', visible: false, extras: {renderer: 'default'}}),
+      numberCol('seqregionend', 0, maxRegion, {label: 'Seq Region End', visible: false, extras: {renderer: 'default'}}),
     ];
   },
   columnInfo: {
@@ -155,10 +160,10 @@ export const gene: IDataSourceConfig = {
 export const dataSources = [cellline, tissue];
 
 export function chooseDataSource(desc: any): IDataSourceConfig {
-  if (typeof(desc) === 'object') {
-    if(desc.sampleType === 'Tissue' || desc.idtype === 'Tissue' || desc.idType === 'Tissue') {
+  if (typeof (desc) === 'object') {
+    if (desc.sampleType === 'Tissue' || desc.idtype === 'Tissue' || desc.idType === 'Tissue') {
       return tissue;
-    } else if(desc.sampleType === 'Cellline' || desc.idtype === 'Cellline' || desc.idType === 'Cellline') {
+    } else if (desc.sampleType === 'Cellline' || desc.idtype === 'Cellline' || desc.idType === 'Cellline') {
       return cellline;
     } else {
       return gene;
@@ -201,7 +206,7 @@ export interface IDataSubtypeConfig {
   useForAggregation: string;
 
   //type: 'cat';
-  categories?: { label: string, name: string, color: string }[];
+  categories?: {label: string, name: string, color: string}[];
   missingCategory?: string;
 
   //type: 'number';
@@ -363,14 +368,14 @@ export const depletion: IDataTypeConfig = {
 
 export const dataTypes: IDataTypeConfig[] = [expression, copyNumber, mutation];
 
-function toLineUpCategories(arr: { name: string, value: any, color: string }[]) {
+function toLineUpCategories(arr: {name: string, value: any, color: string}[]) {
   return arr.map((a) => ({label: a.name, name: String(a.value), color: a.color}));
 }
 
 /**
  * splits strings in the form of "DATA_TYPE-DATA_SUBTYPE" and returns the corresponding DATA_TYPE and DATA_SUBTYPE objects
  */
-export function splitTypes(toSplit: string): { dataType: IDataTypeConfig, dataSubType: IDataSubtypeConfig } {
+export function splitTypes(toSplit: string): {dataType: IDataTypeConfig, dataSubType: IDataSubtypeConfig} {
   console.assert(toSplit.includes('-'), 'The splitTypes method requires the string to contain a dash ("-")');
   const [type, subtype] = toSplit.split('-');
   return resolveDataTypes(type, subtype);
