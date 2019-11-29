@@ -56,7 +56,7 @@ export const cellline: IDataSourceConfig = {
       categoricalCol('growth_type', find('growth_type').categories, {label: 'Growth Type', visible: false}),
       categoricalCol('age_at_surgery', find('age_at_surgery').categories, {label: 'Age at Surgery', visible: false}),
       categoricalCol('microsatellite_stability_class', find('microsatellite_stability_class').categories, {label: 'Micro Satellite Instability (MSI) Status', visible: false}),
-      numberCol('microsatellite_stability_score', 0, find('microsatellite_stability_score').max, {label: 'Micro Satellite Instability Score', visible: false}),
+      numberCol('microsatellite_stability_score', 0, find('microsatellite_stability_score').max, {label: 'Micro Satellite Instability (MSI) Score', visible: false}),
       categoricalCol('hla_a_allele1', find('hla_a_allele1').categories, {label: 'Human Leukocyte Antigen 1 (HLA)', visible: false}),
       categoricalCol('hla_a_allele2', find('hla_a_allele2').categories, {label: 'Human Leukocyte Antigen 2 (HLA)', visible: false}),
       numberCol('mutational_fraction', 0, find('mutational_fraction').max, {label: 'Mutational Burden', visible: false}),
