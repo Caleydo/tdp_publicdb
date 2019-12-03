@@ -35,10 +35,10 @@ jobs:
           - ./node_modules
       - run:
           name: Install npm dependencies from git repositories (always get latest commit)
-          command: npm install
+          command: npm install --verbose
       - run:
           name: Show installed npm dependencies
-          command: npm list --depth=1 || true
+          command: npm list --depth=2 || true
       - restore_cache:
           key: deps1-{{ .Branch }}-{{ checksum "requirements.txt" }}-{{ checksum "requirements_dev.txt" }}
       - run:
