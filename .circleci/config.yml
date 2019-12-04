@@ -64,10 +64,9 @@ jobs:
           name: Build
           command: |
             . ~/venv/bin/activate
-            npm run dist
+            npm run build
       - store_artifacts:
           path: dist
-          prefix: dist
 workflows:
   version: 2
 #  build-nightly:
