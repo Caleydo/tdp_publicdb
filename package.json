@@ -114,6 +114,6 @@
   },
   "optionalDependencies": {
     "ordino": "github:Caleydo/ordino#develop",
-    "dTiles": "github:datavisyn/dTiles#develop"
+    "dTiles": "github:datavisyn/dTiles#thinkh/215_update-dependencies"
   }
 }
