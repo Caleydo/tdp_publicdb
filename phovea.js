@@ -219,6 +219,22 @@ module.exports = function (registry) {
         sampleType: 'GeneSymbol'
       }
     });
+
+    // Add additional column descriptions to the LineUpStoredData ranking from tdp_uploaded_data
+    registry.push('epTdpUploadedDataLineupColumnDesc', 'geneColumnDesc', function() {
+      return import('./src/LineUpStoredData');
+    }, {
+      factory: 'loadEnsemblColumnDesc',
+      idType: 'Ensembl'
+    });
+
+    // Add additional data rows to the LineUpStoredData ranking from tdp_uploaded_data
+    registry.push('epTdpUploadedDataLineupRows', 'geneRows', function() {
+      return import('./src/LineUpStoredData');
+    }, {
+      factory: 'loadEnsemblRows',
+      idType: 'Ensembl'
+    });
     /// #endif
   }
 
@@ -245,7 +261,7 @@ module.exports = function (registry) {
     return import ('./src/views/CosmicProxyView');
   }, {
     name: 'COSMIC',
-    site: '//cancer.sanger.ac.uk/cell_lines/sample/overview?id={cosmicid}&genome=37',
+    site: '//cancer.sanger.ac.uk/cell_lines/sample/overview?id={cosmicid}&genome=38',
     argument: 'cosmicid',
     idtype: 'Cellline',
     selection: 'chooser',
