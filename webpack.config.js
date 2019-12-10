@@ -323,7 +323,26 @@ function generateWebpack(options) {
         minimize: true,
         debug: false
       }),
-      new webpack.optimize.UglifyJsPlugin());
+      new webpack.optimize.UglifyJsPlugin({
+        sourceMap: false,
+        compress: {
+          sequences: true,
+          properties: true,
+          dead_code: false, // setting this to `true` will increase the build time
+          conditionals: true,
+          evaluate: true,
+          booleans: true,
+          loops: true,
+          unused: false, // setting this to `true` hangs uglify and the build will take more than 15 min
+          hoist_funs: true,
+          if_return: true,
+          join_vars: true,
+          cascade: true,
+          warnings: false, // setting this to `true` will show lots of warning for dead code
+          negate_iife: true
+        }
+      })
+    );
   } else {
     // generate source maps
     base.devtool = 'inline-source-map';
