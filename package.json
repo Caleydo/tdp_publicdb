@@ -71,10 +71,6 @@
   "dependencies": {
     "tdp_gene": "github:Caleydo/tdp_gene#develop"
   },
-  "optionalDependencies": {
-    "ordino": "github:Caleydo/ordino#develop",
-    "dTiles": "github:datavisyn/dTiles#develop"
-  },
   "devDependencies": {
     "@types/jasmine": "2.5.47",
     "awesome-typescript-loader": "3.1.2",

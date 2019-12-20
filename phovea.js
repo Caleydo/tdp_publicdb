@@ -9,42 +9,6 @@ module.exports = function (registry) {
   //registry.push('extension-type', 'extension-id', function() { return import('./src/extension_impl'); }, {});
   // generator-phovea:begin
 
-  /// #if include('ordino')
-  registry.push('ordinoStartMenuSubSection', 'celllinedb_genes_start', function () {
-    return import ('./src/menu/GeneSubSection');
-  }, {
-    name: 'Genes',
-    viewId: 'celllinedb_start',
-    idType: 'Ensembl',
-    selection: 'none',
-    description: 'Gene Sets',
-    cssClass: 'gene-entry-point'
-  });
-
-  registry.push('ordinoStartMenuSubSection', 'bioinfodb_tissue_start', function () {
-    return import ('./src/menu/SampleSubSection');
-  }, {
-    name: 'Tissues',
-    viewId: 'bioinfodb_tissue_start',
-    idType: 'Tissue',
-    selection: 'none',
-    sampleType: 'Tissue',
-    description: 'Tissue Panels',
-    cssClass: 'tissue-entry-point'
-  });
-
-  registry.push('ordinoStartMenuSubSection', 'celllinedb_cellline_start', function () {
-    return import ('./src/menu/SampleSubSection');
-  }, {
-    name: 'Cell Lines',
-    viewId: 'celllinedb_cellline',
-    idType: 'Cellline',
-    selection: 'none',
-    description: 'Cell Line Panels',
-    cssClass: 'cellline-entry-point'
-  });
-  /// #endif
-
   //gene views
   {
     registry.push('tdpView', 'celllinedb_start', function () {
@@ -612,15 +576,5 @@ module.exports = function (registry) {
       'primaryType': idType
     });
   });
-
-
-  /// #if include('ordino')
-  registry.push('tdpTour', 'ordinoWelcome', function() { return import('./src/tours'); }, {
-    name: 'Ordino Welcome Tour',
-    multiPage: true,
-    level: 'beginner',
-    canJumpAround: false
-  });
-  /// #endif
   // generator-phovea:end
 };
