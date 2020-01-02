@@ -3,7 +3,7 @@ jobs:
   build:
     working_directory: ~/phovea
     docker:
-      - image: caleydo/phovea_circleci_python:v3.0
+      - image: circleci/python:3.7-buster-node-browsers # for node version see Dockerfile on https://hub.docker.com/r/circleci/python
     steps:
       - checkout
       - run:
@@ -21,7 +21,7 @@ jobs:
           command: |
             (!(test -f docker_packages.txt) || (cat docker_packages.txt | xargs sudo apt-get install -y))
       - restore_cache:
-          key: deps4-{{ .Branch }}-{{ checksum "package.json" }}
+          key: deps6-{{ .Branch }}-{{ checksum "package.json" }}
       - run:
           name: Install npm dependencies
           command: npm install
@@ -30,7 +30,7 @@ jobs:
           command: |
             (grep -l '._resolved.: .\(git[^:]*\|bitbucket\):' ./node_modules/*/package.json || true) | xargs -r dirname | xargs -r rm -rf
       - save_cache:
-          key: deps4-{{ .Branch }}-{{ checksum "package.json" }}
+          key: deps6-{{ .Branch }}-{{ checksum "package.json" }}
           paths:
           - ./node_modules
       - run:
