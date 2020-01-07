@@ -54,6 +54,12 @@
       "scrollTo": "jquery.scrollto/jquery.scrollTo.js"
     },
     "libraryExternals": [],
-    "ignores": []
+    "ignores": [],
+    "promptValues": {
+      "authorName": "The Caleydo Team",
+      "authorEmail": "contact@caleydo.org",
+      "authorUrl": "https://caleydo.org",
+      "githubAccount": "caleydo"
+    }
   }
 }
