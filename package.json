@@ -115,6 +115,6 @@
   },
   "optionalDependencies": {
     "ordino": "github:Caleydo/ordino#semver:^6.0.0",
-    "dTiles": "github:dTiles/dTiles#semver:^5.0.0"
+    "dTiles": "github:datavisyn/dTiles#semver:^5.0.0"
   }
 }
