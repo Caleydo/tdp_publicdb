@@ -1,7 +1,7 @@
 {
   "name": "tdp_publicdb",
   "description": "",
-  "version": "5.1.2-SNAPSHOT",
+  "version": "6.0.1-SNAPSHOT",
   "author": {
     "name": "The Caleydo Team",
     "email": "contact@caleydo.org",
@@ -37,7 +37,7 @@
     "predist": "echo hybrid",
     "dist": "npm run dist:web && npm run dist:python",
     "compile": "tsc",
-    "lint": "tslint -c tslint.json -p .",
+    "lint": "tslint -c tslint.json -p . 'src/**/*.ts?(x)' 'tests/**/*.ts?(x)'",
     "docs": "npm run docs:web && npm run docs:python",
     "prebuild": "echo hybrid",
     "posttest": "echo hybrid",
@@ -68,21 +68,22 @@
     "prebuild:python": "node -e \"process.exit(process.env.PHOVEA_SKIP_TESTS === undefined?1:0)\" || npm run test:python",
     "prebuild:web": "node -e \"process.exit(process.env.PHOVEA_SKIP_TESTS === undefined?1:0)\" || npm run test:web"
   },
-  "dependencies": {
-    "tdp_gene": "github:Caleydo/tdp_gene#develop"
-  },
-  "optionalDependencies": {
-    "ordino": "github:Caleydo/ordino#develop",
-    "dTiles": "github:datavisyn/dTiles#develop"
+  "main": "build/tdp_publicdb.js",
+  "engines": {
+    "npm": ">= 6.12",
+    "node": ">= 12.13"
   },
   "devDependencies": {
     "@types/jasmine": "2.5.47",
     "awesome-typescript-loader": "3.1.2",
+    "cache-loader": "1.2.0",
     "css-loader": "0.28.0",
     "extract-loader": "0.1.0",
     "extract-text-webpack-plugin": "2.1.0",
     "file-loader": "0.11.1",
+    "fork-ts-checker-webpack-plugin": "0.4.1",
     "html-loader": "0.4.5",
+    "ifdef-loader": "2.0.0",
     "imports-loader": "0.7.1",
     "jasmine": "2.5.3",
     "json-loader": "0.5.4",
@@ -94,22 +95,26 @@
     "karma-sourcemap-loader": "0.3.7",
     "karma-webpack": "2.0.3",
     "mkdirp": "0.5.1",
-    "node-sass": "^4.12.0",
+    "node-sass": "^4.13.0",
     "null-loader": "0.1.1",
     "raw-loader": "0.5.1",
     "sass-loader": "6.0.7",
     "style-loader": "0.16.1",
+    "thread-loader": "1.1.2",
+    "ts-loader": "4.0.1",
     "tslib": "1.9.0",
     "tslint": "5.9.1",
     "typedoc": "0.11.1",
-    "typescript": "2.7.2",
+    "typescript": "2.8.1",
     "url-loader": "0.5.8",
     "webpack": "2.3.3",
-    "webpack-dev-server": "2.4.2",
-    "cache-loader": "1.2.0",
-    "ifdef-loader": "2.0.0",
-    "fork-ts-checker-webpack-plugin": "0.4.1",
-    "thread-loader": "1.1.2",
-    "ts-loader": "4.0.1"
+    "webpack-dev-server": "2.4.2"
+  },
+  "dependencies": {
+    "tdp_gene": "github:Caleydo/tdp_gene#develop"
+  },
+  "optionalDependencies": {
+    "ordino": "github:Caleydo/ordino#develop",
+    "dTiles": "github:datavisyn/dTiles#develop"
   }
 }
