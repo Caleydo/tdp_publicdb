@@ -1,1 +1,2 @@
+-e git+https://github.com/datavisyn/tdp_core.git@update_requirements#egg=tdp_core
 psycopg2==2.8.4
