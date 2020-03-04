@@ -18,7 +18,7 @@ depends_on = None
 
 # import the schema
 here = path.relpath(path.dirname(__file__))
-sql_file_path = path.join(here, './assets/ordino-schema-postgres12.sql')
+sql_file_path = path.join(here, './assets/ordino-hg38-schema-postgres12.sql')
 ordino_hg38_schema = open(sql_file_path, mode='r').read()
 
 
