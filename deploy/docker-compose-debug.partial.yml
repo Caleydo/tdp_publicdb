@@ -3,3 +3,19 @@ services:
   db_publicdb:
     ports:
       - '5432:5432'
+  pgadmin4:
+    image: "dpage/pgadmin4:latest"
+    depends_on:
+      - db_publicdb
+    links:
+      - "db_publicdb:postgres"
+    environment:
+      PGADMIN_DEFAULT_EMAIL: pgadmin4@pgadmin.org
+      PGADMIN_DEFAULT_PASSWORD: admin
+    ports:
+      - "5050:80"
+    volumes:
+      - "pgadmin4_data:/pgadmin"
+      - "./_backup:/backup"
+volumes:
+  pgadmin4_data:
