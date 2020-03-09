@@ -110,10 +110,10 @@
     "webpack-dev-server": "2.4.2"
   },
   "dependencies": {
-    "tdp_gene": "github:Caleydo/tdp_gene#update_dependencies_38"
+    "tdp_gene": "github:Caleydo/tdp_gene#update_dep_req"
   },
   "optionalDependencies": {
-    "ordino": "github:Caleydo/ordino#update_dependencies_38",
-    "dTiles": "github:datavisyn/dTiles#update_dependencies_38"
+    "ordino": "github:Caleydo/ordino#update_dep_req",
+    "dTiles": "github:datavisyn/dTiles#update_dep_req"
   }
 }
