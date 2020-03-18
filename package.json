@@ -1,7 +1,7 @@
 {
   "name": "tdp_publicdb",
   "description": "",
-  "version": "6.0.0",
+  "version": "7.0.0",
   "author": {
     "name": "The Caleydo Team",
     "email": "contact@caleydo.org",
@@ -56,7 +56,7 @@
     "test:web": "test ! $(find tests -name \"*.ts\") || karma start",
     "test:python": "test ! $(find tests -name \"*.py\") || python setup.py test",
     "predist:web": "npm run build:web && npm run docs:web",
-    "dist:web": "mkdirp dist && cd build && tar cvzf ../dist/tdp_publicdb.tar.gz *",
+    "dist:web": "mkdir dist && cd build && tar cvzf ../dist/tdp_publicdb.tar.gz *",
     "dist:python": "python setup.py bdist_egg",
     "predocker": "npm run build",
     "docker": "docker build -t tdp_publicdb -f deploy/Dockerfile .",
@@ -81,7 +81,7 @@
     "extract-loader": "0.1.0",
     "extract-text-webpack-plugin": "2.1.0",
     "file-loader": "0.11.1",
-    "fork-ts-checker-webpack-plugin": "0.4.1",
+    "fork-ts-checker-webpack-plugin": "0.4.4",
     "html-loader": "0.4.5",
     "ifdef-loader": "2.0.0",
     "imports-loader": "0.7.1",
@@ -94,27 +94,26 @@
     "karma-junit-reporter": "2.0.0",
     "karma-sourcemap-loader": "0.3.7",
     "karma-webpack": "2.0.3",
-    "mkdirp": "0.5.1",
-    "node-sass": "^4.13.0",
+    "node-sass": "^4.13.1",
     "null-loader": "0.1.1",
     "raw-loader": "0.5.1",
     "sass-loader": "6.0.7",
     "style-loader": "0.16.1",
     "thread-loader": "1.1.2",
     "ts-loader": "4.0.1",
-    "tslib": "1.9.0",
+    "tslib": "~1.11.0",
     "tslint": "5.9.1",
-    "typedoc": "0.11.1",
-    "typescript": "2.8.1",
+    "typedoc": "~0.16.10",
+    "typescript": "~3.8.2",
     "url-loader": "0.5.8",
     "webpack": "2.3.3",
     "webpack-dev-server": "2.4.2"
   },
   "dependencies": {
-    "tdp_gene": "github:Caleydo/tdp_gene#semver:^5.2.0"
+    "tdp_gene": "github:Caleydo/tdp_gene#semver:^6.0.0"
   },
   "optionalDependencies": {
-    "ordino": "github:Caleydo/ordino#semver:^6.0.0",
-    "dTiles": "github:datavisyn/dTiles#semver:^5.0.0"
+    "ordino": "github:Caleydo/ordino#semver:^7.0.0",
+    "dTiles": "github:datavisyn/dTiles#semver:^6.0.0"
   }
 }
