@@ -79,7 +79,13 @@ def _cellline_columns(query):
     .column('morphology', type='categorical') \
     .column('growth_type', type='categorical') \
     .column('age_at_surgery', type='categorical') \
-    .column('cosmicid', type='number')
+    .column('cosmicid', type='number')\
+    .column('mutational_fraction', type='number') \
+    .column('microsatellite_stability_score', type='number') \
+    .column('microsatellite_stability_class', type='categorical') \
+    .column('hla_a_allele1', type='categorical') \
+    .column('hla_a_allele2', type='categorical')
+
 
 
 cellline = Entity('cellline',
@@ -88,7 +94,8 @@ cellline = Entity('cellline',
                   schema='cellline',
                   table='cellline.tdp_cellline',
                   columns=['celllinename', 'cosmicid', 'species', 'tumortype', 'organ', 'gender', 'metastatic_site',
-                           'histology_type', 'morphology', 'growth_type', 'age_at_surgery'],
+                           'histology_type', 'morphology', 'growth_type', 'age_at_surgery','microsatellite_stability_class',
+                           'hla_a_allele1', 'hla_a_allele2','microsatellite_stability_score', 'mutational_fraction'],
                   panel_table='cellline.tdp_panelassignment',
                   panel_name='panel',
                   panel='d.celllinename = ANY(ARRAY(SELECT celllinename FROM cellline.tdp_panelassignment WHERE panel {operator} {value}))',
