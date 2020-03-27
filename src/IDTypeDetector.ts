@@ -5,7 +5,7 @@ interface IIDTypeDetectorOptions {
   sampleType: string;
 }
 
-async function detectIDType(data: any[], accessor: (row: any) => string, sampleSize: number, options: IIDTypeDetectorOptions) : Promise<number> {
+async function detectIDType(data: any[], accessor: (row: any) => string, sampleSize: number, options: IIDTypeDetectorOptions): Promise<number> {
   const testSize = Math.min(data.length, sampleSize);
   if (testSize <= 0) {
     return Promise.resolve(0);
