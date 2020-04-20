@@ -2369,7 +2369,7 @@ ALTER SCHEMA tissue OWNER TO postgres;
  ALTER TABLE cellline.mutationalburden OWNER TO postgres;
 
 
-
+REFRESH MATERIALIZED VIEW cellline.mutationalburden;
 
 
 
