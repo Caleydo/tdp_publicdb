@@ -52,10 +52,10 @@ def _tissue_columns(query):
     .column('weight', type='number') \
     .column('bmi', type='number')\
     .column('microsatellite_stability_score', type='number') \
-    .column('microsatellite_stability_class', type='categorical') #\
-    # .column('mutational_fraction', type='number') \
-    # .column('hla_a_allele1', type='categorical') \
-    # .column('hla_a_allele2', type='categorical')
+    .column('microsatellite_stability_class', type='categorical') \
+    .column('mutational_fraction', type='number') \
+    .column('hla_a_allele1', type='categorical') \
+    .column('hla_a_allele2', type='categorical')
 
 
 tissue = Entity('tissue',
@@ -66,7 +66,7 @@ tissue = Entity('tissue',
                 columns=['tissuename', 'species', 'tumortype', 'organ', 'gender', 'tumortype_adjacent', 'vendorname',
                          'race', 'ethnicity', 'age', 'days_to_last_followup', 'days_to_death', 'vital_status', 'height',
                          'weight', 'bmi','microsatellite_stability_class', 'microsatellite_stability_score',
-                         # 'hla_a_allele1', 'hla_a_allele2', 'mutational_fraction'
+                         'hla_a_allele1', 'hla_a_allele2', 'mutational_fraction'
                          ],
                 panel_table='tissue.tdp_panelassignment',
                 panel_name='panel',
