@@ -68,7 +68,13 @@
     "build:web": "webpack --env prod",
     "predist:python": "npm run build:python && npm run docs:python",
     "prebuild:python": "node -e \"process.exit(process.env.PHOVEA_SKIP_TESTS === undefined?1:0)\" || npm run test:python",
-    "prebuild:web": "node -e \"process.exit(process.env.PHOVEA_SKIP_TESTS === undefined?1:0)\" || npm run test:web"
+    "prebuild:web": "node -e \"process.exit(process.env.PHOVEA_SKIP_TESTS === undefined?1:0)\" || npm run test:web",
+    "db-migration": "cd ../tdp_core && npm run db-migration -- tdp_publicdb",
+    "db-migration:upgrade": "npm run db-migration -- upgrade",
+    "db-migration:upgrade:head": "npm run db-migration -- upgrade head",
+    "db-migration:downgrade": "npm run db-migration -- downgrade",
+    "db-migration:current": "npm run db-migration -- current",
+    "db-migration:history": "npm run db-migration -- history"
   },
   "main": "build/tdp_publicdb.js",
   "engines": {
