@@ -31,7 +31,7 @@ def create_gene(views, gene):
         FROM {g.table} WHERE {g.id} IN ({{ensgs}}) AND species = :species
         ORDER BY symbol ASC""".format(g=gene)) \
     .assign_ids() \
-    .replace('ensgs', re.compile('(\'[\w]+\')(,\'[\w]+\')*')) \
+    .replace('ensgs', re.compile(r'(\'[\w]+\')(,\'[\w]+\')*')) \
     .arg('species') \
     .build()
 
