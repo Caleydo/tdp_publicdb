@@ -21,8 +21,10 @@ def upgrade():
 
     connection.execute(
         """
+
+        -- Note: No reverse statement for the following update statement in downgrade() available!
         UPDATE tissue.tissue SET dnasequenced = TRUE WHERE tissuename IN (SELECT DISTINCT tissuename FROM tissue.processedsequence);
-        refresh materialized view tissue.TCGAenst;
+        REFRESH MATERIALIZED VIEW tissue.TCGAenst;
 
         --------------------------------------------------------------
 
