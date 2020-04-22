@@ -2369,7 +2369,7 @@ ALTER SCHEMA tissue OWNER TO postgres;
  ALTER TABLE cellline.mutationalburden OWNER TO postgres;
 
 
-
+REFRESH MATERIALIZED VIEW cellline.mutationalburden;
 
 
 
@@ -7411,6 +7411,3 @@ ALTER SCHEMA tissue OWNER TO postgres;
      ADD CONSTRAINT fk_treatmen_reference_rnaseqru FOREIGN KEY (rnaseqrunid) REFERENCES tissue.rnaseqrun(rnaseqrunid) ON UPDATE RESTRICT ON DELETE RESTRICT;
 
 
-
-
- REFRESH MATERIALIZED VIEW cellline.mutationalburden;
