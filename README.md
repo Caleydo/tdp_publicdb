@@ -36,5 +36,5 @@ This repository is part of **[Phovea](http://phovea.caleydo.org/)**, a platform 
 
 [phovea-image]: https://img.shields.io/badge/Phovea-Client%20Plugin-F47D20.svg
 [phovea-url]: https://phovea.caleydo.org
-[circleci-image]: https://circleci.com/gh/Caleydo/tdp_publicdb.svg?style=shield&circle-token=89fdd541186de8c3af935cecda2542bcd62b9816
+[circleci-image]: https://circleci.com/gh/Caleydo/tdp_publicdb.svg?style=shield 
 [circleci-url]: https://circleci.com/gh/Caleydo/tdp_publicdb
