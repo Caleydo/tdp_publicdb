@@ -36,7 +36,7 @@ export default class AnnotationColumn extends ABooleanScore implements IScore<nu
 
 }
 
-export function createScore(data, pluginDesc: IPluginDesc) {
+export function createAnnotationColumnScore(data, pluginDesc: IPluginDesc) {
   const {primary} = selectDataSources(pluginDesc);
   return new AnnotationColumn(data, primary);
 }
@@ -46,7 +46,7 @@ export function createScore(data, pluginDesc: IPluginDesc) {
  * builder function for building the parameters of the score
  * @returns {Promise<IAnnotationColumnParam>} a promise for the parameter
  */
-export async function create(pluginDesc: IPluginDesc) {
+export async function createAnnotationColumn(pluginDesc: IPluginDesc) {
   const dialog = new FormDialog('Add Annotation Column', 'Add');
 
   const dataSource = chooseDataSource(pluginDesc);
