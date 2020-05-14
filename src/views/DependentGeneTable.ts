@@ -99,14 +99,14 @@ export default class DependentGeneTable extends ARankingView {
   }
 }
 
-export function createExpressionTable(context: IViewContext, selection: ISelection, parent: HTMLElement, options?) {
+export function createExpressionDependentGeneTable(context: IViewContext, selection: ISelection, parent: HTMLElement, options?) {
   return new DependentGeneTable(context, selection, parent, expression, options);
 }
 
-export function createCopyNumberTable(context: IViewContext, selection: ISelection, parent: HTMLElement, options?) {
+export function createCopyNumberDependentGeneTable(context: IViewContext, selection: ISelection, parent: HTMLElement, options?) {
   return new DependentGeneTable(context, selection, parent, copyNumber, options);
 }
 
-export function createMutationTable(context: IViewContext, selection: ISelection, parent: HTMLElement, options?) {
+export function createMutationDependentGeneTable(context: IViewContext, selection: ISelection, parent: HTMLElement, options?) {
   return new DependentGeneTable(context, selection, parent, mutation, options);
 }

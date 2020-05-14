@@ -1,7 +1,7 @@
 import {IStep} from 'tdp_core/src/extensions';
 import {waitFor, wait, waitForSelector, setValueAndTrigger, clickSelector, click, toggleClass, setValueAndTriggerSelector} from 'tdp_core/src/tour/scripter';
 
-export function create(): IStep[] {
+export function createTour(): IStep[] {
   return [
     {
       html: `<p>Welcome to this short tour showing the basic features of Ordino!</p>

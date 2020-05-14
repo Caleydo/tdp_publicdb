@@ -26,6 +26,6 @@ export default class CombinedDependentGeneTable extends ACombinedTable {
   }
 }
 
-export function create(context: IViewContext, selection: ISelection, parent: HTMLElement) {
+export function createCombinedDependentGeneTable(context: IViewContext, selection: ISelection, parent: HTMLElement) {
   return new CombinedDependentGeneTable(context, selection, parent, [copyNumber, expression, mutation]);
 }

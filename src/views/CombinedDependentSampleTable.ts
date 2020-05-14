@@ -42,6 +42,6 @@ export class CombinedDependentSampleTable extends ACombinedTable {
   }
 }
 
-export function create(context: IViewContext, selection: ISelection, parent: HTMLElement) {
+export function createCombinedDependentSampleTable(context: IViewContext, selection: ISelection, parent: HTMLElement) {
   return new CombinedDependentSampleTable(context, selection, parent, [copyNumber, expression, mutation]);
 }

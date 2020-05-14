@@ -100,14 +100,14 @@ export default class DependentSampleTable extends ARankingView {
   }
 }
 
-export function createExpressionTable(context: IViewContext, selection: ISelection, parent: HTMLElement, options?) {
+export function createExpressionDependentSampleTable(context: IViewContext, selection: ISelection, parent: HTMLElement, options?) {
   return new DependentSampleTable(context, selection, parent, expression, options);
 }
 
-export function createCopyNumberTable(context: IViewContext, selection: ISelection, parent: HTMLElement, options?) {
+export function createCopyNumberDependentSampleTable(context: IViewContext, selection: ISelection, parent: HTMLElement, options?) {
   return new DependentSampleTable(context, selection, parent, copyNumber, options);
 }
 
-export function createMutationTable(context: IViewContext, selection: ISelection, parent: HTMLElement, options?) {
+export function createMutationDependentSampleTable(context: IViewContext, selection: ISelection, parent: HTMLElement, options?) {
   return new DependentSampleTable(context, selection, parent, mutation, options);
 }

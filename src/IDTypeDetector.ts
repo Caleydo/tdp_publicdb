@@ -30,7 +30,7 @@ async function detectIDType(data: any[], accessor: (row: any) => string, sampleS
   return result[0].matches / validSize;
 }
 
-export function create() {
+export function createIDTypeDetector() {
   return {
     detectIDType
   };
