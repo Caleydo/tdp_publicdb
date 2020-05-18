@@ -2,7 +2,8 @@
  * Created by Marc Streit on 28.07.2016.
  */
 
-import {IScoreRow, ARankingView, single} from 'tdp_core/src/lineup';
+import {ARankingView, single} from 'tdp_core/src/lineup';
+import {IScoreRow} from 'tdp_core/src/extensions';
 import {getSelectedSpecies} from 'tdp_gene/src/common';
 import {
   gene,

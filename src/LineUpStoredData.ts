@@ -1,6 +1,6 @@
-import {getTDPDesc, getTDPFilteredRows, IParams} from 'tdp_core/src/rest';
+import {getTDPDesc, getTDPFilteredRows, IParams, IRow} from 'tdp_core/src/rest';
 import {gene} from './config';
-import {IAdditionalColumnDesc, IRow} from 'tdp_core/src/lineup';
+import {IAdditionalColumnDesc} from 'tdp_core/src/lineup';
 import {getSelectedSpecies, SPECIES_SESSION_KEY} from 'tdp_gene/src/common';
 
 /**

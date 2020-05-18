@@ -1,4 +1,4 @@
-import {IStep} from 'tdp_core/src/extensions';
+import {IStep} from 'tdp_core/src/tour/extensions';
 import {waitFor, wait, waitForSelector, setValueAndTrigger, clickSelector, click, toggleClass, setValueAndTriggerSelector} from 'tdp_core/src/tour/scripter';
 
 export function createTour(): IStep[] {
