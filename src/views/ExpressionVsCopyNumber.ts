@@ -3,7 +3,7 @@
  */
 
 import {IFormSelectDesc} from 'tdp_core/src/form';
-import AExpressionVsCopyNumber, {IDataFormatRow} from 'tdp_gene/src/views/AExpressionVsCopyNumber';
+import AExpressionVsCopyNumber, {ICopyNumberDataFormatRow} from 'tdp_gene/src/views/AExpressionVsCopyNumber';
 import {getSelectedSpecies} from 'tdp_gene/src/common';
 import Range from 'phovea_core/src/range/Range';
 import {expression, copyNumber, IDataSourceConfig} from '../config';
@@ -31,7 +31,7 @@ export default class ExpressionVsCopyNumber extends AExpressionVsCopyNumber {
     return loadFirstName(ensg);
   }
 
-  loadData(ensg: string): Promise<IDataFormatRow[]> {
+  loadData(ensg: string): Promise<ICopyNumberDataFormatRow[]> {
     const ds = this.dataSource;
     const param: IParams = {
       ensg,
