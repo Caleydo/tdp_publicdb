@@ -3,7 +3,7 @@
  */
 
 import {FormElementType, IFormSelectDesc} from 'tdp_core/src/form';
-import ACoExpression, {ICoExprDataFormatRow, IGeneOption} from 'tdp_gene/src/views/ACoExpression';
+import {ACoExpression, ICoExprDataFormatRow, IGeneOption} from 'tdp_gene/src/views/ACoExpression';
 import {getSelectedSpecies} from 'tdp_gene/src/common';
 import {expression, IDataSourceConfig, IDataSubtypeConfig} from '../config';
 import {ParameterFormIds, FORM_TISSUE_OR_CELLLINE_FILTER, FORM_DATA_SOURCE, FORM_COLOR_CODING} from '../forms';

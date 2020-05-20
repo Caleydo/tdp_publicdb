@@ -4,7 +4,7 @@
 
 
 import {IFormSelectDesc} from 'tdp_core/src/form';
-import AOncoPrint, {IDataFormatRow, ISample} from 'tdp_gene/src/views/AOncoPrint';
+import {AOncoPrint, IDataFormatRow, ISample} from 'tdp_gene/src/views/AOncoPrint';
 import {getSelectedSpecies} from 'tdp_gene/src/common';
 import {ParameterFormIds, FORM_TISSUE_OR_CELLLINE_FILTER, FORM_DATA_SOURCE} from '../forms';
 import {loadFirstName} from './utils';

@@ -3,7 +3,7 @@
  */
 
 import {IFormSelectDesc} from 'tdp_core/src/form';
-import AExpressionVsCopyNumber, {ICopyNumberDataFormatRow} from 'tdp_gene/src/views/AExpressionVsCopyNumber';
+import {AExpressionVsCopyNumber, ICopyNumberDataFormatRow} from 'tdp_gene/src/views/AExpressionVsCopyNumber';
 import {getSelectedSpecies} from 'tdp_gene/src/common';
 import Range from 'phovea_core/src/range/Range';
 import {expression, copyNumber, IDataSourceConfig} from '../config';

@@ -1,4 +1,5 @@
-import SearchProvider, {IResult} from 'tdp_gene/src/SearchProvider';
+import {SearchProvider} from 'tdp_gene/src/SearchProvider';
+import {IResult} from 'tdp_core/src/public/search/SearchProviderInterfaces';
 import {cellline, gene, tissue} from './config';
 import './styles/idtype_color.scss';
 import {getSelectedSpecies} from 'tdp_gene/src/common';
