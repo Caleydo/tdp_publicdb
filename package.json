@@ -118,7 +118,7 @@
     "tdp_gene": "github:Caleydo/tdp_gene#vstoiber/refactoring"
   },
   "optionalDependencies": {
-    "dTiles": "github:datavisyn/dTiles#vstoiber/use_refactoring_branches",
-    "ordino": "github:Caleydo/ordino#vstoiber/use_refactoring_branches"
+    "ordino": "github:Caleydo/ordino#vstoiber/use_refactoring_branches",
+    "dTiles": "github:datavisyn/dTiles#vstoiber/use_refactoring_branches"
   }
 }
