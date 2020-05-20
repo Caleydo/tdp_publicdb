@@ -11,7 +11,7 @@ import {loadGeneList} from './utils';
 /**
  * helper view for proxying an existing external website
  */
-export default class GeneSymbolProxyView extends ProxyView {
+export class GeneSymbolProxyView extends ProxyView {
 
   protected async getSelectionSelectData(ensgs: string[]): Promise<IFormSelectOption[]> {
     if (ensgs === null || ensgs.length === 0) {

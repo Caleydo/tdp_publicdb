@@ -12,7 +12,7 @@ import {mixin} from 'phovea_core/src/index';
 /**
  * Entry point list from all species and LineUp named sets (aka stored LineUp sessions)
  */
-export default class SampleSubSection extends ACommonSubSection {
+export class SampleSubSection extends ACommonSubSection {
   constructor(parent: HTMLElement, desc: IStartMenuSubSectionDesc, options: IStartMenuSectionOptions) {
     super(parent, desc, chooseDataSource(desc), options);
   }

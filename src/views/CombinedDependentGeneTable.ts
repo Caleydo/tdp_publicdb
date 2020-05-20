@@ -8,9 +8,9 @@ import {
   chooseDataSource,
 } from '../config';
 import {FORM_GENE_FILTER} from '../forms';
-import ACombinedTable from './ACombinedDependentTable';
+import {ACombinedDependentTable} from './ACombinedDependentTable';
 
-export default class CombinedDependentGeneTable extends ACombinedTable {
+export class CombinedDependentGeneTable extends ACombinedDependentTable {
   constructor(context: IViewContext, selection: ISelection, parent: HTMLElement, dataType: IDataTypeConfig[]) {
     super(context, selection, parent, dataType);
 

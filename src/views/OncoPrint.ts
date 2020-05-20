@@ -13,7 +13,7 @@ import {resolve} from 'phovea_core/src/idtype';
 import {getTDPData, getTDPFilteredRows, IParams, mergeParamAndFilters} from 'tdp_core/src/rest';
 import {toFilter} from 'tdp_core/src/lineup';
 
-export default class OncoPrint extends AOncoPrint {
+export class OncoPrint extends AOncoPrint {
 
 
   protected getParameterFormDescs(): IFormSelectDesc[] {

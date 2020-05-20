@@ -1,6 +1,6 @@
 import {IScore} from 'tdp_core/src/extensions';
 import {FormDialog} from 'tdp_core/src/form';
-import ABooleanScore, {IBooleanScoreParams} from './ABooleanScore';
+import {ABooleanScore, IBooleanScoreParams} from './ABooleanScore';
 import {IDataSourceConfig} from '../config';
 import {FormElementType} from 'tdp_core/src/form';
 import {getAPIJSON} from 'phovea_core/src/ajax';
@@ -20,7 +20,7 @@ export interface IAnnotationColumnParam extends IBooleanScoreParams {
 /**
  * score implementation in this case a numeric score is computed
  */
-export default class AnnotationColumn extends ABooleanScore implements IScore<number> {
+export class AnnotationColumn extends ABooleanScore implements IScore<number> {
 
   constructor(params: IAnnotationColumnParam, dataSource: IDataSourceConfig) {
     super(params, dataSource);

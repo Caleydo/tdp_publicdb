@@ -9,7 +9,7 @@ import {IDataSourceConfig, MAX_FILTER_SCORE_ROWS_BEFORE_ALL} from '../config';
 import {convertLog2ToLinear, limitScoreRows} from 'tdp_gene/src/utils';
 import {IScore} from 'tdp_core/src/extensions';
 import {createDesc} from './utils';
-import AScore from './AScore';
+import {AScore} from './AScore';
 import {INamedSet} from 'tdp_core/src/storage';
 import {getTDPScore, IParams} from 'tdp_core/src/rest';
 
@@ -23,7 +23,7 @@ interface ISingleScoreParam {
   maxDirectFilterRows?: number;
 }
 
-abstract class ASingleScore extends AScore implements IScore<any> {
+export abstract class ASingleScore extends AScore implements IScore<any> {
   constructor(private parameter: ISingleScoreParam, private readonly dataSource: IDataSourceConfig, private readonly oppositeDataSource: IDataSourceConfig) {
     super(parameter);
   }
@@ -65,5 +65,3 @@ abstract class ASingleScore extends AScore implements IScore<any> {
 
   protected abstract getViewPrefix(): string;
 }
-
-export default ASingleScore;

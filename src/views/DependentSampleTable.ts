@@ -20,7 +20,7 @@ import {resolve} from 'phovea_core/src/idtype';
 import {loadFirstName, postProcessScore, subTypeDesc} from './utils';
 import {toFilter} from 'tdp_core/src/lineup';
 
-export default class DependentSampleTable extends ARankingView {
+export class DependentSampleTable extends ARankingView {
 
   constructor(context: IViewContext, selection: ISelection, parent: HTMLElement, private readonly dataType: IDataTypeConfig, options = {}) {
     super(context, selection, parent, Object.assign({

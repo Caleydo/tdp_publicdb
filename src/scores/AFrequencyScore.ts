@@ -8,7 +8,7 @@ import {getSelectedSpecies} from 'tdp_gene/src/common';
 import {IDataSourceConfig, dataSubtypes, mutation, MAX_FILTER_SCORE_ROWS_BEFORE_ALL} from '../config';
 import {IScore} from 'tdp_core/src/extensions';
 import {createDesc, toFilterString} from './utils';
-import AScore, {ICommonScoreParam} from './AScore';
+import {AScore, ICommonScoreParam} from './AScore';
 import {limitScoreRows} from 'tdp_gene/src/utils';
 import {INamedSet} from 'tdp_core/src/storage';
 import {resolve} from 'phovea_core/src/idtype';
@@ -21,7 +21,7 @@ interface IFrequencyScoreParam extends ICommonScoreParam {
   comparison_cn?: { text: string, data: number }[];
 }
 
-abstract class AFrequencyScore extends AScore implements IScore<number> {
+export abstract class AFrequencyScore extends AScore implements IScore<number> {
 
   constructor(private readonly parameter: IFrequencyScoreParam,private readonly dataSource: IDataSourceConfig, private readonly oppositeDataSource: IDataSourceConfig, private readonly countOnly: boolean) {
     super(parameter);
@@ -77,5 +77,3 @@ abstract class AFrequencyScore extends AScore implements IScore<number> {
 
   protected abstract getViewPrefix(): string;
 }
-
-export default AFrequencyScore;

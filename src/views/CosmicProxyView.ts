@@ -10,7 +10,7 @@ import {IFormSelectOption} from 'tdp_core/src/form/elements/FormSelect';
  * Proxy view for the idType Cosmic which fetches the original cell line data based on the mapping from Cell line to
  * Cosmic.
  */
-export default class CosmicProxyView extends ProxyView {
+export class CosmicProxyView extends ProxyView {
 
   protected async getSelectionSelectData(names: string[]): Promise<IFormSelectOption[]> {
     const cosmics = await resolveIds(this.selection.idtype, this.selection.range,'Cosmic');

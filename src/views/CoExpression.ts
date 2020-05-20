@@ -14,7 +14,7 @@ import {getTDPData, IParams, mergeParamAndFilters} from 'tdp_core/src/rest';
 import {toFilter} from 'tdp_core/src/lineup';
 
 
-export default class CoExpression extends ACoExpression {
+export class CoExpression extends ACoExpression {
 
   protected getParameterFormDescs(): IFormSelectDesc[] {
     const base = super.getParameterFormDescs();

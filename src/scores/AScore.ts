@@ -23,7 +23,7 @@ export interface ICommonScoreParam {
 }
 
 
-export default class AScore {
+export class AScore {
   protected readonly dataType: IDataTypeConfig;
   protected readonly dataSubType: IDataSubtypeConfig;
 

@@ -5,7 +5,7 @@ import {ISelection, IViewContext} from 'tdp_core/src/views';
 import {tissue} from '../config';
 import {IServerColumn} from 'tdp_core/src/rest';
 
-export default class TissueList extends ACommonList {
+export class TissueList extends ACommonList {
 
   constructor(context:IViewContext, selection: ISelection, parent:HTMLElement, options: IACommonListOptions) {
     super(context, selection, parent, tissue, Object.assign({

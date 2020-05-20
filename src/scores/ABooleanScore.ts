@@ -13,7 +13,7 @@ export interface IBooleanScoreParams {
 /**
  * score implementation in this case a numeric score is computed
  */
-abstract class ABooleanScore implements IScore<number> {
+export abstract class ABooleanScore implements IScore<number> {
 
   /**
    * defines the IDType of which score values are returned. A score row is a pair of id and its score, e.g. {id: 'EGFR', score: 100}
@@ -45,5 +45,3 @@ abstract class ABooleanScore implements IScore<number> {
   protected abstract get label(): string;
   protected abstract get columnName(): string;
 }
-
-export default ABooleanScore;

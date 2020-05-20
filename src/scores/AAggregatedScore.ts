@@ -7,7 +7,7 @@ import {getSelectedSpecies} from 'tdp_gene/src/common';
 import {IDataSourceConfig, dataSubtypes, MAX_FILTER_SCORE_ROWS_BEFORE_ALL} from '../config';
 import {IScore, IScoreRow} from 'tdp_core/src/extensions';
 import {createDesc, toFilterString} from './utils';
-import AScore, {ICommonScoreParam} from './AScore';
+import {AScore, ICommonScoreParam} from './AScore';
 import {limitScoreRows, convertLog2ToLinear} from 'tdp_gene/src/utils';
 import {INamedSet} from 'tdp_core/src/storage';
 import {resolve} from 'phovea_core/src/idtype';
@@ -21,7 +21,7 @@ interface IAggregatedScoreParam extends ICommonScoreParam {
   aggregation: string;
 }
 
-abstract class AAggregatedScore extends AScore implements IScore<number> {
+export abstract class AAggregatedScore extends AScore implements IScore<number> {
 
   constructor(private readonly parameter: IAggregatedScoreParam, private readonly dataSource: IDataSourceConfig, private readonly oppositeDataSource: IDataSourceConfig) {
     super(parameter);
@@ -99,5 +99,3 @@ function compatibilityFilter(filter: IParams, oppositeEntityName: string) {
   filter['panel_' + oppositeEntityName] = old;
   return filter;
 }
-
-export default AAggregatedScore;

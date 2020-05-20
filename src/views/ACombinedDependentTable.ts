@@ -15,7 +15,7 @@ import {resolve} from 'phovea_core/src/idtype';
 import {toFilter} from 'tdp_core/src/lineup';
 
 
-abstract class ACombinedDependentTable extends ARankingView {
+export abstract class ACombinedDependentTable extends ARankingView {
 
   protected dataSource: IDataSourceConfig;
 
@@ -124,5 +124,3 @@ abstract class ACombinedDependentTable extends ARankingView {
     });
   }
 }
-
-export default ACombinedDependentTable;

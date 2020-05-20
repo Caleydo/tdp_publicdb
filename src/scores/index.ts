@@ -1,15 +1,9 @@
 export * from './AAggregatedScore';
-export {default as AAggregatedScore} from './AAggregatedScore';
 export * from './ABooleanScore';
-export {default as ABooleanScore} from './ABooleanScore';
 export * from './AFrequencyScore';
-export {default as AFrequencyScore} from './AFrequencyScore';
 export * from './AggregatedScore';
 export * from './AnnotationColumn';
-export {default as AnnotationColumn} from './AnnotationColumn';
 export * from './AScore';
-export {default as AScore} from './AScore';
 export * from './ASingleScore';
-export {default as ASingleScore} from './ASingleScore';
 export * from './scoreFunctionality';
 export * from './forms';

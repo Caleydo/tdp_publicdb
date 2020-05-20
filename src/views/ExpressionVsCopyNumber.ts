@@ -13,7 +13,7 @@ import {loadFirstName} from './utils';
 import {getTDPData, IParams, mergeParamAndFilters} from 'tdp_core/src/rest';
 import {toFilter} from 'tdp_core/src/lineup';
 
-export default class ExpressionVsCopyNumber extends AExpressionVsCopyNumber {
+export class ExpressionVsCopyNumber extends AExpressionVsCopyNumber {
 
   protected getParameterFormDescs(): IFormSelectDesc[] {
     const base = super.getParameterFormDescs();

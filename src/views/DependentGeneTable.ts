@@ -21,7 +21,7 @@ import {getTDPDesc, getTDPFilteredRows, getTDPScore, IServerColumn} from 'tdp_co
 import {postProcessScore, subTypeDesc} from './utils';
 import {toFilter} from 'tdp_core/src/lineup';
 
-export default class DependentGeneTable extends ARankingView {
+export class DependentGeneTable extends ARankingView {
   private readonly dataSource: IDataSourceConfig;
 
   constructor(context: IViewContext, selection: ISelection, parent: HTMLElement, private readonly dataType: IDataTypeConfig, options = {}) {

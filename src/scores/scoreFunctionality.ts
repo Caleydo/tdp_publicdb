@@ -14,8 +14,8 @@ import {
 import {gene, tissue, cellline, splitTypes, MAX_FILTER_SCORE_ROWS_BEFORE_ALL, IDataSourceConfig} from '../config';
 import {selectDataSources} from './utils';
 import {FormDialog, convertRow2MultiMap, IFormElementDesc}  from 'tdp_core/src/form';
-import AAggregatedScore from './AAggregatedScore';
-import AFrequencyScore from './AFrequencyScore';
+import {AAggregatedScore} from './AAggregatedScore';
+import {AFrequencyScore} from './AFrequencyScore';
 import {IForm} from 'tdp_core/src/form/interfaces';
 
 

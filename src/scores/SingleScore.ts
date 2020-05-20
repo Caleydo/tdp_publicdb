@@ -14,7 +14,7 @@ import {
 import {selectDataSources} from './utils';
 import {mixin} from 'phovea_core/src';
 import {FormDialog} from 'tdp_core/src/form';
-import ASingleScore from './ASingleScore';
+import {ASingleScore} from './ASingleScore';
 import {IParams} from 'tdp_core/src/rest';
 import {IForm} from 'tdp_core/src/form/interfaces';
 

@@ -12,7 +12,7 @@ import {formatGene, searchGene, validateGene} from '../utils';
 /**
  * Entry point list from all species and LineUp named sets (aka stored LineUp sessions)
  */
-export default class GeneSubSection extends ACommonSubSection {
+export class GeneSubSection extends ACommonSubSection {
 
   constructor(parent: HTMLElement, desc: IStartMenuSubSectionDesc, options: IStartMenuSectionOptions) {
     super(parent, desc, gene, options);

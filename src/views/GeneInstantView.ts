@@ -20,7 +20,7 @@ interface IGeneInfo {
   chromosome: string;
 }
 
-export default class GeneInstantView extends AInstantView {
+export class GeneInstantView extends AInstantView {
 
   protected initImpl() {
     super.initImpl();
