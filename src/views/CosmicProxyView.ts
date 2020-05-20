@@ -3,7 +3,7 @@
  */
 
 import {resolveIds} from 'tdp_core/src/views/resolve';
-import ProxyView from 'tdp_core/src/views/ProxyView';
+import {ProxyView} from 'tdp_core/src/views/ProxyView';
 import {IFormSelectOption} from 'tdp_core/src/form/elements/FormSelect';
 
 /**

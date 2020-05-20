@@ -13,7 +13,9 @@ import {
 } from './forms';
 import {gene, tissue, cellline, splitTypes, MAX_FILTER_SCORE_ROWS_BEFORE_ALL, IDataSourceConfig} from '../config';
 import {selectDataSources} from './utils';
-import {FormDialog, convertRow2MultiMap, IFormElementDesc}  from 'tdp_core/src/form';
+import {IFormElementDesc}  from 'tdp_core/src/form/interfaces';
+import {FormDialog}  from 'tdp_core/src/form/FormDialog';
+import {FormMap} from 'tdp_core/src/form/elements/FormMap';
 import {AAggregatedScore} from './AAggregatedScore';
 import {AFrequencyScore} from './AFrequencyScore';
 import {IForm} from 'tdp_core/src/form/interfaces';
@@ -59,7 +61,7 @@ export function createScoreDialog(pluginDesc: IPluginDesc, extras: any, formDesc
     } else {
       delete data.comparison_cn;
     }
-    data.filter = convertRow2MultiMap(data.filter);
+    data.filter = FormMap.convertRow2MultiMap(data.filter);
     return data;
   });
 }

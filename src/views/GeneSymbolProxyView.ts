@@ -3,7 +3,7 @@
  */
 
 import {IViewContext, ISelection} from 'tdp_core/src/views';
-import ProxyView from 'tdp_core/src/views/ProxyView';
+import {ProxyView} from 'tdp_core/src/views/ProxyView';
 import {IPluginDesc} from 'phovea_core/src/plugin';
 import {IFormSelectOption} from 'tdp_core/src/form';
 import {loadGeneList} from './utils';
