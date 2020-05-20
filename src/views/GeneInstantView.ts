@@ -3,7 +3,7 @@
  */
 
 import {resolveIds} from 'tdp_core/src/views';
-import AInstantView from 'tdp_core/src/views/AInstantView';
+import {AInstantView} from 'tdp_core/src/views/AInstantView';
 import {getSelectedSpecies} from 'tdp_gene/src/common';
 import {gene} from '../config';
 import {getTDPFilteredRows} from 'tdp_core/src/rest';
