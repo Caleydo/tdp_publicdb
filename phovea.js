@@ -582,7 +582,7 @@ module.exports = function (registry) {
       idtype: idType,
       primaryType: idType,
       oppositeType: 'Drug',
-      factory: 'createSinglePrimDrugScoreDialog'
+      factory: 'createSinglePrismDrugScoreDialog'
     });
 
     registry.push('tdpScoreImpl', prefix + '_prism_drug_single_score', function () {

@@ -2,14 +2,14 @@
  * Created by sam on 06.03.2017.
  */
 
-import {IDataSourceConfig, gene, tissue, cellline, MAX_FILTER_SCORE_ROWS_BEFORE_ALL, splitTypes} from '../config';
+import {IDataSourceConfig, gene, tissue, cellline, MAX_FILTER_SCORE_ROWS_BEFORE_ALL, splitTypes, drug} from '../config';
 import {IScore} from 'tdp_core/src/extensions';
 import {IFormElementDesc, FormElementType} from 'tdp_core/src/form';
-import {ParameterFormIds, FORM_GENE_NAME, FORM_TISSUE_NAME, FORM_CELLLINE_NAME} from '../forms';
+import {ParameterFormIds, FORM_GENE_NAME, FORM_TISSUE_NAME, FORM_CELLLINE_NAME, FORM_DRUG_NAME} from '../forms';
 import {IPluginDesc} from 'phovea_core/src/plugin';
 import {
   FORCE_COMPUTE_ALL_CELLLINE, FORCE_COMPUTE_ALL_GENES, FORCE_COMPUTE_ALL_TISSUE,
-  FORM_SINGLE_SCORE, FORM_SINGLE_SCORE_DEPLETION
+  FORM_SINGLE_SCORE, FORM_SINGLE_SCORE_DEPLETION, FORM_SINGLE_SCORE_DRUG
 } from './forms';
 import {selectDataSources} from './utils';
 import {mixin} from 'phovea_core/src';
@@ -178,7 +178,7 @@ export function createSingleDepletionScore(data: ISingleScoreParam, pluginDesc: 
 }
 
 
-export function createSinglePrimDrugScoreDialog(pluginDesc: IPluginDesc, extra: any, countHint?: number) {
+export function createSinglePrismDrugScoreDialog(pluginDesc: IPluginDesc, extra: any, countHint?: number) {
   console.log(FORM_SINGLE_SCORE_DRUG.slice())
   return createScoreDialog(pluginDesc, extra, FORM_SINGLE_SCORE_DRUG.slice(), countHint);
 }
