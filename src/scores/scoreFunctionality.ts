@@ -3,7 +3,7 @@
  */
 
 import {IPluginDesc} from 'phovea_core';
-import {ParameterFormIds, FORM_GENE_FILTER, FORM_TISSUE_FILTER, FORM_CELLLINE_FILTER} from '../forms';
+import {ParameterFormIds, FORM_GENE_FILTER, FORM_TISSUE_FILTER, FORM_CELLLINE_FILTER} from '../common/forms';
 import {IScore} from 'tdp_core';
 import {AggregatedScore, AggregatedDepletionScore} from './AggregatedScore';
 import {FrequencyScore, FrequencyDepletionScore} from './FrequencyScore';
@@ -11,7 +11,7 @@ import {
   FORCE_COMPUTE_ALL_CELLLINE, FORCE_COMPUTE_ALL_GENES, FORCE_COMPUTE_ALL_TISSUE,
   FORM_AGGREGATED_SCORE, FORM_AGGREGATED_SCORE_DEPLETION
 } from './forms';
-import {gene, tissue, cellline, splitTypes, MAX_FILTER_SCORE_ROWS_BEFORE_ALL, IDataSourceConfig} from '../config';
+import {gene, tissue, cellline, splitTypes, MAX_FILTER_SCORE_ROWS_BEFORE_ALL, IDataSourceConfig} from '../common/config';
 import {selectDataSources} from './utils';
 import {IFormElementDesc}  from 'tdp_core';
 import {FormDialog}  from 'tdp_core';

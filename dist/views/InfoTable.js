@@ -4,7 +4,7 @@
 import { ResolveUtils } from 'tdp_core';
 import { AD3View } from 'tdp_core';
 import { SpeciesUtils } from 'tdp_gene';
-import { cellline, tissue, gene } from '../config';
+import { cellline, tissue, gene } from '../common/config';
 import { transpose as d3Transpose } from 'd3';
 import { RestBaseUtils } from 'tdp_core';
 export class AInfoTable extends AD3View {

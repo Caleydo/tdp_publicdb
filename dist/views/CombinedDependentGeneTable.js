@@ -1,5 +1,5 @@
-import { gene, expression, copyNumber, mutation, chooseDataSource, } from '../config';
-import { FORM_GENE_FILTER } from '../forms';
+import { gene, expression, copyNumber, mutation, chooseDataSource, } from '../common/config';
+import { FORM_GENE_FILTER } from '../common/forms';
 import { ACombinedDependentTable } from './ACombinedDependentTable';
 export class CombinedDependentGeneTable extends ACombinedDependentTable {
     constructor(context, selection, parent, dataType) {

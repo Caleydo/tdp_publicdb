@@ -1,5 +1,5 @@
 import { IViewContext, ISelection } from 'tdp_core';
-import { IDataTypeConfig, IDataSourceConfig } from '../config';
+import { IDataTypeConfig, IDataSourceConfig } from '../common/config';
 import { ARankingView } from 'tdp_core';
 import { IServerColumn } from 'tdp_core';
 import { IAdditionalColumnDesc } from 'tdp_core';

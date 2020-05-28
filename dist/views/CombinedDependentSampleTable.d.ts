@@ -1,5 +1,5 @@
 import { IViewContext, ISelection } from 'tdp_core';
-import { IDataTypeConfig, IDataSourceConfig } from '../config';
+import { IDataTypeConfig, IDataSourceConfig } from '../common/config';
 import { ACombinedDependentTable } from './ACombinedDependentTable';
 export declare class CombinedDependentSampleTable extends ACombinedDependentTable {
     constructor(context: IViewContext, selection: ISelection, parent: HTMLElement, dataType: IDataTypeConfig[]);

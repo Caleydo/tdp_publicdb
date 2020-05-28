@@ -1,5 +1,5 @@
 import { ACommonList } from 'tdp_gene';
-import { gene } from '../config';
+import { gene } from '../common/config';
 export class GeneList extends ACommonList {
     constructor(context, selection, parent, options) {
         super(context, selection, parent, gene, Object.assign({

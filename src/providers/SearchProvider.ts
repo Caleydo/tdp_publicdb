@@ -1,7 +1,7 @@
 import {SearchProvider} from 'tdp_gene';
 import {IResult} from 'tdp_core';
-import {cellline, gene, tissue} from './config';
-import './styles/idtype_color.scss';
+import {cellline, gene, tissue} from '../common/config';
+import '../scss/idtype_color.scss';
 import {SpeciesUtils} from 'tdp_gene';
 import {RestBaseUtils} from 'tdp_core';
 

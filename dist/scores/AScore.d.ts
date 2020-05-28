@@ -1,7 +1,7 @@
 /**
  * Created by sam on 06.03.2017.
  */
-import { IDataTypeConfig, IDataSubtypeConfig } from '../config';
+import { IDataTypeConfig, IDataSubtypeConfig } from '../common/config';
 export interface IScoreFilter {
     name: string | string[];
     names: string | string[];

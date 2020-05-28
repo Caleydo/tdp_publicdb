@@ -3,8 +3,8 @@
  */
 import { ARankingView, AdapterUtils } from 'tdp_core';
 import { SpeciesUtils } from 'tdp_gene';
-import { gene, expression, copyNumber, mutation, chooseDataSource } from '../config';
-import { ParameterFormIds, FORM_GENE_FILTER } from '../forms';
+import { gene, expression, copyNumber, mutation, chooseDataSource } from '../common/config';
+import { ParameterFormIds, FORM_GENE_FILTER } from '../common/forms';
 import { FormElementType } from 'tdp_core';
 import { ResolveUtils } from 'tdp_core';
 import { RestBaseUtils } from 'tdp_core';

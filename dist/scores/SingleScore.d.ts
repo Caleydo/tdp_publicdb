@@ -1,7 +1,7 @@
 /**
  * Created by sam on 06.03.2017.
  */
-import { IDataSourceConfig } from '../config';
+import { IDataSourceConfig } from '../common/config';
 import { IScore } from 'tdp_core';
 import { IFormElementDesc } from 'tdp_core';
 import { IPluginDesc } from 'phovea_core';

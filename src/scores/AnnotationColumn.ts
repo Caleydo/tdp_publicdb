@@ -1,12 +1,12 @@
 import {IScore} from 'tdp_core';
 import {FormDialog} from 'tdp_core';
 import {ABooleanScore, IBooleanScoreParams} from './ABooleanScore';
-import {IDataSourceConfig} from '../config';
+import {IDataSourceConfig} from '../common/config';
 import {FormElementType} from 'tdp_core';
 import {AppContext} from 'phovea_core';
 import {IPluginDesc} from 'phovea_core';
 import {selectDataSources} from './utils';
-import {chooseDataSource} from '../config';
+import {chooseDataSource} from '../common/config';
 
 
 /**

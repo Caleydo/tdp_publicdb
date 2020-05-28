@@ -5,7 +5,7 @@
 import {RangeLike} from 'phovea_core';
 import {IDType} from 'phovea_core';
 import {SpeciesUtils} from 'tdp_gene';
-import {IDataSourceConfig, dataSubtypes, mutation, MAX_FILTER_SCORE_ROWS_BEFORE_ALL} from '../config';
+import {IDataSourceConfig, dataSubtypes, mutation, MAX_FILTER_SCORE_ROWS_BEFORE_ALL} from '../common/config';
 import {IScore} from 'tdp_core';
 import {createDesc, toFilterString} from './utils';
 import {AScore, ICommonScoreParam} from './AScore';

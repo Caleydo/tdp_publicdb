@@ -5,7 +5,7 @@
 import {IViewContext, ISelection, IView, ResolveUtils} from 'tdp_core';
 import {AD3View} from 'tdp_core';
 import {SpeciesUtils} from 'tdp_gene';
-import {IDataSourceConfig, cellline, tissue, gene} from '../config';
+import {IDataSourceConfig, cellline, tissue, gene} from '../common/config';
 import {Primitive, transpose as d3Transpose, Selection} from 'd3';
 import {RestBaseUtils} from 'tdp_core';
 

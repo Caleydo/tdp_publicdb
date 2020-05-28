@@ -4,8 +4,8 @@ import {
   IDataTypeConfig,
   IDataSourceConfig,
   splitTypes
-} from '../config';
-import {ParameterFormIds, FORM_DATA_HIERARCHICAL_SUBTYPE} from '../forms';
+} from '../common/config';
+import {ParameterFormIds, FORM_DATA_HIERARCHICAL_SUBTYPE} from '../common/forms';
 import {ARankingView} from 'tdp_core';
 import {RestBaseUtils, IParams, IServerColumn} from 'tdp_core';
 import {IAdditionalColumnDesc} from 'tdp_core';

@@ -3,7 +3,7 @@
  */
 import { AOncoPrint } from 'tdp_gene';
 import { SpeciesUtils } from 'tdp_gene';
-import { ParameterFormIds, FORM_TISSUE_OR_CELLLINE_FILTER, FORM_DATA_SOURCE } from '../forms';
+import { ParameterFormIds, FORM_TISSUE_OR_CELLLINE_FILTER, FORM_DATA_SOURCE } from '../common/forms';
 import { loadFirstName } from './utils';
 import { IDTypeManager } from 'phovea_core';
 import { RestBaseUtils } from 'tdp_core';

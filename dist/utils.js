@@ -1,7 +1,7 @@
-import { SpeciesUtils } from 'tdp_gene';
-import { Select3Utils } from 'tdp_core';
+import { getSelectedSpecies } from 'tdp_gene/src/common';
+import { highlightMatch } from 'tdp_core/src/form/elements/Select3';
 import { gene } from './config';
-import { RestBaseUtils } from 'tdp_core';
+import { getTDPData, getTDPLookup } from 'tdp_core/src/rest';
 // Gene
 /**
  * Search and autocomplete of the input string for Select3
@@ -12,11 +12,11 @@ import { RestBaseUtils } from 'tdp_core';
  * @returns {Promise<{more: boolean; items: Readonly<IdTextPair>[]}>} Select3 conformant data structure.
  */
 export function searchGene(query, page, pageSize) {
-    return RestBaseUtils.getTDPLookup(gene.db, `${gene.base}_gene_items`, {
+    return getTDPLookup(gene.db, gene.base + "_gene_items", {
         column: 'symbol',
-        species: SpeciesUtils.getSelectedSpecies(),
-        query,
-        page,
+        species: getSelectedSpecies(),
+        query: query,
+        page: page,
         limit: pageSize
     });
 }
@@ -27,9 +27,9 @@ export function searchGene(query, page, pageSize) {
  * @returns {Promise<Readonly<IdTextPair>[]>} Return the validated gene symbols as id-text pairs.
  */
 export function validateGene(query) {
-    return RestBaseUtils.getTDPData(gene.db, `${gene.base}_gene_items_verify/filter`, {
+    return getTDPData(gene.db, gene.base + "_gene_items_verify/filter", {
         column: 'symbol',
-        species: SpeciesUtils.getSelectedSpecies(),
+        species: getSelectedSpecies(),
         filter_symbol: query,
     });
 }
@@ -45,32 +45,35 @@ export function validateGene(query) {
 export function formatGene(item, node, mode, currentSearchQuery) {
     if (mode === 'result') {
         //highlight match
-        return `${item.text.replace(currentSearchQuery, Select3Utils.highlightMatch)} <span class="ensg">${item.id}</span>`;
+        return item.text.replace(currentSearchQuery, highlightMatch) + " <span class=\"ensg\">" + item.id + "</span>";
     }
     return item.text;
 }
 // Cellline and Tissue Select3 options methods
 export function search(config, query, page, pageSize) {
-    return RestBaseUtils.getTDPLookup(config.db, `${config.base}_items`, {
+    return getTDPLookup(config.db, config.base + "_items", {
         column: config.entityName,
-        species: SpeciesUtils.getSelectedSpecies(),
-        query,
-        page,
+        species: getSelectedSpecies(),
+        query: query,
+        page: page,
         limit: pageSize
     });
 }
 export function validate(config, query) {
-    return RestBaseUtils.getTDPData(config.db, `${config.base}_items_verify/filter`, {
+    var _a;
+    return getTDPData(config.db, config.base + "_items_verify/filter", (_a = {
         column: config.entityName,
-        species: SpeciesUtils.getSelectedSpecies(),
-        [`filter_${config.entityName}`]: query,
-    });
+        species: getSelectedSpecies()
+    },
+        _a["filter_" + config.entityName] = query,
+        _a));
 }
 export function format(item, node, mode, currentSearchQuery) {
     if (mode === 'result' && currentSearchQuery) {
         //highlight match
-        return `${item.text.replace(currentSearchQuery, Select3Utils.highlightMatch)}`;
+        return "" + item.text.replace(currentSearchQuery, highlightMatch);
     }
     return item.text;
 }
+//# sourceMappingURL=utils.js.map
 //# sourceMappingURL=utils.js.map

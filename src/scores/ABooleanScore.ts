@@ -3,7 +3,7 @@ import {IDTypeManager} from 'phovea_core';
 import {ColumnDescUtils} from 'tdp_core';
 import {RestBaseUtils} from 'tdp_core';
 import {ICommonScoreParam} from './AScore';
-import {IDataSourceConfig} from '../config';
+import {IDataSourceConfig} from '../common/config';
 
 
 export interface IBooleanScoreParams {

@@ -5,7 +5,7 @@
 import {SpeciesUtils} from 'tdp_gene';
 import {RestBaseUtils} from 'tdp_core';
 import {IScoreRow} from 'tdp_core';
-import {IDataSubtypeConfig} from '../config';
+import {IDataSubtypeConfig} from '../common/config';
 import {FieldUtils} from 'tdp_gene';
 import {ColumnDescUtils} from 'tdp_core';
 

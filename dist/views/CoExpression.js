@@ -4,8 +4,8 @@
 import { FormElementType } from 'tdp_core';
 import { ACoExpression } from 'tdp_gene';
 import { SpeciesUtils } from 'tdp_gene';
-import { expression } from '../config';
-import { ParameterFormIds, FORM_TISSUE_OR_CELLLINE_FILTER, FORM_DATA_SOURCE, FORM_COLOR_CODING } from '../forms';
+import { expression } from '../common/config';
+import { ParameterFormIds, FORM_TISSUE_OR_CELLLINE_FILTER, FORM_DATA_SOURCE, FORM_COLOR_CODING } from '../common/forms';
 import { loadGeneList, loadFirstName } from './utils';
 import { IDTypeManager } from 'phovea_core';
 import { RestBaseUtils } from 'tdp_core';

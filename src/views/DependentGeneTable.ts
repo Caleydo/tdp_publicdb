@@ -13,8 +13,8 @@ import {
   IDataTypeConfig,
   chooseDataSource,
   IDataSourceConfig, IDataSubtypeConfig
-} from '../config';
-import {ParameterFormIds, FORM_GENE_FILTER} from '../forms';
+} from '../common/config';
+import {ParameterFormIds, FORM_GENE_FILTER} from '../common/forms';
 import {FormElementType} from 'tdp_core';
 import {ISelection, IViewContext, ResolveUtils} from 'tdp_core';
 import {RestBaseUtils, IServerColumn} from 'tdp_core';

@@ -6,8 +6,8 @@ import {
   mutation,
   IDataTypeConfig,
   chooseDataSource,
-} from '../config';
-import {FORM_GENE_FILTER} from '../forms';
+} from '../common/config';
+import {FORM_GENE_FILTER} from '../common/forms';
 import {ACombinedDependentTable} from './ACombinedDependentTable';
 
 export class CombinedDependentGeneTable extends ACombinedDependentTable {

@@ -1,8 +1,8 @@
 /**
  * Created by sam on 06.03.2017.
  */
-import { dataSubtypes, cellline, tissue, gene } from '../config';
-import { FORM_GENE_FILTER, FORM_TISSUE_FILTER, FORM_CELLLINE_FILTER } from '../forms';
+import { dataSubtypes, cellline, tissue, gene } from '../common/config';
+import { FORM_GENE_FILTER, FORM_TISSUE_FILTER, FORM_CELLLINE_FILTER } from '../common/forms';
 import { LineupUtils } from 'tdp_core';
 /**
  * creates a lineup config out of a IDataSubtypeConfig

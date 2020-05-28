@@ -1,5 +1,5 @@
 import {RestBaseUtils, IParams, IRow} from 'tdp_core';
-import {gene} from './config';
+import {gene} from '../common/config';
 import {IAdditionalColumnDesc} from 'tdp_core';
 import {SpeciesUtils, Species} from 'tdp_gene';
 

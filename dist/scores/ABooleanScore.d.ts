@@ -1,5 +1,5 @@
 import { IScore, IScoreRow } from 'tdp_core';
-import { IDataSourceConfig } from '../config';
+import { IDataSourceConfig } from '../common/config';
 export interface IBooleanScoreParams {
     [key: string]: any;
 }

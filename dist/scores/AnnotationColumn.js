@@ -3,7 +3,7 @@ import { ABooleanScore } from './ABooleanScore';
 import { FormElementType } from 'tdp_core';
 import { AppContext } from 'phovea_core';
 import { selectDataSources } from './utils';
-import { chooseDataSource } from '../config';
+import { chooseDataSource } from '../common/config';
 /**
  * score implementation in this case a numeric score is computed
  */

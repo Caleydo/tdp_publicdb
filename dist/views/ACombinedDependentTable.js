@@ -1,7 +1,7 @@
 import { ResolveUtils } from 'tdp_core';
 import { SpeciesUtils } from 'tdp_gene';
-import { splitTypes } from '../config';
-import { ParameterFormIds, FORM_DATA_HIERARCHICAL_SUBTYPE } from '../forms';
+import { splitTypes } from '../common/config';
+import { ParameterFormIds, FORM_DATA_HIERARCHICAL_SUBTYPE } from '../common/forms';
 import { ARankingView } from 'tdp_core';
 import { RestBaseUtils } from 'tdp_core';
 import { postProcessScore, subTypeDesc } from './utils';

@@ -3,7 +3,7 @@
  */
 import { IViewContext, ISelection } from 'tdp_core';
 import { AD3View } from 'tdp_core';
-import { IDataSourceConfig } from '../config';
+import { IDataSourceConfig } from '../common/config';
 export declare abstract class AInfoTable extends AD3View {
     private readonly dataSource;
     private readonly $table;

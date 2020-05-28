@@ -5,7 +5,7 @@
 import {ResolveUtils} from 'tdp_core';
 import {AInstantView} from 'tdp_core';
 import {SpeciesUtils} from 'tdp_gene';
-import {gene} from '../config';
+import {gene} from '../common/config';
 import {RestBaseUtils} from 'tdp_core';
 import {ErrorAlertHandler} from 'tdp_core';
 

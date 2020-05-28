@@ -2,7 +2,7 @@
  * Created by Marc Streit on 28.07.2016.
  */
 import { ARankingView } from 'tdp_core';
-import { IDataTypeConfig } from '../config';
+import { IDataTypeConfig } from '../common/config';
 import { ISelection, IViewContext } from 'tdp_core';
 import { IServerColumn } from 'tdp_core';
 export declare class DependentGeneTable extends ARankingView {

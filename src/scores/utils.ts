@@ -2,9 +2,9 @@
  * Created by sam on 06.03.2017.
  */
 
-import {IDataSubtypeConfig, dataSubtypes, cellline, tissue, gene, IDataSourceConfig, depletion} from '../config';
+import {IDataSubtypeConfig, dataSubtypes, cellline, tissue, gene, IDataSourceConfig, depletion} from '../common/config';
 import {IPluginDesc} from 'phovea_core';
-import {FORM_GENE_FILTER, FORM_TISSUE_FILTER, FORM_CELLLINE_FILTER} from '../forms';
+import {FORM_GENE_FILTER, FORM_TISSUE_FILTER, FORM_CELLLINE_FILTER} from '../common/forms';
 import {LineupUtils} from 'tdp_core';
 import {IFormMultiMap} from 'tdp_core';
 

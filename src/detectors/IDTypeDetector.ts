@@ -1,4 +1,4 @@
-import {chooseDataSource} from './config';
+import {chooseDataSource} from '../common/config';
 import {RestBaseUtils} from 'tdp_core';
 
 interface IIDTypeDetectorOptions {

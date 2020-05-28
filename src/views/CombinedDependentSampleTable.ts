@@ -6,8 +6,8 @@ import {
   mutation,
   IDataTypeConfig,
   IDataSourceConfig,
-} from '../config';
-import {ParameterFormIds, FORM_DATA_SOURCE, FORM_TISSUE_OR_CELLLINE_FILTER} from '../forms';
+} from '../common/config';
+import {ParameterFormIds, FORM_DATA_SOURCE, FORM_TISSUE_OR_CELLLINE_FILTER} from '../common/forms';
 import {ACombinedDependentTable} from './ACombinedDependentTable';
 import {loadFirstName} from './utils';
 

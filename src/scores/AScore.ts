@@ -2,7 +2,7 @@
  * Created by sam on 06.03.2017.
  */
 
-import {resolveDataTypes, IDataTypeConfig, IDataSubtypeConfig} from '../config';
+import {resolveDataTypes, IDataTypeConfig, IDataSubtypeConfig} from '../common/config';
 
 export interface IScoreFilter {
   name: string | string[]; // including named set special handling

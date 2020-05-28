@@ -3,8 +3,8 @@
  */
 import { ARankingView, AdapterUtils } from 'tdp_core';
 import { SpeciesUtils } from 'tdp_gene';
-import { expression, copyNumber, mutation } from '../config';
-import { ParameterFormIds, FORM_DATA_SOURCE, FORM_TISSUE_OR_CELLLINE_FILTER } from '../forms';
+import { expression, copyNumber, mutation } from '../common/config';
+import { ParameterFormIds, FORM_DATA_SOURCE, FORM_TISSUE_OR_CELLLINE_FILTER } from '../common/forms';
 import { FormElementType } from 'tdp_core';
 import { RestBaseUtils } from 'tdp_core';
 import { IDTypeManager } from 'phovea_core';

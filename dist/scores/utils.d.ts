@@ -1,7 +1,7 @@
 /**
  * Created by sam on 06.03.2017.
  */
-import { IDataSubtypeConfig, IDataSourceConfig } from '../config';
+import { IDataSubtypeConfig, IDataSourceConfig } from '../common/config';
 import { IPluginDesc } from 'phovea_core';
 import { IFormMultiMap } from 'tdp_core';
 /**

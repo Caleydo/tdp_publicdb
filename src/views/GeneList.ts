@@ -2,7 +2,7 @@
 
 import {ACommonList, IACommonListOptions} from 'tdp_gene';
 import {ISelection, IViewContext} from 'tdp_core';
-import {gene} from '../config';
+import {gene} from '../common/config';
 import {IServerColumn} from 'tdp_core';
 
 export class GeneList extends ACommonList {

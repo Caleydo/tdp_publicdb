@@ -3,7 +3,7 @@
  */
 import { IDTypeManager } from 'phovea_core';
 import { SpeciesUtils } from 'tdp_gene';
-import { MAX_FILTER_SCORE_ROWS_BEFORE_ALL } from '../config';
+import { MAX_FILTER_SCORE_ROWS_BEFORE_ALL } from '../common/config';
 import { FieldUtils } from 'tdp_gene';
 import { createDesc } from './utils';
 import { AScore } from './AScore';

@@ -12,12 +12,12 @@ export declare class ExpressionVsCopyNumber extends AExpressionVsCopyNumber {
     protected getExpressionValues(): {
         name: string;
         value: string;
-        data: import("../config").IDataSubtypeConfig;
+        data: import("../common/config").IDataSubtypeConfig;
     }[];
     protected getCopyNumberValues(): {
         name: string;
         value: string;
-        data: import("../config").IDataSubtypeConfig;
+        data: import("../common/config").IDataSubtypeConfig;
     }[];
     get itemIDType(): import("phovea_core").IDType;
     protected select(range: Range): void;
