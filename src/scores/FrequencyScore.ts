@@ -3,9 +3,9 @@
  */
 
 import {IDataSourceConfig} from '../config';
-import {IScore} from 'tdp_core/src/extensions';
+import {IScore} from 'tdp_core';
 import {ICommonScoreParam} from './AScore';
-import {IParams} from 'tdp_core/src/rest';
+import {IParams} from 'tdp_core';
 import {AFrequencyScore} from './AFrequencyScore';
 
 interface IFrequencyScoreParam extends ICommonScoreParam {

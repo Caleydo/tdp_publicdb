@@ -2,18 +2,18 @@
  * Created by sam on 06.03.2017.
  */
 
-import {RangeLike} from 'phovea_core/src/range';
-import {getSelectedSpecies} from 'tdp_gene/src/common';
+import {RangeLike} from 'phovea_core';
+import {getSelectedSpecies} from 'tdp_gene';
 import {IDataSourceConfig, dataSubtypes, MAX_FILTER_SCORE_ROWS_BEFORE_ALL} from '../config';
-import {IScore, IScoreRow} from 'tdp_core/src/extensions';
+import {IScore, IScoreRow} from 'tdp_core';
 import {createDesc, toFilterString} from './utils';
 import {AScore, ICommonScoreParam} from './AScore';
-import {limitScoreRows, convertLog2ToLinear} from 'tdp_gene/src/utils';
-import {INamedSet} from 'tdp_core/src/storage';
-import {resolve} from 'phovea_core/src/idtype';
-import {getTDPScore, IParams} from 'tdp_core/src/rest';
-import {toFilter} from 'tdp_core/src/lineup';
-import IDType from 'phovea_core/src/idtype/IDType';
+import {limitScoreRows, convertLog2ToLinear} from 'tdp_gene';
+import {INamedSet} from 'tdp_core';
+import {resolve} from 'phovea_core';
+import {getTDPScore, IParams} from 'tdp_core';
+import {toFilter} from 'tdp_core';
+import IDType from 'phovea_core';
 
 
 

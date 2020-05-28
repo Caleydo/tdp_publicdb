@@ -3,10 +3,10 @@
  */
 
 import {IDataSubtypeConfig, dataSubtypes, cellline, tissue, gene, IDataSourceConfig, depletion} from '../config';
-import {IPluginDesc} from 'phovea_core/src/plugin';
+import {IPluginDesc} from 'phovea_core';
 import {FORM_GENE_FILTER, FORM_TISSUE_FILTER, FORM_CELLLINE_FILTER} from '../forms';
-import {toFilterString as toFilterStringImpl} from 'tdp_core/src/lineup';
-import {IFormMultiMap} from 'tdp_core/src/form';
+import {toFilterString as toFilterStringImpl} from 'tdp_core';
+import {IFormMultiMap} from 'tdp_core';
 
 /**
  * creates a lineup config out of a IDataSubtypeConfig

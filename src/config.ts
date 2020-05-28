@@ -8,10 +8,10 @@ import {
   unknownMutationValue,
   unknownCopyNumberValue,
   GENE_IDTYPE
-} from 'tdp_gene/src/constants';
-import {IServerColumn} from 'tdp_core/src/rest';
-import {categoricalCol, numberCol, stringCol} from 'tdp_core/src/lineup';
-import {IAdditionalColumnDesc} from 'tdp_core/src/lineup/desc';
+} from 'tdp_gene';
+import {IServerColumn} from 'tdp_core';
+import {categoricalCol, numberCol, stringCol} from 'tdp_core';
+import {IAdditionalColumnDesc} from 'tdp_core';
 
 
 /**

@@ -2,12 +2,12 @@
  * Created by Samuel Gratzl on 27.04.2016.
  */
 
-import {resolveIds} from 'tdp_core/src/views';
-import {AInstantView} from 'tdp_core/src/views/AInstantView';
-import {getSelectedSpecies} from 'tdp_gene/src/common';
+import {resolveIds} from 'tdp_core';
+import {AInstantView} from 'tdp_core';
+import {getSelectedSpecies} from 'tdp_gene';
 import {gene} from '../config';
-import {getTDPFilteredRows} from 'tdp_core/src/rest';
-import {errorAlert} from 'tdp_core/src/notifications';
+import {getTDPFilteredRows} from 'tdp_core';
+import {errorAlert} from 'tdp_core';
 
 interface IGeneInfo {
   _id: number;

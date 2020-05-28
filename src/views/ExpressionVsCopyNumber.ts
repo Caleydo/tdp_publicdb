@@ -2,16 +2,16 @@
  * Created by sam on 16.02.2017.
  */
 
-import {IFormSelectDesc} from 'tdp_core/src/form';
-import {AExpressionVsCopyNumber, ICopyNumberDataFormatRow} from 'tdp_gene/src/views/AExpressionVsCopyNumber';
-import {getSelectedSpecies} from 'tdp_gene/src/common';
-import Range from 'phovea_core/src/range/Range';
+import {IFormSelectDesc} from 'tdp_core';
+import {AExpressionVsCopyNumber, ICopyNumberDataFormatRow} from 'tdp_gene';
+import {getSelectedSpecies} from 'tdp_gene';
+import {Range} from 'phovea_core';
 import {expression, copyNumber, IDataSourceConfig} from '../config';
 import {ParameterFormIds, FORM_TISSUE_OR_CELLLINE_FILTER, FORM_DATA_SOURCE, FORM_COLOR_CODING} from '../forms';
-import {resolve} from 'phovea_core/src/idtype';
+import {resolve} from 'phovea_core';
 import {loadFirstName} from './utils';
-import {getTDPData, IParams, mergeParamAndFilters} from 'tdp_core/src/rest';
-import {toFilter} from 'tdp_core/src/lineup';
+import {getTDPData, IParams, mergeParamAndFilters} from 'tdp_core';
+import {toFilter} from 'tdp_core';
 
 export class ExpressionVsCopyNumber extends AExpressionVsCopyNumber {
 

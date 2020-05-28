@@ -3,9 +3,9 @@ import {
   FORM_DATA_HIERARCHICAL_SUBTYPE, FORM_DATA_HIERARCHICAL_SUBTYPE_AGGREGATED_SELECTION,
   FORM_DATA_HIERARCHICAL_SUBTYPE_DEPLETION, FORM_DATA_HIERARCHICAL_SUBTYPE_AGGREGATED_SELECTION_DEPLETION
 } from '../forms';
-import {FormElementType} from 'tdp_core/src/form';
+import {FormElementType} from 'tdp_core';
 import {MAX_FILTER_SCORE_ROWS_BEFORE_ALL, splitTypes, dataSubtypes} from '../config';
-import {copyNumberCat, unknownCopyNumberValue} from 'tdp_gene/src/constants';
+import {copyNumberCat, unknownCopyNumberValue} from 'tdp_gene';
 /**
  * Created by Samuel Gratzl on 15.03.2017.
  */

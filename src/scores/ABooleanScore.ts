@@ -1,7 +1,7 @@
-import {IScore, IScoreRow} from 'tdp_core/src/extensions';
-import {resolve} from 'phovea_core/src/idtype';
-import {booleanCol} from 'tdp_core/src/lineup';
-import {getTDPScore} from 'tdp_core/src/rest';
+import {IScore, IScoreRow} from 'tdp_core';
+import {resolve} from 'phovea_core';
+import {booleanCol} from 'tdp_core';
+import {getTDPScore} from 'tdp_core';
 import {ICommonScoreParam} from './AScore';
 import {IDataSourceConfig} from '../config';
 

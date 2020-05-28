@@ -2,16 +2,16 @@
  * Created by sam on 16.02.2017.
  */
 
-import {FormElementType, IFormSelectDesc} from 'tdp_core/src/form';
-import {ACoExpression, ICoExprDataFormatRow, IGeneOption} from 'tdp_gene/src/views/ACoExpression';
-import {getSelectedSpecies} from 'tdp_gene/src/common';
+import {FormElementType, IFormSelectDesc} from 'tdp_core';
+import {ACoExpression, ICoExprDataFormatRow, IGeneOption} from 'tdp_gene';
+import {getSelectedSpecies} from 'tdp_gene';
 import {expression, IDataSourceConfig, IDataSubtypeConfig} from '../config';
 import {ParameterFormIds, FORM_TISSUE_OR_CELLLINE_FILTER, FORM_DATA_SOURCE, FORM_COLOR_CODING} from '../forms';
 import {loadGeneList, loadFirstName} from './utils';
-import {resolve} from 'phovea_core/src/idtype/manager';
-import Range from 'phovea_core/src/range/Range';
-import {getTDPData, IParams, mergeParamAndFilters} from 'tdp_core/src/rest';
-import {toFilter} from 'tdp_core/src/lineup';
+import {resolve} from 'phovea_core';
+import {Range} from 'phovea_core';
+import {getTDPData, IParams, mergeParamAndFilters} from 'tdp_core';
+import {toFilter} from 'tdp_core';
 
 
 export class CoExpression extends ACoExpression {

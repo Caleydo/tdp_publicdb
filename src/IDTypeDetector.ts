@@ -1,5 +1,5 @@
 import {chooseDataSource} from './config';
-import {getTDPData} from 'tdp_core/src/rest';
+import {getTDPData} from 'tdp_core';
 
 interface IIDTypeDetectorOptions {
   sampleType: string;

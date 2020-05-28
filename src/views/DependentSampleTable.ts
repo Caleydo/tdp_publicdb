@@ -2,9 +2,9 @@
  * Created by Marc Streit on 26.07.2016.
  */
 
-import {ARankingView, single} from 'tdp_core/src/lineup';
-import {IScoreRow} from 'tdp_core/src/extensions';
-import {getSelectedSpecies} from 'tdp_gene/src/common';
+import {ARankingView, single} from 'tdp_core';
+import {IScoreRow} from 'tdp_core';
+import {getSelectedSpecies} from 'tdp_gene';
 import {
   expression,
   copyNumber,
@@ -13,12 +13,12 @@ import {
   IDataSourceConfig, IDataSubtypeConfig
 } from '../config';
 import {ParameterFormIds, FORM_DATA_SOURCE, FORM_TISSUE_OR_CELLLINE_FILTER} from '../forms';
-import {FormElementType} from 'tdp_core/src/form';
-import {ISelection, IViewContext} from 'tdp_core/src/views';
-import {getTDPDesc, getTDPFilteredRows, getTDPScore, IServerColumn} from 'tdp_core/src/rest';
-import {resolve} from 'phovea_core/src/idtype';
+import {FormElementType} from 'tdp_core';
+import {ISelection, IViewContext} from 'tdp_core';
+import {getTDPDesc, getTDPFilteredRows, getTDPScore, IServerColumn} from 'tdp_core';
+import {resolve} from 'phovea_core';
 import {loadFirstName, postProcessScore, subTypeDesc} from './utils';
-import {toFilter} from 'tdp_core/src/lineup';
+import {toFilter} from 'tdp_core';
 
 export class DependentSampleTable extends ARankingView {
 

@@ -2,10 +2,10 @@
  * Created by Holger Stitz on 06.12.2016.
  */
 
-import {IViewContext, ISelection} from 'tdp_core/src/views';
-import {ProxyView} from 'tdp_core/src/views/ProxyView';
-import {IPluginDesc} from 'phovea_core/src/plugin';
-import {IFormSelectOption} from 'tdp_core/src/form';
+import {IViewContext, ISelection} from 'tdp_core';
+import {ProxyView} from 'tdp_core';
+import {IPluginDesc} from 'phovea_core';
+import {IFormSelectOption} from 'tdp_core';
 import {loadGeneList} from './utils';
 
 /**

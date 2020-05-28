@@ -1,4 +1,4 @@
-import {IViewContext, ISelection} from 'tdp_core/src/views';
+import {IViewContext, ISelection} from 'tdp_core';
 import {
   gene,
   expression,

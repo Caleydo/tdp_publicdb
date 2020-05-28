@@ -1,18 +1,18 @@
-import {IViewContext, ISelection, resolveIds} from 'tdp_core/src/views';
-import {getSelectedSpecies} from 'tdp_gene/src/common';
+import {IViewContext, ISelection, resolveIds} from 'tdp_core';
+import {getSelectedSpecies} from 'tdp_gene';
 import {
   IDataTypeConfig,
   IDataSourceConfig,
   splitTypes
 } from '../config';
 import {ParameterFormIds, FORM_DATA_HIERARCHICAL_SUBTYPE} from '../forms';
-import {ARankingView, multi} from 'tdp_core/src/lineup';
-import {getTDPDesc, getTDPFilteredRows, getTDPScore, IParams, IServerColumn} from 'tdp_core/src/rest';
-import {IAdditionalColumnDesc} from 'tdp_core/src/lineup/desc';
+import {ARankingView, multi} from 'tdp_core';
+import {getTDPDesc, getTDPFilteredRows, getTDPScore, IParams, IServerColumn} from 'tdp_core';
+import {IAdditionalColumnDesc} from 'tdp_core';
 import {postProcessScore, subTypeDesc} from './utils';
-import {IScoreRow} from 'tdp_core/src/extensions';
-import {resolve} from 'phovea_core/src/idtype';
-import {toFilter} from 'tdp_core/src/lineup';
+import {IScoreRow} from 'tdp_core';
+import {resolve} from 'phovea_core';
+import {toFilter} from 'tdp_core';
 
 
 export abstract class ACombinedDependentTable extends ARankingView {

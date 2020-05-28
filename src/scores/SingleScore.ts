@@ -3,20 +3,20 @@
  */
 
 import {IDataSourceConfig, gene, tissue, cellline, MAX_FILTER_SCORE_ROWS_BEFORE_ALL, splitTypes} from '../config';
-import {IScore} from 'tdp_core/src/extensions';
-import {IFormElementDesc, FormElementType} from 'tdp_core/src/form';
+import {IScore} from 'tdp_core';
+import {IFormElementDesc, FormElementType} from 'tdp_core';
 import {ParameterFormIds, FORM_GENE_NAME, FORM_TISSUE_NAME, FORM_CELLLINE_NAME} from '../forms';
-import {IPluginDesc} from 'phovea_core/src/plugin';
+import {IPluginDesc} from 'phovea_core';
 import {
   FORCE_COMPUTE_ALL_CELLLINE, FORCE_COMPUTE_ALL_GENES, FORCE_COMPUTE_ALL_TISSUE,
   FORM_SINGLE_SCORE, FORM_SINGLE_SCORE_DEPLETION
 } from './forms';
 import {selectDataSources} from './utils';
-import {mixin} from 'phovea_core/src';
-import {FormDialog} from 'tdp_core/src/form';
+import {mixin} from 'phovea_core';
+import {FormDialog} from 'tdp_core';
 import {ASingleScore} from './ASingleScore';
-import {IParams} from 'tdp_core/src/rest';
-import {IForm} from 'tdp_core/src/form/interfaces';
+import {IParams} from 'tdp_core';
+import {IForm} from 'tdp_core';
 
 interface ISingleScoreParam {
   name: {id: string, text: string};

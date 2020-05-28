@@ -3,11 +3,11 @@
  */
 
 import {chooseDataSource} from '../config';
-import {ACommonSubSection} from 'tdp_gene/src/menu/ACommonSubSection';
-import {IStartMenuSubSectionDesc} from 'tdp_gene/src/extensions';
+import {ACommonSubSection} from 'tdp_gene';
+import {IStartMenuSubSectionDesc} from 'tdp_gene';
 import {IStartMenuSectionOptions} from 'ordino/src/extensions';
 import {format, search, validate} from '../utils';
-import {mixin} from 'phovea_core/src/index';
+import {mixin} from 'phovea_core';
 
 /**
  * Entry point list from all species and LineUp named sets (aka stored LineUp sessions)

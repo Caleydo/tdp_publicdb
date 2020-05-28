@@ -2,9 +2,9 @@
  * Created by Stefan Luger on 06.12.17
  */
 
-import {resolveIds} from 'tdp_core/src/views/resolve';
-import {ProxyView} from 'tdp_core/src/views/ProxyView';
-import {IFormSelectOption} from 'tdp_core/src/form/elements/FormSelect';
+import {resolveIds} from 'tdp_core';
+import {ProxyView} from 'tdp_core';
+import {IFormSelectOption} from 'tdp_core';
 
 /**
  * Proxy view for the idType Cosmic which fetches the original cell line data based on the mapping from Cell line to

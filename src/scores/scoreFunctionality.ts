@@ -2,9 +2,9 @@
  * Created by Samuel Gratzl on 27.04.2016.
  */
 
-import {IPluginDesc} from 'phovea_core/src/plugin';
+import {IPluginDesc} from 'phovea_core';
 import {ParameterFormIds, FORM_GENE_FILTER, FORM_TISSUE_FILTER, FORM_CELLLINE_FILTER} from '../forms';
-import {IScore} from 'tdp_core/src/extensions';
+import {IScore} from 'tdp_core';
 import {AggregatedScore, AggregatedDepletionScore} from './AggregatedScore';
 import {FrequencyScore, FrequencyDepletionScore} from './FrequencyScore';
 import {
@@ -13,12 +13,12 @@ import {
 } from './forms';
 import {gene, tissue, cellline, splitTypes, MAX_FILTER_SCORE_ROWS_BEFORE_ALL, IDataSourceConfig} from '../config';
 import {selectDataSources} from './utils';
-import {IFormElementDesc}  from 'tdp_core/src/form/interfaces';
-import {FormDialog}  from 'tdp_core/src/form/FormDialog';
-import {FormMap} from 'tdp_core/src/form/elements/FormMap';
+import {IFormElementDesc}  from 'tdp_core';
+import {FormDialog}  from 'tdp_core';
+import {FormMap} from 'tdp_core';
 import {AAggregatedScore} from './AAggregatedScore';
 import {AFrequencyScore} from './AFrequencyScore';
-import {IForm} from 'tdp_core/src/form/interfaces';
+import {IForm} from 'tdp_core';
 
 
 export function createScoreDialog(pluginDesc: IPluginDesc, extras: any, formDesc: IFormElementDesc[], countHint?: number) {

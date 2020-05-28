@@ -1,4 +1,4 @@
-import {getTDPData} from 'tdp_core/src/rest';
+import {getTDPData} from 'tdp_core';
 
 async function detectIDType(data: any[], accessor: (row: any) => string, sampleSize: number) {
   const values = [];

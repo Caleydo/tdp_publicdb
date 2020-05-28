@@ -3,15 +3,15 @@
  */
 
 
-import {IFormSelectDesc} from 'tdp_core/src/form';
-import {AOncoPrint, IDataFormatRow, ISample} from 'tdp_gene/src/views/AOncoPrint';
-import {getSelectedSpecies} from 'tdp_gene/src/common';
+import {IFormSelectDesc} from 'tdp_core';
+import {AOncoPrint, IDataFormatRow, ISample} from 'tdp_gene';
+import {getSelectedSpecies} from 'tdp_gene';
 import {ParameterFormIds, FORM_TISSUE_OR_CELLLINE_FILTER, FORM_DATA_SOURCE} from '../forms';
 import {loadFirstName} from './utils';
 import {IDataSourceConfig} from '../config';
-import {resolve} from 'phovea_core/src/idtype';
-import {getTDPData, getTDPFilteredRows, IParams, mergeParamAndFilters} from 'tdp_core/src/rest';
-import {toFilter} from 'tdp_core/src/lineup';
+import {resolve} from 'phovea_core';
+import {getTDPData, getTDPFilteredRows, IParams, mergeParamAndFilters} from 'tdp_core';
+import {toFilter} from 'tdp_core';
 
 export class OncoPrint extends AOncoPrint {
 

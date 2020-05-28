@@ -1,9 +1,9 @@
-import {SearchProvider} from 'tdp_gene/src/SearchProvider';
-import {IResult} from 'tdp_core/src/public/search/SearchProviderInterfaces';
+import {SearchProvider} from 'tdp_gene';
+import {IResult} from 'tdp_core';
 import {cellline, gene, tissue} from './config';
 import './styles/idtype_color.scss';
-import {getSelectedSpecies} from 'tdp_gene/src/common';
-import {getTDPData} from 'tdp_core/src/rest';
+import {getSelectedSpecies} from 'tdp_gene';
+import {getTDPData} from 'tdp_core';
 
 export function createCellline() {
   return new SearchProvider(cellline);

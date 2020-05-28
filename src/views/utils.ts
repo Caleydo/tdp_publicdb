@@ -2,12 +2,12 @@
  * Created by sam on 16.02.2017.
  */
 
-import {getSelectedSpecies} from 'tdp_gene/src/common';
-import {getTDPData} from 'tdp_core/src/rest';
-import {IScoreRow} from 'tdp_core/src/extensions';
+import {getSelectedSpecies} from 'tdp_gene';
+import {getTDPData} from 'tdp_core';
+import {IScoreRow} from 'tdp_core';
 import {IDataSubtypeConfig} from '../config';
-import {convertLog2ToLinear} from 'tdp_gene/src/utils';
-import {categoricalCol, stringCol, numberCol} from 'tdp_core/src/lineup';
+import {convertLog2ToLinear} from 'tdp_gene';
+import {categoricalCol, stringCol, numberCol} from 'tdp_core';
 
 export function loadFirstName(ensg: string): Promise<string> {
   return getTDPData<any>('publicdb', 'gene_map_ensgs', {

@@ -1,8 +1,8 @@
-import {getSelectedSpecies} from 'tdp_gene/src/common';
-import {highlightMatch, ISelect3Item} from 'tdp_core/src/form/elements/Select3';
+import {getSelectedSpecies} from 'tdp_gene';
+import {highlightMatch, ISelect3Item} from 'tdp_core';
 import {gene, IDataSourceConfig} from './config';
-import {getTDPData, getTDPLookup} from 'tdp_core/src/rest';
-import {ICommonDBConfig} from 'tdp_gene/src/views/ACommonList';
+import {getTDPData, getTDPLookup} from 'tdp_core';
+import {ICommonDBConfig} from 'tdp_gene';
 
 // Gene
 

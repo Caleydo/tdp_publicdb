@@ -1,10 +1,10 @@
-import {IScore} from 'tdp_core/src/extensions';
-import {FormDialog} from 'tdp_core/src/form';
+import {IScore} from 'tdp_core';
+import {FormDialog} from 'tdp_core';
 import {ABooleanScore, IBooleanScoreParams} from './ABooleanScore';
 import {IDataSourceConfig} from '../config';
-import {FormElementType} from 'tdp_core/src/form';
-import {getAPIJSON} from 'phovea_core/src/ajax';
-import {IPluginDesc} from 'phovea_core/src/plugin';
+import {FormElementType} from 'tdp_core';
+import {getAPIJSON} from 'phovea_core';
+import {IPluginDesc} from 'phovea_core';
 import {selectDataSources} from './utils';
 import {chooseDataSource} from '../config';
 

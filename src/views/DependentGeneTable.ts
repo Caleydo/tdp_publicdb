@@ -2,9 +2,9 @@
  * Created by Marc Streit on 28.07.2016.
  */
 
-import {ARankingView, single} from 'tdp_core/src/lineup';
-import {IScoreRow} from 'tdp_core/src/extensions';
-import {getSelectedSpecies} from 'tdp_gene/src/common';
+import {ARankingView, single} from 'tdp_core';
+import {IScoreRow} from 'tdp_core';
+import {getSelectedSpecies} from 'tdp_gene';
 import {
   gene,
   expression,
@@ -15,11 +15,11 @@ import {
   IDataSourceConfig, IDataSubtypeConfig
 } from '../config';
 import {ParameterFormIds, FORM_GENE_FILTER} from '../forms';
-import {FormElementType} from 'tdp_core/src/form';
-import {ISelection, IViewContext, resolveIds} from 'tdp_core/src/views';
-import {getTDPDesc, getTDPFilteredRows, getTDPScore, IServerColumn} from 'tdp_core/src/rest';
+import {FormElementType} from 'tdp_core';
+import {ISelection, IViewContext, resolveIds} from 'tdp_core';
+import {getTDPDesc, getTDPFilteredRows, getTDPScore, IServerColumn} from 'tdp_core';
 import {postProcessScore, subTypeDesc} from './utils';
-import {toFilter} from 'tdp_core/src/lineup';
+import {toFilter} from 'tdp_core';
 
 export class DependentGeneTable extends ARankingView {
   private readonly dataSource: IDataSourceConfig;

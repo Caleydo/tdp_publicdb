@@ -1,7 +1,7 @@
-import {getTDPDesc, getTDPFilteredRows, IParams, IRow} from 'tdp_core/src/rest';
+import {getTDPDesc, getTDPFilteredRows, IParams, IRow} from 'tdp_core';
 import {gene} from './config';
-import {IAdditionalColumnDesc} from 'tdp_core/src/lineup';
-import {getSelectedSpecies, SPECIES_SESSION_KEY} from 'tdp_gene/src/common';
+import {IAdditionalColumnDesc} from 'tdp_core';
+import {getSelectedSpecies, SPECIES_SESSION_KEY} from 'tdp_gene';
 
 /**
  * Load the column description for a given idType
