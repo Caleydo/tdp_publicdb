@@ -21,6 +21,7 @@ export class ParameterFormIds {
   static GENE_SYMBOL = 'gene_symbol';
   static CELLLINE_NAME = 'cellline_name';
   static TISSUE_NAME = 'tissue_name';
+  static DRUG_NAME = 'drug_name';
   static DATA_SUBTYPE = 'data_subtype';
   static DATA_HIERARCHICAL_SUBTYPE = 'hierarchical_data_subtype';
   static COPYNUMBER_SUBTYPE = FORM_COPYNUMBER_SUBTYPE_ID;
@@ -102,6 +103,7 @@ function generateNameLookup(d: IDataSourceConfig, field: string) {
 
 export const FORM_TISSUE_NAME = generateNameLookup(tissue, ParameterFormIds.TISSUE_NAME);
 export const FORM_CELLLINE_NAME = generateNameLookup(cellline, ParameterFormIds.CELLLINE_NAME);
+export const FORM_DRUG_NAME = generateNameLookup(drug as any, ParameterFormIds.DRUG_NAME);
 
 //see also tdp_bi_bioinfodb/src/index.ts -> the session will be preset there
 
@@ -518,6 +520,23 @@ export const FORM_DATA_HIERARCHICAL_SUBTYPE_AGGREGATED_SELECTION_DEPLETION = {
   options: {
     data: depletion.dataSubtypes.filter((d) => d.type !== dataSubtypes.string).map((dss) => ({
       id: `${depletion.id}-${dss.id}`,
+      text: dss.name
+    }))
+  },
+  useSession: true
+};
+
+export const FORM_DATA_HIERARCHICAL_SUBTYPE_DRUG = {
+  type: FormElementType.SELECT2_MULTIPLE,
+  label: 'Data Type',
+  id: ParameterFormIds.DATA_HIERARCHICAL_SUBTYPE,
+  attributes: {
+    style: 'width:100%'
+  },
+  required: true,
+  options: {
+    data: prismDrug.dataSubtypes.map((dss) => ({
+      id: `${prismDrug.id}-${dss.id}`,
       text: dss.name
     }))
   },

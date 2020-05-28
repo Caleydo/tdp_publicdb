@@ -400,6 +400,43 @@ export const depletion: IDataTypeConfig = {
   ]
 };
 
+export const prismDrug: IDataTypeConfig = {
+  id: 'drug',
+  name: 'PRISM Drug Screen',
+  tableName: 'drugscore',
+  query: 'drug_score',
+  dataSubtypes: [
+    {
+      id: 'actarea',
+      name: 'Activity Area',
+      type: dataSubtypes.number,
+      domain: [-3, 3],
+      missingValue: NaN,
+      constantDomain: false,
+      useForAggregation: 'actarea'
+    },
+    {
+      id: 'ic50',
+      name: 'IC50',
+      type: dataSubtypes.number,
+      domain: [-3, 3],
+      missingValue: NaN,
+      constantDomain: false,
+      useForAggregation: 'ic50'
+    }
+  ]
+};
+
+export const drug = {
+  idType: 'Drug',
+  name: 'Drug',
+  db: 'publicdb',
+  schema: 'public',
+  tableName: 'tdp_drug',
+  entityName: 'drugid',
+  base: 'drug',
+};
+
 
 export const dataTypes: IDataTypeConfig[] = [expression, copyNumber, mutation];
 
@@ -432,8 +469,11 @@ export function resolveDataTypes(dataTypeId: string, dataSubTypeId: string) {
     case depletion.id:
       dataType = depletion;
       break;
+    case prismDrug.id:
+      dataType = prismDrug;
+      break;
   }
-
+  console.log(dataType, dataTypeId)
   const dataSubType = dataType.dataSubtypes.find((element) => element.id === dataSubTypeId);
   return {
     dataType,

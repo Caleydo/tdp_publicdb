@@ -62,6 +62,16 @@ class SingleDepletionScore extends ASingleScore implements IScore<any> {
   }
 }
 
+class SinglePrimDrugScore extends ASingleScore implements IScore<any> {
+  constructor(parameter: ISingleScoreParam, dataSource: IDataSourceConfig, oppositeDataSource: IDataSourceConfig) {
+    super(parameter, dataSource, oppositeDataSource);
+  }
+
+  protected getViewPrefix(): string {
+    return 'drug_';
+  }
+}
+
 export function createScoreDialog(pluginDesc: IPluginDesc, extra: any, formDesc: IFormElementDesc[], countHint?: number) {
   const {primary, opposite} = selectDataSources(pluginDesc);
   const dialog = new FormDialog('Add Single Score Column', 'Add Single Score Column');
@@ -78,6 +88,10 @@ export function createScoreDialog(pluginDesc: IPluginDesc, extra: any, formDesc:
       formDesc.unshift(enableMultiple(FORM_CELLLINE_NAME));
       formDesc.push(FORCE_COMPUTE_ALL_GENES);
       break;
+    case drug:
+      formDesc.unshift(enableMultiple(FORM_DRUG_NAME));
+      formDesc.push(FORCE_COMPUTE_ALL_CELLLINE);
+      break;  
   }
 
   if (typeof countHint === 'number' && countHint > MAX_FILTER_SCORE_ROWS_BEFORE_ALL) {
@@ -117,6 +131,10 @@ export function createScoreDialog(pluginDesc: IPluginDesc, extra: any, formDesc:
         data.name = data[ParameterFormIds.CELLLINE_NAME];
         delete data[ParameterFormIds.CELLLINE_NAME];
         break;
+      case drug:
+        data.name = data[ParameterFormIds.DRUG_NAME];
+        delete data[ParameterFormIds.DRUG_NAME];
+        break;   
     }
     return data;
   });
@@ -157,4 +175,14 @@ export function createSingleDepletionScoreDialog(pluginDesc: IPluginDesc, extra:
 
 export function createSingleDepletionScore(data: ISingleScoreParam, pluginDesc: IPluginDesc): IScore<number>|IScore<any>[] {
   return initializeScore(data, pluginDesc, (parameter, dataSource, oppositeDataSource) => new SingleDepletionScore(parameter, dataSource, oppositeDataSource));
+}
+
+
+export function createSinglePrimDrugScoreDialog(pluginDesc: IPluginDesc, extra: any, countHint?: number) {
+  console.log(FORM_SINGLE_SCORE_DRUG.slice())
+  return createScoreDialog(pluginDesc, extra, FORM_SINGLE_SCORE_DRUG.slice(), countHint);
+}
+
+export function createSinglePrismDrugScore(data: ISingleScoreParam, pluginDesc: IPluginDesc): IScore<number> | IScore<any>[] {
+  return initializeScore(data, pluginDesc, (parameter, dataSource, oppositeDataSource) => new SinglePrimDrugScore(parameter, dataSource, oppositeDataSource));
 }

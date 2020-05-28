@@ -20,9 +20,22 @@ create_gene(views, gene)
 create_common(views, cellline)
 create_sample(views, cellline, gene, cellline_data)
 
+# drug
+views[drug.prefix + '_items'] = DBViewBuilder('helper').idtype(drug.idtype).query("""
+   SELECT {id} as id, {{column}} AS text
+   FROM {table} WHERE LOWER({{column}}) LIKE :query
+   ORDER BY {{column}} ASC""".format(table=drug.table, id=drug.id)) \
+   .replace('column', drug.columns) \
+   .call(limit_offset) \
+   .assign_ids() \
+   .arg('query') \
+   .build()
+
+
 # scores cellline x gene
 create_gene_sample_score(views, gene, cellline, cellline_data)
 create_gene_sample_score(views, cellline, gene, cellline_data, inline_aggregate_sample_filter=True)
+create_gene_sample_score(views, cellline, drug, cellline_drug, 'drug_')
 
 # tissue
 create_common(views, tissue)
@@ -35,6 +48,23 @@ create_gene_sample_score(views, tissue, gene, tissue_data, inline_aggregate_samp
 # depletion scores
 create_gene_sample_score(views, gene, cellline, cellline_depletion, 'depletion_', callback=lambda x: x.filter('depletionscreen'))
 create_gene_sample_score(views, cellline, gene, cellline_depletion, 'depletion_', inline_aggregate_sample_filter=True, callback=lambda x: x.filter('depletionscreen'))
+
+
+# query= """
+# SELECT d.celllinename AS id, d.ataris AS score           FROM cellline.tdp_depletionscore d           
+# INNER JOIN public.tdp_gene s ON d.ensg = s.ensg          
+# INNER JOIN cellline.tdp_cellline g ON d.celllinename = g.celllinename             
+# WHERE g.species = :species AND d.ensg = :name  AND depletionscreen = :depletionscreen ({'name': 'ENSG00000101986', 'species': 'human', 'depletionscreen': 'Drive'})
+# """
+
+
+# SELECT d.celllinename AS id, d.ic50 AS score           
+# FROM cellline.tdp_drugscore d           
+# INNER JOIN public.tdp_gene s ON d.ensg = s.ensg           
+# INNER JOIN cellline.tdp_cellline g ON d.celllinename = g.celllinename 
+# WHERE g.species = :species AND d.ensg = :name  ({'name': 'ENSG00000148584', 'species': 'human'})
+
+
 
 # idtype mappings
 mappings = [
