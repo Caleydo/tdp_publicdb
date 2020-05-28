@@ -1,26 +1,26 @@
 /**
  * Created by sam on 16.02.2017.
  */
-import { getSelectedSpecies } from 'tdp_gene/src/common';
-import { getTDPData } from 'tdp_core/src/rest';
-import { convertLog2ToLinear } from 'tdp_gene/src/utils';
-import { categoricalCol, stringCol, numberCol } from 'tdp_core/src/lineup';
+import { SpeciesUtils } from 'tdp_gene';
+import { RestBaseUtils } from 'tdp_core';
+import { FieldUtils } from 'tdp_gene';
+import { ColumnDescUtils } from 'tdp_core';
 export function loadFirstName(ensg) {
-    return getTDPData('publicdb', 'gene_map_ensgs', {
+    return RestBaseUtils.getTDPData('publicdb', 'gene_map_ensgs', {
         ensgs: '\'' + ensg + '\'',
-        species: getSelectedSpecies()
+        species: SpeciesUtils.getSelectedSpecies()
     }).then((r) => r.length > 0 ? r[0].symbol || r[0].id : ensg);
 }
 export function loadGeneList(ensgs) {
-    return getTDPData('publicdb', 'gene_map_ensgs', {
+    return RestBaseUtils.getTDPData('publicdb', 'gene_map_ensgs', {
         ensgs: '\'' + ensgs.join('\',\'') + '\'',
-        species: getSelectedSpecies()
+        species: SpeciesUtils.getSelectedSpecies()
     });
 }
 export function postProcessScore(subType) {
     return (rows) => {
         if (subType.useForAggregation.indexOf('log2') !== -1) {
-            return convertLog2ToLinear(rows, 'score');
+            return FieldUtils.convertLog2ToLinear(rows, 'score');
         }
         if (subType.type === 'cat') {
             rows = rows
@@ -35,11 +35,11 @@ export function postProcessScore(subType) {
 }
 export function subTypeDesc(dataSubType, id, label, col = `col_${id}`) {
     if (dataSubType.type === 'boolean' || dataSubType.type === 'string') {
-        return stringCol(col, { label });
+        return ColumnDescUtils.stringCol(col, { label });
     }
     else if (dataSubType.type === 'cat') {
-        return categoricalCol(col, dataSubType.categories, { label });
+        return ColumnDescUtils.categoricalCol(col, dataSubType.categories, { label });
     }
-    return numberCol(col, dataSubType.domain[0], dataSubType.domain[1], { label });
+    return ColumnDescUtils.numberCol(col, dataSubType.domain[0], dataSubType.domain[1], { label });
 }
 //# sourceMappingURL=utils.js.map

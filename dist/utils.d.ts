@@ -1,7 +1,7 @@
 /// <reference types="select2" />
-import { ISelect3Item } from 'tdp_core/src/form/elements/Select3';
+import { ISelect3Item } from 'tdp_core';
 import { IDataSourceConfig } from './config';
-import { ICommonDBConfig } from 'tdp_gene/src/views/ACommonList';
+import { ICommonDBConfig } from 'tdp_gene';
 /**
  * Search and autocomplete of the input string for Select3
  *

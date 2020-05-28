@@ -3,7 +3,7 @@
  */
 import { dataSubtypes, cellline, tissue, gene } from '../config';
 import { FORM_GENE_FILTER, FORM_TISSUE_FILTER, FORM_CELLLINE_FILTER } from '../forms';
-import { toFilterString as toFilterStringImpl } from 'tdp_core/src/lineup';
+import { LineupUtils } from 'tdp_core';
 /**
  * creates a lineup config out of a IDataSubtypeConfig
  * @param type force a specific type
@@ -89,6 +89,6 @@ export function toFilterString(filter, ds) {
             key2name.set(entry.value, entry.name);
         });
     }
-    return toFilterStringImpl(filter, key2name);
+    return LineupUtils.toFilterString(filter, key2name);
 }
 //# sourceMappingURL=utils.js.map

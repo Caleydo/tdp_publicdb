@@ -2,15 +2,9 @@
  * Created by sam on 06.03.2017.
  */
 
-import {
-  mutationCat,
-  copyNumberCat,
-  unknownMutationValue,
-  unknownCopyNumberValue,
-  GENE_IDTYPE
-} from 'tdp_gene';
+import {Categories} from 'tdp_gene';
 import {IServerColumn} from 'tdp_core';
-import {categoricalCol, numberCol, stringCol} from 'tdp_core';
+import {ColumnDescUtils} from 'tdp_core';
 import {IAdditionalColumnDesc} from 'tdp_core';
 
 
@@ -70,21 +64,21 @@ export const cellline: IDataSourceConfig = {
   base: 'cellline',
   columns: (find: (column: string) => IServerColumn) => {
     return [
-      stringCol('id', {label: 'Name', width: 120}),
+      ColumnDescUtils.stringCol('id', {label: 'Name', width: 120}),
       //categoricalCol('species', desc.columns.species.categories, 'Species', true),
-      categoricalCol('tumortype', find('tumortype').categories, {label: 'Tumor Type'}),
-      categoricalCol('organ', find('organ').categories, {label: 'Organ'}),
-      categoricalCol('gender', find('gender').categories, {label: 'Gender'}),
-      categoricalCol('metastatic_site', find('metastatic_site').categories, {label: 'Metastatic Site', visible: false}),
-      categoricalCol('histology_type', find('histology_type').categories, {label: 'Histology Type', visible: false}),
-      categoricalCol('morphology', find('morphology').categories, {label: 'Morphology', visible: false}),
-      categoricalCol('growth_type', find('growth_type').categories, {label: 'Growth Type', visible: false}),
-      categoricalCol('age_at_surgery', find('age_at_surgery').categories, {label: 'Age at Surgery', visible: false}),
-      categoricalCol('microsatellite_stability_class', find('microsatellite_stability_class').categories, {label: 'Micro Satellite Instability (MSI) Status', visible: false}),
-      numberCol('microsatellite_stability_score', 0, find('microsatellite_stability_score').max, {label: 'Micro Satellite Instability (MSI) Score', visible: false}),
-      categoricalCol('hla_a_allele1', find('hla_a_allele1').categories, {label: 'Human Leukocyte Antigen (HLA) type allele 1', visible: false}),
-      categoricalCol('hla_a_allele2', find('hla_a_allele2').categories, {label: 'Human Leukocyte Antigen (HLA) type allele 2', visible: false}),
-      numberCol('mutational_fraction', 0, find('mutational_fraction').max, {label: 'Mutational Burden', visible: false}),
+      ColumnDescUtils.categoricalCol('tumortype', find('tumortype').categories, {label: 'Tumor Type'}),
+      ColumnDescUtils.categoricalCol('organ', find('organ').categories, {label: 'Organ'}),
+      ColumnDescUtils.categoricalCol('gender', find('gender').categories, {label: 'Gender'}),
+      ColumnDescUtils.categoricalCol('metastatic_site', find('metastatic_site').categories, {label: 'Metastatic Site', visible: false}),
+      ColumnDescUtils.categoricalCol('histology_type', find('histology_type').categories, {label: 'Histology Type', visible: false}),
+      ColumnDescUtils.categoricalCol('morphology', find('morphology').categories, {label: 'Morphology', visible: false}),
+      ColumnDescUtils.categoricalCol('growth_type', find('growth_type').categories, {label: 'Growth Type', visible: false}),
+      ColumnDescUtils.categoricalCol('age_at_surgery', find('age_at_surgery').categories, {label: 'Age at Surgery', visible: false}),
+      ColumnDescUtils.categoricalCol('microsatellite_stability_class', find('microsatellite_stability_class').categories, {label: 'Micro Satellite Instability (MSI) Status', visible: false}),
+      ColumnDescUtils.numberCol('microsatellite_stability_score', 0, find('microsatellite_stability_score').max, {label: 'Micro Satellite Instability (MSI) Score', visible: false}),
+      ColumnDescUtils.categoricalCol('hla_a_allele1', find('hla_a_allele1').categories, {label: 'Human Leukocyte Antigen (HLA) type allele 1', visible: false}),
+      ColumnDescUtils.categoricalCol('hla_a_allele2', find('hla_a_allele2').categories, {label: 'Human Leukocyte Antigen (HLA) type allele 2', visible: false}),
+      ColumnDescUtils.numberCol('mutational_fraction', 0, find('mutational_fraction').max, {label: 'Mutational Burden', visible: false}),
     ];
   },
   columnInfo: {
@@ -105,27 +99,27 @@ export const tissue: IDataSourceConfig = {
   base: 'tissue',
   columns: (find: (column: string) => IServerColumn) => {
     return [
-      stringCol('id', {label: 'Name', width: 120}),
+      ColumnDescUtils.stringCol('id', {label: 'Name', width: 120}),
       //categoricalCol('species', desc.columns.species.categories, 'Species', true),
-      categoricalCol('tumortype', find('tumortype').categories, {label: 'Tumor Type'}),
-      categoricalCol('organ', find('organ').categories, {label: 'Organ'}),
-      categoricalCol('gender', find('gender').categories, {label: 'Gender'}),
-      stringCol('tumortype_adjacent', {label: 'Tumor Type adjacent', visible: false}),
-      categoricalCol('vendorname', find('vendorname').categories, {label: 'Vendor name', visible: false}),
-      categoricalCol('race', find('race').categories, {label: 'Race', visible: false}),
-      categoricalCol('ethnicity', find('ethnicity').categories, {label: 'Ethnicity', visible: false}),
-      numberCol('age', find('age').min, find('age').max, {label: 'Age', visible: false}),
-      numberCol('days_to_death', 0, find('days_to_death').max, {label: 'Days to death', visible: false}),
-      numberCol('days_to_last_followup', 0, find('days_to_last_followup').max, {label: 'Days to last follow up', visible: false}),
-      categoricalCol('vital_status', find('vital_status').categories, {label: 'Vital status', visible: false}),
-      numberCol('height', 0, find('height').max, {label: 'Height', visible: false}),
-      numberCol('weight', 0, find('weight').max, {label: 'Weight', visible: false}),
-      numberCol('bmi', 0, find('bmi').max, {label: 'Body Mass Index (BMI)', visible: false}),
-      categoricalCol('microsatellite_stability_class', find('microsatellite_stability_class').categories, {label: 'Micro Satellite Instability (MSI) Status', visible: false}),
-      numberCol('microsatellite_stability_score', 0, find('microsatellite_stability_score').max, {label: 'Micro Satellite Instability (MSI) Score', visible: false}),
-      categoricalCol('hla_a_allele1', find('hla_a_allele1').categories, {label: 'Human Leukocyte Antigen (HLA) type allele 1', visible: false}),
-      categoricalCol('hla_a_allele2', find('hla_a_allele2').categories, {label: 'Human Leukocyte Antigen (HLA) type allele 2', visible: false}),
-      numberCol('mutational_fraction', 0, find('mutational_fraction').max, {label: 'Mutational Burden', visible: false}),
+      ColumnDescUtils.categoricalCol('tumortype', find('tumortype').categories, {label: 'Tumor Type'}),
+      ColumnDescUtils.categoricalCol('organ', find('organ').categories, {label: 'Organ'}),
+      ColumnDescUtils.categoricalCol('gender', find('gender').categories, {label: 'Gender'}),
+      ColumnDescUtils.stringCol('tumortype_adjacent', {label: 'Tumor Type adjacent', visible: false}),
+      ColumnDescUtils.categoricalCol('vendorname', find('vendorname').categories, {label: 'Vendor name', visible: false}),
+      ColumnDescUtils.categoricalCol('race', find('race').categories, {label: 'Race', visible: false}),
+      ColumnDescUtils.categoricalCol('ethnicity', find('ethnicity').categories, {label: 'Ethnicity', visible: false}),
+      ColumnDescUtils.numberCol('age', find('age').min, find('age').max, {label: 'Age', visible: false}),
+      ColumnDescUtils.numberCol('days_to_death', 0, find('days_to_death').max, {label: 'Days to death', visible: false}),
+      ColumnDescUtils.numberCol('days_to_last_followup', 0, find('days_to_last_followup').max, {label: 'Days to last follow up', visible: false}),
+      ColumnDescUtils.categoricalCol('vital_status', find('vital_status').categories, {label: 'Vital status', visible: false}),
+      ColumnDescUtils.numberCol('height', 0, find('height').max, {label: 'Height', visible: false}),
+      ColumnDescUtils.numberCol('weight', 0, find('weight').max, {label: 'Weight', visible: false}),
+      ColumnDescUtils.numberCol('bmi', 0, find('bmi').max, {label: 'Body Mass Index (BMI)', visible: false}),
+      ColumnDescUtils.categoricalCol('microsatellite_stability_class', find('microsatellite_stability_class').categories, {label: 'Micro Satellite Instability (MSI) Status', visible: false}),
+      ColumnDescUtils.numberCol('microsatellite_stability_score', 0, find('microsatellite_stability_score').max, {label: 'Micro Satellite Instability (MSI) Score', visible: false}),
+      ColumnDescUtils.categoricalCol('hla_a_allele1', find('hla_a_allele1').categories, {label: 'Human Leukocyte Antigen (HLA) type allele 1', visible: false}),
+      ColumnDescUtils.categoricalCol('hla_a_allele2', find('hla_a_allele2').categories, {label: 'Human Leukocyte Antigen (HLA) type allele 2', visible: false}),
+      ColumnDescUtils.numberCol('mutational_fraction', 0, find('mutational_fraction').max, {label: 'Mutational Burden', visible: false}),
     ];
   },
   columnInfo: {
@@ -165,7 +159,7 @@ function toChromosomes(categories: string[]) {
 }
 
 export const gene: IDataSourceConfig = {
-  idType: GENE_IDTYPE,
+  idType: Categories.GENE_IDTYPE,
   name: 'Gene',
   db: 'publicdb',
   schema: 'public',
@@ -175,14 +169,14 @@ export const gene: IDataSourceConfig = {
   columns: (find: (column: string) => IServerColumn) => {
     const maxRegion = Math.max(find('seqregionstart').max, find('seqregionend').max);
     return [
-      stringCol('symbol', {label: 'Symbol', width: 100}),
-      stringCol('id', {label: 'Ensembl', width: 120}),
-      stringCol('name', {label: 'Name'}),
-      categoricalCol('chromosome', toChromosomes(find('chromosome').categories), {label: 'Chromosome'}),
-      categoricalCol('biotype', find('biotype').categories, {label: 'Biotype'}),
-      categoricalCol('strand', [{label: 'reverse strand', name: String(-1)}, {label: 'forward strand', name: String(1)}], {label: 'Strand', visible: false}),
-      numberCol('seqregionstart', 0, maxRegion, {label: 'Seq Region Start', visible: false, extras: {renderer: 'default'}}),
-      numberCol('seqregionend', 0, maxRegion, {label: 'Seq Region End', visible: false, extras: {renderer: 'default'}}),
+      ColumnDescUtils.stringCol('symbol', {label: 'Symbol', width: 100}),
+      ColumnDescUtils.stringCol('id', {label: 'Ensembl', width: 120}),
+      ColumnDescUtils.stringCol('name', {label: 'Name'}),
+      ColumnDescUtils.categoricalCol('chromosome', toChromosomes(find('chromosome').categories), {label: 'Chromosome'}),
+      ColumnDescUtils.categoricalCol('biotype', find('biotype').categories, {label: 'Biotype'}),
+      ColumnDescUtils.categoricalCol('strand', [{label: 'reverse strand', name: String(-1)}, {label: 'forward strand', name: String(1)}], {label: 'Strand', visible: false}),
+      ColumnDescUtils.numberCol('seqregionstart', 0, maxRegion, {label: 'Seq Region Start', visible: false, extras: {renderer: 'default'}}),
+      ColumnDescUtils.numberCol('seqregionend', 0, maxRegion, {label: 'Seq Region End', visible: false, extras: {renderer: 'default'}}),
     ];
   },
   columnInfo: {
@@ -305,10 +299,10 @@ export const copyNumber: IDataTypeConfig = {
       id: 'copynumberclass',
       name: 'Copy Number Class',
       type: dataSubtypes.cat,
-      categories: toLineUpCategories(copyNumberCat),
+      categories: toLineUpCategories(Categories.copyNumberCat),
       domain: [0, 100],
       missingValue: NaN,
-      missingCategory: unknownCopyNumberValue,
+      missingCategory: Categories.unknownCopyNumberValue,
       useForAggregation: 'copynumberclass'
     }
   ],
@@ -325,8 +319,8 @@ export const mutation: IDataTypeConfig = {
       id: 'aa_mutated',
       name: 'AA Mutated',
       type: dataSubtypes.cat,
-      categories: toLineUpCategories(mutationCat),
-      missingCategory: unknownMutationValue,
+      categories: toLineUpCategories(Categories.mutationCat),
+      missingCategory: Categories.unknownMutationValue,
       useForAggregation: 'aa_mutated',
       domain: [0, 100],
       missingValue: NaN
@@ -341,8 +335,8 @@ export const mutation: IDataTypeConfig = {
       id: 'dna_mutated',
       name: 'DNA Mutated',
       type: dataSubtypes.cat,
-      categories: toLineUpCategories(mutationCat),
-      missingCategory: unknownMutationValue,
+      categories: toLineUpCategories(Categories.mutationCat),
+      missingCategory: Categories.unknownMutationValue,
       useForAggregation: 'dna_mutated',
       domain: [0, 100],
       missingValue: NaN

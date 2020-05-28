@@ -2,15 +2,15 @@
  * Created by sam on 06.03.2017.
  */
 import { gene, tissue, cellline, MAX_FILTER_SCORE_ROWS_BEFORE_ALL, splitTypes } from '../config';
-import { FormElementType } from 'tdp_core/src/form';
+import { FormElementType } from 'tdp_core';
 import { ParameterFormIds, FORM_GENE_NAME, FORM_TISSUE_NAME, FORM_CELLLINE_NAME } from '../forms';
 import { FORCE_COMPUTE_ALL_CELLLINE, FORCE_COMPUTE_ALL_GENES, FORCE_COMPUTE_ALL_TISSUE, FORM_SINGLE_SCORE, FORM_SINGLE_SCORE_DEPLETION } from './forms';
 import { selectDataSources } from './utils';
-import { mixin } from 'phovea_core/src';
-import { FormDialog } from 'tdp_core/src/form';
+import { BaseUtils } from 'phovea_core';
+import { FormDialog } from 'tdp_core';
 import { ASingleScore } from './ASingleScore';
 function enableMultiple(desc) {
-    return mixin({}, desc, {
+    return BaseUtils.mixin({}, desc, {
         type: FormElementType.SELECT3_MULTIPLE,
         useSession: false
     });

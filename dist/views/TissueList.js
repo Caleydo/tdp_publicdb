@@ -1,4 +1,4 @@
-import { ACommonList } from 'tdp_gene/src/views/ACommonList';
+import { ACommonList } from 'tdp_gene';
 import { tissue } from '../config';
 export class TissueList extends ACommonList {
     constructor(context, selection, parent, options) {

@@ -3,17 +3,17 @@
  */
 
 import {RangeLike} from 'phovea_core';
-import IDType from 'phovea_core';
-import {getSelectedSpecies} from 'tdp_gene';
+import {IDType} from 'phovea_core';
+import {SpeciesUtils} from 'tdp_gene';
 import {IDataSourceConfig, dataSubtypes, mutation, MAX_FILTER_SCORE_ROWS_BEFORE_ALL} from '../config';
 import {IScore} from 'tdp_core';
 import {createDesc, toFilterString} from './utils';
 import {AScore, ICommonScoreParam} from './AScore';
-import {limitScoreRows} from 'tdp_gene';
+import {FieldUtils} from 'tdp_gene';
 import {INamedSet} from 'tdp_core';
-import {resolve} from 'phovea_core';
-import {getTDPScore, IParams} from 'tdp_core';
-import {toFilter} from 'tdp_core';
+import {IDTypeManager} from 'phovea_core';
+import {RestBaseUtils, IParams} from 'tdp_core';
+import {LineUpUtils} from 'tdp_core';
 
 interface IFrequencyScoreParam extends ICommonScoreParam {
   comparison_operator: string;
@@ -28,7 +28,7 @@ export abstract class AFrequencyScore extends AScore implements IScore<number> {
   }
 
   get idType() {
-    return resolve(this.dataSource.idType);
+    return IDTypeManager.getInstance().resolveIdType(this.dataSource.idType);
   }
 
   createDesc() {
@@ -51,7 +51,7 @@ export abstract class AFrequencyScore extends AScore implements IScore<number> {
     const isCopyNumberClass = this.dataSubType.id === 'copynumberclass';
     const param: any = {
       attribute: this.dataSubType.useForAggregation,
-      species: getSelectedSpecies(),
+      species: SpeciesUtils.getSelectedSpecies(),
       table: this.dataType.tableName,
       target: idtype.id
     };
@@ -63,10 +63,10 @@ export abstract class AFrequencyScore extends AScore implements IScore<number> {
       param.value = this.parameter.comparison_value;
     }
     const maxDirectRows = typeof this.parameter.maxDirectFilterRows === 'number' ? this.parameter.maxDirectFilterRows : MAX_FILTER_SCORE_ROWS_BEFORE_ALL;
-    limitScoreRows(param, ids, idtype, this.dataSource.entityName, maxDirectRows, namedSet);
-    const filters = Object.assign(toFilter(this.parameter.filter), this.createFilter());
+    FieldUtils.limitScoreRows(param, ids, idtype, this.dataSource.entityName, maxDirectRows, namedSet);
+    const filters = Object.assign(LineUpUtils.toFilter(this.parameter.filter), this.createFilter());
 
-    const rows: any[] = await getTDPScore(this.dataSource.db, `${this.getViewPrefix()}${this.dataSource.base}_${this.oppositeDataSource.base}_frequency_${isMutation? 'mutation_' : ''}${isCopyNumberClass? 'copynumberclass_' : ''}score`, param, filters);
+    const rows: any[] = await RestBaseUtils.getTDPScore(this.dataSource.db, `${this.getViewPrefix()}${this.dataSource.base}_${this.oppositeDataSource.base}_frequency_${isMutation? 'mutation_' : ''}${isCopyNumberClass? 'copynumberclass_' : ''}score`, param, filters);
     rows.forEach((row) => row.score = this.countOnly ? row.count : row.count / row.total);
     return rows;
   }

@@ -3,7 +3,7 @@
  */
 
 import {gene} from '../config';
-import {mixin} from 'phovea_core';
+import {BaseUtils} from 'phovea_core';
 import {ACommonSubSection} from 'tdp_gene';
 import {IStartMenuSubSectionDesc} from 'tdp_gene';
 import {IStartMenuSectionOptions} from 'ordino/src/extensions';
@@ -20,7 +20,7 @@ export class GeneSubSection extends ACommonSubSection {
 
   protected searchOptions() {
     const base = super.searchOptions();
-    return mixin(base, {
+    return BaseUtils.mixin(base, {
       search: searchGene,
       validate: validateGene,
       format: formatGene

@@ -1,4 +1,4 @@
-import { getTDPData } from 'tdp_core/src/rest';
+import { RestBaseUtils } from 'tdp_core';
 async function detectIDType(data, accessor, sampleSize) {
     const values = [];
     let validSize = 0;
@@ -10,7 +10,7 @@ async function detectIDType(data, accessor, sampleSize) {
         values.push(v);
         ++validSize;
     }
-    const result = await getTDPData('publicdb', 'gene_match_symbols/filter', { filter_symbol: values });
+    const result = await RestBaseUtils.getTDPData('publicdb', 'gene_match_symbols/filter', { filter_symbol: values });
     return result[0].matches / validSize;
 }
 export function human() {

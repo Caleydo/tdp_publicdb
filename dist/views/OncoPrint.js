@@ -1,13 +1,13 @@
 /**
  * Created by sam on 16.02.2017.
  */
-import { AOncoPrint } from 'tdp_gene/src/views/AOncoPrint';
-import { getSelectedSpecies } from 'tdp_gene/src/common';
+import { AOncoPrint } from 'tdp_gene';
+import { SpeciesUtils } from 'tdp_gene';
 import { ParameterFormIds, FORM_TISSUE_OR_CELLLINE_FILTER, FORM_DATA_SOURCE } from '../forms';
 import { loadFirstName } from './utils';
-import { resolve } from 'phovea_core/src/idtype';
-import { getTDPData, getTDPFilteredRows, mergeParamAndFilters } from 'tdp_core/src/rest';
-import { toFilter } from 'tdp_core/src/lineup';
+import { IDTypeManager } from 'phovea_core';
+import { RestBaseUtils } from 'tdp_core';
+import { LineUpUtils } from 'tdp_core';
 export class OncoPrint extends AOncoPrint {
     getParameterFormDescs() {
         return [
@@ -21,22 +21,22 @@ export class OncoPrint extends AOncoPrint {
     async loadSampleList() {
         const ds = this.dataSource;
         const param = {
-            species: getSelectedSpecies()
+            species: SpeciesUtils.getSelectedSpecies()
         };
-        const rows = await getTDPFilteredRows(ds.db, `${ds.base}_onco_print_sample_list`, param, toFilter(this.getParameter('filter')));
+        const rows = await RestBaseUtils.getTDPFilteredRows(ds.db, `${ds.base}_onco_print_sample_list`, param, LineUpUtils.toFilter(this.getParameter('filter')));
         return rows.map((r) => ({ name: r.id, id: r._id }));
     }
     getSampleIdType() {
         const ds = this.dataSource;
-        return resolve(ds.idType);
+        return IDTypeManager.getInstance().resolveIdType(ds.idType);
     }
     loadRows(ensg) {
         const ds = this.dataSource;
         const param = {
             ensg,
-            species: getSelectedSpecies()
+            species: SpeciesUtils.getSelectedSpecies()
         };
-        return getTDPData(ds.db, `${ds.base}_onco_print`, mergeParamAndFilters(param, toFilter(this.getParameter('filter'))));
+        return RestBaseUtils.getTDPData(ds.db, `${ds.base}_onco_print`, RestBaseUtils.mergeParamAndFilters(param, LineUpUtils.toFilter(this.getParameter('filter'))));
     }
     loadFirstName(ensg) {
         return loadFirstName(ensg);

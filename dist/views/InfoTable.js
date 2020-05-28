@@ -1,12 +1,12 @@
 /**
  * Created by Samuel Gratzl on 27.04.2016.
  */
-import { resolveIds } from 'tdp_core/src/views';
-import { AD3View } from 'tdp_core/src/views/AD3View';
-import { getSelectedSpecies } from 'tdp_gene/src/common';
+import { ResolveUtils } from 'tdp_core';
+import { AD3View } from 'tdp_core';
+import { SpeciesUtils } from 'tdp_gene';
 import { cellline, tissue, gene } from '../config';
 import { transpose as d3Transpose } from 'd3';
-import { getTDPFilteredRows } from 'tdp_core/src/rest';
+import { RestBaseUtils } from 'tdp_core';
 export class AInfoTable extends AD3View {
     constructor(context, selection, parent, dataSource) {
         super(context, selection, parent);
@@ -28,9 +28,9 @@ export class AInfoTable extends AD3View {
         this.update();
     }
     async fetchInformation() {
-        const ids = await resolveIds(this.selection.idtype, this.selection.range, this.dataSource.idType);
-        const results = await getTDPFilteredRows(this.dataSource.db, `${this.dataSource.base}_all_columns`, {
-            species: getSelectedSpecies()
+        const ids = await ResolveUtils.resolveIds(this.selection.idtype, this.selection.range, this.dataSource.idType);
+        const results = await RestBaseUtils.getTDPFilteredRows(this.dataSource.db, `${this.dataSource.base}_all_columns`, {
+            species: SpeciesUtils.getSelectedSpecies()
         }, { [this.dataSource.entityName]: ids });
         this.data = this.transformData(results);
     }

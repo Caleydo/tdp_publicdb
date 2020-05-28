@@ -1,5 +1,5 @@
 import {chooseDataSource} from './config';
-import {getTDPData} from 'tdp_core';
+import {RestBaseUtils} from 'tdp_core';
 
 interface IIDTypeDetectorOptions {
   sampleType: string;
@@ -24,7 +24,7 @@ async function detectIDType(data: any[], accessor: (row: any) => string, sampleS
   }
 
   const ds = chooseDataSource(options);
-  const result = await getTDPData<{matches: number}>(ds.db, `${ds.base}_check_ids/filter`, {
+  const result = await RestBaseUtils.getTDPData<{matches: number}>(ds.db, `${ds.base}_check_ids/filter`, {
     ['filter_'+ds.entityName]: values
   });
   return result[0].matches / validSize;

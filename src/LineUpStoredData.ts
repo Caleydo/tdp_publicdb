@@ -1,7 +1,7 @@
-import {getTDPDesc, getTDPFilteredRows, IParams, IRow} from 'tdp_core';
+import {RestBaseUtils, IParams, IRow} from 'tdp_core';
 import {gene} from './config';
 import {IAdditionalColumnDesc} from 'tdp_core';
-import {getSelectedSpecies, SPECIES_SESSION_KEY} from 'tdp_gene';
+import {SpeciesUtils, Species} from 'tdp_gene';
 
 /**
  * Load the column description for a given idType
@@ -10,7 +10,7 @@ import {getSelectedSpecies, SPECIES_SESSION_KEY} from 'tdp_gene';
  * @returns {Promise<IAdditionalColumnDesc[]>} Returns a promise with a list of column descriptions
  */
 export async function loadEnsemblColumnDesc(idType: string): Promise<IAdditionalColumnDesc[]> {
-  const {columns} = await getTDPDesc(gene.db, gene.base);
+  const {columns} = await RestBaseUtils.getTDPDesc(gene.db, gene.base);
   return gene.columns((c) => columns.find((d) => d.column === c));
 }
 
@@ -24,9 +24,9 @@ export async function loadEnsemblColumnDesc(idType: string): Promise<IAdditional
  */
 export async function loadEnsemblRows(idType: string, ids: string[]): Promise<IRow[]> {
   const filter: IParams = {
-    [SPECIES_SESSION_KEY]: getSelectedSpecies(),
+    [Species.SPECIES_SESSION_KEY]: SpeciesUtils.getSelectedSpecies(),
     [gene.entityName]: ids
   };
 
-  return getTDPFilteredRows(gene.db, gene.base, {}, filter);
+  return RestBaseUtils.getTDPFilteredRows(gene.db, gene.base, {}, filter);
 }

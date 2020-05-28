@@ -2,8 +2,8 @@
  * Created by Holger Stitz on 10.08.2016.
  */
 import { gene } from '../config';
-import { mixin } from 'phovea_core/src';
-import { ACommonSubSection } from 'tdp_gene/src/menu/ACommonSubSection';
+import { BaseUtils } from 'phovea_core';
+import { ACommonSubSection } from 'tdp_gene';
 import { formatGene, searchGene, validateGene } from '../utils';
 /**
  * Entry point list from all species and LineUp named sets (aka stored LineUp sessions)
@@ -14,7 +14,7 @@ export class GeneSubSection extends ACommonSubSection {
     }
     searchOptions() {
         const base = super.searchOptions();
-        return mixin(base, {
+        return BaseUtils.mixin(base, {
             search: searchGene,
             validate: validateGene,
             format: formatGene

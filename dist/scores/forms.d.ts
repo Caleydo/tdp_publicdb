@@ -1,4 +1,4 @@
-import { FormElementType } from 'tdp_core/src/form';
+import { FormElementType } from 'tdp_core';
 export declare const FORM_AGGREGATED_SCORE: ({
     type: FormElementType;
     label: string;
@@ -76,7 +76,10 @@ export declare const FORM_AGGREGATED_SCORE: ({
     showIf: (dependantValues: any) => boolean;
     useSession: boolean;
     options: {
-        data: any;
+        data: {
+            text: string;
+            id: string;
+        }[];
     };
 })[];
 export declare const FORCE_COMPUTE_ALL_GENES: {

@@ -4,14 +4,14 @@
 
 import {FormElementType, IFormSelectDesc} from 'tdp_core';
 import {ACoExpression, ICoExprDataFormatRow, IGeneOption} from 'tdp_gene';
-import {getSelectedSpecies} from 'tdp_gene';
+import {SpeciesUtils} from 'tdp_gene';
 import {expression, IDataSourceConfig, IDataSubtypeConfig} from '../config';
 import {ParameterFormIds, FORM_TISSUE_OR_CELLLINE_FILTER, FORM_DATA_SOURCE, FORM_COLOR_CODING} from '../forms';
 import {loadGeneList, loadFirstName} from './utils';
-import {resolve} from 'phovea_core';
+import {IDTypeManager} from 'phovea_core';
 import {Range} from 'phovea_core';
-import {getTDPData, IParams, mergeParamAndFilters} from 'tdp_core';
-import {toFilter} from 'tdp_core';
+import {RestBaseUtils, IParams} from 'tdp_core';
+import {LineUpUtils} from 'tdp_core';
 
 
 export class CoExpression extends ACoExpression {
@@ -50,13 +50,13 @@ export class CoExpression extends ACoExpression {
     const param: IParams = {
       ensg,
       attribute: this.dataSubType.id,
-      species: getSelectedSpecies()
+      species: SpeciesUtils.getSelectedSpecies()
     };
     const color = this.getParameterData(ParameterFormIds.COLOR_CODING);
     if (color) {
       param.color = color;
     }
-    return getTDPData(ds.db, `${ds.base}_co_expression${!color ? '_plain': ''}/filter`, mergeParamAndFilters(param, toFilter(this.getParameter('filter'))));
+    return RestBaseUtils.getTDPData(ds.db, `${ds.base}_co_expression${!color ? '_plain': ''}/filter`, RestBaseUtils.mergeParamAndFilters(param, LineUpUtils.toFilter(this.getParameter('filter'))));
   }
 
   loadFirstName(ensg: string) {
@@ -68,7 +68,7 @@ export class CoExpression extends ACoExpression {
   }
 
   get itemIDType() {
-    return resolve(this.dataSource.idType);
+    return IDTypeManager.getInstance().resolveIdType(this.dataSource.idType);
   }
 
   protected select(range: Range): void {

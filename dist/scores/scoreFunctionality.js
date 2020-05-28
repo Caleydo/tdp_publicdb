@@ -7,8 +7,8 @@ import { FrequencyScore, FrequencyDepletionScore } from './FrequencyScore';
 import { FORCE_COMPUTE_ALL_CELLLINE, FORCE_COMPUTE_ALL_GENES, FORCE_COMPUTE_ALL_TISSUE, FORM_AGGREGATED_SCORE, FORM_AGGREGATED_SCORE_DEPLETION } from './forms';
 import { gene, tissue, cellline, splitTypes, MAX_FILTER_SCORE_ROWS_BEFORE_ALL } from '../config';
 import { selectDataSources } from './utils';
-import { FormDialog } from 'tdp_core/src/form/FormDialog';
-import { FormMap } from 'tdp_core/src/form/elements/FormMap';
+import { FormDialog } from 'tdp_core';
+import { FormMap } from 'tdp_core';
 export function createScoreDialog(pluginDesc, extras, formDesc, countHint) {
     const { primary, opposite } = selectDataSources(pluginDesc);
     const dialog = new FormDialog('Add Aggregated Score Column', 'Add Aggregated Score Column');

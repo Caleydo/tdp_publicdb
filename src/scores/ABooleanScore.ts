@@ -1,7 +1,7 @@
 import {IScore, IScoreRow} from 'tdp_core';
-import {resolve} from 'phovea_core';
-import {booleanCol} from 'tdp_core';
-import {getTDPScore} from 'tdp_core';
+import {IDTypeManager} from 'phovea_core';
+import {ColumnDescUtils} from 'tdp_core';
+import {RestBaseUtils} from 'tdp_core';
 import {ICommonScoreParam} from './AScore';
 import {IDataSourceConfig} from '../config';
 
@@ -20,7 +20,7 @@ export abstract class ABooleanScore implements IScore<number> {
    * @type {IDType}
    */
   get idType() {
-    return resolve(this.dataSource.idType);
+    return IDTypeManager.getInstance().resolveIdType(this.dataSource.idType);
   }
 
   constructor(protected readonly params: IBooleanScoreParams, protected readonly dataSource: IDataSourceConfig) {}
@@ -31,7 +31,7 @@ export abstract class ABooleanScore implements IScore<number> {
    */
   createDesc() {
     const label = this.label;
-    return booleanCol(this.columnName, {label, width: 50});
+    return ColumnDescUtils.booleanCol(this.columnName, {label, width: 50});
   }
 
   /**
@@ -39,7 +39,7 @@ export abstract class ABooleanScore implements IScore<number> {
    * @returns {Promise<IScoreRow<number>[]>}
    */
   compute(): Promise<IScoreRow<number>[]> {
-    return getTDPScore(this.dataSource.db, `${this.dataSource.base}_${this.columnName}_score`, this.params);
+    return RestBaseUtils.getTDPScore(this.dataSource.db, `${this.dataSource.base}_${this.columnName}_score`, this.params);
   }
 
   protected abstract get label(): string;

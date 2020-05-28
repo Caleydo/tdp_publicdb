@@ -1,8 +1,8 @@
-import { SearchProvider } from 'tdp_gene/src/SearchProvider';
+import { SearchProvider } from 'tdp_gene';
 import { cellline, gene, tissue } from './config';
 import './styles/idtype_color.scss';
-import { getSelectedSpecies } from 'tdp_gene/src/common';
-import { getTDPData } from 'tdp_core/src/rest';
+import { SpeciesUtils } from 'tdp_gene';
+import { RestBaseUtils } from 'tdp_core';
 export function createCellline() {
     return new SearchProvider(cellline);
 }
@@ -20,8 +20,8 @@ class GeneSearchProvider extends SearchProvider {
         return (item.id && mode === 'result') ? `${item.text || ''} <span class="ensg">${item.id}</span>` : item.text;
     }
     validate(query) {
-        return getTDPData(this.dataSource.db, `${this.verifyView}/filter`, {
-            species: getSelectedSpecies(),
+        return RestBaseUtils.getTDPData(this.dataSource.db, `${this.verifyView}/filter`, {
+            species: SpeciesUtils.getSelectedSpecies(),
             filter_symbol: query,
         }).then((data) => data.map(SearchProvider.mapItems));
     }

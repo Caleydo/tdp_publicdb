@@ -2,14 +2,14 @@
  * Created by sam on 06.03.2017.
  */
 
-import {getSelectedSpecies} from 'tdp_gene';
-import {FORM_EXPRESSION_SUBTYPE_ID, FORM_COPYNUMBER_SUBTYPE_ID} from 'tdp_gene';
+import {SpeciesUtils} from 'tdp_gene';
+import {FormSubtype} from 'tdp_gene';
 import {FormElementType, IFormElement, IFormSelectOption} from 'tdp_core';
-import {cachedLazy} from 'tdp_core';
+import {ValueCache} from 'tdp_core';
 import {gene, IDataSourceConfig, tissue, cellline, dataSources, dataTypes, dataSubtypes, depletion} from './config';
-import {listNamedSetsAsOptions} from 'tdp_core';
-import {previewFilterHint} from 'tdp_core';
-import {getTDPData, getTDPLookupUrl, IServerColumn} from 'tdp_core';
+import {RestStorageUtils} from 'tdp_core';
+import {LineupUtils} from 'tdp_core';
+import {RestBaseUtils, IServerColumn} from 'tdp_core';
 import {format, formatGene, search, searchGene, validate, validateGene} from './utils';
 
 /**
@@ -23,8 +23,8 @@ export class ParameterFormIds {
   static TISSUE_NAME = 'tissue_name';
   static DATA_SUBTYPE = 'data_subtype';
   static DATA_HIERARCHICAL_SUBTYPE = 'hierarchical_data_subtype';
-  static COPYNUMBER_SUBTYPE = FORM_COPYNUMBER_SUBTYPE_ID;
-  static EXPRESSION_SUBTYPE = FORM_EXPRESSION_SUBTYPE_ID;
+  static COPYNUMBER_SUBTYPE = FormSubtype.FORM_COPYNUMBER_SUBTYPE_ID;
+  static EXPRESSION_SUBTYPE = FormSubtype.FORM_EXPRESSION_SUBTYPE_ID;
   static AGGREGATION = 'aggregation';
   static COMPARISON_OPERATOR = 'comparison_operator';
   static COMPARISON_VALUE = 'comparison_value';
@@ -59,7 +59,7 @@ export const NUMERIC_AGGREGATION = [
 
 
 function buildPredefinedNamedSets(ds: IDataSourceConfig) {
-  return getTDPData<{id: string}>(ds.db, `${ds.base}_panel`).then((panels: {id: string}[]) => panels.map((p) => p.id));
+  return RestBaseUtils.getTDPData<{id: string}>(ds.db, `${ds.base}_panel`).then((panels: {id: string}[]) => panels.map((p) => p.id));
 }
 
 export const FORM_GENE_NAME = {
@@ -111,19 +111,19 @@ export const FORM_GENE_FILTER = {
   id: 'filter',
   useSession: true,
   options: {
-    sessionKeySuffix: `-${getSelectedSpecies()}-gene`,
+    sessionKeySuffix: `-${SpeciesUtils.getSelectedSpecies()}-gene`,
     defaultSelection: false,
     uniqueKeys: true,
-    badgeProvider: previewFilterHint(gene.db, 'gene', () => ({ filter_species: getSelectedSpecies()})),
+    badgeProvider: LineupUtils.previewFilterHint(gene.db, 'gene', () => ({ filter_species: SpeciesUtils.getSelectedSpecies()})),
     entries: [{
       name: 'Bio Type',
       value: 'biotype',
       type: FormElementType.SELECT2,
       multiple: true,
       return: 'id',
-      optionsData: cachedLazy(`${getSelectedSpecies()}_gene_biotypes`, () => getTDPData<{text: string}>(gene.db, 'gene_unique_all', {
+      optionsData: ValueCache.getInstance().cachedLazy(`${SpeciesUtils.getSelectedSpecies()}_gene_biotypes`, () => RestBaseUtils.getTDPData<{text: string}>(gene.db, 'gene_unique_all', {
         column: 'biotype',
-        species: getSelectedSpecies()
+        species: SpeciesUtils.getSelectedSpecies()
       }).then((r) => r.map((d) => d.text)))
     }, {
       name: 'Strand',
@@ -131,9 +131,9 @@ export const FORM_GENE_FILTER = {
       type: FormElementType.SELECT2,
       multiple: true,
       return: 'id',
-      optionsData: cachedLazy(`${getSelectedSpecies()}_gene_strands`, () => getTDPData<{text: string|number}>(gene.db, `gene_unique_all`, {
+      optionsData: ValueCache.getInstance().cachedLazy(`${SpeciesUtils.getSelectedSpecies()}_gene_strands`, () => RestBaseUtils.getTDPData<{text: string|number}>(gene.db, `gene_unique_all`, {
         column: 'strand',
-        species: getSelectedSpecies()
+        species: SpeciesUtils.getSelectedSpecies()
       }).then((r) => r.map((d) => ({name: `${d.text === -1 ? 'reverse' : 'forward'} strand`, value: d.text}))))
     }, {
       name: 'Chromosome',
@@ -141,22 +141,22 @@ export const FORM_GENE_FILTER = {
       type: FormElementType.SELECT2,
       multiple: true,
       return: 'id',
-      optionsData: cachedLazy(`${getSelectedSpecies()}_gene_chromosome`, () => getTDPData<{text: string|number}>(gene.db, `gene_unique_all`, {
+      optionsData: ValueCache.getInstance().cachedLazy(`${SpeciesUtils.getSelectedSpecies()}_gene_chromosome`, () => RestBaseUtils.getTDPData<{text: string|number}>(gene.db, `gene_unique_all`, {
         column: 'chromosome',
-        species: getSelectedSpecies()
+        species: SpeciesUtils.getSelectedSpecies()
       }).then((r) => r.map((d) => d.text.toString())))
     }, {
       name: 'Predefined Named Sets',
       value: 'panel_ensg',
       type: FormElementType.SELECT2,
       multiple: true,
-      optionsData: cachedLazy(`${getSelectedSpecies()}_gene_predefined_namedsets`, buildPredefinedNamedSets.bind(null, gene))
+      optionsData: ValueCache.getInstance().cachedLazy(`${SpeciesUtils.getSelectedSpecies()}_gene_predefined_namedsets`, buildPredefinedNamedSets.bind(null, gene))
     }, {
       name: 'My Named Sets',
       value: 'namedset4ensg',
       type: FormElementType.SELECT2,
       multiple: true,
-      optionsData: listNamedSetsAsOptions.bind(null, gene.idType)
+      optionsData: RestStorageUtils.listNamedSetsAsOptions.bind(null, gene.idType)
     }, {
       name: 'Gene Symbol',
       value: 'ensg',
@@ -177,9 +177,9 @@ function generateTissueSpecificFilter(d: IDataSourceConfig) {
       type: FormElementType.SELECT2,
       multiple: true,
       return: 'id',
-      optionsData: cachedLazy(`${d.base}_${getSelectedSpecies()}_tumortype_adjacent`, () => getTDPData<{text: string}>(d.db, `${d.base}_unique_all`, {
+      optionsData: ValueCache.getInstance().cachedLazy(`${d.base}_${SpeciesUtils.getSelectedSpecies()}_tumortype_adjacent`, () => RestBaseUtils.getTDPData<{text: string}>(d.db, `${d.base}_unique_all`, {
         column: 'tumortype_adjacent',
-        species: getSelectedSpecies()
+        species: SpeciesUtils.getSelectedSpecies()
       }).then((r) => r.map((d) => d.text)))
     }, {
       name: 'Vendor name',
@@ -187,9 +187,9 @@ function generateTissueSpecificFilter(d: IDataSourceConfig) {
       type: FormElementType.SELECT2,
       multiple: true,
       return: 'id',
-      optionsData: cachedLazy(`${d.base}_${getSelectedSpecies()}_vendorname`, () => getTDPData<{text: string}>(d.db, `${d.base}_unique_all`, {
+      optionsData: ValueCache.getInstance().cachedLazy(`${d.base}_${SpeciesUtils.getSelectedSpecies()}_vendorname`, () => RestBaseUtils.getTDPData<{text: string}>(d.db, `${d.base}_unique_all`, {
         column: 'vendorname',
-        species: getSelectedSpecies()
+        species: SpeciesUtils.getSelectedSpecies()
       }).then((r) => r.map((d) => d.text)))
     }, {
       name: 'Race',
@@ -197,9 +197,9 @@ function generateTissueSpecificFilter(d: IDataSourceConfig) {
       type: FormElementType.SELECT2,
       multiple: true,
       return: 'id',
-      optionsData: cachedLazy(`${d.base}_${getSelectedSpecies()}_race`, () => getTDPData<{text: string}>(d.db, `${d.base}_unique_all`, {
+      optionsData: ValueCache.getInstance().cachedLazy(`${d.base}_${SpeciesUtils.getSelectedSpecies()}_race`, () => RestBaseUtils.getTDPData<{text: string}>(d.db, `${d.base}_unique_all`, {
         column: 'race',
-        species: getSelectedSpecies()
+        species: SpeciesUtils.getSelectedSpecies()
       }).then((r) => r.map((d) => d.text)))
     }, {
       name: 'Ethnicity',
@@ -207,9 +207,9 @@ function generateTissueSpecificFilter(d: IDataSourceConfig) {
       type: FormElementType.SELECT2,
       multiple: true,
       return: 'id',
-      optionsData: cachedLazy(`${d.base}_${getSelectedSpecies()}_ethnicity`, () => getTDPData<{text: string}>(d.db, `${d.base}_unique_all`, {
+      optionsData: ValueCache.getInstance().cachedLazy(`${d.base}_${SpeciesUtils.getSelectedSpecies()}_ethnicity`, () => RestBaseUtils.getTDPData<{text: string}>(d.db, `${d.base}_unique_all`, {
         column: 'ethnicity',
-        species: getSelectedSpecies()
+        species: SpeciesUtils.getSelectedSpecies()
       }).then((r) => r.map((d) => d.text)))
     }, {
       name: 'Vital status',
@@ -217,9 +217,9 @@ function generateTissueSpecificFilter(d: IDataSourceConfig) {
       type: FormElementType.SELECT2,
       multiple: true,
       return: 'id',
-      optionsData: cachedLazy(`${d.base}_${getSelectedSpecies()}_vital_status`, () => getTDPData<{text: string|boolean}>(d.db, `${d.base}_unique_all`, {
+      optionsData: ValueCache.getInstance().cachedLazy(`${d.base}_${SpeciesUtils.getSelectedSpecies()}_vital_status`, () => RestBaseUtils.getTDPData<{text: string|boolean}>(d.db, `${d.base}_unique_all`, {
         column: 'vital_status',
-        species: getSelectedSpecies()
+        species: SpeciesUtils.getSelectedSpecies()
       }).then((r) => r.map((d) => d.text === true? 'true' : 'false')))
     }
   ];
@@ -233,9 +233,9 @@ function generateCelllineSpecificFilter(d: IDataSourceConfig) {
       type: FormElementType.SELECT2,
       multiple: true,
       return: 'id',
-      optionsData: cachedLazy(`${d.base}_${getSelectedSpecies()}_age_at_surgery`, () => getTDPData<{text: string}>(d.db, `${d.base}_unique_all`, {
+      optionsData: ValueCache.getInstance().cachedLazy(`${d.base}_${SpeciesUtils.getSelectedSpecies()}_age_at_surgery`, () => RestBaseUtils.getTDPData<{text: string}>(d.db, `${d.base}_unique_all`, {
         column: 'age_at_surgery',
-        species: getSelectedSpecies()
+        species: SpeciesUtils.getSelectedSpecies()
       }).then((r) => r.map((d) => d.text)))
     }, {
       name: 'Growth Type',
@@ -243,9 +243,9 @@ function generateCelllineSpecificFilter(d: IDataSourceConfig) {
       type: FormElementType.SELECT2,
       multiple: true,
       return: 'id',
-      optionsData: cachedLazy(`${d.base}_${getSelectedSpecies()}_growth_type`, () => getTDPData<{text: string}>(d.db, `${d.base}_unique_all`, {
+      optionsData: ValueCache.getInstance().cachedLazy(`${d.base}_${SpeciesUtils.getSelectedSpecies()}_growth_type`, () => RestBaseUtils.getTDPData<{text: string}>(d.db, `${d.base}_unique_all`, {
         column: 'growth_type',
-        species: getSelectedSpecies()
+        species: SpeciesUtils.getSelectedSpecies()
       }).then((r) => r.map((d) => d.text)))
     }, {
       name: 'Histology Type',
@@ -253,9 +253,9 @@ function generateCelllineSpecificFilter(d: IDataSourceConfig) {
       type: FormElementType.SELECT2,
       multiple: true,
       return: 'id',
-      optionsData: cachedLazy(`${d.base}_${getSelectedSpecies()}_histology_type`, () => getTDPData<{text: string}>(d.db, `${d.base}_unique_all`, {
+      optionsData: ValueCache.getInstance().cachedLazy(`${d.base}_${SpeciesUtils.getSelectedSpecies()}_histology_type`, () => RestBaseUtils.getTDPData<{text: string}>(d.db, `${d.base}_unique_all`, {
         column: 'histology_type',
-        species: getSelectedSpecies()
+        species: SpeciesUtils.getSelectedSpecies()
       }).then((r) => r.map((d) => d.text)))
     }, {
       name: 'Metastatic Site',
@@ -263,9 +263,9 @@ function generateCelllineSpecificFilter(d: IDataSourceConfig) {
       type: FormElementType.SELECT2,
       multiple: true,
       return: 'id',
-      optionsData: cachedLazy(`${d.base}_${getSelectedSpecies()}_metastatic_site`, () => getTDPData<{text: string}>(d.db, `${d.base}_unique_all`, {
+      optionsData: ValueCache.getInstance().cachedLazy(`${d.base}_${SpeciesUtils.getSelectedSpecies()}_metastatic_site`, () => RestBaseUtils.getTDPData<{text: string}>(d.db, `${d.base}_unique_all`, {
         column: 'metastatic_site',
-        species: getSelectedSpecies()
+        species: SpeciesUtils.getSelectedSpecies()
       }).then((r) => r.map((d) => d.text)))
     }, {
       name: 'Morphology',
@@ -273,9 +273,9 @@ function generateCelllineSpecificFilter(d: IDataSourceConfig) {
       type: FormElementType.SELECT2,
       multiple: true,
       return: 'id',
-      optionsData: cachedLazy(`${d.base}_${getSelectedSpecies()}_morphology`, () => getTDPData<{text: string}>(d.db, `${d.base}_unique_all`, {
+      optionsData: ValueCache.getInstance().cachedLazy(`${d.base}_${SpeciesUtils.getSelectedSpecies()}_morphology`, () => RestBaseUtils.getTDPData<{text: string}>(d.db, `${d.base}_unique_all`, {
         column: 'morphology',
-        species: getSelectedSpecies()
+        species: SpeciesUtils.getSelectedSpecies()
       }).then((r) => r.map((d) => d.text)))
     }
   ];
@@ -294,8 +294,8 @@ function generateFilter(d: IDataSourceConfig) {
     id: 'filter',
     useSession: true,
     options: {
-      sessionKeySuffix: `-${getSelectedSpecies()}-${d.base}`,
-      badgeProvider: previewFilterHint(d.db, d.base, () => ({ filter_species: getSelectedSpecies()})),
+      sessionKeySuffix: `-${SpeciesUtils.getSelectedSpecies()}-${d.base}`,
+      badgeProvider: LineupUtils.previewFilterHint(d.db, d.base, () => ({ filter_species: SpeciesUtils.getSelectedSpecies()})),
       defaultSelection: false,
       uniqueKeys: true,
       entries: [{
@@ -304,9 +304,9 @@ function generateFilter(d: IDataSourceConfig) {
         type: FormElementType.SELECT2,
         multiple: true,
         return: 'id',
-        optionsData: cachedLazy(`${d.base}_${getSelectedSpecies()}_tumortypes`, () => getTDPData<{text: string}>(d.db, `${d.base}_unique_all`, {
+        optionsData: ValueCache.getInstance().cachedLazy(`${d.base}_${SpeciesUtils.getSelectedSpecies()}_tumortypes`, () => RestBaseUtils.getTDPData<{text: string}>(d.db, `${d.base}_unique_all`, {
           column: 'tumortype',
-          species: getSelectedSpecies()
+          species: SpeciesUtils.getSelectedSpecies()
         }).then((r) => r.map((d) => d.text)))
       }, {
         name: 'Organ',
@@ -314,9 +314,9 @@ function generateFilter(d: IDataSourceConfig) {
         type: FormElementType.SELECT2,
         multiple: true,
         return: 'id',
-        optionsData: cachedLazy(`${d.base}_${getSelectedSpecies()}_organs`, () => getTDPData<{text: string}>(d.db, `${d.base}_unique_all`, {
+        optionsData: ValueCache.getInstance().cachedLazy(`${d.base}_${SpeciesUtils.getSelectedSpecies()}_organs`, () => RestBaseUtils.getTDPData<{text: string}>(d.db, `${d.base}_unique_all`, {
           column: 'organ',
-          species: getSelectedSpecies()
+          species: SpeciesUtils.getSelectedSpecies()
         }).then((r) => r.map((d) => d.text)))
       }, {
         name: 'Gender',
@@ -324,9 +324,9 @@ function generateFilter(d: IDataSourceConfig) {
         type: FormElementType.SELECT2,
         multiple: true,
         return: 'id',
-        optionsData: cachedLazy(`${d.base}_${getSelectedSpecies()}_gender`, () => getTDPData<{text: string}>(d.db, `${d.base}_unique_all`, {
+        optionsData: ValueCache.getInstance().cachedLazy(`${d.base}_${SpeciesUtils.getSelectedSpecies()}_gender`, () => RestBaseUtils.getTDPData<{text: string}>(d.db, `${d.base}_unique_all`, {
           column: 'gender',
-          species: getSelectedSpecies()
+          species: SpeciesUtils.getSelectedSpecies()
         }).then((r) => r.map((d) => d.text)))
       },
       ...specificFilters,
@@ -335,13 +335,13 @@ function generateFilter(d: IDataSourceConfig) {
         value: 'panel_' + d.entityName,
         type: FormElementType.SELECT2,
         multiple: true,
-        optionsData: cachedLazy(`${d.base}_${getSelectedSpecies()}_predefined_namedsets`, buildPredefinedNamedSets.bind(null, d))
+        optionsData: ValueCache.getInstance().cachedLazy(`${d.base}_${SpeciesUtils.getSelectedSpecies()}_predefined_namedsets`, buildPredefinedNamedSets.bind(null, d))
       }, {
         name: 'My Named Sets',
         value: 'namedset4' + d.entityName,
         type: FormElementType.SELECT2,
         multiple: true,
-        optionsData: listNamedSetsAsOptions.bind(null, d.idType)
+        optionsData: RestStorageUtils.listNamedSetsAsOptions.bind(null, d.idType)
       }, {
         name: d.name,
         value: d.entityName,

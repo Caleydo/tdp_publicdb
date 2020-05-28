@@ -2,9 +2,9 @@
  * Created by sam on 06.03.2017.
  */
 import { IDataSourceConfig } from '../config';
-import { IScore } from 'tdp_core/src/extensions';
-import { IFormElementDesc } from 'tdp_core/src/form';
-import { IPluginDesc } from 'phovea_core/src/plugin';
+import { IScore } from 'tdp_core';
+import { IFormElementDesc } from 'tdp_core';
+import { IPluginDesc } from 'phovea_core';
 import { ASingleScore } from './ASingleScore';
 interface ISingleScoreParam {
     name: {

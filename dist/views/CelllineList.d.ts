@@ -1,7 +1,7 @@
-import { ACommonList, IACommonListOptions } from 'tdp_gene/src/views/ACommonList';
-import { ISelection, IViewContext } from 'tdp_core/src/views';
-import { IServerColumn } from 'tdp_core/src/rest';
+import { ACommonList, IACommonListOptions } from 'tdp_gene';
+import { ISelection, IViewContext } from 'tdp_core';
+import { IServerColumn } from 'tdp_core';
 export declare class CelllineList extends ACommonList {
     constructor(context: IViewContext, selection: ISelection, parent: HTMLElement, options: IACommonListOptions);
-    protected getColumnDescs(columns: IServerColumn[]): import("tdp_core/src/lineup").IAdditionalColumnDesc[];
+    protected getColumnDescs(columns: IServerColumn[]): import("tdp_core").IAdditionalColumnDesc[];
 }

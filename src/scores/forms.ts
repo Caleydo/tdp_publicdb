@@ -5,7 +5,7 @@ import {
 } from '../forms';
 import {FormElementType} from 'tdp_core';
 import {MAX_FILTER_SCORE_ROWS_BEFORE_ALL, splitTypes, dataSubtypes} from '../config';
-import {copyNumberCat, unknownCopyNumberValue} from 'tdp_gene';
+import {Categories} from 'tdp_gene';
 /**
  * Created by Samuel Gratzl on 15.03.2017.
  */
@@ -95,7 +95,7 @@ export const FORM_AGGREGATED_SCORE = [
     },
     useSession: true,
     options: {
-      data: copyNumberCat.filter((d) => d.value !== unknownCopyNumberValue).map((d) => ({text: d.name, id: String(d.value)}))
+      data: Categories.copyNumberCat.filter((d) => d.value !== Categories.unknownCopyNumberValue).map((d) => ({text: d.name, id: String(d.value)}))
     }
   }
 ];

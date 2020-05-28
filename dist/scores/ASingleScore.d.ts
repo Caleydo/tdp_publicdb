@@ -1,13 +1,13 @@
 /**
  * Created by sam on 06.03.2017.
  */
-import { RangeLike } from 'phovea_core/src/range';
-import { IDType } from 'phovea_core/src/idtype';
+import { RangeLike } from 'phovea_core';
+import { IDType } from 'phovea_core';
 import { IDataSourceConfig } from '../config';
-import { IScore } from 'tdp_core/src/extensions';
+import { IScore } from 'tdp_core';
 import { AScore } from './AScore';
-import { INamedSet } from 'tdp_core/src/storage';
-import { IParams } from 'tdp_core/src/rest';
+import { INamedSet } from 'tdp_core';
+import { IParams } from 'tdp_core';
 interface ISingleScoreParam {
     name: {
         id: string;

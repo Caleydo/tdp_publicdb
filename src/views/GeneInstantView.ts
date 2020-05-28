@@ -2,12 +2,12 @@
  * Created by Samuel Gratzl on 27.04.2016.
  */
 
-import {resolveIds} from 'tdp_core';
+import {ResolveUtils} from 'tdp_core';
 import {AInstantView} from 'tdp_core';
-import {getSelectedSpecies} from 'tdp_gene';
+import {SpeciesUtils} from 'tdp_gene';
 import {gene} from '../config';
-import {getTDPFilteredRows} from 'tdp_core';
-import {errorAlert} from 'tdp_core';
+import {RestBaseUtils} from 'tdp_core';
+import {ErrorAlertHandler} from 'tdp_core';
 
 interface IGeneInfo {
   _id: number;
@@ -28,9 +28,9 @@ export class GeneInstantView extends AInstantView {
   }
 
   private async loadData(): Promise<IGeneInfo[]> {
-    const ids = await resolveIds(this.selection.idtype, this.selection.range, gene.idType);
-    return <any>getTDPFilteredRows(gene.db, `${gene.base}_all_columns`, {
-      species: getSelectedSpecies()
+    const ids = await ResolveUtils.resolveIds(this.selection.idtype, this.selection.range, gene.idType);
+    return <any>RestBaseUtils.getTDPFilteredRows(gene.db, `${gene.base}_all_columns`, {
+      species: SpeciesUtils.getSelectedSpecies()
     }, {[gene.entityName] : ids});
   }
 
@@ -44,7 +44,7 @@ export class GeneInstantView extends AInstantView {
         <p>${first.name}</p>
         <p>Location: ${first.chromosome} @ ${first.species}</p>
       `;
-    }).catch(errorAlert)
+    }).catch(ErrorAlertHandler.getInstance().errorAlert)
       .catch(() => this.node.classList.remove('tdp-busy'));
   }
 }

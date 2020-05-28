@@ -1,15 +1,15 @@
 /**
  * Created by sam on 16.02.2017.
  */
-import { FormElementType } from 'tdp_core/src/form';
-import { ACoExpression } from 'tdp_gene/src/views/ACoExpression';
-import { getSelectedSpecies } from 'tdp_gene/src/common';
+import { FormElementType } from 'tdp_core';
+import { ACoExpression } from 'tdp_gene';
+import { SpeciesUtils } from 'tdp_gene';
 import { expression } from '../config';
 import { ParameterFormIds, FORM_TISSUE_OR_CELLLINE_FILTER, FORM_DATA_SOURCE, FORM_COLOR_CODING } from '../forms';
 import { loadGeneList, loadFirstName } from './utils';
-import { resolve } from 'phovea_core/src/idtype/manager';
-import { getTDPData, mergeParamAndFilters } from 'tdp_core/src/rest';
-import { toFilter } from 'tdp_core/src/lineup';
+import { IDTypeManager } from 'phovea_core';
+import { RestBaseUtils } from 'tdp_core';
+import { LineUpUtils } from 'tdp_core';
 export class CoExpression extends ACoExpression {
     getParameterFormDescs() {
         const base = super.getParameterFormDescs();
@@ -41,13 +41,13 @@ export class CoExpression extends ACoExpression {
         const param = {
             ensg,
             attribute: this.dataSubType.id,
-            species: getSelectedSpecies()
+            species: SpeciesUtils.getSelectedSpecies()
         };
         const color = this.getParameterData(ParameterFormIds.COLOR_CODING);
         if (color) {
             param.color = color;
         }
-        return getTDPData(ds.db, `${ds.base}_co_expression${!color ? '_plain' : ''}/filter`, mergeParamAndFilters(param, toFilter(this.getParameter('filter'))));
+        return RestBaseUtils.getTDPData(ds.db, `${ds.base}_co_expression${!color ? '_plain' : ''}/filter`, RestBaseUtils.mergeParamAndFilters(param, LineUpUtils.toFilter(this.getParameter('filter'))));
     }
     loadFirstName(ensg) {
         return loadFirstName(ensg);
@@ -56,7 +56,7 @@ export class CoExpression extends ACoExpression {
         return this.dataSubType.name;
     }
     get itemIDType() {
-        return resolve(this.dataSource.idType);
+        return IDTypeManager.getInstance().resolveIdType(this.dataSource.idType);
     }
     select(range) {
         this.setItemSelection({

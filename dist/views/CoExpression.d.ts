@@ -1,9 +1,9 @@
 /**
  * Created by sam on 16.02.2017.
  */
-import { IFormSelectDesc } from 'tdp_core/src/form';
-import { ACoExpression, ICoExprDataFormatRow, IGeneOption } from 'tdp_gene/src/views/ACoExpression';
-import Range from 'phovea_core/src/range/Range';
+import { IFormSelectDesc } from 'tdp_core';
+import { ACoExpression, ICoExprDataFormatRow, IGeneOption } from 'tdp_gene';
+import { Range } from 'phovea_core';
 export declare class CoExpression extends ACoExpression {
     protected getParameterFormDescs(): IFormSelectDesc[];
     private get dataSource();
@@ -16,7 +16,7 @@ export declare class CoExpression extends ACoExpression {
     loadData(ensg: string): Promise<ICoExprDataFormatRow[]>;
     loadFirstName(ensg: string): Promise<string>;
     protected getAttributeName(): string;
-    get itemIDType(): import("phovea_core/src/idtype").IDType;
+    get itemIDType(): import("phovea_core").IDType;
     protected select(range: Range): void;
     protected getNoDataErrorMessage(refGene: IGeneOption): string;
 }

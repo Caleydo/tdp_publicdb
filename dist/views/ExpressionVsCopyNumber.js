@@ -1,14 +1,14 @@
 /**
  * Created by sam on 16.02.2017.
  */
-import { AExpressionVsCopyNumber } from 'tdp_gene/src/views/AExpressionVsCopyNumber';
-import { getSelectedSpecies } from 'tdp_gene/src/common';
+import { AExpressionVsCopyNumber } from 'tdp_gene';
+import { SpeciesUtils } from 'tdp_gene';
 import { expression, copyNumber } from '../config';
 import { ParameterFormIds, FORM_TISSUE_OR_CELLLINE_FILTER, FORM_DATA_SOURCE, FORM_COLOR_CODING } from '../forms';
-import { resolve } from 'phovea_core/src/idtype';
+import { IDTypeManager } from 'phovea_core';
 import { loadFirstName } from './utils';
-import { getTDPData, mergeParamAndFilters } from 'tdp_core/src/rest';
-import { toFilter } from 'tdp_core/src/lineup';
+import { RestBaseUtils } from 'tdp_core';
+import { LineUpUtils } from 'tdp_core';
 export class ExpressionVsCopyNumber extends AExpressionVsCopyNumber {
     getParameterFormDescs() {
         const base = super.getParameterFormDescs();
@@ -29,13 +29,13 @@ export class ExpressionVsCopyNumber extends AExpressionVsCopyNumber {
             ensg,
             expression_subtype: this.getParameterData(ParameterFormIds.EXPRESSION_SUBTYPE).id,
             copynumber_subtype: this.getParameterData(ParameterFormIds.COPYNUMBER_SUBTYPE).id,
-            species: getSelectedSpecies()
+            species: SpeciesUtils.getSelectedSpecies()
         };
         const color = this.getParameterData(ParameterFormIds.COLOR_CODING);
         if (color) {
             param.color = color;
         }
-        return getTDPData(ds.db, `${ds.base}_expression_vs_copynumber${!color ? '_plain' : ''}/filter`, mergeParamAndFilters(param, toFilter(this.getParameter('filter'))));
+        return RestBaseUtils.getTDPData(ds.db, `${ds.base}_expression_vs_copynumber${!color ? '_plain' : ''}/filter`, RestBaseUtils.mergeParamAndFilters(param, LineUpUtils.toFilter(this.getParameter('filter'))));
     }
     getExpressionValues() {
         return expression.dataSubtypes.map((ds) => {
@@ -48,7 +48,7 @@ export class ExpressionVsCopyNumber extends AExpressionVsCopyNumber {
         });
     }
     get itemIDType() {
-        return resolve(this.dataSource.idType);
+        return IDTypeManager.getInstance().resolveIdType(this.dataSource.idType);
     }
     select(range) {
         this.setItemSelection({

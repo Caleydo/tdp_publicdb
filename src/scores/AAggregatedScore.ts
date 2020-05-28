@@ -3,17 +3,17 @@
  */
 
 import {RangeLike} from 'phovea_core';
-import {getSelectedSpecies} from 'tdp_gene';
+import {SpeciesUtils} from 'tdp_gene';
 import {IDataSourceConfig, dataSubtypes, MAX_FILTER_SCORE_ROWS_BEFORE_ALL} from '../config';
 import {IScore, IScoreRow} from 'tdp_core';
 import {createDesc, toFilterString} from './utils';
 import {AScore, ICommonScoreParam} from './AScore';
-import {limitScoreRows, convertLog2ToLinear} from 'tdp_gene';
+import {FieldUtils} from 'tdp_gene';
 import {INamedSet} from 'tdp_core';
-import {resolve} from 'phovea_core';
-import {getTDPScore, IParams} from 'tdp_core';
-import {toFilter} from 'tdp_core';
-import IDType from 'phovea_core';
+import {IDTypeManager} from 'phovea_core';
+import {RestBaseUtils, IParams} from 'tdp_core';
+import {LineUpUtils} from 'tdp_core';
+import {IDType} from 'phovea_core';
 
 
 
@@ -28,7 +28,7 @@ export abstract class AAggregatedScore extends AScore implements IScore<number> 
   }
 
   get idType() {
-    return resolve(this.dataSource.idType);
+    return IDTypeManager.getInstance().resolveIdType(this.dataSource.idType);
   }
 
   createDesc() {
@@ -47,14 +47,14 @@ export abstract class AAggregatedScore extends AScore implements IScore<number> 
       // by convention for the aggregation to do its magic, it has to be called `data_subtype`
       data_subtype: this.dataSubType.useForAggregation,
       agg: this.parameter.aggregation,
-      species: getSelectedSpecies(),
+      species: SpeciesUtils.getSelectedSpecies(),
       target: idtype.id
     };
     const maxDirectRows = typeof this.parameter.maxDirectFilterRows === 'number' ? this.parameter.maxDirectFilterRows : MAX_FILTER_SCORE_ROWS_BEFORE_ALL;
-    limitScoreRows(param, ids, idtype, this.dataSource.entityName, maxDirectRows, namedSet);
-    const filters = Object.assign(compatibilityFilter(toFilter(this.parameter.filter), this.oppositeDataSource.entityName), this.createFilter());
+    FieldUtils.limitScoreRows(param, ids, idtype, this.dataSource.entityName, maxDirectRows, namedSet);
+    const filters = Object.assign(compatibilityFilter(LineUpUtils.toFilter(this.parameter.filter), this.oppositeDataSource.entityName), this.createFilter());
 
-    let rows: IScoreRow<any>[] = await getTDPScore(this.dataSource.db, `${this.getViewPrefix()}${this.dataSource.base}_${this.oppositeDataSource.base}_score`, param, filters);
+    let rows: IScoreRow<any>[] = await RestBaseUtils.getTDPScore(this.dataSource.db, `${this.getViewPrefix()}${this.dataSource.base}_${this.oppositeDataSource.base}_score`, param, filters);
     if (this.parameter.aggregation === 'numbers') {
       // we got a dict to consider missing values property
       rows = rows.filter((d) => d.score !== null);
@@ -72,7 +72,7 @@ export abstract class AAggregatedScore extends AScore implements IScore<number> 
       (<any>rows)._columns = columns;
     }
     if (this.dataSubType.useForAggregation.indexOf('log2') !== -1) {
-      return convertLog2ToLinear(rows, 'score');
+      return FieldUtils.convertLog2ToLinear(rows, 'score');
     }
     return rows;
   }

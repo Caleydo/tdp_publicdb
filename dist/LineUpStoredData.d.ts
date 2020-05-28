@@ -1,5 +1,5 @@
-import { IRow } from 'tdp_core/src/rest';
-import { IAdditionalColumnDesc } from 'tdp_core/src/lineup';
+import { IRow } from 'tdp_core';
+import { IAdditionalColumnDesc } from 'tdp_core';
 /**
  * Load the column description for a given idType
  *

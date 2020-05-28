@@ -1,7 +1,7 @@
-import { getSelectedSpecies } from 'tdp_gene/src/common';
-import { highlightMatch } from 'tdp_core/src/form/elements/Select3';
+import { SpeciesUtils } from 'tdp_gene';
+import { Select3Utils } from 'tdp_core';
 import { gene } from './config';
-import { getTDPData, getTDPLookup } from 'tdp_core/src/rest';
+import { RestBaseUtils } from 'tdp_core';
 // Gene
 /**
  * Search and autocomplete of the input string for Select3
@@ -12,9 +12,9 @@ import { getTDPData, getTDPLookup } from 'tdp_core/src/rest';
  * @returns {Promise<{more: boolean; items: Readonly<IdTextPair>[]}>} Select3 conformant data structure.
  */
 export function searchGene(query, page, pageSize) {
-    return getTDPLookup(gene.db, `${gene.base}_gene_items`, {
+    return RestBaseUtils.getTDPLookup(gene.db, `${gene.base}_gene_items`, {
         column: 'symbol',
-        species: getSelectedSpecies(),
+        species: SpeciesUtils.getSelectedSpecies(),
         query,
         page,
         limit: pageSize
@@ -27,9 +27,9 @@ export function searchGene(query, page, pageSize) {
  * @returns {Promise<Readonly<IdTextPair>[]>} Return the validated gene symbols as id-text pairs.
  */
 export function validateGene(query) {
-    return getTDPData(gene.db, `${gene.base}_gene_items_verify/filter`, {
+    return RestBaseUtils.getTDPData(gene.db, `${gene.base}_gene_items_verify/filter`, {
         column: 'symbol',
-        species: getSelectedSpecies(),
+        species: SpeciesUtils.getSelectedSpecies(),
         filter_symbol: query,
     });
 }
@@ -45,31 +45,31 @@ export function validateGene(query) {
 export function formatGene(item, node, mode, currentSearchQuery) {
     if (mode === 'result') {
         //highlight match
-        return `${item.text.replace(currentSearchQuery, highlightMatch)} <span class="ensg">${item.id}</span>`;
+        return `${item.text.replace(currentSearchQuery, Select3Utils.highlightMatch)} <span class="ensg">${item.id}</span>`;
     }
     return item.text;
 }
 // Cellline and Tissue Select3 options methods
 export function search(config, query, page, pageSize) {
-    return getTDPLookup(config.db, `${config.base}_items`, {
+    return RestBaseUtils.getTDPLookup(config.db, `${config.base}_items`, {
         column: config.entityName,
-        species: getSelectedSpecies(),
+        species: SpeciesUtils.getSelectedSpecies(),
         query,
         page,
         limit: pageSize
     });
 }
 export function validate(config, query) {
-    return getTDPData(config.db, `${config.base}_items_verify/filter`, {
+    return RestBaseUtils.getTDPData(config.db, `${config.base}_items_verify/filter`, {
         column: config.entityName,
-        species: getSelectedSpecies(),
+        species: SpeciesUtils.getSelectedSpecies(),
         [`filter_${config.entityName}`]: query,
     });
 }
 export function format(item, node, mode, currentSearchQuery) {
     if (mode === 'result' && currentSearchQuery) {
         //highlight match
-        return `${item.text.replace(currentSearchQuery, highlightMatch)}`;
+        return `${item.text.replace(currentSearchQuery, Select3Utils.highlightMatch)}`;
     }
     return item.text;
 }

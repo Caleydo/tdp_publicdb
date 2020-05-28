@@ -1,5 +1,5 @@
 import { chooseDataSource } from './config';
-import { getTDPData } from 'tdp_core/src/rest';
+import { RestBaseUtils } from 'tdp_core';
 async function detectIDType(data, accessor, sampleSize, options) {
     const testSize = Math.min(data.length, sampleSize);
     if (testSize <= 0) {
@@ -16,7 +16,7 @@ async function detectIDType(data, accessor, sampleSize, options) {
         ++validSize;
     }
     const ds = chooseDataSource(options);
-    const result = await getTDPData(ds.db, `${ds.base}_check_ids/filter`, {
+    const result = await RestBaseUtils.getTDPData(ds.db, `${ds.base}_check_ids/filter`, {
         ['filter_' + ds.entityName]: values
     });
     return result[0].matches / validSize;

@@ -1,7 +1,7 @@
 /**
  * Created by Holger Stitz on 06.12.2016.
  */
-import { ProxyView } from 'tdp_core/src/views/ProxyView';
+import { ProxyView } from 'tdp_core';
 import { loadGeneList } from './utils';
 /**
  * helper view for proxying an existing external website

@@ -2,8 +2,8 @@
  * Created by sam on 06.03.2017.
  */
 import { IDataSubtypeConfig, IDataSourceConfig } from '../config';
-import { IPluginDesc } from 'phovea_core/src/plugin';
-import { IFormMultiMap } from 'tdp_core/src/form';
+import { IPluginDesc } from 'phovea_core';
+import { IFormMultiMap } from 'tdp_core';
 /**
  * creates a lineup config out of a IDataSubtypeConfig
  * @param type force a specific type
@@ -17,4 +17,4 @@ export declare function selectDataSources(pluginDesc: IPluginDesc): {
     primary: IDataSourceConfig;
     opposite: IDataSourceConfig;
 };
-export declare function toFilterString(filter: IFormMultiMap, ds: IDataSourceConfig): string;
+export declare function toFilterString(filter: IFormMultiMap, ds: IDataSourceConfig): any;

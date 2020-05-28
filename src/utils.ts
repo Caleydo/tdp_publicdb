@@ -1,7 +1,7 @@
-import {getSelectedSpecies} from 'tdp_gene';
-import {highlightMatch, ISelect3Item} from 'tdp_core';
+import {SpeciesUtils} from 'tdp_gene';
+import {Select3Utils, ISelect3Item} from 'tdp_core';
 import {gene, IDataSourceConfig} from './config';
-import {getTDPData, getTDPLookup} from 'tdp_core';
+import {RestBaseUtils} from 'tdp_core';
 import {ICommonDBConfig} from 'tdp_gene';
 
 // Gene
@@ -15,9 +15,9 @@ import {ICommonDBConfig} from 'tdp_gene';
  * @returns {Promise<{more: boolean; items: Readonly<IdTextPair>[]}>} Select3 conformant data structure.
  */
 export function searchGene(query: string, page: number, pageSize: number): Promise<{ more: boolean, items: Readonly<IdTextPair>[] }> {
-  return getTDPLookup(gene.db, `${gene.base}_gene_items`, {
+  return RestBaseUtils.getTDPLookup(gene.db, `${gene.base}_gene_items`, {
     column: 'symbol',
-    species: getSelectedSpecies(),
+    species: SpeciesUtils.getSelectedSpecies(),
     query,
     page,
     limit: pageSize
@@ -31,9 +31,9 @@ export function searchGene(query: string, page: number, pageSize: number): Promi
  * @returns {Promise<Readonly<IdTextPair>[]>} Return the validated gene symbols as id-text pairs.
  */
 export function validateGene(query: string[]): Promise<Readonly<IdTextPair>[]> {
-  return getTDPData(gene.db, `${gene.base}_gene_items_verify/filter`, {
+  return RestBaseUtils.getTDPData(gene.db, `${gene.base}_gene_items_verify/filter`, {
     column: 'symbol',
-    species: getSelectedSpecies(),
+    species: SpeciesUtils.getSelectedSpecies(),
     filter_symbol: query,
   });
 }
@@ -50,7 +50,7 @@ export function validateGene(query: string[]): Promise<Readonly<IdTextPair>[]> {
 export function formatGene(item: ISelect3Item<IdTextPair>, node: HTMLElement, mode: 'result' | 'selection', currentSearchQuery?: RegExp) {
   if (mode === 'result') {
     //highlight match
-    return `${item.text.replace(currentSearchQuery!, highlightMatch)} <span class="ensg">${item.id}</span>`;
+    return `${item.text.replace(currentSearchQuery!, Select3Utils.highlightMatch)} <span class="ensg">${item.id}</span>`;
   }
   return item.text;
 }
@@ -58,9 +58,9 @@ export function formatGene(item: ISelect3Item<IdTextPair>, node: HTMLElement, mo
 // Cellline and Tissue Select3 options methods
 
 export function search(config: IDataSourceConfig | ICommonDBConfig, query: string, page: number, pageSize: number): Promise<{ more: boolean, items: Readonly<IdTextPair>[] }> {
-  return getTDPLookup(config.db, `${config.base}_items`, {
+  return RestBaseUtils.getTDPLookup(config.db, `${config.base}_items`, {
     column: config.entityName,
-    species: getSelectedSpecies(),
+    species: SpeciesUtils.getSelectedSpecies(),
     query,
     page,
     limit: pageSize
@@ -68,9 +68,9 @@ export function search(config: IDataSourceConfig | ICommonDBConfig, query: strin
 }
 
 export function validate(config: IDataSourceConfig | ICommonDBConfig, query: string[]): Promise<Readonly<IdTextPair>[]> {
-  return getTDPData(config.db, `${config.base}_items_verify/filter`, {
+  return RestBaseUtils.getTDPData(config.db, `${config.base}_items_verify/filter`, {
     column: config.entityName,
-    species: getSelectedSpecies(),
+    species: SpeciesUtils.getSelectedSpecies(),
     [`filter_${config.entityName}`]: query,
   });
 }
@@ -78,7 +78,7 @@ export function validate(config: IDataSourceConfig | ICommonDBConfig, query: str
 export function format(item: ISelect3Item<IdTextPair>, node: HTMLElement, mode: 'result' | 'selection', currentSearchQuery?: RegExp) {
   if (mode === 'result' && currentSearchQuery) {
     //highlight match
-    return `${item.text.replace(currentSearchQuery!, highlightMatch)}`;
+    return `${item.text.replace(currentSearchQuery!, Select3Utils.highlightMatch)}`;
   }
   return item.text;
 }

@@ -1,5 +1,5 @@
-import { ProxyView } from 'tdp_core/src/views/ProxyView';
-import { IFormSelectOption } from 'tdp_core/src/form/elements/FormSelect';
+import { ProxyView } from 'tdp_core';
+import { IFormSelectOption } from 'tdp_core';
 /**
  * Proxy view for the idType Cosmic which fetches the original cell line data based on the mapping from Cell line to
  * Cosmic.

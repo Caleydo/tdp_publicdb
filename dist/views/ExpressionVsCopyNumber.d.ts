@@ -1,9 +1,9 @@
 /**
  * Created by sam on 16.02.2017.
  */
-import { IFormSelectDesc } from 'tdp_core/src/form';
-import { AExpressionVsCopyNumber, ICopyNumberDataFormatRow } from 'tdp_gene/src/views/AExpressionVsCopyNumber';
-import Range from 'phovea_core/src/range/Range';
+import { IFormSelectDesc } from 'tdp_core';
+import { AExpressionVsCopyNumber, ICopyNumberDataFormatRow } from 'tdp_gene';
+import { Range } from 'phovea_core';
 export declare class ExpressionVsCopyNumber extends AExpressionVsCopyNumber {
     protected getParameterFormDescs(): IFormSelectDesc[];
     private get dataSource();
@@ -19,6 +19,6 @@ export declare class ExpressionVsCopyNumber extends AExpressionVsCopyNumber {
         value: string;
         data: import("../config").IDataSubtypeConfig;
     }[];
-    get itemIDType(): import("phovea_core/src/idtype").IDType;
+    get itemIDType(): import("phovea_core").IDType;
     protected select(range: Range): void;
 }

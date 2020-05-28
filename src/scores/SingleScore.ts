@@ -12,7 +12,7 @@ import {
   FORM_SINGLE_SCORE, FORM_SINGLE_SCORE_DEPLETION
 } from './forms';
 import {selectDataSources} from './utils';
-import {mixin} from 'phovea_core';
+import {BaseUtils} from 'phovea_core';
 import {FormDialog} from 'tdp_core';
 import {ASingleScore} from './ASingleScore';
 import {IParams} from 'tdp_core';
@@ -29,7 +29,7 @@ interface ISingleScoreParam {
 }
 
 function enableMultiple(desc: any): any {
-  return mixin({}, desc, {
+  return BaseUtils.mixin({}, desc, {
     type: FormElementType.SELECT3_MULTIPLE,
     useSession: false
   });

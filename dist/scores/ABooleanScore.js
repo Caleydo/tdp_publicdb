@@ -1,6 +1,6 @@
-import { resolve } from 'phovea_core/src/idtype';
-import { booleanCol } from 'tdp_core/src/lineup';
-import { getTDPScore } from 'tdp_core/src/rest';
+import { IDTypeManager } from 'phovea_core';
+import { ColumnDescUtils } from 'tdp_core';
+import { RestBaseUtils } from 'tdp_core';
 /**
  * score implementation in this case a numeric score is computed
  */
@@ -14,7 +14,7 @@ export class ABooleanScore {
      * @type {IDType}
      */
     get idType() {
-        return resolve(this.dataSource.idType);
+        return IDTypeManager.getInstance().resolveIdType(this.dataSource.idType);
     }
     /**
      * creates the column description used within LineUp to create the oclumn
@@ -22,14 +22,14 @@ export class ABooleanScore {
      */
     createDesc() {
         const label = this.label;
-        return booleanCol(this.columnName, { label, width: 50 });
+        return ColumnDescUtils.booleanCol(this.columnName, { label, width: 50 });
     }
     /**
      * computes the actual scores and returns a Promise of IScoreRow rows
      * @returns {Promise<IScoreRow<number>[]>}
      */
     compute() {
-        return getTDPScore(this.dataSource.db, `${this.dataSource.base}_${this.columnName}_score`, this.params);
+        return RestBaseUtils.getTDPScore(this.dataSource.db, `${this.dataSource.base}_${this.columnName}_score`, this.params);
     }
 }
 //# sourceMappingURL=ABooleanScore.js.map

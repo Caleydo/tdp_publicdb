@@ -1,8 +1,8 @@
 /**
  * Created by Samuel Gratzl on 27.04.2016.
  */
-import { IViewContext, ISelection } from 'tdp_core/src/views';
-import { AD3View } from 'tdp_core/src/views/AD3View';
+import { IViewContext, ISelection } from 'tdp_core';
+import { AD3View } from 'tdp_core';
 import { IDataSourceConfig } from '../config';
 export declare abstract class AInfoTable extends AD3View {
     private readonly dataSource;

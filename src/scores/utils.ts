@@ -5,7 +5,7 @@
 import {IDataSubtypeConfig, dataSubtypes, cellline, tissue, gene, IDataSourceConfig, depletion} from '../config';
 import {IPluginDesc} from 'phovea_core';
 import {FORM_GENE_FILTER, FORM_TISSUE_FILTER, FORM_CELLLINE_FILTER} from '../forms';
-import {toFilterString as toFilterStringImpl} from 'tdp_core';
+import {LineupUtils} from 'tdp_core';
 import {IFormMultiMap} from 'tdp_core';
 
 /**
@@ -98,5 +98,5 @@ export function toFilterString(filter: IFormMultiMap, ds: IDataSourceConfig) {
       key2name.set(entry.value, entry.name);
     });
   }
-  return toFilterStringImpl(filter, key2name);
+  return LineupUtils.toFilterString(filter, key2name);
 }

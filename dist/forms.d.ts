@@ -2,7 +2,7 @@
  * Created by sam on 06.03.2017.
  */
 /// <reference types="select2" />
-import { FormElementType } from 'tdp_core/src/form';
+import { FormElementType } from 'tdp_core';
 import { IDataSourceConfig } from './config';
 import { format, formatGene, searchGene, validateGene } from './utils';
 /**
@@ -16,8 +16,8 @@ export declare class ParameterFormIds {
     static TISSUE_NAME: string;
     static DATA_SUBTYPE: string;
     static DATA_HIERARCHICAL_SUBTYPE: string;
-    static COPYNUMBER_SUBTYPE: any;
-    static EXPRESSION_SUBTYPE: any;
+    static COPYNUMBER_SUBTYPE: string;
+    static EXPRESSION_SUBTYPE: string;
     static AGGREGATION: string;
     static COMPARISON_OPERATOR: string;
     static COMPARISON_VALUE: string;
@@ -107,7 +107,7 @@ export declare const FORM_GENE_FILTER: {
         sessionKeySuffix: string;
         defaultSelection: boolean;
         uniqueKeys: boolean;
-        badgeProvider: (rows: import("tdp_core/src/form").IFormRow[]) => Promise<string>;
+        badgeProvider: any;
         entries: ({
             name: string;
             value: string;
@@ -175,7 +175,7 @@ export declare const FORM_TISSUE_FILTER: {
     useSession: boolean;
     options: {
         sessionKeySuffix: string;
-        badgeProvider: (rows: import("tdp_core/src/form").IFormRow[]) => Promise<string>;
+        badgeProvider: any;
         defaultSelection: boolean;
         uniqueKeys: boolean;
         entries: any[];
@@ -188,7 +188,7 @@ export declare const FORM_CELLLINE_FILTER: {
     useSession: boolean;
     options: {
         sessionKeySuffix: string;
-        badgeProvider: (rows: import("tdp_core/src/form").IFormRow[]) => Promise<string>;
+        badgeProvider: any;
         defaultSelection: boolean;
         uniqueKeys: boolean;
         entries: any[];

@@ -1,15 +1,15 @@
 /**
  * Created by Marc Streit on 26.07.2016.
  */
-import { ARankingView, single } from 'tdp_core/src/lineup';
-import { getSelectedSpecies } from 'tdp_gene/src/common';
+import { ARankingView, AdapterUtils } from 'tdp_core';
+import { SpeciesUtils } from 'tdp_gene';
 import { expression, copyNumber, mutation } from '../config';
 import { ParameterFormIds, FORM_DATA_SOURCE, FORM_TISSUE_OR_CELLLINE_FILTER } from '../forms';
-import { FormElementType } from 'tdp_core/src/form';
-import { getTDPDesc, getTDPFilteredRows, getTDPScore } from 'tdp_core/src/rest';
-import { resolve } from 'phovea_core/src/idtype';
+import { FormElementType } from 'tdp_core';
+import { RestBaseUtils } from 'tdp_core';
+import { IDTypeManager } from 'phovea_core';
 import { loadFirstName, postProcessScore, subTypeDesc } from './utils';
-import { toFilter } from 'tdp_core/src/lineup';
+import { LineUpUtils } from 'tdp_core';
 export class DependentSampleTable extends ARankingView {
     constructor(context, selection, parent, dataType, options = {}) {
         super(context, selection, parent, Object.assign({
@@ -37,7 +37,7 @@ export class DependentSampleTable extends ARankingView {
         ]);
     }
     get itemIDType() {
-        return resolve(this.dataSource.idType);
+        return IDTypeManager.getInstance().resolveIdType(this.dataSource.idType);
     }
     get dataSource() {
         return this.getParameterData(ParameterFormIds.DATA_SOURCE);
@@ -50,10 +50,10 @@ export class DependentSampleTable extends ARankingView {
     }
     loadColumnDesc() {
         const dataSource = this.dataSource;
-        return getTDPDesc(dataSource.db, dataSource.base);
+        return RestBaseUtils.getTDPDesc(dataSource.db, dataSource.base);
     }
     createSelectionAdapter() {
-        return single({
+        return AdapterUtils.single({
             createDesc: (_id, id) => loadFirstName(id).then((label) => subTypeDesc(this.dataSubType, _id, label)),
             loadData: (_id, id) => this.loadSelectionColumnData(id)
         });
@@ -63,9 +63,9 @@ export class DependentSampleTable extends ARankingView {
     }
     loadRows() {
         const dataSource = this.dataSource;
-        const filter = toFilter(this.getParameter('filter'));
-        filter.species = getSelectedSpecies();
-        return getTDPFilteredRows(dataSource.db, dataSource.base, {}, filter);
+        const filter = LineUpUtils.toFilter(this.getParameter('filter'));
+        filter.species = SpeciesUtils.getSelectedSpecies();
+        return RestBaseUtils.getTDPFilteredRows(dataSource.db, dataSource.base, {}, filter);
     }
     loadSelectionColumnData(name) {
         const dataSource = this.dataSource;
@@ -74,10 +74,10 @@ export class DependentSampleTable extends ARankingView {
             table: this.dataType.tableName,
             attribute: subType.id,
             name,
-            species: getSelectedSpecies()
+            species: SpeciesUtils.getSelectedSpecies()
         };
-        const filter = toFilter(this.getParameter('filter'));
-        return getTDPScore(dataSource.db, `${dataSource.base}_gene_single_score`, param, filter).then(postProcessScore(subType));
+        const filter = LineUpUtils.toFilter(this.getParameter('filter'));
+        return RestBaseUtils.getTDPScore(dataSource.db, `${dataSource.base}_gene_single_score`, param, filter).then(postProcessScore(subType));
     }
 }
 export function createExpressionDependentSampleTable(context, selection, parent, options) {

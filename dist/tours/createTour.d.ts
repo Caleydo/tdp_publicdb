@@ -1,2 +1,2 @@
-import { IStep } from 'tdp_core/src/tour/extensions';
+import { IStep } from 'tdp_core';
 export declare function createTour(): IStep[];

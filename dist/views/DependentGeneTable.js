@@ -1,15 +1,15 @@
 /**
  * Created by Marc Streit on 28.07.2016.
  */
-import { ARankingView, single } from 'tdp_core/src/lineup';
-import { getSelectedSpecies } from 'tdp_gene/src/common';
+import { ARankingView, AdapterUtils } from 'tdp_core';
+import { SpeciesUtils } from 'tdp_gene';
 import { gene, expression, copyNumber, mutation, chooseDataSource } from '../config';
 import { ParameterFormIds, FORM_GENE_FILTER } from '../forms';
-import { FormElementType } from 'tdp_core/src/form';
-import { resolveIds } from 'tdp_core/src/views';
-import { getTDPDesc, getTDPFilteredRows, getTDPScore } from 'tdp_core/src/rest';
+import { FormElementType } from 'tdp_core';
+import { ResolveUtils } from 'tdp_core';
+import { RestBaseUtils } from 'tdp_core';
 import { postProcessScore, subTypeDesc } from './utils';
-import { toFilter } from 'tdp_core/src/lineup';
+import { LineUpUtils } from 'tdp_core';
 export class DependentGeneTable extends ARankingView {
     constructor(context, selection, parent, dataType, options = {}) {
         super(context, selection, parent, Object.assign({
@@ -41,16 +41,16 @@ export class DependentGeneTable extends ARankingView {
         return this.rebuild();
     }
     loadColumnDesc() {
-        return getTDPDesc(gene.db, gene.base);
+        return RestBaseUtils.getTDPDesc(gene.db, gene.base);
     }
     createSelectionAdapter() {
-        return single({
+        return AdapterUtils.single({
             createDesc: async (_id, id) => {
-                const ids = await resolveIds(this.selection.idtype, [_id], this.dataSource.idType);
+                const ids = await ResolveUtils.resolveIds(this.selection.idtype, [_id], this.dataSource.idType);
                 return subTypeDesc(this.dataSubType, _id, ids[0]);
             },
             loadData: async (_id, id) => {
-                const ids = await resolveIds(this.selection.idtype, [_id], this.dataSource.idType);
+                const ids = await ResolveUtils.resolveIds(this.selection.idtype, [_id], this.dataSource.idType);
                 return this.loadSelectionColumnData(ids[0]);
             }
         });
@@ -59,9 +59,9 @@ export class DependentGeneTable extends ARankingView {
         return gene.columns((c) => columns.find((d) => d.column === c));
     }
     loadRows() {
-        const filter = toFilter(this.getParameter('filter'));
-        filter.species = getSelectedSpecies();
-        return getTDPFilteredRows(gene.db, gene.base, {}, filter);
+        const filter = LineUpUtils.toFilter(this.getParameter('filter'));
+        filter.species = SpeciesUtils.getSelectedSpecies();
+        return RestBaseUtils.getTDPFilteredRows(gene.db, gene.base, {}, filter);
     }
     get dataSubType() {
         return this.getParameterData(ParameterFormIds.DATA_SUBTYPE);
@@ -72,10 +72,10 @@ export class DependentGeneTable extends ARankingView {
             table: this.dataType.tableName,
             attribute: subType.id,
             name,
-            species: getSelectedSpecies()
+            species: SpeciesUtils.getSelectedSpecies()
         };
-        const filter = toFilter(this.getParameter('filter'));
-        return getTDPScore(gene.db, `gene_${this.dataSource.base}_single_score`, param, filter).then(postProcessScore(subType));
+        const filter = LineUpUtils.toFilter(this.getParameter('filter'));
+        return RestBaseUtils.getTDPScore(gene.db, `gene_${this.dataSource.base}_single_score`, param, filter).then(postProcessScore(subType));
     }
 }
 export function createExpressionDependentGeneTable(context, selection, parent, options) {

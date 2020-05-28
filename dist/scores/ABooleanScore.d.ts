@@ -1,4 +1,4 @@
-import { IScore, IScoreRow } from 'tdp_core/src/extensions';
+import { IScore, IScoreRow } from 'tdp_core';
 import { IDataSourceConfig } from '../config';
 export interface IBooleanScoreParams {
     [key: string]: any;
@@ -13,13 +13,13 @@ export declare abstract class ABooleanScore implements IScore<number> {
      * defines the IDType of which score values are returned. A score row is a pair of id and its score, e.g. {id: 'EGFR', score: 100}
      * @type {IDType}
      */
-    get idType(): import("phovea_core/src/idtype").IDType;
+    get idType(): import("phovea_core").IDType;
     constructor(params: IBooleanScoreParams, dataSource: IDataSourceConfig);
     /**
      * creates the column description used within LineUp to create the oclumn
      * @returns {IAdditionalColumnDesc}
      */
-    createDesc(): import("tdp_core/src/lineup").IAdditionalColumnDesc;
+    createDesc(): import("tdp_core").IAdditionalColumnDesc;
     /**
      * computes the actual scores and returns a Promise of IScoreRow rows
      * @returns {Promise<IScoreRow<number>[]>}

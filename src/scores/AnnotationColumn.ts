@@ -3,7 +3,7 @@ import {FormDialog} from 'tdp_core';
 import {ABooleanScore, IBooleanScoreParams} from './ABooleanScore';
 import {IDataSourceConfig} from '../config';
 import {FormElementType} from 'tdp_core';
-import {getAPIJSON} from 'phovea_core';
+import {AppContext} from 'phovea_core';
 import {IPluginDesc} from 'phovea_core';
 import {selectDataSources} from './utils';
 import {chooseDataSource} from '../config';
@@ -51,7 +51,7 @@ export async function createAnnotationColumn(pluginDesc: IPluginDesc) {
 
   const dataSource = chooseDataSource(pluginDesc);
 
-  const data = await getAPIJSON(`/tdp/db/publicdb/${dataSource.base}_panel`);
+  const data = await AppContext.getInstance().getAPIJSON(`/tdp/db/publicdb/${dataSource.base}_panel`);
   const optionsData = data.map((item) => ({ name: item.id, value: item.id }));
 
   dialog.append({
