@@ -7,6 +7,7 @@ from .query_common import create_common
 from .query_gene import create_gene
 from .query_sample import create_sample
 from .query_score import create_gene_sample_score
+from tdp_core.dbview import DBViewBuilder, inject_where, limit_offset
 
 __author__ = 'Samuel Gratzl'
 
