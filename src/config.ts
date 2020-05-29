@@ -427,7 +427,7 @@ export const prismDrug: IDataTypeConfig = {
   ]
 };
 
-export const drug = {
+export const drug: IDataSourceConfig = {
   idType: 'Drug',
   name: 'Drug',
   db: 'publicdb',
@@ -435,6 +435,7 @@ export const drug = {
   tableName: 'tdp_drug',
   entityName: 'drugid',
   base: 'drug',
+  columns: () => []
 };
 
 
