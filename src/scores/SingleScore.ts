@@ -17,6 +17,7 @@ import {FormDialog} from 'tdp_core/src/form';
 import ASingleScore from './ASingleScore';
 import {IParams} from 'tdp_core/src/rest';
 import {IForm} from 'tdp_core/src/form/interfaces';
+import '../styles/select2_overrides.scss';
 
 interface ISingleScoreParam {
   name: {id: string, text: string};
@@ -183,5 +184,6 @@ export function createSinglePrismDrugScoreDialog(pluginDesc: IPluginDesc, extra:
 }
 
 export function createSinglePrismDrugScore(data: ISingleScoreParam, pluginDesc: IPluginDesc): IScore<number> | IScore<any>[] {
+  console.log(data)
   return initializeScore(data, pluginDesc, (parameter, dataSource, oppositeDataSource) => new SinglePrimDrugScore(parameter, dataSource, oppositeDataSource));
 }
