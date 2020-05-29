@@ -6,7 +6,7 @@ import {getSelectedSpecies} from 'tdp_gene/src/common';
 import {FORM_EXPRESSION_SUBTYPE_ID, FORM_COPYNUMBER_SUBTYPE_ID} from 'tdp_gene/src/forms';
 import {FormElementType, IFormElement, IFormSelectOption} from 'tdp_core/src/form';
 import {cachedLazy} from 'tdp_core/src/cached';
-import {gene, IDataSourceConfig, tissue, cellline, dataSources, dataTypes, dataSubtypes, depletion} from './config';
+import {gene, IDataSourceConfig, tissue, cellline, dataSources, dataTypes, dataSubtypes, depletion, drug, prismDrug} from './config';
 import {listNamedSetsAsOptions} from 'tdp_core/src/storage';
 import {previewFilterHint} from 'tdp_core/src/lineup';
 import {getTDPData, getTDPLookupUrl, IServerColumn} from 'tdp_core/src/rest';
