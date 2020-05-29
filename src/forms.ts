@@ -103,7 +103,7 @@ function generateNameLookup(d: IDataSourceConfig, field: string) {
 
 export const FORM_TISSUE_NAME = generateNameLookup(tissue, ParameterFormIds.TISSUE_NAME);
 export const FORM_CELLLINE_NAME = generateNameLookup(cellline, ParameterFormIds.CELLLINE_NAME);
-export const FORM_DRUG_NAME = generateNameLookup(drug as any, ParameterFormIds.DRUG_NAME);
+export const FORM_DRUG_NAME = generateNameLookup(drug, ParameterFormIds.DRUG_NAME);
 
 //see also tdp_bi_bioinfodb/src/index.ts -> the session will be preset there
 
