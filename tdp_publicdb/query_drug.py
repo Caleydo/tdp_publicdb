@@ -26,9 +26,9 @@ def create_drug_sample_score(views, drug, sample, data, prefix='', callback=None
           INNER JOIN {s.table} s ON d.{s.id} = s.{s.id}
           INNER JOIN {g.table} g ON d.{g.id} = g.{g.id}
           WHERE g.species = :species AND d.{s.id} = :name""".format(g=drug, s=sample, d=data)) \
-      .replace('attribute', data.attributes) \
-      .call(inject_where) \
-      .arg('name') \
-      .call(callback) \
-      .filters(drug.columns) \
-      .build()
+        .replace('attribute', data.attributes) \
+        .call(inject_where) \
+        .arg('name') \
+        .call(callback) \
+        .filters(drug.columns) \
+        .build()
