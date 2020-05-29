@@ -474,7 +474,6 @@ export function resolveDataTypes(dataTypeId: string, dataSubTypeId: string) {
       dataType = prismDrug;
       break;
   }
-  console.log(dataType, dataTypeId)
   const dataSubType = dataType.dataSubtypes.find((element) => element.id === dataSubTypeId);
   return {
     dataType,
