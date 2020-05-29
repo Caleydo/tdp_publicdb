@@ -1,6 +1,6 @@
 import {getSelectedSpecies} from 'tdp_gene/src/common';
 import {highlightMatch, ISelect3Item} from 'tdp_core/src/form/elements/Select3';
-import {gene, IDataSourceConfig} from './config';
+import {gene, IDataSourceConfig, drug} from './config';
 import {getTDPData, getTDPLookup} from 'tdp_core/src/rest';
 import {ICommonDBConfig} from 'tdp_gene/src/views/ACommonList';
 
@@ -62,7 +62,7 @@ export function formatDrug(item: ISelect3Item<IDrugData>, node: HTMLElement, mod
     <span class="drug-moa">Moa: ${item.text.replace(currentSearchQuery!, highlightMatch)}</span><br>
     <span class="drug-target">Target: ${item.data.target.replace(currentSearchQuery!, highlightMatch)}</span>`;
   }
-  return item.text;
+  return item.id;
 }
 
 /**

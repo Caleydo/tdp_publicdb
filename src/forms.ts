@@ -10,7 +10,7 @@ import {gene, IDataSourceConfig, tissue, cellline, dataSources, dataTypes, dataS
 import {listNamedSetsAsOptions} from 'tdp_core/src/storage';
 import {previewFilterHint} from 'tdp_core/src/lineup';
 import {getTDPData, getTDPLookupUrl, IServerColumn} from 'tdp_core/src/rest';
-import {format, formatGene, search, searchGene, validate, validateGene} from './utils';
+import {format, formatGene, search, searchGene, validate, validateGene, searchDrug, validateDrug, formatDrug} from './utils';
 
 /**
  * List of ids for parameter form elements
@@ -120,7 +120,6 @@ function generateNameLookup(d: IDataSourceConfig, field: string) {
 
 export const FORM_TISSUE_NAME = generateNameLookup(tissue, ParameterFormIds.TISSUE_NAME);
 export const FORM_CELLLINE_NAME = generateNameLookup(cellline, ParameterFormIds.CELLLINE_NAME);
-export const FORM_DRUG_NAME = generateNameLookup(drug, ParameterFormIds.DRUG_NAME);
 
 //see also tdp_bi_bioinfodb/src/index.ts -> the session will be preset there
 

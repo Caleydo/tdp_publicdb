@@ -184,6 +184,5 @@ export function createSinglePrismDrugScoreDialog(pluginDesc: IPluginDesc, extra:
 }
 
 export function createSinglePrismDrugScore(data: ISingleScoreParam, pluginDesc: IPluginDesc): IScore<number> | IScore<any>[] {
-  console.log(data)
   return initializeScore(data, pluginDesc, (parameter, dataSource, oppositeDataSource) => new SinglePrimDrugScore(parameter, dataSource, oppositeDataSource));
 }
