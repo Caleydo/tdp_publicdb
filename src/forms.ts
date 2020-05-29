@@ -80,6 +80,23 @@ export const FORM_GENE_NAME = {
   useSession: true
 };
 
+export const FORM_DRUG_NAME = {
+  type: FormElementType.SELECT3,
+  label: 'Drug ID',
+  id: ParameterFormIds.DRUG_NAME,
+  attributes: {
+    style: 'width:100%'
+  },
+  required: true,
+  options: {
+    optionsData: [],
+    search: searchDrug,
+    validate:validateDrug,
+    format: formatDrug
+  },
+  useSession: true
+};
+
 function generateNameLookup(d: IDataSourceConfig, field: string) {
   return {
     type: FormElementType.SELECT3,

@@ -24,6 +24,60 @@ export function searchGene(query: string, page: number, pageSize: number): Promi
   });
 }
 
+interface IDrugData extends IdTextPair {
+  target?: string;
+}
+
+/**
+ * Search and autocomplete of the input string for Select3
+ *
+ * @param {string} query An array of gene symbols
+ * @param {number} page Server-side pagination page number
+ * @param {number} pageSize Server-side pagination page size
+ * @returns {Promise<{more: boolean; items: Readonly<IDrugData>[]}>} Select3 conformant data structure.
+ */
+export function searchDrug(query: string, page: number, pageSize: number): Promise<{more: boolean, items: Readonly<IDrugData>[]}> {
+  return getTDPLookup(drug.db, `${drug.base}_drug_items`, {
+    column: 'drugid',
+    species: getSelectedSpecies(),
+    query,
+    page,
+    limit: pageSize
+  });
+}
+
+/**
+ * Formatting of drugs within Select3 Searchbox.
+ *
+ * @param {ISelect3Item<IDrugData>} item The single drug id-text-target trio.
+ * @param {HTMLElement} node The HTML Element in the DOM.
+ * @param {"result" | "selection"} mode The search result items within the dropdown or the selected items inside the search input field.
+ * @param {RegExp} currentSearchQuery The actual search query input.
+ * @returns {string} The string how the drug is actually rendered.
+ */
+export function formatDrug(item: ISelect3Item<IDrugData>, node: HTMLElement, mode: 'result' | 'selection', currentSearchQuery?: RegExp) {
+  if (mode === 'result') {
+    //highlight match
+    return `${item.id.replace(currentSearchQuery!, highlightMatch)}<br>
+    <span class="drug-moa">Moa: ${item.text.replace(currentSearchQuery!, highlightMatch)}</span><br>
+    <span class="drug-target">Target: ${item.data.target.replace(currentSearchQuery!, highlightMatch)}</span>`;
+  }
+  return item.text;
+}
+
+/**
+ * Validation of a query input via paste or filedrop against the database for Select3
+ *
+ * @param {string[]} query An array of drug drugids
+ * @returns {Promise<Readonly<IDrugData>[]>} Return the validated drug drugids.
+ */
+export function validateDrug(query: string[]): Promise<Readonly<IDrugData>[]> {
+  return getTDPData(drug.db, `${drug.base}_drug_items_verify/filter`, {
+    column: 'drugid',
+    filter_drug: query,
+  });
+}
+
 /**
  * Validation of a query input via paste or filedrop against the database for Select3
  *
