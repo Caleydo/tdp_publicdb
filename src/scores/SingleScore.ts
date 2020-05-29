@@ -91,7 +91,7 @@ export function createScoreDialog(pluginDesc: IPluginDesc, extra: any, formDesc:
     case drug:
       formDesc.unshift(enableMultiple(FORM_DRUG_NAME));
       formDesc.push(FORCE_COMPUTE_ALL_CELLLINE);
-      break;  
+      break;
   }
 
   if (typeof countHint === 'number' && countHint > MAX_FILTER_SCORE_ROWS_BEFORE_ALL) {
@@ -134,7 +134,7 @@ export function createScoreDialog(pluginDesc: IPluginDesc, extra: any, formDesc:
       case drug:
         data.name = data[ParameterFormIds.DRUG_NAME];
         delete data[ParameterFormIds.DRUG_NAME];
-        break;   
+        break;
     }
     return data;
   });
@@ -179,7 +179,6 @@ export function createSingleDepletionScore(data: ISingleScoreParam, pluginDesc: 
 
 
 export function createSinglePrismDrugScoreDialog(pluginDesc: IPluginDesc, extra: any, countHint?: number) {
-  console.log(FORM_SINGLE_SCORE_DRUG.slice())
   return createScoreDialog(pluginDesc, extra, FORM_SINGLE_SCORE_DRUG.slice(), countHint);
 }
 
