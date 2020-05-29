@@ -8,7 +8,7 @@ from .query_gene import create_gene
 from .query_sample import create_sample
 from .query_score import create_gene_sample_score
 from tdp_core.dbview import DBViewBuilder, inject_where, limit_offset
-from .query_drug import create_common_drug, create_drug_sample_score
+from .query_drug import create_drug, create_drug_sample_score
 
 __author__ = 'Samuel Gratzl'
 
@@ -23,7 +23,7 @@ create_common(views, cellline)
 create_sample(views, cellline, gene, cellline_data)
 
 # drug
-create_common_drug(views, drug)
+create_drug(views, drug)
 create_drug_sample_score(views, cellline, drug, cellline_drug, 'drug_')
 
 # scores cellline x gene
