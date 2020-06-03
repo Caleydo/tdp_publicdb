@@ -10,13 +10,13 @@ export declare abstract class ACombinedDependentTable extends ARankingView {
     constructor(context: IViewContext, selection: ISelection, parent: HTMLElement, dataType: IDataTypeConfig[], options?: {});
     protected abstract get oppositeDataSource(): IDataSourceConfig;
     get itemIDType(): import("phovea_core").IDType;
-    protected getParameterFormDescs(): import("tdp_core/dist/form/interfaces").IFormElementDesc[];
+    protected getParameterFormDescs(): import("tdp_core").IFormElementDesc[];
     private get subTypes();
-    protected createSelectionAdapter(): import("tdp_core/dist/lineup/selection/ISelectionAdapter").ISelectionAdapter;
+    protected createSelectionAdapter(): import("tdp_core").ISelectionAdapter;
     protected parameterChanged(name: string): void;
-    protected loadColumnDesc(): Promise<Readonly<import("tdp_core/dist/base/rest").IDatabaseViewDesc>>;
+    protected loadColumnDesc(): Promise<Readonly<import("tdp_core").IDatabaseViewDesc>>;
     protected getColumnDescs(columns: IServerColumn[]): IAdditionalColumnDesc[];
-    protected loadRows(): Promise<import("tdp_core/dist/base/rest").IRow[]>;
+    protected loadRows(): Promise<import("tdp_core").IRow[]>;
     protected getSelectionColumnLabel(name: string): Promise<string> | string;
     protected getSelectionColumnDesc(_id: number, name: string): Promise<IAdditionalColumnDesc[]>;
     protected loadSelectionColumnData(name: string, descs: IAdditionalColumnDesc[]): Promise<IScoreRow<any>[]>[];

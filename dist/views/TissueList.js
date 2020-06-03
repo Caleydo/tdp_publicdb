@@ -1,5 +1,5 @@
 import { ACommonList } from 'tdp_gene';
-import { tissue } from '../config';
+import { tissue } from '../common/config';
 export class TissueList extends ACommonList {
     constructor(context, selection, parent, options) {
         super(context, selection, parent, tissue, Object.assign({

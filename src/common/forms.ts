@@ -10,7 +10,7 @@ import {gene, IDataSourceConfig, tissue, cellline, dataSources, dataTypes, dataS
 import {RestStorageUtils} from 'tdp_core';
 import {LineupUtils} from 'tdp_core';
 import {RestBaseUtils, IServerColumn} from 'tdp_core';
-import {format, formatGene, search, searchGene, validate, validateGene} from '../utils';
+import {format, formatGene, search, searchGene, validate, validateGene} from './utils';
 
 /**
  * List of ids for parameter form elements

@@ -12,7 +12,7 @@ import {IAdditionalColumnDesc} from 'tdp_core';
 import {postProcessScore, subTypeDesc} from './utils';
 import {IScoreRow} from 'tdp_core';
 import {IDTypeManager} from 'phovea_core';
-import {LineUpUtils, AdapterUtils} from 'tdp_core';
+import {LineupUtils, AdapterUtils} from 'tdp_core';
 
 
 export abstract class ACombinedDependentTable extends ARankingView {
@@ -90,7 +90,7 @@ export abstract class ACombinedDependentTable extends ARankingView {
   }
 
   protected loadRows() {
-    const filter = LineUpUtils.toFilter(this.getParameter('filter'));
+    const filter = LineupUtils.toFilter(this.getParameter('filter'));
     filter.species = SpeciesUtils.getSelectedSpecies();
     return RestBaseUtils.getTDPFilteredRows(this.dataSource.db, this.oppositeDataSource.tableName, {}, filter);
   }
@@ -109,7 +109,7 @@ export abstract class ACombinedDependentTable extends ARankingView {
   }
 
   protected loadSelectionColumnData(name: string, descs: IAdditionalColumnDesc[]): Promise<IScoreRow<any>[]>[] {
-    const filter = LineUpUtils.toFilter(this.getParameter('filter'));
+    const filter = LineupUtils.toFilter(this.getParameter('filter'));
     const param: IParams = {
       name,
       species: SpeciesUtils.getSelectedSpecies()

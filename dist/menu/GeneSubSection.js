@@ -1,10 +1,10 @@
 /**
  * Created by Holger Stitz on 10.08.2016.
  */
-import { gene } from '../config';
+import { gene } from '../common/config';
 import { BaseUtils } from 'phovea_core';
 import { ACommonSubSection } from 'tdp_gene';
-import { formatGene, searchGene, validateGene } from '../utils';
+import { formatGene, searchGene, validateGene } from '../common/utils';
 /**
  * Entry point list from all species and LineUp named sets (aka stored LineUp sessions)
  */

@@ -6,7 +6,7 @@ import { ARankingView } from 'tdp_core';
 import { RestBaseUtils } from 'tdp_core';
 import { postProcessScore, subTypeDesc } from './utils';
 import { IDTypeManager } from 'phovea_core';
-import { LineUpUtils, AdapterUtils } from 'tdp_core';
+import { LineupUtils, AdapterUtils } from 'tdp_core';
 export class ACombinedDependentTable extends ARankingView {
     constructor(context, selection, parent, dataType, options = {}) {
         super(context, selection, parent, Object.assign(options, {
@@ -66,7 +66,7 @@ export class ACombinedDependentTable extends ARankingView {
         return this.oppositeDataSource.columns((c) => columns.find((d) => d.column === c));
     }
     loadRows() {
-        const filter = LineUpUtils.toFilter(this.getParameter('filter'));
+        const filter = LineupUtils.toFilter(this.getParameter('filter'));
         filter.species = SpeciesUtils.getSelectedSpecies();
         return RestBaseUtils.getTDPFilteredRows(this.dataSource.db, this.oppositeDataSource.tableName, {}, filter);
     }
@@ -82,7 +82,7 @@ export class ACombinedDependentTable extends ARankingView {
         }));
     }
     loadSelectionColumnData(name, descs) {
-        const filter = LineUpUtils.toFilter(this.getParameter('filter'));
+        const filter = LineupUtils.toFilter(this.getParameter('filter'));
         const param = {
             name,
             species: SpeciesUtils.getSelectedSpecies()

@@ -11,7 +11,7 @@ import {ParameterFormIds, FORM_TISSUE_OR_CELLLINE_FILTER, FORM_DATA_SOURCE, FORM
 import {IDTypeManager} from 'phovea_core';
 import {loadFirstName} from './utils';
 import {RestBaseUtils, IParams} from 'tdp_core';
-import {LineUpUtils} from 'tdp_core';
+import {LineupUtils} from 'tdp_core';
 
 export class ExpressionVsCopyNumber extends AExpressionVsCopyNumber {
 
@@ -43,7 +43,7 @@ export class ExpressionVsCopyNumber extends AExpressionVsCopyNumber {
     if (color) {
       param.color = color;
     }
-    return RestBaseUtils.getTDPData(ds.db, `${ds.base}_expression_vs_copynumber${!color ? '_plain': ''}/filter`, RestBaseUtils.mergeParamAndFilters(param, LineUpUtils.toFilter(this.getParameter('filter'))));
+    return RestBaseUtils.getTDPData(ds.db, `${ds.base}_expression_vs_copynumber${!color ? '_plain': ''}/filter`, RestBaseUtils.mergeParamAndFilters(param, LineupUtils.toFilter(this.getParameter('filter'))));
   }
 
   protected getExpressionValues() {

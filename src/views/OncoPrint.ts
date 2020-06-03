@@ -11,7 +11,7 @@ import {loadFirstName} from './utils';
 import {IDataSourceConfig} from '../common/config';
 import {IDTypeManager} from 'phovea_core';
 import {RestBaseUtils, IParams} from 'tdp_core';
-import {LineUpUtils} from 'tdp_core';
+import {LineupUtils} from 'tdp_core';
 
 export class OncoPrint extends AOncoPrint {
 
@@ -33,7 +33,7 @@ export class OncoPrint extends AOncoPrint {
     const param: IParams = {
       species: SpeciesUtils.getSelectedSpecies()
     };
-    const rows = await RestBaseUtils.getTDPFilteredRows(ds.db, `${ds.base}_onco_print_sample_list`, param, LineUpUtils.toFilter(this.getParameter('filter')));
+    const rows = await RestBaseUtils.getTDPFilteredRows(ds.db, `${ds.base}_onco_print_sample_list`, param, LineupUtils.toFilter(this.getParameter('filter')));
     return rows.map((r) => ({name: r.id, id: r._id}));
   }
 
@@ -48,7 +48,7 @@ export class OncoPrint extends AOncoPrint {
       ensg,
       species: SpeciesUtils.getSelectedSpecies()
     };
-    return RestBaseUtils.getTDPData(ds.db, `${ds.base}_onco_print`, RestBaseUtils.mergeParamAndFilters(param, LineUpUtils.toFilter(this.getParameter('filter'))));
+    return RestBaseUtils.getTDPData(ds.db, `${ds.base}_onco_print`, RestBaseUtils.mergeParamAndFilters(param, LineupUtils.toFilter(this.getParameter('filter'))));
   }
 
   protected loadFirstName(ensg: string): Promise<string> {

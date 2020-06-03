@@ -1,5 +1,5 @@
 import { ACommonList } from 'tdp_gene';
-import { cellline } from '../config';
+import { cellline } from '../common/config';
 export class CelllineList extends ACommonList {
     constructor(context, selection, parent, options) {
         super(context, selection, parent, cellline, Object.assign({

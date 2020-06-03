@@ -2,11 +2,11 @@
  * Created by Holger Stitz on 10.08.2016.
  */
 
-import {chooseDataSource} from '../config';
+import {chooseDataSource} from '../common/config';
 import {ACommonSubSection} from 'tdp_gene';
 import {IStartMenuSubSectionDesc} from 'tdp_gene';
 import {IStartMenuSectionOptions} from 'ordino/src/extensions';
-import {format, search, validate} from '../utils';
+import {format, search, validate} from '../common/utils';
 import {BaseUtils} from 'phovea_core';
 
 /**

@@ -9,12 +9,12 @@ export declare class DependentGeneTable extends ARankingView {
     private readonly dataType;
     private readonly dataSource;
     constructor(context: IViewContext, selection: ISelection, parent: HTMLElement, dataType: IDataTypeConfig, options?: {});
-    protected getParameterFormDescs(): import("tdp_core/dist/form/interfaces").IFormElementDesc[];
+    protected getParameterFormDescs(): import("tdp_core").IFormElementDesc[];
     protected parameterChanged(name: string): void;
-    protected loadColumnDesc(): Promise<Readonly<import("tdp_core/dist/base/rest").IDatabaseViewDesc>>;
-    protected createSelectionAdapter(): import("tdp_core/dist/lineup/selection/ISelectionAdapter").ISelectionAdapter;
-    protected getColumnDescs(columns: IServerColumn[]): import("tdp_core/dist/base/interfaces").IAdditionalColumnDesc[];
-    protected loadRows(): Promise<import("tdp_core/dist/base/rest").IRow[]>;
+    protected loadColumnDesc(): Promise<Readonly<import("tdp_core").IDatabaseViewDesc>>;
+    protected createSelectionAdapter(): import("tdp_core").ISelectionAdapter;
+    protected getColumnDescs(columns: IServerColumn[]): import("tdp_core").IAdditionalColumnDesc[];
+    protected loadRows(): Promise<import("tdp_core").IRow[]>;
     private get dataSubType();
     private loadSelectionColumnData;
 }

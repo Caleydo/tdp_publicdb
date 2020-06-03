@@ -17,4 +17,4 @@ export declare function selectDataSources(pluginDesc: IPluginDesc): {
     primary: IDataSourceConfig;
     opposite: IDataSourceConfig;
 };
-export declare function toFilterString(filter: IFormMultiMap, ds: IDataSourceConfig): any;
+export declare function toFilterString(filter: IFormMultiMap, ds: IDataSourceConfig): string;

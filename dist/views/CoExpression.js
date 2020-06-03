@@ -9,7 +9,7 @@ import { ParameterFormIds, FORM_TISSUE_OR_CELLLINE_FILTER, FORM_DATA_SOURCE, FOR
 import { loadGeneList, loadFirstName } from './utils';
 import { IDTypeManager } from 'phovea_core';
 import { RestBaseUtils } from 'tdp_core';
-import { LineUpUtils } from 'tdp_core';
+import { LineupUtils } from 'tdp_core';
 export class CoExpression extends ACoExpression {
     getParameterFormDescs() {
         const base = super.getParameterFormDescs();
@@ -47,7 +47,7 @@ export class CoExpression extends ACoExpression {
         if (color) {
             param.color = color;
         }
-        return RestBaseUtils.getTDPData(ds.db, `${ds.base}_co_expression${!color ? '_plain' : ''}/filter`, RestBaseUtils.mergeParamAndFilters(param, LineUpUtils.toFilter(this.getParameter('filter'))));
+        return RestBaseUtils.getTDPData(ds.db, `${ds.base}_co_expression${!color ? '_plain' : ''}/filter`, RestBaseUtils.mergeParamAndFilters(param, LineupUtils.toFilter(this.getParameter('filter'))));
     }
     loadFirstName(ensg) {
         return loadFirstName(ensg);

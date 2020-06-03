@@ -8,7 +8,7 @@ import { AScore } from './AScore';
 import { FieldUtils } from 'tdp_gene';
 import { IDTypeManager } from 'phovea_core';
 import { RestBaseUtils } from 'tdp_core';
-import { LineUpUtils } from 'tdp_core';
+import { LineupUtils } from 'tdp_core';
 export class AAggregatedScore extends AScore {
     constructor(parameter, dataSource, oppositeDataSource) {
         super(parameter);
@@ -38,7 +38,7 @@ export class AAggregatedScore extends AScore {
         };
         const maxDirectRows = typeof this.parameter.maxDirectFilterRows === 'number' ? this.parameter.maxDirectFilterRows : MAX_FILTER_SCORE_ROWS_BEFORE_ALL;
         FieldUtils.limitScoreRows(param, ids, idtype, this.dataSource.entityName, maxDirectRows, namedSet);
-        const filters = Object.assign(compatibilityFilter(LineUpUtils.toFilter(this.parameter.filter), this.oppositeDataSource.entityName), this.createFilter());
+        const filters = Object.assign(compatibilityFilter(LineupUtils.toFilter(this.parameter.filter), this.oppositeDataSource.entityName), this.createFilter());
         let rows = await RestBaseUtils.getTDPScore(this.dataSource.db, `${this.getViewPrefix()}${this.dataSource.base}_${this.oppositeDataSource.base}_score`, param, filters);
         if (this.parameter.aggregation === 'numbers') {
             // we got a dict to consider missing values property

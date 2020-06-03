@@ -1,9 +1,10 @@
 /**
  * Created by sam on 06.03.2017.
  */
+/// <reference types="select2" />
 import { FormElementType } from 'tdp_core';
 import { IDataSourceConfig } from './config';
-import { format, formatGene, searchGene, validateGene } from '../utils';
+import { format, formatGene, searchGene, validateGene } from './utils';
 /**
  * List of ids for parameter form elements
  * Reuse this ids and activate the `useSession` option for form elements to have the same selectedIndex between different views
@@ -65,8 +66,11 @@ export declare const FORM_TISSUE_NAME: {
     required: boolean;
     options: {
         optionsData: any[];
-        search: (query: any, page: any, pageSize: any) => any;
-        validate: (query: any) => any;
+        search: (query: any, page: any, pageSize: any) => Promise<{
+            more: boolean;
+            items: Readonly<IdTextPair>[];
+        }>;
+        validate: (query: any) => Promise<Readonly<IdTextPair>[]>;
         format: typeof format;
         tokenSeparators: RegExp;
         defaultTokenSeparator: string;
@@ -83,8 +87,11 @@ export declare const FORM_CELLLINE_NAME: {
     required: boolean;
     options: {
         optionsData: any[];
-        search: (query: any, page: any, pageSize: any) => any;
-        validate: (query: any) => any;
+        search: (query: any, page: any, pageSize: any) => Promise<{
+            more: boolean;
+            items: Readonly<IdTextPair>[];
+        }>;
+        validate: (query: any) => Promise<Readonly<IdTextPair>[]>;
         format: typeof format;
         tokenSeparators: RegExp;
         defaultTokenSeparator: string;
@@ -100,7 +107,7 @@ export declare const FORM_GENE_FILTER: {
         sessionKeySuffix: string;
         defaultSelection: boolean;
         uniqueKeys: boolean;
-        badgeProvider: any;
+        badgeProvider: (rows: import("tdp_core").IFormRow[]) => Promise<string>;
         entries: ({
             name: string;
             value: string;
@@ -168,7 +175,7 @@ export declare const FORM_TISSUE_FILTER: {
     useSession: boolean;
     options: {
         sessionKeySuffix: string;
-        badgeProvider: any;
+        badgeProvider: (rows: import("tdp_core").IFormRow[]) => Promise<string>;
         defaultSelection: boolean;
         uniqueKeys: boolean;
         entries: any[];
@@ -181,7 +188,7 @@ export declare const FORM_CELLLINE_FILTER: {
     useSession: boolean;
     options: {
         sessionKeySuffix: string;
-        badgeProvider: any;
+        badgeProvider: (rows: import("tdp_core").IFormRow[]) => Promise<string>;
         defaultSelection: boolean;
         uniqueKeys: boolean;
         entries: any[];

@@ -19,7 +19,7 @@ import {FormElementType} from 'tdp_core';
 import {ISelection, IViewContext, ResolveUtils} from 'tdp_core';
 import {RestBaseUtils, IServerColumn} from 'tdp_core';
 import {postProcessScore, subTypeDesc} from './utils';
-import {LineUpUtils} from 'tdp_core';
+import {LineupUtils} from 'tdp_core';
 
 export class DependentGeneTable extends ARankingView {
   private readonly dataSource: IDataSourceConfig;
@@ -78,7 +78,7 @@ export class DependentGeneTable extends ARankingView {
   }
 
   protected loadRows() {
-    const filter = LineUpUtils.toFilter(this.getParameter('filter'));
+    const filter = LineupUtils.toFilter(this.getParameter('filter'));
     filter.species = SpeciesUtils.getSelectedSpecies();
     return RestBaseUtils.getTDPFilteredRows(gene.db, gene.base, {}, filter);
   }
@@ -95,7 +95,7 @@ export class DependentGeneTable extends ARankingView {
       name,
       species: SpeciesUtils.getSelectedSpecies()
     };
-    const filter = LineUpUtils.toFilter(this.getParameter('filter'));
+    const filter = LineupUtils.toFilter(this.getParameter('filter'));
     return RestBaseUtils.getTDPScore(gene.db, `gene_${this.dataSource.base}_single_score`, param, filter).then(postProcessScore(subType));
   }
 }

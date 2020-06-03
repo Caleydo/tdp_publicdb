@@ -12,7 +12,7 @@ import {FieldUtils} from 'tdp_gene';
 import {INamedSet} from 'tdp_core';
 import {IDTypeManager} from 'phovea_core';
 import {RestBaseUtils, IParams} from 'tdp_core';
-import {LineUpUtils} from 'tdp_core';
+import {LineupUtils} from 'tdp_core';
 import {IDType} from 'phovea_core';
 
 
@@ -52,7 +52,7 @@ export abstract class AAggregatedScore extends AScore implements IScore<number> 
     };
     const maxDirectRows = typeof this.parameter.maxDirectFilterRows === 'number' ? this.parameter.maxDirectFilterRows : MAX_FILTER_SCORE_ROWS_BEFORE_ALL;
     FieldUtils.limitScoreRows(param, ids, idtype, this.dataSource.entityName, maxDirectRows, namedSet);
-    const filters = Object.assign(compatibilityFilter(LineUpUtils.toFilter(this.parameter.filter), this.oppositeDataSource.entityName), this.createFilter());
+    const filters = Object.assign(compatibilityFilter(LineupUtils.toFilter(this.parameter.filter), this.oppositeDataSource.entityName), this.createFilter());
 
     let rows: IScoreRow<any>[] = await RestBaseUtils.getTDPScore(this.dataSource.db, `${this.getViewPrefix()}${this.dataSource.base}_${this.oppositeDataSource.base}_score`, param, filters);
     if (this.parameter.aggregation === 'numbers') {

@@ -11,7 +11,7 @@ import {loadGeneList, loadFirstName} from './utils';
 import {IDTypeManager} from 'phovea_core';
 import {Range} from 'phovea_core';
 import {RestBaseUtils, IParams} from 'tdp_core';
-import {LineUpUtils} from 'tdp_core';
+import {LineupUtils} from 'tdp_core';
 
 
 export class CoExpression extends ACoExpression {
@@ -56,7 +56,7 @@ export class CoExpression extends ACoExpression {
     if (color) {
       param.color = color;
     }
-    return RestBaseUtils.getTDPData(ds.db, `${ds.base}_co_expression${!color ? '_plain': ''}/filter`, RestBaseUtils.mergeParamAndFilters(param, LineUpUtils.toFilter(this.getParameter('filter'))));
+    return RestBaseUtils.getTDPData(ds.db, `${ds.base}_co_expression${!color ? '_plain': ''}/filter`, RestBaseUtils.mergeParamAndFilters(param, LineupUtils.toFilter(this.getParameter('filter'))));
   }
 
   loadFirstName(ensg: string) {

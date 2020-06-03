@@ -1,9 +1,9 @@
 /**
  * Created by Holger Stitz on 10.08.2016.
  */
-import { chooseDataSource } from '../config';
+import { chooseDataSource } from '../common/config';
 import { ACommonSubSection } from 'tdp_gene';
-import { format, search, validate } from '../utils';
+import { format, search, validate } from '../common/utils';
 import { BaseUtils } from 'phovea_core';
 /**
  * Entry point list from all species and LineUp named sets (aka stored LineUp sessions)

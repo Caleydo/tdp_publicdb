@@ -2,7 +2,7 @@
 
 import {ACommonList, IACommonListOptions} from 'tdp_gene';
 import {ISelection, IViewContext} from 'tdp_core';
-import {cellline} from '../config';
+import {cellline} from '../common/config';
 import {IServerColumn} from 'tdp_core';
 
 export class CelllineList extends ACommonList {

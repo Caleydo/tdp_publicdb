@@ -9,7 +9,7 @@ import { FormElementType } from 'tdp_core';
 import { RestBaseUtils } from 'tdp_core';
 import { IDTypeManager } from 'phovea_core';
 import { loadFirstName, postProcessScore, subTypeDesc } from './utils';
-import { LineUpUtils } from 'tdp_core';
+import { LineupUtils } from 'tdp_core';
 export class DependentSampleTable extends ARankingView {
     constructor(context, selection, parent, dataType, options = {}) {
         super(context, selection, parent, Object.assign({
@@ -63,7 +63,7 @@ export class DependentSampleTable extends ARankingView {
     }
     loadRows() {
         const dataSource = this.dataSource;
-        const filter = LineUpUtils.toFilter(this.getParameter('filter'));
+        const filter = LineupUtils.toFilter(this.getParameter('filter'));
         filter.species = SpeciesUtils.getSelectedSpecies();
         return RestBaseUtils.getTDPFilteredRows(dataSource.db, dataSource.base, {}, filter);
     }
@@ -76,7 +76,7 @@ export class DependentSampleTable extends ARankingView {
             name,
             species: SpeciesUtils.getSelectedSpecies()
         };
-        const filter = LineUpUtils.toFilter(this.getParameter('filter'));
+        const filter = LineupUtils.toFilter(this.getParameter('filter'));
         return RestBaseUtils.getTDPScore(dataSource.db, `${dataSource.base}_gene_single_score`, param, filter).then(postProcessScore(subType));
     }
 }

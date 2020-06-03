@@ -8,7 +8,7 @@ import { AScore } from './AScore';
 import { FieldUtils } from 'tdp_gene';
 import { IDTypeManager } from 'phovea_core';
 import { RestBaseUtils } from 'tdp_core';
-import { LineUpUtils } from 'tdp_core';
+import { LineupUtils } from 'tdp_core';
 export class AFrequencyScore extends AScore {
     constructor(parameter, dataSource, oppositeDataSource, countOnly) {
         super(parameter);
@@ -53,7 +53,7 @@ export class AFrequencyScore extends AScore {
         }
         const maxDirectRows = typeof this.parameter.maxDirectFilterRows === 'number' ? this.parameter.maxDirectFilterRows : MAX_FILTER_SCORE_ROWS_BEFORE_ALL;
         FieldUtils.limitScoreRows(param, ids, idtype, this.dataSource.entityName, maxDirectRows, namedSet);
-        const filters = Object.assign(LineUpUtils.toFilter(this.parameter.filter), this.createFilter());
+        const filters = Object.assign(LineupUtils.toFilter(this.parameter.filter), this.createFilter());
         const rows = await RestBaseUtils.getTDPScore(this.dataSource.db, `${this.getViewPrefix()}${this.dataSource.base}_${this.oppositeDataSource.base}_frequency_${isMutation ? 'mutation_' : ''}${isCopyNumberClass ? 'copynumberclass_' : ''}score`, param, filters);
         rows.forEach((row) => row.score = this.countOnly ? row.count : row.count / row.total);
         return rows;

@@ -9,7 +9,7 @@ import { gene, tissue, cellline, dataSources, dataTypes, dataSubtypes, depletion
 import { RestStorageUtils } from 'tdp_core';
 import { LineupUtils } from 'tdp_core';
 import { RestBaseUtils } from 'tdp_core';
-import { format, formatGene, search, searchGene, validate, validateGene } from '../utils';
+import { format, formatGene, search, searchGene, validate, validateGene } from './utils';
 /**
  * List of ids for parameter form elements
  * Reuse this ids and activate the `useSession` option for form elements to have the same selectedIndex between different views
