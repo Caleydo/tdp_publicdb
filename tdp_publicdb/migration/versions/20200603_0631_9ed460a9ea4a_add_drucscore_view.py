@@ -21,7 +21,7 @@ def upgrade():
     connection.execute(
         """
         ALTER TABLE drug
-        ADD COLUMN moa text;
+        ADD COLUMN IF NOT EXISTS moa text;
 
         DROP VIEW IF EXISTS tdp_drug;
         CREATE VIEW tdp_drug AS
