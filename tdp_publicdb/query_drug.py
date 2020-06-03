@@ -25,7 +25,7 @@ def create_drug(views, drug):
         .build()
 
     views[drug.prefix + '_drug_items_verify'] = DBViewBuilder('helper').idtype(drug.idtype).query("""
-          SELECT {g.id} as id, moa AS text, target
+          SELECT {g.id} as id, {g.id} as text, moa, target
           FROM {g.table} """.format(g=drug)) \
         .call(inject_where) \
         .assign_ids() \

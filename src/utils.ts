@@ -26,6 +26,7 @@ export function searchGene(query: string, page: number, pageSize: number): Promi
 
 interface IDrugData extends IdTextPair {
   target?: string;
+  moa?: string;
 }
 
 /**
@@ -59,7 +60,7 @@ export function formatDrug(item: ISelect3Item<IDrugData>, node: HTMLElement, mod
   if (mode === 'result') {
     //highlight match
     return `${item.id.replace(currentSearchQuery!, highlightMatch)}<br>
-    <span class="drug-moa">Moa: ${item.text ? item.text.replace(currentSearchQuery!, highlightMatch) : item.text}</span><br>
+    <span class="drug-moa">Moa: ${item.data.moa ? item.data.moa.replace(currentSearchQuery!, highlightMatch) : item.data.moa}</span><br>
     <span class="drug-target">Target: ${item.data.target ? item.data.target.replace(currentSearchQuery!, highlightMatch) : item.data.target}</span>`;
   }
   return item.id;
