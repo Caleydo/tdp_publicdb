@@ -43,8 +43,6 @@ create_gene_sample_score(views, tissue, gene, tissue_data, inline_aggregate_samp
 create_gene_sample_score(views, gene, cellline, cellline_depletion, 'depletion_', callback=lambda x: x.filter('depletionscreen'))
 create_gene_sample_score(views, cellline, gene, cellline_depletion, 'depletion_', inline_aggregate_sample_filter=True, callback=lambda x: x.filter('depletionscreen'))
 
-
-
 # idtype mappings
 mappings = [
   DBMapping(cellline.idtype, 'Cosmic',
@@ -63,8 +61,7 @@ mappings = [
                FROM {g.table} WHERE symbol = ANY(:ids)""".format(g=gene))
 ]
 
-
 def create():
-    d = DBConnector(views, agg_score, mappings=mappings)
-    d.description = 'TCGA/CCLE database as assembled by Boehringer Ingelheim GmbH'
-    return d
+   d = DBConnector(views, agg_score, mappings=mappings)
+   d.description = 'TCGA/CCLE database as assembled by Boehringer Ingelheim GmbH'
+   return d
