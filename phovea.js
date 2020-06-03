@@ -11,7 +11,7 @@ module.exports = function (registry) {
 
   /// #if include('ordino')
   registry.push('ordinoStartMenuSubSection', 'celllinedb_genes_start', function () {
-    return import ('./src/menu/GeneSubSection');
+    return import ('./src/menu/GeneSubSection').then((g) => g.GeneSubSection);
   }, {
     name: 'Genes',
     viewId: 'celllinedb_start',
@@ -22,7 +22,7 @@ module.exports = function (registry) {
   });
 
   registry.push('ordinoStartMenuSubSection', 'bioinfodb_tissue_start', function () {
-    return import ('./src/menu/SampleSubSection');
+    return import ('./src/menu/SampleSubSection').then((s) => s.SampleSubSection);
   }, {
     name: 'Tissues',
     viewId: 'bioinfodb_tissue_start',
@@ -34,7 +34,7 @@ module.exports = function (registry) {
   });
 
   registry.push('ordinoStartMenuSubSection', 'celllinedb_cellline_start', function () {
-    return import ('./src/menu/SampleSubSection');
+    return import ('./src/menu/SampleSubSection').then((s) => s.SampleSubSection);
   }, {
     name: 'Cell Lines',
     viewId: 'celllinedb_cellline',
@@ -48,7 +48,7 @@ module.exports = function (registry) {
   //gene views
   {
     registry.push('tdpView', 'celllinedb_start', function () {
-      return import ('./src/views/GeneList');
+      return import ('./src/views/GeneList').then((g) => g.GeneList);
     }, {
       name: 'Genes',
       idtype: 'Ensembl',
@@ -56,7 +56,7 @@ module.exports = function (registry) {
     });
 
     registry.push('tdpView', 'expressiontable', function () {
-      return import ('./src/views/DependentSampleTable');
+      return import ('./src/views/DependentSampleTable').then((d) => d.DependentSampleTable);
     }, {
       name: 'Expression',
       factory: 'createExpressionTable',
@@ -74,7 +74,7 @@ module.exports = function (registry) {
     });
 
     registry.push('tdpView', 'copynumbertable', function () {
-      return import ('./src/views/DependentSampleTable');
+      return import ('./src/views/DependentSampleTable').then((d) => d.DependentSampleTable);
     }, {
       name: 'Copy Number',
       factory: 'createCopyNumberTable',
@@ -92,7 +92,7 @@ module.exports = function (registry) {
     });
 
     registry.push('tdpView', 'mutationtable', function () {
-      return import ('./src/views/DependentSampleTable');
+      return import ('./src/views/DependentSampleTable').then((d) => d.DependentSampleTable);
     }, {
       name: 'Mutation',
       factory: 'createMutationTable',
@@ -110,7 +110,7 @@ module.exports = function (registry) {
     });
 
     registry.push('tdpView', 'gene_generic_detail_view', function () {
-      return import ('./src/views/InfoTable.ts');
+      return import ('./src/views/InfoTable.ts').then((i) => i.GeneInfoTable);
     }, {
       name: 'Database Info',
       factory: 'new GeneInfoTable',
@@ -128,7 +128,7 @@ module.exports = function (registry) {
     });
 
     registry.push('tdpInstantView', 'gene_instant_view', function () {
-      return import ('./src/views/GeneInstantView.ts');
+      return import ('./src/views/GeneInstantView.ts').then((g) => g.GeneInstantView);
     }, {
       name: 'Database Info',
       idtype: 'Ensembl',
@@ -138,7 +138,7 @@ module.exports = function (registry) {
 
 
     registry.push('tdpView', 'celllinedb_onco_print', function () {
-      return import ('./src/views/OncoPrint');
+      return import ('./src/views/OncoPrint').then((o) => o.OncoPrint);
     }, {
       name: 'OncoPrint',
       idtype: 'Ensembl',
@@ -155,7 +155,7 @@ module.exports = function (registry) {
     });
 
     registry.push('tdpView', 'celllinedb_expression_vs_copynumber', function () {
-      return import ('./src/views/ExpressionVsCopyNumber');
+      return import ('./src/views/ExpressionVsCopyNumber').then((e) => e.ExpressionVsCopyNumber);
     }, {
       name: 'Expression vs. Copy Number',
       idtype: 'Ensembl',
@@ -172,7 +172,7 @@ module.exports = function (registry) {
     });
 
     registry.push('tdpView', 'celllinedb_co_expression', function () {
-      return import ('./src/views/CoExpression');
+      return import ('./src/views/CoExpression').then((c) => c.CoExpression);
     }, {
       name: 'Co-Expression',
       idtype: 'Ensembl',
@@ -189,7 +189,7 @@ module.exports = function (registry) {
     });
 
     registry.push('tdpView', 'gene_combined_lineup', function () {
-      return import ('./src/views/CombinedDependentSampleTable');
+      return import ('./src/views/CombinedDependentSampleTable').then((c) => c.CombinedDependentSampleTable);
     }, {
       name: 'Combined View',
       idtype: 'Ensembl',
@@ -210,7 +210,7 @@ module.exports = function (registry) {
 
     /// #if include('uploader')
     registry.push('idTypeDetector', 'geneSymbol', function () {
-      return import ('./src/GeneSymbolDetector');
+      return import ('./src/detectors/GeneSymbolDetector').then((g) => g.GeneSymbolDetector);
     }, {
       factory: 'human',
       name: 'GeneSymbol',
@@ -222,7 +222,7 @@ module.exports = function (registry) {
 
     // Add additional column descriptions to the LineUpStoredData ranking from tdp_uploaded_data
     registry.push('epTdpUploadedDataLineupColumnDesc', 'geneColumnDesc', function() {
-      return import('./src/LineUpStoredData');
+      return import('./src/providers/LineUpStoredData').then((l) => l.LineUpStoredData);
     }, {
       factory: 'loadEnsemblColumnDesc',
       idType: 'Ensembl'
@@ -230,7 +230,7 @@ module.exports = function (registry) {
 
     // Add additional data rows to the LineUpStoredData ranking from tdp_uploaded_data
     registry.push('epTdpUploadedDataLineupRows', 'geneRows', function() {
-      return import('./src/LineUpStoredData');
+      return import('./src/providers/LineUpStoredData').then((l) => l.LineUpStoredData);
     }, {
       factory: 'loadEnsemblRows',
       idType: 'Ensembl'
@@ -239,7 +239,7 @@ module.exports = function (registry) {
 
     /// #if include('dTiles')
     registry.push('dTilesSearchProvider', 'gene', function () {
-      return import ('./src/SearchProvider')
+      return import ('./src/provider/SearchProvider').then((s) => s.GeneSearchProvider)
     }, {
       factory: 'createGene',
       idType: 'Ensembl',

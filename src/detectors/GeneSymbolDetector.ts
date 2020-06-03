@@ -1,24 +1,28 @@
 import {RestBaseUtils} from 'tdp_core';
 
-async function detectIDType(data: any[], accessor: (row: any) => string, sampleSize: number) {
-  const values = [];
-  let validSize = 0;
-  for(let i = 0; i < sampleSize; ++i) {
-    const v = accessor(data[i]);
 
-    if (!v || v.trim().length === 0) {
-      continue; //skip empty samples
+export class GeneSymbolDetector {
+  static async detectIDType(data: any[], accessor: (row: any) => string, sampleSize: number) {
+    const values = [];
+    let validSize = 0;
+    for(let i = 0; i < sampleSize; ++i) {
+      const v = accessor(data[i]);
+
+      if (!v || v.trim().length === 0) {
+        continue; //skip empty samples
+      }
+      values.push(v);
+      ++validSize;
     }
-    values.push(v);
-    ++validSize;
+
+    const result = await RestBaseUtils.getTDPData<{matches: number}>('publicdb', 'gene_match_symbols/filter', {filter_symbol: values});
+    return result[0].matches / validSize;
   }
 
-  const result = await RestBaseUtils.getTDPData<{matches: number}>('publicdb', 'gene_match_symbols/filter', {filter_symbol: values});
-  return result[0].matches / validSize;
+  static human() {
+    return {
+      GeneSymbolDetector.detectIDType
+    };
+  }
 }
 
-export function human() {
-  return {
-    detectIDType
-  };
-}

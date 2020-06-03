@@ -1,8 +1,0 @@
-
-@import "~tdp_core/src/styles/idtype_color";
-
-* {
-  @include idtype_color('Ensembl', rgb(127, 201, 127));
-  @include idtype_color('Tissue', rgb(190, 174, 212));
-  @include idtype_color('Cellline', rgb(253, 192, 134));
-}
