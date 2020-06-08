@@ -24,7 +24,7 @@ export function createDesc(type: string, label: string, subtype: IDataSubtypeCon
         label,
         description,
         categories: subtype.categories,
-        missingValue: subtype.missingCategory,
+        missingValue: subtype.missingValue,
         lazyLoaded: true
       };
     case dataSubtypes.string:

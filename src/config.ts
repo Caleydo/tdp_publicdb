@@ -307,7 +307,7 @@ export const copyNumber: IDataTypeConfig = {
       type: dataSubtypes.cat,
       categories: toLineUpCategories(copyNumberCat),
       domain: [0, 100],
-      missingValue: NaN,
+      missingValue: unknownMutationValue,
       useForAggregation: 'copynumberclass'
     }
   ],
@@ -327,7 +327,7 @@ export const mutation: IDataTypeConfig = {
       categories: toLineUpCategories(mutationCat),
       useForAggregation: 'aa_mutated',
       domain: [0, 100],
-      missingValue: NaN
+      missingValue: unknownMutationValue
     },
     //just for single score:
     {
@@ -342,7 +342,7 @@ export const mutation: IDataTypeConfig = {
       categories: toLineUpCategories(mutationCat),
       useForAggregation: 'dna_mutated',
       domain: [0, 100],
-      missingValue: NaN
+      missingValue: unknownMutationValue
     },
     //just for single score:
     {
