@@ -64,7 +64,7 @@ class SingleDepletionScore extends ASingleScore implements IScore<any> {
   }
 }
 
-class SinglePrimDrugScore extends ASingleScore implements IScore<any> {
+class SingleDrugScore extends ASingleScore implements IScore<any> {
   private readonly drugscreen: string;
 
   constructor(parameter: ISingleScoreParam, dataSource: IDataSourceConfig, oppositeDataSource: IDataSourceConfig) {
@@ -195,10 +195,10 @@ export function createSingleDepletionScore(data: ISingleScoreParam, pluginDesc: 
 }
 
 
-export function createSinglePrismDrugScoreDialog(pluginDesc: IPluginDesc, extra: any, countHint?: number) {
+export function createSingleDrugScoreDialog(pluginDesc: IPluginDesc, extra: any, countHint?: number) {
   return createScoreDialog(pluginDesc, extra, FORM_SINGLE_SCORE_DRUG.slice(), countHint);
 }
 
-export function createSinglePrismDrugScore(data: ISingleScoreParam, pluginDesc: IPluginDesc): IScore<number> | IScore<any>[] {
-  return initializeScore(data, pluginDesc, (parameter, dataSource, oppositeDataSource) => new SinglePrimDrugScore(parameter, dataSource, oppositeDataSource));
+export function createSingleDrugScore(data: ISingleScoreParam, pluginDesc: IPluginDesc): IScore<number> | IScore<any>[] {
+  return initializeScore(data, pluginDesc, (parameter, dataSource, oppositeDataSource) => new SingleDrugScore(parameter, dataSource, oppositeDataSource));
 }

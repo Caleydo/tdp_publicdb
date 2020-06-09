@@ -578,17 +578,17 @@ module.exports = function (registry) {
     registry.push('tdpScore', prefix + '_prism_drug_single_score', function () {
       return import('./src/scores/SingleScore');
     }, {
-      name: 'PRISM Drug Screen Score',
+      name: 'Drug Screen Score',
       idtype: idType,
       primaryType: idType,
       oppositeType: 'Drug',
-      factory: 'createSinglePrismDrugScoreDialog'
+      factory: 'createSingleDrugScoreDialog'
     });
 
     registry.push('tdpScoreImpl', prefix + '_prism_drug_single_score', function () {
       return import('./src/scores/SingleScore');
     }, {
-      factory: 'createSinglePrismDrugScore',
+      factory: 'createSingleDrugScore',
       primaryType: idType,
       oppositeType: 'Drug'
     });
