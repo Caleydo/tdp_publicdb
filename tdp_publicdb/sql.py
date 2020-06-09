@@ -29,7 +29,6 @@ create_drug_sample_score(views, cellline, drug, cellline_drug, 'drug_', callback
 # scores cellline x gene
 create_gene_sample_score(views, gene, cellline, cellline_data)
 create_gene_sample_score(views, cellline, gene, cellline_data, inline_aggregate_sample_filter=True)
-create_gene_sample_score(views, cellline, drug, cellline_drug, 'drug_')
 
 # tissue
 create_common(views, tissue)
