@@ -16,5 +16,5 @@ tissue_data = DataEntity(tissue.schema, tables, attributes, operators)
 cellline_depletion = DataEntity(cellline.schema, depletion_tables, depletion_attributes, operators)
 
 drug_tables = ['drugscore']
-drug_attributes = ['actarea', 'ic50']
+drug_attributes = ['actarea', 'ic50', 'ec50']
 cellline_drug = DataEntity(cellline.schema, drug_tables, drug_attributes, operators)

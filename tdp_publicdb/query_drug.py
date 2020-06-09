@@ -33,15 +33,15 @@ def create_drug(views, drug):
         .build()
 
 
-def create_drug_sample_score(views, drug, sample, data, prefix='', callback=None):
-    basename = '{view_prefix}{g}_{s}'.format(g=drug.prefix, s=sample.prefix, view_prefix=prefix)
+def create_drug_sample_score(views, cellline, drug, data, prefix='', callback=None):
+    basename = '{view_prefix}{g}_{s}'.format(g=cellline.prefix, s=drug.prefix, view_prefix=prefix)
 
     views[basename + '_single_score'] = DBViewBuilder('score').idtype(drug.idtype).query("""
           SELECT d.{g.id} AS id, d.{{attribute}} AS score
           FROM {d.schema}.tdp_{{table}} d
           INNER JOIN {s.table} s ON d.{s.id} = s.{s.id}
           INNER JOIN {g.table} g ON d.{g.id} = g.{g.id}
-          WHERE g.species = :species AND d.{s.id} = :name""".format(g=drug, s=sample, d=data)) \
+          WHERE d.{s.id} = :name""".format(g=cellline, s=drug, d=data)) \
         .replace('attribute', data.attributes) \
         .call(inject_where) \
         .arg('name') \
