@@ -24,7 +24,7 @@ create_sample(views, cellline, gene, cellline_data)
 
 # drug
 create_drug(views, drug)
-create_drug_sample_score(views, cellline, drug, cellline_drug, 'drug_', callback=lambda x: x.filter('target'))
+create_drug_sample_score(views, cellline, drug, cellline_drug, 'drug_')
 
 # scores cellline x gene
 create_gene_sample_score(views, gene, cellline, cellline_data)
