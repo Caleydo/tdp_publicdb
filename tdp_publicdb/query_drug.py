@@ -43,8 +43,8 @@ def create_drug_sample_score(views, cellline, drug, data, prefix='', callback=No
           INNER JOIN {g.table} g ON d.{g.id} = g.{g.id}
           WHERE d.{s.id} = :name""".format(g=cellline, s=drug, d=data)) \
         .replace('attribute', data.attributes) \
+        .replace('table', data.tables) \
         .call(inject_where) \
         .arg('name') \
-        .call(callback) \
-        .filters(drug.columns) \
+        .filter('campaign') \
         .build()
