@@ -36,7 +36,7 @@ def create_drug(views, drug):
 def create_drug_sample_score(views, cellline, drug, data, prefix='', callback=None):
     basename = '{view_prefix}{g}_{s}'.format(g=cellline.prefix, s=drug.prefix, view_prefix=prefix)
 
-    views[basename + '_single_score'] = DBViewBuilder('score').idtype(drug.idtype).query("""
+    views[basename + '_single_score'] = DBViewBuilder('score').idtype(cellline.idtype).query("""
           SELECT d.{g.id} AS id, d.{{attribute}} AS score
           FROM {d.schema}.tdp_{{table}} d
           INNER JOIN {s.table} s ON d.{s.id} = s.{s.id}
