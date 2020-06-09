@@ -22,6 +22,7 @@ export class ParameterFormIds {
   static CELLLINE_NAME = 'cellline_name';
   static TISSUE_NAME = 'tissue_name';
   static DRUG_NAME = 'drug_name';
+  static SCREEN_TYPE = 'screen_type';
   static DATA_SUBTYPE = 'data_subtype';
   static DATA_HIERARCHICAL_SUBTYPE = 'hierarchical_data_subtype';
   static COPYNUMBER_SUBTYPE = FORM_COPYNUMBER_SUBTYPE_ID;
@@ -91,7 +92,7 @@ export const FORM_DRUG_NAME = {
   options: {
     optionsData: [],
     search: searchDrug,
-    validate:validateDrug,
+    validate: validateDrug,
     format: formatDrug
   },
   useSession: true
@@ -551,9 +552,26 @@ export const FORM_DATA_HIERARCHICAL_SUBTYPE_DRUG = {
   },
   required: true,
   options: {
-    data: prismDrug.dataSubtypes.map((dss) => ({
-      id: `${prismDrug.id}-${dss.id}`,
-      text: dss.name
+    data: prismDrug.dataSubtypes.map((subtype) => ({
+      id: `${prismDrug.id}-${subtype.id}`,
+      text: subtype.name
+    }))
+  },
+  useSession: true
+};
+
+export const DRUG_SCREEN_SCORE_FORM_ELEMENT = {
+  type: FormElementType.SELECT2,
+  label: 'Drug Screen',
+  id: ParameterFormIds.SCREEN_TYPE,
+  attributes: {
+    style: 'width:100%'
+  },
+  required: true,
+  options: {
+    data: prismDrug.screenTypes.map((screen) => ({
+      id: screen,
+      text: screen
     }))
   },
   useSession: true

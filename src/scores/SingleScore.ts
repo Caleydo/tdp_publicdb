@@ -23,6 +23,7 @@ interface ISingleScoreParam {
   name: {id: string, text: string};
   data_type: string;
   data_subtype: string;
+  screen_type?: string;
   /**
    * see config.MAX_FILTER_SCORE_ROWS_BEFORE_ALL maximal number of rows for computing limiting the score to this subset
    */
@@ -64,19 +65,28 @@ class SingleDepletionScore extends ASingleScore implements IScore<any> {
 }
 
 class SinglePrimDrugScore extends ASingleScore implements IScore<any> {
+  private readonly drugscreen: string;
+
   constructor(parameter: ISingleScoreParam, dataSource: IDataSourceConfig, oppositeDataSource: IDataSourceConfig) {
     super(parameter, dataSource, oppositeDataSource);
+    this.drugscreen = parameter.screen_type;
   }
 
   protected getViewPrefix(): string {
     return 'drug_';
+  }
+
+  protected createFilter(): IParams {
+    return {
+      campaign: this.drugscreen
+    };
   }
 }
 
 export function createScoreDialog(pluginDesc: IPluginDesc, extra: any, formDesc: IFormElementDesc[], countHint?: number) {
   const {primary, opposite} = selectDataSources(pluginDesc);
   const dialog = new FormDialog('Add Single Score Column', 'Add Single Score Column');
-  switch(opposite) {
+  switch (opposite) {
     case gene:
       formDesc.unshift(enableMultiple(FORM_GENE_NAME));
       formDesc.push(primary === tissue ? FORCE_COMPUTE_ALL_TISSUE : FORCE_COMPUTE_ALL_CELLLINE);
@@ -105,6 +115,12 @@ export function createScoreDialog(pluginDesc: IPluginDesc, extra: any, formDesc:
     const data = <any>form.getElementData();
 
     {
+      const screenType = data[ParameterFormIds.SCREEN_TYPE];
+      if (screenType) {
+        delete data[ParameterFormIds.SCREEN_TYPE];
+        data.screen_type = screenType.id;
+      }
+
       const datatypes = data[ParameterFormIds.DATA_HIERARCHICAL_SUBTYPE];
       delete data[ParameterFormIds.DATA_HIERARCHICAL_SUBTYPE];
       const resolved = datatypes.map((entry) => {

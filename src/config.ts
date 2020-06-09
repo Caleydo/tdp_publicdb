@@ -221,6 +221,7 @@ export interface IDataTypeConfig {
   tableName: string;
   query: string;
   dataSubtypes: IDataSubtypeConfig[];
+  screenTypes?: string[];
 }
 
 /**
@@ -405,6 +406,7 @@ export const prismDrug: IDataTypeConfig = {
   name: 'PRISM Drug Screen',
   tableName: 'drugscore',
   query: 'drug_score',
+  screenTypes: ['Prism', 'GDSC', 'CCLE'],
   dataSubtypes: [
     {
       id: 'actarea',
@@ -423,6 +425,15 @@ export const prismDrug: IDataTypeConfig = {
       missingValue: NaN,
       constantDomain: false,
       useForAggregation: 'ic50'
+    },
+    {
+      id: 'ec50',
+      name: 'EC50',
+      type: dataSubtypes.number,
+      domain: [-3, 3],
+      missingValue: NaN,
+      constantDomain: false,
+      useForAggregation: 'ec50'
     }
   ]
 };
