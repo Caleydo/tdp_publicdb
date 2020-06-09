@@ -29,8 +29,13 @@ def upgrade():
 
         DROP VIEW IF EXISTS cellline.tdp_drugscore;
         CREATE VIEW cellline.tdp_drugscore AS
-          SELECT celllinename, drugid, ic50, actarea, campaign
+          SELECT celllinename, drugid, ic50, ec50, gi50, actarea, campaign
           FROM cellline.doseresponsecurve;
+
+        DROP VIEW IF EXISTS cellline.tdp_drugscreen;
+        CREATE VIEW cellline.tdp_drugscreen AS
+          SELECT campaign, campaigndesc FROM cellline.campaign
+          WHERE campaign in ('Prism', 'GDSC', 'CCLE');
         """
     )
 
@@ -46,5 +51,7 @@ def downgrade():
         DROP VIEW IF EXISTS tdp_drug;
 
         DROP VIEW IF EXISTS cellline.tdp_drugscore;
+
+        DROP VIEW IF EXISTS cellline.tdp_drugscreen;
         """
     )
