@@ -21,4 +21,4 @@ cellline_drug = DataEntity(cellline.schema, drug_tables, drug_attributes, operat
 
 
 DrugSceen = namedtuple('DrugScreen', ['schema', 'table'])
-cellline_drug_screen = DrugSceen(cellline.schema, 'drugscreen' )
+cellline_drug_screen = DrugSceen(cellline.schema, 'drugscreen')

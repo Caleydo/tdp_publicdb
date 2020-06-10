@@ -32,6 +32,7 @@ def create_drug(views, drug):
         .filter('drug', '(lower(drugid) {operator} {value} or lower(moa) {operator} {value}) or lower(target) {operator} {value})') \
         .build()
 
+
 def create_drug_screen_sample(views, cellline, drug_screen):
     views['drug_screen_items'] = DBViewBuilder('helper').idtype(cellline.idtype).query("""
           SELECT campaign as id, campaignDesc as text
