@@ -83,7 +83,7 @@ export const FORM_GENE_NAME = {
 
 export const FORM_DRUG_NAME = {
   type: FormElementType.SELECT3,
-  label: 'Drug ID',
+  label: 'Drug Name',
   id: ParameterFormIds.DRUG_NAME,
   attributes: {
     style: 'width:100%'
