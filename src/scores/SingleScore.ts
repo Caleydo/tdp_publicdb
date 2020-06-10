@@ -2,14 +2,14 @@
  * Created by sam on 06.03.2017.
  */
 
-import {IDataSourceConfig, gene, tissue, cellline, MAX_FILTER_SCORE_ROWS_BEFORE_ALL, splitTypes} from '../config';
+import {IDataSourceConfig, gene, tissue, cellline, MAX_FILTER_SCORE_ROWS_BEFORE_ALL, splitTypes, drug} from '../config';
 import {IScore} from 'tdp_core/src/extensions';
 import {IFormElementDesc, FormElementType} from 'tdp_core/src/form';
-import {ParameterFormIds, FORM_GENE_NAME, FORM_TISSUE_NAME, FORM_CELLLINE_NAME} from '../forms';
+import {ParameterFormIds, FORM_GENE_NAME, FORM_TISSUE_NAME, FORM_CELLLINE_NAME, FORM_DRUG_NAME} from '../forms';
 import {IPluginDesc} from 'phovea_core/src/plugin';
 import {
   FORCE_COMPUTE_ALL_CELLLINE, FORCE_COMPUTE_ALL_GENES, FORCE_COMPUTE_ALL_TISSUE,
-  FORM_SINGLE_SCORE, FORM_SINGLE_SCORE_DEPLETION
+  FORM_SINGLE_SCORE, FORM_SINGLE_SCORE_DEPLETION, FORM_SINGLE_SCORE_DRUG
 } from './forms';
 import {selectDataSources} from './utils';
 import {mixin} from 'phovea_core/src';
@@ -17,11 +17,13 @@ import {FormDialog} from 'tdp_core/src/form';
 import ASingleScore from './ASingleScore';
 import {IParams} from 'tdp_core/src/rest';
 import {IForm} from 'tdp_core/src/form/interfaces';
+import '../styles/select2_overrides.scss';
 
 interface ISingleScoreParam {
   name: {id: string, text: string};
   data_type: string;
   data_subtype: string;
+  screen_type?: string;
   /**
    * see config.MAX_FILTER_SCORE_ROWS_BEFORE_ALL maximal number of rows for computing limiting the score to this subset
    */
@@ -62,10 +64,29 @@ class SingleDepletionScore extends ASingleScore implements IScore<any> {
   }
 }
 
+class SingleDrugScore extends ASingleScore implements IScore<any> {
+  private readonly drugscreen: string;
+
+  constructor(parameter: ISingleScoreParam, dataSource: IDataSourceConfig, oppositeDataSource: IDataSourceConfig) {
+    super(parameter, dataSource, oppositeDataSource);
+    this.drugscreen = parameter.screen_type;
+  }
+
+  protected getViewPrefix(): string {
+    return 'drug_';
+  }
+
+  protected createFilter(): IParams {
+    return {
+      campaign: this.drugscreen
+    };
+  }
+}
+
 export function createScoreDialog(pluginDesc: IPluginDesc, extra: any, formDesc: IFormElementDesc[], countHint?: number) {
   const {primary, opposite} = selectDataSources(pluginDesc);
   const dialog = new FormDialog('Add Single Score Column', 'Add Single Score Column');
-  switch(opposite) {
+  switch (opposite) {
     case gene:
       formDesc.unshift(enableMultiple(FORM_GENE_NAME));
       formDesc.push(primary === tissue ? FORCE_COMPUTE_ALL_TISSUE : FORCE_COMPUTE_ALL_CELLLINE);
@@ -77,6 +98,10 @@ export function createScoreDialog(pluginDesc: IPluginDesc, extra: any, formDesc:
     case cellline:
       formDesc.unshift(enableMultiple(FORM_CELLLINE_NAME));
       formDesc.push(FORCE_COMPUTE_ALL_GENES);
+      break;
+    case drug:
+      formDesc.splice(1, 0, enableMultiple(FORM_DRUG_NAME));
+      formDesc.push(FORCE_COMPUTE_ALL_CELLLINE);
       break;
   }
 
@@ -90,6 +115,12 @@ export function createScoreDialog(pluginDesc: IPluginDesc, extra: any, formDesc:
     const data = <any>form.getElementData();
 
     {
+      const screenType = data[ParameterFormIds.SCREEN_TYPE];
+      if (screenType) {
+        delete data[ParameterFormIds.SCREEN_TYPE];
+        data.screen_type = screenType.id;
+      }
+
       const datatypes = data[ParameterFormIds.DATA_HIERARCHICAL_SUBTYPE];
       delete data[ParameterFormIds.DATA_HIERARCHICAL_SUBTYPE];
       const resolved = datatypes.map((entry) => {
@@ -117,20 +148,24 @@ export function createScoreDialog(pluginDesc: IPluginDesc, extra: any, formDesc:
         data.name = data[ParameterFormIds.CELLLINE_NAME];
         delete data[ParameterFormIds.CELLLINE_NAME];
         break;
+      case drug:
+        data.name = data[ParameterFormIds.DRUG_NAME];
+        delete data[ParameterFormIds.DRUG_NAME];
+        break;
     }
     return data;
   });
 }
 
 
-export function initializeScore(data: ISingleScoreParam, pluginDesc: IPluginDesc, singleScoreFactory: (parameter: ISingleScoreParam, dataSource: IDataSourceConfig, oppositeDataSource: IDataSourceConfig) => ASingleScore): IScore<number>|IScore<any>[] {
+export function initializeScore(data: ISingleScoreParam, pluginDesc: IPluginDesc, singleScoreFactory: (parameter: ISingleScoreParam, dataSource: IDataSourceConfig, oppositeDataSource: IDataSourceConfig) => ASingleScore): IScore<number> | IScore<any>[] {
   const {primary, opposite} = selectDataSources(pluginDesc);
   const configs = (<any>data).data_types;
   function defineScore(name: {id: string, text: string}) {
     if (configs) {
       return configs.map((ds) => singleScoreFactory({name, data_type: ds[0], data_subtype: ds[1], maxDirectFilterRows: data.maxDirectFilterRows}, primary, opposite));
     } else {
-      return singleScoreFactory(Object.assign({}, data, { name }), primary, opposite);
+      return singleScoreFactory(Object.assign({}, data, {name}), primary, opposite);
     }
   }
   if (Array.isArray(data.name)) {
@@ -145,7 +180,7 @@ export function create(pluginDesc: IPluginDesc, extra: any, countHint?: number) 
   return createScoreDialog(pluginDesc, extra, FORM_SINGLE_SCORE.slice(), countHint);
 }
 
-export function createScore(data: ISingleScoreParam, pluginDesc: IPluginDesc): IScore<number>|IScore<any>[] {
+export function createScore(data: ISingleScoreParam, pluginDesc: IPluginDesc): IScore<number> | IScore<any>[] {
   return initializeScore(data, pluginDesc, (parameter, dataSource, oppositeDataSource) => new SingleScore(parameter, dataSource, oppositeDataSource));
 }
 
@@ -155,6 +190,15 @@ export function createSingleDepletionScoreDialog(pluginDesc: IPluginDesc, extra:
   return createScoreDialog(pluginDesc, extra, FORM_SINGLE_SCORE_DEPLETION.slice(), countHint);
 }
 
-export function createSingleDepletionScore(data: ISingleScoreParam, pluginDesc: IPluginDesc): IScore<number>|IScore<any>[] {
+export function createSingleDepletionScore(data: ISingleScoreParam, pluginDesc: IPluginDesc): IScore<number> | IScore<any>[] {
   return initializeScore(data, pluginDesc, (parameter, dataSource, oppositeDataSource) => new SingleDepletionScore(parameter, dataSource, oppositeDataSource));
+}
+
+
+export function createSingleDrugScoreDialog(pluginDesc: IPluginDesc, extra: any, countHint?: number) {
+  return createScoreDialog(pluginDesc, extra, FORM_SINGLE_SCORE_DRUG.slice(), countHint);
+}
+
+export function createSingleDrugScore(data: ISingleScoreParam, pluginDesc: IPluginDesc): IScore<number> | IScore<any>[] {
+  return initializeScore(data, pluginDesc, (parameter, dataSource, oppositeDataSource) => new SingleDrugScore(parameter, dataSource, oppositeDataSource));
 }

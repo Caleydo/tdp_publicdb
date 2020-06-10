@@ -6,11 +6,11 @@ import {getSelectedSpecies} from 'tdp_gene/src/common';
 import {FORM_EXPRESSION_SUBTYPE_ID, FORM_COPYNUMBER_SUBTYPE_ID} from 'tdp_gene/src/forms';
 import {FormElementType, IFormElement, IFormSelectOption} from 'tdp_core/src/form';
 import {cachedLazy} from 'tdp_core/src/cached';
-import {gene, IDataSourceConfig, tissue, cellline, dataSources, dataTypes, dataSubtypes, depletion} from './config';
+import {gene, IDataSourceConfig, tissue, cellline, dataSources, dataTypes, dataSubtypes, depletion, drugScreen} from './config';
 import {listNamedSetsAsOptions} from 'tdp_core/src/storage';
 import {previewFilterHint} from 'tdp_core/src/lineup';
 import {getTDPData, getTDPLookupUrl, IServerColumn} from 'tdp_core/src/rest';
-import {format, formatGene, search, searchGene, validate, validateGene} from './utils';
+import {format, formatGene, search, searchGene, validate, validateGene, searchDrug, validateDrug, formatDrug, searchDrugScreen, formatDrugScreen, validateDrugScreen} from './utils';
 
 /**
  * List of ids for parameter form elements
@@ -21,6 +21,8 @@ export class ParameterFormIds {
   static GENE_SYMBOL = 'gene_symbol';
   static CELLLINE_NAME = 'cellline_name';
   static TISSUE_NAME = 'tissue_name';
+  static DRUG_NAME = 'drug_name';
+  static SCREEN_TYPE = 'screen_type';
   static DATA_SUBTYPE = 'data_subtype';
   static DATA_HIERARCHICAL_SUBTYPE = 'hierarchical_data_subtype';
   static COPYNUMBER_SUBTYPE = FORM_COPYNUMBER_SUBTYPE_ID;
@@ -79,6 +81,23 @@ export const FORM_GENE_NAME = {
   useSession: true
 };
 
+export const FORM_DRUG_NAME = {
+  type: FormElementType.SELECT3,
+  label: 'Drug Name',
+  id: ParameterFormIds.DRUG_NAME,
+  attributes: {
+    style: 'width:100%'
+  },
+  required: true,
+  options: {
+    optionsData: [],
+    search: searchDrug,
+    validate: validateDrug,
+    format: formatDrug
+  },
+  useSession: true
+};
+
 function generateNameLookup(d: IDataSourceConfig, field: string) {
   return {
     type: FormElementType.SELECT3,
@@ -114,7 +133,7 @@ export const FORM_GENE_FILTER = {
     sessionKeySuffix: `-${getSelectedSpecies()}-gene`,
     defaultSelection: false,
     uniqueKeys: true,
-    badgeProvider: previewFilterHint(gene.db, 'gene', () => ({ filter_species: getSelectedSpecies()})),
+    badgeProvider: previewFilterHint(gene.db, 'gene', () => ({filter_species: getSelectedSpecies()})),
     entries: [{
       name: 'Bio Type',
       value: 'biotype',
@@ -131,7 +150,7 @@ export const FORM_GENE_FILTER = {
       type: FormElementType.SELECT2,
       multiple: true,
       return: 'id',
-      optionsData: cachedLazy(`${getSelectedSpecies()}_gene_strands`, () => getTDPData<{text: string|number}>(gene.db, `gene_unique_all`, {
+      optionsData: cachedLazy(`${getSelectedSpecies()}_gene_strands`, () => getTDPData<{text: string | number}>(gene.db, `gene_unique_all`, {
         column: 'strand',
         species: getSelectedSpecies()
       }).then((r) => r.map((d) => ({name: `${d.text === -1 ? 'reverse' : 'forward'} strand`, value: d.text}))))
@@ -141,7 +160,7 @@ export const FORM_GENE_FILTER = {
       type: FormElementType.SELECT2,
       multiple: true,
       return: 'id',
-      optionsData: cachedLazy(`${getSelectedSpecies()}_gene_chromosome`, () => getTDPData<{text: string|number}>(gene.db, `gene_unique_all`, {
+      optionsData: cachedLazy(`${getSelectedSpecies()}_gene_chromosome`, () => getTDPData<{text: string | number}>(gene.db, `gene_unique_all`, {
         column: 'chromosome',
         species: getSelectedSpecies()
       }).then((r) => r.map((d) => d.text.toString())))
@@ -217,10 +236,10 @@ function generateTissueSpecificFilter(d: IDataSourceConfig) {
       type: FormElementType.SELECT2,
       multiple: true,
       return: 'id',
-      optionsData: cachedLazy(`${d.base}_${getSelectedSpecies()}_vital_status`, () => getTDPData<{text: string|boolean}>(d.db, `${d.base}_unique_all`, {
+      optionsData: cachedLazy(`${d.base}_${getSelectedSpecies()}_vital_status`, () => getTDPData<{text: string | boolean}>(d.db, `${d.base}_unique_all`, {
         column: 'vital_status',
         species: getSelectedSpecies()
-      }).then((r) => r.map((d) => d.text === true? 'true' : 'false')))
+      }).then((r) => r.map((d) => d.text === true ? 'true' : 'false')))
     }
   ];
 }
@@ -283,9 +302,9 @@ function generateCelllineSpecificFilter(d: IDataSourceConfig) {
 
 function generateFilter(d: IDataSourceConfig) {
   let specificFilters = [];
-  if(d === tissue) {
+  if (d === tissue) {
     specificFilters = generateTissueSpecificFilter(d);
-  } else if(d === cellline) {
+  } else if (d === cellline) {
     specificFilters = generateCelllineSpecificFilter(d);
   }
   return {
@@ -295,7 +314,7 @@ function generateFilter(d: IDataSourceConfig) {
     useSession: true,
     options: {
       sessionKeySuffix: `-${getSelectedSpecies()}-${d.base}`,
-      badgeProvider: previewFilterHint(d.db, d.base, () => ({ filter_species: getSelectedSpecies()})),
+      badgeProvider: previewFilterHint(d.db, d.base, () => ({filter_species: getSelectedSpecies()})),
       defaultSelection: false,
       uniqueKeys: true,
       entries: [{
@@ -520,6 +539,40 @@ export const FORM_DATA_HIERARCHICAL_SUBTYPE_AGGREGATED_SELECTION_DEPLETION = {
       id: `${depletion.id}-${dss.id}`,
       text: dss.name
     }))
+  },
+  useSession: true
+};
+
+export const FORM_DATA_HIERARCHICAL_SUBTYPE_DRUG = {
+  type: FormElementType.SELECT2_MULTIPLE,
+  label: 'Data Type',
+  id: ParameterFormIds.DATA_HIERARCHICAL_SUBTYPE,
+  attributes: {
+    style: 'width:100%'
+  },
+  required: true,
+  options: {
+    data: drugScreen.dataSubtypes.map((subtype) => ({
+      id: `${drugScreen.id}-${subtype.id}`,
+      text: subtype.name
+    }))
+  },
+  useSession: true
+};
+
+export const DRUG_SCREEN_SCORE_FORM_ELEMENT = {
+  type: FormElementType.SELECT3,
+  label: 'Drug Screen',
+  id: ParameterFormIds.SCREEN_TYPE,
+  attributes: {
+    style: 'width:100%'
+  },
+  required: true,
+  options: {
+    optionsData: [],
+    search: searchDrugScreen,
+    validate: validateDrugScreen,
+    format: formatDrugScreen
   },
   useSession: true
 };

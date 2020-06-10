@@ -109,3 +109,17 @@ cellline = Entity('cellline',
                   panel_join=None,
                   sort='celllinename',
                   column_def=_cellline_columns)
+
+drug = Entity('drug',
+              idtype='Drug',
+              id='drugid',
+              schema='public',
+              table='public.tdp_drug',
+              columns=['drugid', 'moa', 'target'],
+              panel_table= None,
+              panel_name=None,
+              panel=None,
+              panel_join=None,
+              sort='drugid',
+              column_def=None
+              )
