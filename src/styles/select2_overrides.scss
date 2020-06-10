@@ -2,15 +2,19 @@
 @import "~select2/dist/css/select2.min.css";
 
 @at-root {
-    .select2-results__option .drug-moa,
-    .select2-selection__rendered .drug-moa {
+  .select2-results__option,
+  .select2-selection__rendered {
+    .drug-target,
+    .drug-moa {
       font-size: 13px;
-      color: #ccc;
+      color: #999;
     }
 
-    .select2-results__option .drug-target,
-    .select2-selection__rendered .drug-target {
-      font-size: 13px;
-      color: #ccc;
+    &.select2-results__option--highlighted {
+      .drug-target,
+      .drug-moa {
+        color: #afcde9;
+      }
     }
-}    
+  }
+}
