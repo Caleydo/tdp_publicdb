@@ -137,3 +137,51 @@ export function format(item: ISelect3Item<IdTextPair>, node: HTMLElement, mode: 
   }
   return item.text;
 }
+
+/**
+ * Search and autocomplete of the input string for Select3
+ *
+ * @param {string} query An array of gene symbols
+ * @param {number} page Server-side pagination page number
+ * @param {number} pageSize Server-side pagination page size
+ * @returns {Promise<{more: boolean; items: Readonly<IdTextPair>[]}>} Select3 conformant data structure.
+ */
+export function searchDrugScreen(query: string, page: number, pageSize: number): Promise<{more: boolean, items: Readonly<IdTextPair>[]}> {
+  const rows= getTDPLookup(drug.db, `drug_screen_items`, {
+    column: 'campaign',
+    query,
+    page,
+    limit: pageSize
+  });
+  return rows;
+}
+
+/**
+ * Validation of a query input via paste or filedrop against the database for Select3
+ *
+ * @param {string[]} query An array of drugscreen campaigns
+ * @returns {Promise<Readonly<IdTextPair>[]>} Return the validated drugscreen campaigns.
+ */
+export function validateDrugScreen(query: string[]): Promise<Readonly<IdTextPair>[]> {
+  return getTDPData(drug.db, `drug_screen_items_verify/filter`, {
+    column: 'campaign',
+    filter_drug_screen: query,
+  });
+}
+
+/**
+ * Formatting of drugsreen within Select3 Searchbox.
+ *
+ * @param {ISelect3Item<IdTextPair>} item The single id-text-target pair.
+ * @param {HTMLElement} node The HTML Element in the DOM.
+ * @param {"result" | "selection"} mode The search result items within the dropdown or the selected items inside the search input field.
+ * @param {RegExp} currentSearchQuery The actual search query input.
+ * @returns {string} The string how the drugscreen is actually rendered.
+ */
+export function formatDrugScreen(item: ISelect3Item<IdTextPair>, node: HTMLElement, mode: 'result' | 'selection', currentSearchQuery?: RegExp) {
+  if (mode === 'result') {
+    //highlight match
+    return `${item.id.replace(currentSearchQuery!, highlightMatch)} (${item.text})`;
+  }
+  return item.id;
+}

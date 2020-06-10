@@ -215,21 +215,12 @@ export function chooseDataSource(desc: any): IDataSourceConfig {
   }
 }
 
-/**
- * Interface for the screenTypes IDataTypeConfig
- */
-interface IScreenTypes {
-  id: string;
-  text: string;
-}
-
 export interface IDataTypeConfig {
   id: string;
   name: string;
   tableName: string;
   query: string;
   dataSubtypes: IDataSubtypeConfig[];
-  screenTypes?: IScreenTypes[];
 }
 
 /**
@@ -414,7 +405,6 @@ export const drugScreen: IDataTypeConfig = {
   name: 'Drug Screen',
   tableName: 'drugscore',
   query: 'drug_score',
-  screenTypes: [{id: 'Prism', text: 'Prism (Prism drug repurposing screen)'}, {id: 'GDSC', text: 'GDSC (Genomics of Drug Sensitivity in Cancer)'}, {id: 'CCLE', text: 'CCLE (Cancer Cell Line Encyclopedia)'}],
   dataSubtypes: [
     {
       id: 'actarea',

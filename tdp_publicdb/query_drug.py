@@ -32,6 +32,23 @@ def create_drug(views, drug):
         .filter('drug', '(lower(drugid) {operator} {value} or lower(moa) {operator} {value}) or lower(target) {operator} {value})') \
         .build()
 
+def create_drug_screen_sample(views, cellline, drug_screen):
+    views['drug_screen_items'] = DBViewBuilder('helper').idtype(cellline.idtype).query("""
+          SELECT campaign as id, campaignDesc as text
+            FROM {d.schema}.tdp_{d.table} d  WHERE (LOWER(campaign) LIKE :query)
+          """.format(d=drug_screen)) \
+        .assign_ids() \
+        .arg('query') \
+        .build()
+
+    views['drug_screen_items_verify'] = DBViewBuilder('helper').idtype(cellline.idtype).query("""
+          SELECT campaign as id, campaignDesc as text
+          FROM {d.schema}.tdp_{d.table}""".format(d=drug_screen)) \
+        .call(inject_where) \
+        .assign_ids() \
+        .filter('drug_screen', '(lower(campaign) {operator} {value})') \
+        .build()    
+
 
 def create_drug_sample_score(views, cellline, drug, data, prefix='', callback=None):
     basename = '{view_prefix}{g}_{s}'.format(g=cellline.prefix, s=drug.prefix, view_prefix=prefix)

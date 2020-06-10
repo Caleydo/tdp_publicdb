@@ -10,7 +10,7 @@ import {gene, IDataSourceConfig, tissue, cellline, dataSources, dataTypes, dataS
 import {listNamedSetsAsOptions} from 'tdp_core/src/storage';
 import {previewFilterHint} from 'tdp_core/src/lineup';
 import {getTDPData, getTDPLookupUrl, IServerColumn} from 'tdp_core/src/rest';
-import {format, formatGene, search, searchGene, validate, validateGene, searchDrug, validateDrug, formatDrug} from './utils';
+import {format, formatGene, search, searchGene, validate, validateGene, searchDrug, validateDrug, formatDrug, searchDrugScreen, formatDrugScreen, validateDrugScreen} from './utils';
 
 /**
  * List of ids for parameter form elements
@@ -133,7 +133,7 @@ export const FORM_GENE_FILTER = {
     sessionKeySuffix: `-${getSelectedSpecies()}-gene`,
     defaultSelection: false,
     uniqueKeys: true,
-    badgeProvider: previewFilterHint(gene.db, 'gene', () => ({ filter_species: getSelectedSpecies()})),
+    badgeProvider: previewFilterHint(gene.db, 'gene', () => ({filter_species: getSelectedSpecies()})),
     entries: [{
       name: 'Bio Type',
       value: 'biotype',
@@ -150,7 +150,7 @@ export const FORM_GENE_FILTER = {
       type: FormElementType.SELECT2,
       multiple: true,
       return: 'id',
-      optionsData: cachedLazy(`${getSelectedSpecies()}_gene_strands`, () => getTDPData<{text: string|number}>(gene.db, `gene_unique_all`, {
+      optionsData: cachedLazy(`${getSelectedSpecies()}_gene_strands`, () => getTDPData<{text: string | number}>(gene.db, `gene_unique_all`, {
         column: 'strand',
         species: getSelectedSpecies()
       }).then((r) => r.map((d) => ({name: `${d.text === -1 ? 'reverse' : 'forward'} strand`, value: d.text}))))
@@ -160,7 +160,7 @@ export const FORM_GENE_FILTER = {
       type: FormElementType.SELECT2,
       multiple: true,
       return: 'id',
-      optionsData: cachedLazy(`${getSelectedSpecies()}_gene_chromosome`, () => getTDPData<{text: string|number}>(gene.db, `gene_unique_all`, {
+      optionsData: cachedLazy(`${getSelectedSpecies()}_gene_chromosome`, () => getTDPData<{text: string | number}>(gene.db, `gene_unique_all`, {
         column: 'chromosome',
         species: getSelectedSpecies()
       }).then((r) => r.map((d) => d.text.toString())))
@@ -236,10 +236,10 @@ function generateTissueSpecificFilter(d: IDataSourceConfig) {
       type: FormElementType.SELECT2,
       multiple: true,
       return: 'id',
-      optionsData: cachedLazy(`${d.base}_${getSelectedSpecies()}_vital_status`, () => getTDPData<{text: string|boolean}>(d.db, `${d.base}_unique_all`, {
+      optionsData: cachedLazy(`${d.base}_${getSelectedSpecies()}_vital_status`, () => getTDPData<{text: string | boolean}>(d.db, `${d.base}_unique_all`, {
         column: 'vital_status',
         species: getSelectedSpecies()
-      }).then((r) => r.map((d) => d.text === true? 'true' : 'false')))
+      }).then((r) => r.map((d) => d.text === true ? 'true' : 'false')))
     }
   ];
 }
@@ -302,9 +302,9 @@ function generateCelllineSpecificFilter(d: IDataSourceConfig) {
 
 function generateFilter(d: IDataSourceConfig) {
   let specificFilters = [];
-  if(d === tissue) {
+  if (d === tissue) {
     specificFilters = generateTissueSpecificFilter(d);
-  } else if(d === cellline) {
+  } else if (d === cellline) {
     specificFilters = generateCelllineSpecificFilter(d);
   }
   return {
@@ -314,7 +314,7 @@ function generateFilter(d: IDataSourceConfig) {
     useSession: true,
     options: {
       sessionKeySuffix: `-${getSelectedSpecies()}-${d.base}`,
-      badgeProvider: previewFilterHint(d.db, d.base, () => ({ filter_species: getSelectedSpecies()})),
+      badgeProvider: previewFilterHint(d.db, d.base, () => ({filter_species: getSelectedSpecies()})),
       defaultSelection: false,
       uniqueKeys: true,
       entries: [{
@@ -561,7 +561,7 @@ export const FORM_DATA_HIERARCHICAL_SUBTYPE_DRUG = {
 };
 
 export const DRUG_SCREEN_SCORE_FORM_ELEMENT = {
-  type: FormElementType.SELECT2,
+  type: FormElementType.SELECT3,
   label: 'Drug Screen',
   id: ParameterFormIds.SCREEN_TYPE,
   attributes: {
@@ -569,10 +569,10 @@ export const DRUG_SCREEN_SCORE_FORM_ELEMENT = {
   },
   required: true,
   options: {
-    data: drugScreen.screenTypes.map((screen) => ({
-      id: screen.id,
-      text: screen.text
-    }))
+    optionsData: [],
+    search: searchDrugScreen,
+    validate: validateDrugScreen,
+    format: formatDrugScreen
   },
   useSession: true
 };
