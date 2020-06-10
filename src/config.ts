@@ -215,13 +215,21 @@ export function chooseDataSource(desc: any): IDataSourceConfig {
   }
 }
 
+/**
+ * Interface for the screenTypes IDataTypeConfig
+ */
+interface IScreenTypes {
+  id: string;
+  text: string;
+}
+
 export interface IDataTypeConfig {
   id: string;
   name: string;
   tableName: string;
   query: string;
   dataSubtypes: IDataSubtypeConfig[];
-  screenTypes?: string[];
+  screenTypes?: IScreenTypes[];
 }
 
 /**
@@ -401,12 +409,12 @@ export const depletion: IDataTypeConfig = {
   ]
 };
 
-export const prismDrug: IDataTypeConfig = {
+export const drugScreen: IDataTypeConfig = {
   id: 'drug',
-  name: 'PRISM Drug Screen',
+  name: 'Drug Screen',
   tableName: 'drugscore',
   query: 'drug_score',
-  screenTypes: ['Prism', 'GDSC', 'CCLE'],
+  screenTypes: [{id: 'Prism', text: 'Prism (Prism drug repurposing screen)'}, {id: 'GDSC', text: 'GDSC (Genomics of Drug Sensitivity in Cancer)'}, {id: 'CCLE', text: 'CCLE (Cancer Cell Line Encyclopedia)'],
   dataSubtypes: [
     {
       id: 'actarea',
@@ -481,8 +489,8 @@ export function resolveDataTypes(dataTypeId: string, dataSubTypeId: string) {
     case depletion.id:
       dataType = depletion;
       break;
-    case prismDrug.id:
-      dataType = prismDrug;
+    case drugScreen.id:
+      dataType = drugScreen;
       break;
   }
   const dataSubType = dataType.dataSubtypes.find((element) => element.id === dataSubTypeId);

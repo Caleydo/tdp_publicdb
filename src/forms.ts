@@ -6,7 +6,7 @@ import {getSelectedSpecies} from 'tdp_gene/src/common';
 import {FORM_EXPRESSION_SUBTYPE_ID, FORM_COPYNUMBER_SUBTYPE_ID} from 'tdp_gene/src/forms';
 import {FormElementType, IFormElement, IFormSelectOption} from 'tdp_core/src/form';
 import {cachedLazy} from 'tdp_core/src/cached';
-import {gene, IDataSourceConfig, tissue, cellline, dataSources, dataTypes, dataSubtypes, depletion, drug, prismDrug} from './config';
+import {gene, IDataSourceConfig, tissue, cellline, dataSources, dataTypes, dataSubtypes, depletion, drugScreen} from './config';
 import {listNamedSetsAsOptions} from 'tdp_core/src/storage';
 import {previewFilterHint} from 'tdp_core/src/lineup';
 import {getTDPData, getTDPLookupUrl, IServerColumn} from 'tdp_core/src/rest';
@@ -552,8 +552,8 @@ export const FORM_DATA_HIERARCHICAL_SUBTYPE_DRUG = {
   },
   required: true,
   options: {
-    data: prismDrug.dataSubtypes.map((subtype) => ({
-      id: `${prismDrug.id}-${subtype.id}`,
+    data: drugScreen.dataSubtypes.map((subtype) => ({
+      id: `${drugScreen.id}-${subtype.id}`,
       text: subtype.name
     }))
   },
@@ -569,9 +569,9 @@ export const DRUG_SCREEN_SCORE_FORM_ELEMENT = {
   },
   required: true,
   options: {
-    data: prismDrug.screenTypes.map((screen) => ({
-      id: screen,
-      text: screen
+    data: drugScreen.screenTypes.map((screen) => ({
+      id: screen.id,
+      text: screen.text
     }))
   },
   useSession: true

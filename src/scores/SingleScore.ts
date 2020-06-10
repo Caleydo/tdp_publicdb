@@ -100,7 +100,7 @@ export function createScoreDialog(pluginDesc: IPluginDesc, extra: any, formDesc:
       formDesc.push(FORCE_COMPUTE_ALL_GENES);
       break;
     case drug:
-      formDesc.unshift(enableMultiple(FORM_DRUG_NAME));
+      formDesc.splice(1, 0, enableMultiple(FORM_DRUG_NAME));
       formDesc.push(FORCE_COMPUTE_ALL_CELLLINE);
       break;
   }
@@ -158,14 +158,14 @@ export function createScoreDialog(pluginDesc: IPluginDesc, extra: any, formDesc:
 }
 
 
-export function initializeScore(data: ISingleScoreParam, pluginDesc: IPluginDesc, singleScoreFactory: (parameter: ISingleScoreParam, dataSource: IDataSourceConfig, oppositeDataSource: IDataSourceConfig) => ASingleScore): IScore<number>|IScore<any>[] {
+export function initializeScore(data: ISingleScoreParam, pluginDesc: IPluginDesc, singleScoreFactory: (parameter: ISingleScoreParam, dataSource: IDataSourceConfig, oppositeDataSource: IDataSourceConfig) => ASingleScore): IScore<number> | IScore<any>[] {
   const {primary, opposite} = selectDataSources(pluginDesc);
   const configs = (<any>data).data_types;
   function defineScore(name: {id: string, text: string}) {
     if (configs) {
       return configs.map((ds) => singleScoreFactory({name, data_type: ds[0], data_subtype: ds[1], maxDirectFilterRows: data.maxDirectFilterRows}, primary, opposite));
     } else {
-      return singleScoreFactory(Object.assign({}, data, { name }), primary, opposite);
+      return singleScoreFactory(Object.assign({}, data, {name}), primary, opposite);
     }
   }
   if (Array.isArray(data.name)) {
@@ -180,7 +180,7 @@ export function create(pluginDesc: IPluginDesc, extra: any, countHint?: number) 
   return createScoreDialog(pluginDesc, extra, FORM_SINGLE_SCORE.slice(), countHint);
 }
 
-export function createScore(data: ISingleScoreParam, pluginDesc: IPluginDesc): IScore<number>|IScore<any>[] {
+export function createScore(data: ISingleScoreParam, pluginDesc: IPluginDesc): IScore<number> | IScore<any>[] {
   return initializeScore(data, pluginDesc, (parameter, dataSource, oppositeDataSource) => new SingleScore(parameter, dataSource, oppositeDataSource));
 }
 
@@ -190,7 +190,7 @@ export function createSingleDepletionScoreDialog(pluginDesc: IPluginDesc, extra:
   return createScoreDialog(pluginDesc, extra, FORM_SINGLE_SCORE_DEPLETION.slice(), countHint);
 }
 
-export function createSingleDepletionScore(data: ISingleScoreParam, pluginDesc: IPluginDesc): IScore<number>|IScore<any>[] {
+export function createSingleDepletionScore(data: ISingleScoreParam, pluginDesc: IPluginDesc): IScore<number> | IScore<any>[] {
   return initializeScore(data, pluginDesc, (parameter, dataSource, oppositeDataSource) => new SingleDepletionScore(parameter, dataSource, oppositeDataSource));
 }
 
