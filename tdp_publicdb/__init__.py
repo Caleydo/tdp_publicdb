@@ -17,7 +17,8 @@ def phovea(registry):
   registry.append('tdp-sql-database-migration', 'tdp_publicdb', '', {
     'scriptLocation': path.join(path.abspath(path.dirname(__file__)), 'migration'),
     'configKey': 'tdp_publicdb.migration',
-    'dbKey': 'publicdb'
+    'dbKey': 'publicdb',
+    'autoUpgrade': False
   })
   # generator-phovea:end
   pass

@@ -2,7 +2,7 @@
  * Created by sam on 06.03.2017.
  */
 
-import {IDataSubtypeConfig, dataSubtypes, cellline, tissue, gene, IDataSourceConfig, depletion} from '../config';
+import {IDataSubtypeConfig, dataSubtypes, cellline, tissue, gene, IDataSourceConfig, depletion, drug} from '../config';
 import {IPluginDesc} from 'phovea_core/src/plugin';
 import {FORM_GENE_FILTER, FORM_TISSUE_FILTER, FORM_CELLLINE_FILTER} from '../forms';
 import {toFilterString as toFilterStringImpl} from 'tdp_core/src/lineup';
@@ -69,7 +69,7 @@ export function createDesc(type: string, label: string, subtype: IDataSubtypeCon
 }
 
 function select(idType: string) {
-  return [gene, cellline, tissue].find((d) => d.idType === idType);
+  return [gene, cellline, tissue, drug].find((d) => d.idType === idType);
 }
 
 export function selectDataSources(pluginDesc: IPluginDesc) {
