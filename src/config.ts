@@ -242,7 +242,6 @@ export interface IDataSubtypeConfig {
 
   //type: 'cat';
   categories?: {label: string, name: string, color: string}[];
-  missingCategory?: string;
 
   //type: 'number';
   domain?: number[];
@@ -307,8 +306,7 @@ export const copyNumber: IDataTypeConfig = {
       type: dataSubtypes.cat,
       categories: toLineUpCategories(copyNumberCat),
       domain: [0, 100],
-      missingValue: NaN,
-      missingCategory: unknownCopyNumberValue,
+      missingValue: unknownCopyNumberValue,
       useForAggregation: 'copynumberclass'
     }
   ],
@@ -326,14 +324,16 @@ export const mutation: IDataTypeConfig = {
       name: 'AA Mutated',
       type: dataSubtypes.cat,
       categories: toLineUpCategories(mutationCat),
-      missingCategory: unknownMutationValue,
       useForAggregation: 'aa_mutated',
       domain: [0, 100],
-      missingValue: NaN
+      missingValue: unknownMutationValue
     },
     //just for single score:
     {
-      id: 'aamutation', name: 'AA Mutation', type: dataSubtypes.string, useForAggregation: '',
+      id: 'aamutation',
+      name: 'AA Mutation',
+      type: dataSubtypes.string,
+      useForAggregation: '',
       domain: [0, 100],
       missingValue: NaN
     },
@@ -342,14 +342,16 @@ export const mutation: IDataTypeConfig = {
       name: 'DNA Mutated',
       type: dataSubtypes.cat,
       categories: toLineUpCategories(mutationCat),
-      missingCategory: unknownMutationValue,
       useForAggregation: 'dna_mutated',
       domain: [0, 100],
-      missingValue: NaN
+      missingValue: unknownMutationValue
     },
     //just for single score:
     {
-      id: 'dnamutation', name: 'DNA Mutation', type: dataSubtypes.string, useForAggregation: '',
+      id: 'dnamutation',
+      name: 'DNA Mutation',
+      type: dataSubtypes.string,
+      useForAggregation: '',
       domain: [0, 100],
       missingValue: NaN
     },
