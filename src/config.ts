@@ -242,7 +242,6 @@ export interface IDataSubtypeConfig {
 
   //type: 'cat';
   categories?: {label: string, name: string, color: string}[];
-  missingCategory?: string;
 
   //type: 'number';
   domain?: number[];
