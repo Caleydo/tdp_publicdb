@@ -48,7 +48,7 @@ def create_drug_screen_sample(views, cellline, drug_screen):
         .call(inject_where) \
         .assign_ids() \
         .filter('drug_screen', '(lower(campaign) {operator} {value})') \
-        .build()    
+        .build()
 
 
 def create_drug_sample_score(views, cellline, drug, data, prefix='', callback=None):
