@@ -35,7 +35,7 @@ def create_drug(views, drug):
 
 def create_drug_screen_sample(views, cellline, drug_screen):
     views['drug_screen_items'] = DBViewBuilder('helper').idtype(cellline.idtype).query("""
-          SELECT campaign as id, campaignDesc as text
+          SELECT campaign as id, campaigndesc as text
             FROM {d.schema}.tdp_{d.table} d  WHERE (LOWER(campaign) LIKE :query)
           """.format(d=drug_screen)) \
         .assign_ids() \
@@ -43,7 +43,7 @@ def create_drug_screen_sample(views, cellline, drug_screen):
         .build()
 
     views['drug_screen_items_verify'] = DBViewBuilder('helper').idtype(cellline.idtype).query("""
-          SELECT campaign as id, campaignDesc as text
+          SELECT campaign as id, campaigndesc as text
           FROM {d.schema}.tdp_{d.table}""".format(d=drug_screen)) \
         .call(inject_where) \
         .assign_ids() \
