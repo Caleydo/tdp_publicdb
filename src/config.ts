@@ -306,7 +306,7 @@ export const copyNumber: IDataTypeConfig = {
       type: dataSubtypes.cat,
       categories: toLineUpCategories(copyNumberCat),
       domain: [0, 100],
-      missingValue: unknownMutationValue,
+      missingValue: unknownCopyNumberValue,
       useForAggregation: 'copynumberclass'
     }
   ],
