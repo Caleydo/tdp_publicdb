@@ -330,7 +330,8 @@ export const mutation: IDataTypeConfig = {
     },
     //just for single score:
     {
-      id: 'aamutation', name: 'AA Mutation',
+      id: 'aamutation',
+      name: 'AA Mutation',
       type: dataSubtypes.string,
       useForAggregation: '',
       domain: [0, 100],
@@ -347,7 +348,8 @@ export const mutation: IDataTypeConfig = {
     },
     //just for single score:
     {
-      id: 'dnamutation', name: 'DNA Mutation',
+      id: 'dnamutation',
+      name: 'DNA Mutation',
       type: dataSubtypes.string,
       useForAggregation: '',
       domain: [0, 100],
