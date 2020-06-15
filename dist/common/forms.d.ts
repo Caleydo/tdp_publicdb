@@ -1,10 +1,9 @@
 /**
  * Created by sam on 06.03.2017.
  */
-/// <reference types="select2" />
 import { FormElementType } from 'tdp_core';
 import { IDataSourceConfig } from './config';
-import { format, formatGene, searchGene, validateGene } from './utils';
+import { GeneUtils } from './GeneUtils';
 /**
  * List of ids for parameter form elements
  * Reuse this ids and activate the `useSession` option for form elements to have the same selectedIndex between different views
@@ -50,9 +49,9 @@ export declare const FORM_GENE_NAME: {
     required: boolean;
     options: {
         optionsData: any[];
-        search: typeof searchGene;
-        validate: typeof validateGene;
-        format: typeof formatGene;
+        search: typeof GeneUtils.searchGene;
+        validate: typeof GeneUtils.validateGene;
+        format: typeof GeneUtils.formatGene;
     };
     useSession: boolean;
 };
@@ -68,10 +67,10 @@ export declare const FORM_TISSUE_NAME: {
         optionsData: any[];
         search: (query: any, page: any, pageSize: any) => Promise<{
             more: boolean;
-            items: Readonly<IdTextPair>[];
+            items: Readonly<import("tdp_core").IdTextPair>[];
         }>;
-        validate: (query: any) => Promise<Readonly<IdTextPair>[]>;
-        format: typeof format;
+        validate: (query: any) => Promise<Readonly<import("tdp_core").IdTextPair>[]>;
+        format: typeof GeneUtils.format;
         tokenSeparators: RegExp;
         defaultTokenSeparator: string;
     };
@@ -89,10 +88,10 @@ export declare const FORM_CELLLINE_NAME: {
         optionsData: any[];
         search: (query: any, page: any, pageSize: any) => Promise<{
             more: boolean;
-            items: Readonly<IdTextPair>[];
+            items: Readonly<import("tdp_core").IdTextPair>[];
         }>;
-        validate: (query: any) => Promise<Readonly<IdTextPair>[]>;
-        format: typeof format;
+        validate: (query: any) => Promise<Readonly<import("tdp_core").IdTextPair>[]>;
+        format: typeof GeneUtils.format;
         tokenSeparators: RegExp;
         defaultTokenSeparator: string;
     };
@@ -146,9 +145,9 @@ export declare const FORM_GENE_FILTER: {
             value: string;
             type: FormElementType;
             multiple: boolean;
-            search: typeof searchGene;
-            validate: typeof validateGene;
-            format: typeof formatGene;
+            search: typeof GeneUtils.searchGene;
+            validate: typeof GeneUtils.validateGene;
+            format: typeof GeneUtils.formatGene;
             return?: undefined;
             optionsData?: undefined;
         })[];

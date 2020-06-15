@@ -9,7 +9,7 @@ import { gene, tissue, cellline, dataSources, dataTypes, dataSubtypes, depletion
 import { RestStorageUtils } from 'tdp_core';
 import { LineupUtils } from 'tdp_core';
 import { RestBaseUtils } from 'tdp_core';
-import { format, formatGene, search, searchGene, validate, validateGene } from './utils';
+import { GeneUtils } from './GeneUtils';
 /**
  * List of ids for parameter form elements
  * Reuse this ids and activate the `useSession` option for form elements to have the same selectedIndex between different views
@@ -64,9 +64,9 @@ export const FORM_GENE_NAME = {
     required: true,
     options: {
         optionsData: [],
-        search: searchGene,
-        validate: validateGene,
-        format: formatGene
+        search: GeneUtils.searchGene,
+        validate: GeneUtils.validateGene,
+        format: GeneUtils.formatGene
     },
     useSession: true
 };
@@ -81,9 +81,9 @@ function generateNameLookup(d, field) {
         required: true,
         options: {
             optionsData: [],
-            search: (query, page, pageSize) => search(d, query, page, pageSize),
-            validate: (query) => validate(d, query),
-            format,
+            search: (query, page, pageSize) => GeneUtils.search(d, query, page, pageSize),
+            validate: (query) => GeneUtils.validate(d, query),
+            format: GeneUtils.format,
             tokenSeparators: /[\r\n;,]+/mg,
             defaultTokenSeparator: ';'
         },
@@ -150,9 +150,9 @@ export const FORM_GENE_FILTER = {
                 value: 'ensg',
                 type: FormElementType.SELECT3,
                 multiple: true,
-                search: searchGene,
-                validate: validateGene,
-                format: formatGene,
+                search: GeneUtils.searchGene,
+                validate: GeneUtils.validateGene,
+                format: GeneUtils.formatGene,
             }]
     }
 };
@@ -333,9 +333,9 @@ function generateFilter(d) {
                     value: d.entityName,
                     type: FormElementType.SELECT3,
                     multiple: true,
-                    search: (query, page, pageSize) => search(d, query, page, pageSize),
-                    validate: (query) => validate(d, query),
-                    format,
+                    search: (query, page, pageSize) => GeneUtils.search(d, query, page, pageSize),
+                    validate: (query) => GeneUtils.validate(d, query),
+                    format: GeneUtils.format,
                     tokenSeparators: /[\r\n;,]+/mg,
                     defaultTokenSeparator: ';'
                 }]

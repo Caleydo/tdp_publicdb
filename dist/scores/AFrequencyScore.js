@@ -3,7 +3,7 @@
  */
 import { SpeciesUtils } from 'tdp_gene';
 import { dataSubtypes, mutation, MAX_FILTER_SCORE_ROWS_BEFORE_ALL } from '../common/config';
-import { createDesc, toFilterString } from './utils';
+import { ScoreUtils } from './ScoreUtils';
 import { AScore } from './AScore';
 import { FieldUtils } from 'tdp_gene';
 import { IDTypeManager } from 'phovea_core';
@@ -32,8 +32,8 @@ export class AFrequencyScore extends AScore {
         else if (!isMutation) {
             compare = ` ${this.parameter.comparison_operator} ${this.parameter.comparison_value}`;
         }
-        const desc = `${ds.name} Filter: ${toFilterString(this.parameter.filter, ds)}\nData Type: ${this.dataType.name}\nData Subtype: ${this.dataSubType.name}\nAggregation: ${this.countOnly ? 'Count' : 'Frequency'}${compare}`;
-        return createDesc(dataSubtypes.number, `${subtype.name}${compare} ${this.countOnly ? 'Count' : 'Frequency'}`, subtype, desc);
+        const desc = `${ds.name} Filter: ${ScoreUtils.toFilterString(this.parameter.filter, ds)}\nData Type: ${this.dataType.name}\nData Subtype: ${this.dataSubType.name}\nAggregation: ${this.countOnly ? 'Count' : 'Frequency'}${compare}`;
+        return ScoreUtils.createDesc(dataSubtypes.number, `${subtype.name}${compare} ${this.countOnly ? 'Count' : 'Frequency'}`, subtype, desc);
     }
     async compute(ids, idtype, namedSet) {
         const isMutation = this.dataType === mutation;

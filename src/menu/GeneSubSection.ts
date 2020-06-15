@@ -6,8 +6,8 @@ import {gene} from '../common/config';
 import {BaseUtils} from 'phovea_core';
 import {ACommonSubSection} from 'tdp_gene';
 import {IStartMenuSubSectionDesc} from 'tdp_gene';
-import {IStartMenuSectionOptions} from 'ordino/src/extensions';
-import {formatGene, searchGene, validateGene} from '../common/utils';
+import {IStartMenuSectionOptions} from 'ordino';
+import {GeneUtils} from '../common/GeneUtils';
 
 /**
  * Entry point list from all species and LineUp named sets (aka stored LineUp sessions)
@@ -21,9 +21,9 @@ export class GeneSubSection extends ACommonSubSection {
   protected searchOptions() {
     const base = super.searchOptions();
     return BaseUtils.mixin(base, {
-      search: searchGene,
-      validate: validateGene,
-      format: formatGene
+      search: GeneUtils.searchGene,
+      validate: GeneUtils.validateGene,
+      format: GeneUtils.formatGene
     });
   }
 }

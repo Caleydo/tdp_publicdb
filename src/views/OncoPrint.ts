@@ -7,7 +7,7 @@ import {IFormSelectDesc} from 'tdp_core';
 import {AOncoPrint, IDataFormatRow, ISample} from 'tdp_gene';
 import {SpeciesUtils} from 'tdp_gene';
 import {ParameterFormIds, FORM_TISSUE_OR_CELLLINE_FILTER, FORM_DATA_SOURCE} from '../common/forms';
-import {loadFirstName} from './utils';
+import {ViewUtils} from './ViewUtils';
 import {IDataSourceConfig} from '../common/config';
 import {IDTypeManager} from 'phovea_core';
 import {RestBaseUtils, IParams} from 'tdp_core';
@@ -52,6 +52,6 @@ export class OncoPrint extends AOncoPrint {
   }
 
   protected loadFirstName(ensg: string): Promise<string> {
-    return loadFirstName(ensg);
+    return ViewUtils.loadFirstName(ensg);
   }
 }

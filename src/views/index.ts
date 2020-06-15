@@ -1,3 +1,4 @@
+export * from './ViewUtils';
 export * from './ACombinedDependentTable';
 export * from './CelllineList';
 export * from './CoExpression';
@@ -13,4 +14,4 @@ export * from './GeneSymbolProxyView';
 export * from './InfoTable';
 export * from './OncoPrint';
 export * from './TissueList';
-export * from './utils';
+

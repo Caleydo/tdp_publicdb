@@ -5,7 +5,7 @@ import { IDTypeManager } from 'phovea_core';
 import { SpeciesUtils } from 'tdp_gene';
 import { MAX_FILTER_SCORE_ROWS_BEFORE_ALL } from '../common/config';
 import { FieldUtils } from 'tdp_gene';
-import { createDesc } from './utils';
+import { ScoreUtils } from './ScoreUtils';
 import { AScore } from './AScore';
 import { RestBaseUtils } from 'tdp_core';
 export class ASingleScore extends AScore {
@@ -19,7 +19,7 @@ export class ASingleScore extends AScore {
         return IDTypeManager.getInstance().resolveIdType(this.dataSource.idType);
     }
     createDesc() {
-        return Object.assign(createDesc(this.dataSubType.type, `${this.parameter.name.text}: ${this.dataSubType.name}`, this.dataSubType, `${this.oppositeDataSource.name} Name: "${this.parameter.name.text}"\nData Type: ${this.dataType.name}\nData Subtype: ${this.dataSubType.name}`), {
+        return Object.assign(ScoreUtils.createDesc(this.dataSubType.type, `${this.parameter.name.text}: ${this.dataSubType.name}`, this.dataSubType, `${this.oppositeDataSource.name} Name: "${this.parameter.name.text}"\nData Type: ${this.dataType.name}\nData Subtype: ${this.dataSubType.name}`), {
             scoreID: `dC${`${this.dataSubType.name} of ${this.parameter.name.text}`.replace(/\s+/, '')}` // column name that is stored in old provenance graphs
         });
     }

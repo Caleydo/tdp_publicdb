@@ -1,4 +1,4 @@
 export * from './config';
+export * from './GeneUtils';
 export * from './forms';
-export * from './utils';
 //# sourceMappingURL=index.js.map

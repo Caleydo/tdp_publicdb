@@ -7,7 +7,7 @@ import {ACoExpression, ICoExprDataFormatRow, IGeneOption} from 'tdp_gene';
 import {SpeciesUtils} from 'tdp_gene';
 import {expression, IDataSourceConfig, IDataSubtypeConfig} from '../common/config';
 import {ParameterFormIds, FORM_TISSUE_OR_CELLLINE_FILTER, FORM_DATA_SOURCE, FORM_COLOR_CODING} from '../common/forms';
-import {loadGeneList, loadFirstName} from './utils';
+import {ViewUtils} from './ViewUtils';
 import {IDTypeManager} from 'phovea_core';
 import {Range} from 'phovea_core';
 import {RestBaseUtils, IParams} from 'tdp_core';
@@ -41,7 +41,7 @@ export class CoExpression extends ACoExpression {
   }
 
   loadGeneList(ensgs: string[]) {
-    return loadGeneList(ensgs);
+    return ViewUtils.loadGeneList(ensgs);
   }
 
   loadData(ensg: string): Promise<ICoExprDataFormatRow[]> {
@@ -60,7 +60,7 @@ export class CoExpression extends ACoExpression {
   }
 
   loadFirstName(ensg: string) {
-    return loadFirstName(ensg);
+    return ViewUtils.loadFirstName(ensg);
   }
 
   protected getAttributeName() {

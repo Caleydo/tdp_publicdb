@@ -1,7 +1,7 @@
 import { gene, expression, copyNumber, mutation, } from '../common/config';
 import { ParameterFormIds, FORM_DATA_SOURCE, FORM_TISSUE_OR_CELLLINE_FILTER } from '../common/forms';
 import { ACombinedDependentTable } from './ACombinedDependentTable';
-import { loadFirstName } from './utils';
+import { ViewUtils } from './ViewUtils';
 export class CombinedDependentSampleTable extends ACombinedDependentTable {
     constructor(context, selection, parent, dataType) {
         super(context, selection, parent, dataType);
@@ -24,10 +24,10 @@ export class CombinedDependentSampleTable extends ACombinedDependentTable {
         super.parameterChanged(name);
     }
     getSelectionColumnLabel(ensg) {
-        return loadFirstName(ensg);
+        return ViewUtils.loadFirstName(ensg);
     }
-}
-export function createCombinedDependentSampleTable(context, selection, parent) {
-    return new CombinedDependentSampleTable(context, selection, parent, [copyNumber, expression, mutation]);
+    static createCombinedDependentSampleTable(context, selection, parent) {
+        return new CombinedDependentSampleTable(context, selection, parent, [copyNumber, expression, mutation]);
+    }
 }
 //# sourceMappingURL=CombinedDependentSampleTable.js.map

@@ -7,7 +7,7 @@ import {IDType} from 'phovea_core';
 import {SpeciesUtils} from 'tdp_gene';
 import {IDataSourceConfig, dataSubtypes, mutation, MAX_FILTER_SCORE_ROWS_BEFORE_ALL} from '../common/config';
 import {IScore} from 'tdp_core';
-import {createDesc, toFilterString} from './utils';
+import {ScoreUtils} from './ScoreUtils';
 import {AScore, ICommonScoreParam} from './AScore';
 import {FieldUtils} from 'tdp_gene';
 import {INamedSet} from 'tdp_core';
@@ -42,8 +42,8 @@ export abstract class AFrequencyScore extends AScore implements IScore<number> {
     } else if (!isMutation) {
       compare = ` ${this.parameter.comparison_operator} ${this.parameter.comparison_value}`;
     }
-    const desc = `${ds.name} Filter: ${toFilterString(this.parameter.filter, ds)}\nData Type: ${this.dataType.name}\nData Subtype: ${this.dataSubType.name}\nAggregation: ${this.countOnly ? 'Count' : 'Frequency'}${compare}`;
-    return createDesc(dataSubtypes.number, `${subtype.name}${compare} ${this.countOnly ? 'Count' : 'Frequency'}`, subtype, desc);
+    const desc = `${ds.name} Filter: ${ScoreUtils.toFilterString(this.parameter.filter, ds)}\nData Type: ${this.dataType.name}\nData Subtype: ${this.dataSubType.name}\nAggregation: ${this.countOnly ? 'Count' : 'Frequency'}${compare}`;
+    return ScoreUtils.createDesc(dataSubtypes.number, `${subtype.name}${compare} ${this.countOnly ? 'Count' : 'Frequency'}`, subtype, desc);
   }
 
   async compute(ids: RangeLike, idtype: IDType, namedSet?: INamedSet): Promise<any[]> {

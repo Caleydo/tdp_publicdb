@@ -16,7 +16,7 @@ export class GeneSymbolDetector {
     }
     static human() {
         return {
-            GeneSymbolDetector, : .detectIDType
+            detectIDType: GeneSymbolDetector.detectIDType
         };
     }
 }

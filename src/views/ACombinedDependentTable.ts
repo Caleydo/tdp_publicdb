@@ -9,7 +9,7 @@ import {ParameterFormIds, FORM_DATA_HIERARCHICAL_SUBTYPE} from '../common/forms'
 import {ARankingView} from 'tdp_core';
 import {RestBaseUtils, IParams, IServerColumn} from 'tdp_core';
 import {IAdditionalColumnDesc} from 'tdp_core';
-import {postProcessScore, subTypeDesc} from './utils';
+import {ViewUtils} from './ViewUtils';
 import {IScoreRow} from 'tdp_core';
 import {IDTypeManager} from 'phovea_core';
 import {LineupUtils, AdapterUtils} from 'tdp_core';
@@ -102,7 +102,7 @@ export abstract class ACombinedDependentTable extends ARankingView {
   protected async getSelectionColumnDesc(_id: number, name: string) {
     return Promise.resolve(this.getSelectionColumnLabel(name)).then((nlabel) => this.subTypes.map(({label, dataSubType, id}) => {
       const clabel = `${nlabel} (${label})`;
-      const desc = subTypeDesc(dataSubType, _id, clabel, `col_${id}`);
+      const desc = ViewUtils.subTypeDesc(dataSubType, _id, clabel, `col_${id}`);
       desc.selectedSubtype = id;
       return desc;
     }));
@@ -120,7 +120,7 @@ export abstract class ACombinedDependentTable extends ARankingView {
       return RestBaseUtils.getTDPScore(this.dataSource.db, `${this.oppositeDataSource.base}_${this.dataSource.base}_single_score`, Object.assign({
         table: dataType.tableName,
         attribute: dataSubType.id
-      }, param), filter).then(postProcessScore(dataSubType));
+      }, param), filter).then(ViewUtils.postProcessScore(dataSubType));
     });
   }
 }

@@ -2,7 +2,7 @@
  * Created by Marc Streit on 28.07.2016.
  */
 
-import {ARankingView, AdapterUtils} from 'tdp_core';
+import {ARankingView, AdapterUtils, IARankingViewOptions} from 'tdp_core';
 import {IScoreRow} from 'tdp_core';
 import {SpeciesUtils} from 'tdp_gene';
 import {
@@ -18,13 +18,13 @@ import {ParameterFormIds, FORM_GENE_FILTER} from '../common/forms';
 import {FormElementType} from 'tdp_core';
 import {ISelection, IViewContext, ResolveUtils} from 'tdp_core';
 import {RestBaseUtils, IServerColumn} from 'tdp_core';
-import {postProcessScore, subTypeDesc} from './utils';
+import {ViewUtils} from './ViewUtils';
 import {LineupUtils} from 'tdp_core';
 
 export class DependentGeneTable extends ARankingView {
   private readonly dataSource: IDataSourceConfig;
 
-  constructor(context: IViewContext, selection: ISelection, parent: HTMLElement, private readonly dataType: IDataTypeConfig, options = {}) {
+  constructor(context: IViewContext, selection: ISelection, parent: HTMLElement, private readonly dataType: IDataTypeConfig, options: Partial<IARankingViewOptions> = {}) {
     super(context, selection, parent, Object.assign({
       additionalScoreParameter: gene,
       itemName: gene.name,
@@ -64,7 +64,7 @@ export class DependentGeneTable extends ARankingView {
     return AdapterUtils.single({
       createDesc: async (_id: number, id: string) => {
         const ids = await ResolveUtils.resolveIds(this.selection.idtype, [_id], this.dataSource.idType);
-        return subTypeDesc(this.dataSubType, _id, ids[0]);
+        return ViewUtils.subTypeDesc(this.dataSubType, _id, ids[0]);
       },
       loadData: async (_id: number, id: string) => {
         const ids = await ResolveUtils.resolveIds(this.selection.idtype, [_id], this.dataSource.idType);
@@ -96,18 +96,18 @@ export class DependentGeneTable extends ARankingView {
       species: SpeciesUtils.getSelectedSpecies()
     };
     const filter = LineupUtils.toFilter(this.getParameter('filter'));
-    return RestBaseUtils.getTDPScore(gene.db, `gene_${this.dataSource.base}_single_score`, param, filter).then(postProcessScore(subType));
+    return RestBaseUtils.getTDPScore(gene.db, `gene_${this.dataSource.base}_single_score`, param, filter).then(ViewUtils.postProcessScore(subType));
   }
-}
 
-export function createExpressionDependentGeneTable(context: IViewContext, selection: ISelection, parent: HTMLElement, options?) {
-  return new DependentGeneTable(context, selection, parent, expression, options);
-}
+  static createExpressionDependentGeneTable(context: IViewContext, selection: ISelection, parent: HTMLElement, options?) {
+    return new DependentGeneTable(context, selection, parent, expression, options);
+  }
 
-export function createCopyNumberDependentGeneTable(context: IViewContext, selection: ISelection, parent: HTMLElement, options?) {
-  return new DependentGeneTable(context, selection, parent, copyNumber, options);
-}
+  static createCopyNumberDependentGeneTable(context: IViewContext, selection: ISelection, parent: HTMLElement, options?) {
+    return new DependentGeneTable(context, selection, parent, copyNumber, options);
+  }
 
-export function createMutationDependentGeneTable(context: IViewContext, selection: ISelection, parent: HTMLElement, options?) {
-  return new DependentGeneTable(context, selection, parent, mutation, options);
+  static createMutationDependentGeneTable(context: IViewContext, selection: ISelection, parent: HTMLElement, options?) {
+    return new DependentGeneTable(context, selection, parent, mutation, options);
+  }
 }

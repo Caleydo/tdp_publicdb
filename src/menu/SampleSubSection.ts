@@ -5,8 +5,8 @@
 import {chooseDataSource} from '../common/config';
 import {ACommonSubSection} from 'tdp_gene';
 import {IStartMenuSubSectionDesc} from 'tdp_gene';
-import {IStartMenuSectionOptions} from 'ordino/src/extensions';
-import {format, search, validate} from '../common/utils';
+import {IStartMenuSectionOptions} from 'ordino';
+import {GeneUtils} from '../common/GeneUtils';
 import {BaseUtils} from 'phovea_core';
 
 /**
@@ -20,9 +20,9 @@ export class SampleSubSection extends ACommonSubSection {
   protected searchOptions() {
     const base = super.searchOptions();
     return BaseUtils.mixin(base, {
-      search: (query, page, pageSize) => search(this.dataSource, query, page, pageSize),
-      validate: (query) => validate(this.dataSource, query),
-      format,
+      search: (query, page, pageSize) => GeneUtils.search(this.dataSource, query, page, pageSize),
+      validate: (query) => GeneUtils.validate(this.dataSource, query),
+      format: GeneUtils.format,
       tokenSeparators: /[\r\n;,]+/mg,
       defaultTokenSeparator: ';'
     });

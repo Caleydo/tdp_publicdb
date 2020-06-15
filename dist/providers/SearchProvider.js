@@ -3,13 +3,7 @@ import { cellline, gene, tissue } from '../common/config';
 import '../scss/idtype_color.scss';
 import { SpeciesUtils } from 'tdp_gene';
 import { RestBaseUtils } from 'tdp_core';
-export function createCellline() {
-    return new SearchProvider(cellline);
-}
-export function createTissue() {
-    return new SearchProvider(tissue);
-}
-class GeneSearchProvider extends SearchProvider {
+export class GeneSearchProvider extends SearchProvider {
     get searchView() {
         return `${this.dataSource.base}_gene_items`;
     }
@@ -25,8 +19,14 @@ class GeneSearchProvider extends SearchProvider {
             filter_symbol: query,
         }).then((data) => data.map(SearchProvider.mapItems));
     }
-}
-export function createGene() {
-    return new GeneSearchProvider(gene);
+    static createCellline() {
+        return new SearchProvider(cellline);
+    }
+    static createTissue() {
+        return new SearchProvider(tissue);
+    }
+    static createGene() {
+        return new GeneSearchProvider(gene);
+    }
 }
 //# sourceMappingURL=SearchProvider.js.map

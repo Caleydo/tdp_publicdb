@@ -2,7 +2,7 @@
  * Created by Holger Stitz on 06.12.2016.
  */
 import { ProxyView } from 'tdp_core';
-import { loadGeneList } from './utils';
+import { ViewUtils } from './ViewUtils';
 /**
  * helper view for proxying an existing external website
  */
@@ -13,7 +13,7 @@ export class GeneSymbolProxyView extends ProxyView {
         }
         try {
             const ids = await this.resolveSelection();
-            const geneList = await loadGeneList(ids);
+            const geneList = await ViewUtils.loadGeneList(ids);
             return geneList.map((d, i) => {
                 return {
                     name: `${d.symbol} (${d.id})`,

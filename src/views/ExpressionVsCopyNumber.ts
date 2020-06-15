@@ -9,7 +9,7 @@ import {Range} from 'phovea_core';
 import {expression, copyNumber, IDataSourceConfig} from '../common/config';
 import {ParameterFormIds, FORM_TISSUE_OR_CELLLINE_FILTER, FORM_DATA_SOURCE, FORM_COLOR_CODING} from '../common/forms';
 import {IDTypeManager} from 'phovea_core';
-import {loadFirstName} from './utils';
+import {ViewUtils} from './ViewUtils';
 import {RestBaseUtils, IParams} from 'tdp_core';
 import {LineupUtils} from 'tdp_core';
 
@@ -28,7 +28,7 @@ export class ExpressionVsCopyNumber extends AExpressionVsCopyNumber {
   }
 
   loadFirstName(ensg: string) {
-    return loadFirstName(ensg);
+    return ViewUtils.loadFirstName(ensg);
   }
 
   loadData(ensg: string): Promise<ICopyNumberDataFormatRow[]> {

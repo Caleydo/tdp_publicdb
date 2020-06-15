@@ -12,8 +12,8 @@ export class CombinedDependentGeneTable extends ACombinedDependentTable {
     getParameterFormDescs() {
         return super.getParameterFormDescs().concat([FORM_GENE_FILTER]);
     }
-}
-export function createCombinedDependentGeneTable(context, selection, parent) {
-    return new CombinedDependentGeneTable(context, selection, parent, [copyNumber, expression, mutation]);
+    static createCombinedDependentGeneTable(context, selection, parent) {
+        return new CombinedDependentGeneTable(context, selection, parent, [copyNumber, expression, mutation]);
+    }
 }
 //# sourceMappingURL=CombinedDependentGeneTable.js.map

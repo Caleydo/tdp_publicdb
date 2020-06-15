@@ -8,6 +8,7 @@ import {ICommonScoreParam} from './AScore';
 import {IParams} from 'tdp_core';
 import {AFrequencyScore} from './AFrequencyScore';
 
+
 interface IFrequencyScoreParam extends ICommonScoreParam {
   comparison_operator: string;
   comparison_value: number;

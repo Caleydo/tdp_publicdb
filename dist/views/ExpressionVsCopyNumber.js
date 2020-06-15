@@ -6,7 +6,7 @@ import { SpeciesUtils } from 'tdp_gene';
 import { expression, copyNumber } from '../common/config';
 import { ParameterFormIds, FORM_TISSUE_OR_CELLLINE_FILTER, FORM_DATA_SOURCE, FORM_COLOR_CODING } from '../common/forms';
 import { IDTypeManager } from 'phovea_core';
-import { loadFirstName } from './utils';
+import { ViewUtils } from './ViewUtils';
 import { RestBaseUtils } from 'tdp_core';
 import { LineupUtils } from 'tdp_core';
 export class ExpressionVsCopyNumber extends AExpressionVsCopyNumber {
@@ -21,7 +21,7 @@ export class ExpressionVsCopyNumber extends AExpressionVsCopyNumber {
         return this.getParameterData(ParameterFormIds.DATA_SOURCE);
     }
     loadFirstName(ensg) {
-        return loadFirstName(ensg);
+        return ViewUtils.loadFirstName(ensg);
     }
     loadData(ensg) {
         const ds = this.dataSource;

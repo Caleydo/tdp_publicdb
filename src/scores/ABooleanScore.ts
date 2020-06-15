@@ -2,7 +2,6 @@ import {IScore, IScoreRow} from 'tdp_core';
 import {IDTypeManager} from 'phovea_core';
 import {ColumnDescUtils} from 'tdp_core';
 import {RestBaseUtils} from 'tdp_core';
-import {ICommonScoreParam} from './AScore';
 import {IDataSourceConfig} from '../common/config';
 
 

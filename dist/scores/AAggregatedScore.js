@@ -3,7 +3,7 @@
  */
 import { SpeciesUtils } from 'tdp_gene';
 import { dataSubtypes, MAX_FILTER_SCORE_ROWS_BEFORE_ALL } from '../common/config';
-import { createDesc, toFilterString } from './utils';
+import { ScoreUtils } from './ScoreUtils';
 import { AScore } from './AScore';
 import { FieldUtils } from 'tdp_gene';
 import { IDTypeManager } from 'phovea_core';
@@ -21,11 +21,11 @@ export class AAggregatedScore extends AScore {
     }
     createDesc() {
         const ds = this.oppositeDataSource;
-        const desc = `${ds.name} Filter: ${toFilterString(this.parameter.filter, ds)}\nData Type: ${this.dataType.name}\nData Subtype: ${this.dataSubType.name}\nAggregation: ${this.parameter.aggregation}`;
+        const desc = `${ds.name} Filter: ${ScoreUtils.toFilterString(this.parameter.filter, ds)}\nData Type: ${this.dataType.name}\nData Subtype: ${this.dataSubType.name}\nAggregation: ${this.parameter.aggregation}`;
         if (this.parameter.aggregation === 'boxplot' || this.parameter.aggregation === 'numbers') {
-            return createDesc(this.parameter.aggregation, this.dataSubType.name, this.dataSubType, desc);
+            return ScoreUtils.createDesc(this.parameter.aggregation, this.dataSubType.name, this.dataSubType, desc);
         }
-        return createDesc(dataSubtypes.number, `${this.parameter.aggregation} ${this.dataSubType.name}`, this.dataSubType, desc);
+        return ScoreUtils.createDesc(dataSubtypes.number, `${this.parameter.aggregation} ${this.dataSubType.name}`, this.dataSubType, desc);
     }
     async compute(ids, idtype, namedSet) {
         const param = {

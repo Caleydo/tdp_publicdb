@@ -5,5 +5,5 @@ export declare class CombinedDependentGeneTable extends ACombinedDependentTable 
     constructor(context: IViewContext, selection: ISelection, parent: HTMLElement, dataType: IDataTypeConfig[]);
     protected get oppositeDataSource(): import("../common/config").IDataSourceConfig;
     protected getParameterFormDescs(): import("tdp_core").IFormElementDesc[];
+    static createCombinedDependentGeneTable(context: IViewContext, selection: ISelection, parent: HTMLElement): CombinedDependentGeneTable;
 }
-export declare function createCombinedDependentGeneTable(context: IViewContext, selection: ISelection, parent: HTMLElement): CombinedDependentGeneTable;

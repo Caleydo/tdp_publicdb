@@ -8,7 +8,7 @@ import { ParameterFormIds, FORM_GENE_FILTER } from '../common/forms';
 import { FormElementType } from 'tdp_core';
 import { ResolveUtils } from 'tdp_core';
 import { RestBaseUtils } from 'tdp_core';
-import { postProcessScore, subTypeDesc } from './utils';
+import { ViewUtils } from './ViewUtils';
 import { LineupUtils } from 'tdp_core';
 export class DependentGeneTable extends ARankingView {
     constructor(context, selection, parent, dataType, options = {}) {
@@ -47,7 +47,7 @@ export class DependentGeneTable extends ARankingView {
         return AdapterUtils.single({
             createDesc: async (_id, id) => {
                 const ids = await ResolveUtils.resolveIds(this.selection.idtype, [_id], this.dataSource.idType);
-                return subTypeDesc(this.dataSubType, _id, ids[0]);
+                return ViewUtils.subTypeDesc(this.dataSubType, _id, ids[0]);
             },
             loadData: async (_id, id) => {
                 const ids = await ResolveUtils.resolveIds(this.selection.idtype, [_id], this.dataSource.idType);
@@ -75,16 +75,16 @@ export class DependentGeneTable extends ARankingView {
             species: SpeciesUtils.getSelectedSpecies()
         };
         const filter = LineupUtils.toFilter(this.getParameter('filter'));
-        return RestBaseUtils.getTDPScore(gene.db, `gene_${this.dataSource.base}_single_score`, param, filter).then(postProcessScore(subType));
+        return RestBaseUtils.getTDPScore(gene.db, `gene_${this.dataSource.base}_single_score`, param, filter).then(ViewUtils.postProcessScore(subType));
     }
-}
-export function createExpressionDependentGeneTable(context, selection, parent, options) {
-    return new DependentGeneTable(context, selection, parent, expression, options);
-}
-export function createCopyNumberDependentGeneTable(context, selection, parent, options) {
-    return new DependentGeneTable(context, selection, parent, copyNumber, options);
-}
-export function createMutationDependentGeneTable(context, selection, parent, options) {
-    return new DependentGeneTable(context, selection, parent, mutation, options);
+    static createExpressionDependentGeneTable(context, selection, parent, options) {
+        return new DependentGeneTable(context, selection, parent, expression, options);
+    }
+    static createCopyNumberDependentGeneTable(context, selection, parent, options) {
+        return new DependentGeneTable(context, selection, parent, copyNumber, options);
+    }
+    static createMutationDependentGeneTable(context, selection, parent, options) {
+        return new DependentGeneTable(context, selection, parent, mutation, options);
+    }
 }
 //# sourceMappingURL=DependentGeneTable.js.map

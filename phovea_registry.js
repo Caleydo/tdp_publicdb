@@ -5,6 +5,7 @@
  **************************************************************************** */
 
 import {register} from 'phovea_core/src/plugin';
+import reg from './dist/phovea';
 
 /**
  * build a registry by registering all phovea modules
@@ -18,4 +19,4 @@ import 'ordino/phovea_registry.js';
 import 'dTiles/phovea_registry.js';
 /// #endif
 //self
-register('tdp_publicdb',require('./phovea.js'));
+register('tdp_publicdb',reg);

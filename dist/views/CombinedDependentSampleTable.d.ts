@@ -7,5 +7,5 @@ export declare class CombinedDependentSampleTable extends ACombinedDependentTabl
     protected getParameterFormDescs(): import("tdp_core").IFormElementDesc[];
     protected parameterChanged(name: string): void;
     protected getSelectionColumnLabel(ensg: string): Promise<string>;
+    static createCombinedDependentSampleTable(context: IViewContext, selection: ISelection, parent: HTMLElement): CombinedDependentSampleTable;
 }
-export declare function createCombinedDependentSampleTable(context: IViewContext, selection: ISelection, parent: HTMLElement): CombinedDependentSampleTable;

@@ -4,7 +4,7 @@
 import { AOncoPrint } from 'tdp_gene';
 import { SpeciesUtils } from 'tdp_gene';
 import { ParameterFormIds, FORM_TISSUE_OR_CELLLINE_FILTER, FORM_DATA_SOURCE } from '../common/forms';
-import { loadFirstName } from './utils';
+import { ViewUtils } from './ViewUtils';
 import { IDTypeManager } from 'phovea_core';
 import { RestBaseUtils } from 'tdp_core';
 import { LineupUtils } from 'tdp_core';
@@ -39,7 +39,7 @@ export class OncoPrint extends AOncoPrint {
         return RestBaseUtils.getTDPData(ds.db, `${ds.base}_onco_print`, RestBaseUtils.mergeParamAndFilters(param, LineupUtils.toFilter(this.getParameter('filter'))));
     }
     loadFirstName(ensg) {
-        return loadFirstName(ensg);
+        return ViewUtils.loadFirstName(ensg);
     }
 }
 //# sourceMappingURL=OncoPrint.js.map

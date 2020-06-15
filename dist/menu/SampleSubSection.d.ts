@@ -3,7 +3,7 @@
  */
 import { ACommonSubSection } from 'tdp_gene';
 import { IStartMenuSubSectionDesc } from 'tdp_gene';
-import { IStartMenuSectionOptions } from 'ordino/src/extensions';
+import { IStartMenuSectionOptions } from 'ordino';
 /**
  * Entry point list from all species and LineUp named sets (aka stored LineUp sessions)
  */

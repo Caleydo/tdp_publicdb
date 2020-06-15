@@ -8,7 +8,7 @@ import { ParameterFormIds, FORM_DATA_SOURCE, FORM_TISSUE_OR_CELLLINE_FILTER } fr
 import { FormElementType } from 'tdp_core';
 import { RestBaseUtils } from 'tdp_core';
 import { IDTypeManager } from 'phovea_core';
-import { loadFirstName, postProcessScore, subTypeDesc } from './utils';
+import { ViewUtils } from './ViewUtils';
 import { LineupUtils } from 'tdp_core';
 export class DependentSampleTable extends ARankingView {
     constructor(context, selection, parent, dataType, options = {}) {
@@ -54,7 +54,7 @@ export class DependentSampleTable extends ARankingView {
     }
     createSelectionAdapter() {
         return AdapterUtils.single({
-            createDesc: (_id, id) => loadFirstName(id).then((label) => subTypeDesc(this.dataSubType, _id, label)),
+            createDesc: (_id, id) => ViewUtils.loadFirstName(id).then((label) => ViewUtils.subTypeDesc(this.dataSubType, _id, label)),
             loadData: (_id, id) => this.loadSelectionColumnData(id)
         });
     }
@@ -77,16 +77,16 @@ export class DependentSampleTable extends ARankingView {
             species: SpeciesUtils.getSelectedSpecies()
         };
         const filter = LineupUtils.toFilter(this.getParameter('filter'));
-        return RestBaseUtils.getTDPScore(dataSource.db, `${dataSource.base}_gene_single_score`, param, filter).then(postProcessScore(subType));
+        return RestBaseUtils.getTDPScore(dataSource.db, `${dataSource.base}_gene_single_score`, param, filter).then(ViewUtils.postProcessScore(subType));
     }
-}
-export function createExpressionDependentSampleTable(context, selection, parent, options) {
-    return new DependentSampleTable(context, selection, parent, expression, options);
-}
-export function createCopyNumberDependentSampleTable(context, selection, parent, options) {
-    return new DependentSampleTable(context, selection, parent, copyNumber, options);
-}
-export function createMutationDependentSampleTable(context, selection, parent, options) {
-    return new DependentSampleTable(context, selection, parent, mutation, options);
+    static createExpressionDependentSampleTable(context, selection, parent, options) {
+        return new DependentSampleTable(context, selection, parent, expression, options);
+    }
+    static createCopyNumberDependentSampleTable(context, selection, parent, options) {
+        return new DependentSampleTable(context, selection, parent, copyNumber, options);
+    }
+    static createMutationDependentSampleTable(context, selection, parent, options) {
+        return new DependentSampleTable(context, selection, parent, mutation, options);
+    }
 }
 //# sourceMappingURL=DependentSampleTable.js.map

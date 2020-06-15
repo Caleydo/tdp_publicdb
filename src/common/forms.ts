@@ -10,7 +10,7 @@ import {gene, IDataSourceConfig, tissue, cellline, dataSources, dataTypes, dataS
 import {RestStorageUtils} from 'tdp_core';
 import {LineupUtils} from 'tdp_core';
 import {RestBaseUtils, IServerColumn} from 'tdp_core';
-import {format, formatGene, search, searchGene, validate, validateGene} from './utils';
+import {GeneUtils} from './GeneUtils';
 
 /**
  * List of ids for parameter form elements
@@ -72,9 +72,9 @@ export const FORM_GENE_NAME = {
   required: true,
   options: {
     optionsData: [],
-    search: searchGene,
-    validate: validateGene,
-    format: formatGene
+    search: GeneUtils.searchGene,
+    validate: GeneUtils.validateGene,
+    format: GeneUtils.formatGene
   },
   useSession: true
 };
@@ -90,9 +90,9 @@ function generateNameLookup(d: IDataSourceConfig, field: string) {
     required: true,
     options: {
       optionsData: [],
-      search: (query, page, pageSize) => search(d, query, page, pageSize),
-      validate: (query) => validate(d, query),
-      format,
+      search: (query, page, pageSize) => GeneUtils.search(d, query, page, pageSize),
+      validate: (query) => GeneUtils.validate(d, query),
+      format: GeneUtils.format,
       tokenSeparators: /[\r\n;,]+/mg,
       defaultTokenSeparator: ';'
     },
@@ -162,9 +162,9 @@ export const FORM_GENE_FILTER = {
       value: 'ensg',
       type: FormElementType.SELECT3,
       multiple: true,
-      search: searchGene,
-      validate: validateGene,
-      format: formatGene,
+      search: GeneUtils.searchGene,
+      validate: GeneUtils.validateGene,
+      format: GeneUtils.formatGene,
     }]
   }
 };
@@ -347,9 +347,9 @@ function generateFilter(d: IDataSourceConfig) {
         value: d.entityName,
         type: FormElementType.SELECT3,
         multiple: true,
-        search: (query, page, pageSize) => search(d, query, page, pageSize),
-        validate: (query) => validate(d, query),
-        format,
+        search: (query, page, pageSize) => GeneUtils.search(d, query, page, pageSize),
+        validate: (query) => GeneUtils.validate(d, query),
+        format: GeneUtils.format,
         tokenSeparators: /[\r\n;,]+/mg,
         defaultTokenSeparator: ';'
       }]

@@ -6,7 +6,7 @@ import { ACoExpression } from 'tdp_gene';
 import { SpeciesUtils } from 'tdp_gene';
 import { expression } from '../common/config';
 import { ParameterFormIds, FORM_TISSUE_OR_CELLLINE_FILTER, FORM_DATA_SOURCE, FORM_COLOR_CODING } from '../common/forms';
-import { loadGeneList, loadFirstName } from './utils';
+import { ViewUtils } from './ViewUtils';
 import { IDTypeManager } from 'phovea_core';
 import { RestBaseUtils } from 'tdp_core';
 import { LineupUtils } from 'tdp_core';
@@ -34,7 +34,7 @@ export class CoExpression extends ACoExpression {
         return this.getParameterData(ParameterFormIds.EXPRESSION_SUBTYPE);
     }
     loadGeneList(ensgs) {
-        return loadGeneList(ensgs);
+        return ViewUtils.loadGeneList(ensgs);
     }
     loadData(ensg) {
         const ds = this.dataSource;
@@ -50,7 +50,7 @@ export class CoExpression extends ACoExpression {
         return RestBaseUtils.getTDPData(ds.db, `${ds.base}_co_expression${!color ? '_plain' : ''}/filter`, RestBaseUtils.mergeParamAndFilters(param, LineupUtils.toFilter(this.getParameter('filter'))));
     }
     loadFirstName(ensg) {
-        return loadFirstName(ensg);
+        return ViewUtils.loadFirstName(ensg);
     }
     getAttributeName() {
         return this.dataSubType.name;

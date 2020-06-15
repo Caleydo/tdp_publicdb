@@ -3,9 +3,9 @@
  */
 import { IDataSourceConfig } from '../common/config';
 import { IScore } from 'tdp_core';
-import { IFormElementDesc } from 'tdp_core';
 import { IPluginDesc } from 'phovea_core';
 import { ASingleScore } from './ASingleScore';
+import { IParams } from 'tdp_core';
 interface ISingleScoreParam {
     name: {
         id: string;
@@ -18,10 +18,15 @@ interface ISingleScoreParam {
      */
     maxDirectFilterRows?: number;
 }
-export declare function createScoreDialog(pluginDesc: IPluginDesc, extra: any, formDesc: IFormElementDesc[], countHint?: number): Promise<any>;
-export declare function initializeScore(data: ISingleScoreParam, pluginDesc: IPluginDesc, singleScoreFactory: (parameter: ISingleScoreParam, dataSource: IDataSourceConfig, oppositeDataSource: IDataSourceConfig) => ASingleScore): IScore<number> | IScore<any>[];
-export declare function create(pluginDesc: IPluginDesc, extra: any, countHint?: number): Promise<any>;
-export declare function createScore(data: ISingleScoreParam, pluginDesc: IPluginDesc): IScore<number> | IScore<any>[];
-export declare function createSingleDepletionScoreDialog(pluginDesc: IPluginDesc, extra: any, countHint?: number): Promise<any>;
-export declare function createSingleDepletionScore(data: ISingleScoreParam, pluginDesc: IPluginDesc): IScore<number> | IScore<any>[];
+export declare class SingleScore extends ASingleScore implements IScore<any> {
+    constructor(parameter: ISingleScoreParam, dataSource: IDataSourceConfig, oppositeDataSource: IDataSourceConfig);
+    protected getViewPrefix(): string;
+    static createScore(data: ISingleScoreParam, pluginDesc: IPluginDesc): IScore<number> | IScore<any>[];
+}
+export declare class SingleDepletionScore extends ASingleScore implements IScore<any> {
+    constructor(parameter: ISingleScoreParam, dataSource: IDataSourceConfig, oppositeDataSource: IDataSourceConfig);
+    protected getViewPrefix(): string;
+    protected createFilter(): IParams;
+    static createSingleDepletionScore(data: ISingleScoreParam, pluginDesc: IPluginDesc): IScore<number> | IScore<any>[];
+}
 export {};
