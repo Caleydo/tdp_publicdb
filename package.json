@@ -55,7 +55,7 @@
     "test:web": "jest --passWithNoTests",
     "test:python": "test ! $(find tests -name \"*.py\") || python setup.py test",
     "predist:web": "npm run build:web && npm run docs:web",
-    "dist:web": "mkdir dist && cd build && tar cvzf ../dist/tdp_publicdb.tar.gz *",
+    "dist:web": "mkdir lib && cd dist && tar cvzf ../lib/tdp_publicdb.tar.gz *",
     "dist:python": "python setup.py bdist_egg",
     "predocker": "npm run build",
     "docker": "docker build -t tdp_publicdb -f deploy/Dockerfile .",
