@@ -37,6 +37,7 @@
     "predist": "echo hybrid",
     "dist": "npm run dist:web && npm run dist:python",
     "compile": "tsc",
+    "compile:watch": "tsc -w",
     "lint": "tslint -c tslint.json -p . 'src/**/*.ts?(x)' 'tests/**/*.ts?(x)'",
     "docs": "npm run docs:web && npm run docs:python",
     "prebuild": "echo hybrid",

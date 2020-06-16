@@ -13,7 +13,6 @@
     "experimentalDecorators": true,
     "noImplicitAny": false,
     "skipLibCheck": true,
-    
     "esModuleInterop": false,
     "resolveJsonModule": true,
     "allowSyntheticDefaultImports": true
