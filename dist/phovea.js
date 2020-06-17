@@ -229,7 +229,7 @@ module.exports = function (registry) {
         /// #endif
     }
     registry.push('tdpView', 'celllinedb_cellline', function () {
-        return import('./views/CelllineList');
+        return import('./views/CelllineList').then((c) => c.CelllineList);
     }, {
         name: 'Cell lines',
         idtype: 'Cellline',
@@ -237,7 +237,7 @@ module.exports = function (registry) {
         sampleType: 'Cellline'
     });
     registry.push('tdpView', 'bioinfodb_tissue_start', function () {
-        return import('./views/TissueList');
+        return import('./views/TissueList').then((t) => t.TissueList);
     }, {
         name: 'Tissues',
         idtype: 'Tissue',
@@ -246,7 +246,7 @@ module.exports = function (registry) {
     });
     // cellline views
     registry.push('tdpView', 'cosmic', function () {
-        return import('./views/CosmicProxyView');
+        return import('./views/CosmicProxyView').then((c) => c.CosmicProxyView);
     }, {
         name: 'COSMIC',
         site: '//cancer.sanger.ac.uk/cell_lines/sample/overview?id={cosmicid}&genome=38',
@@ -271,7 +271,7 @@ module.exports = function (registry) {
         const plain = idType.toLowerCase();
         const label = idType === 'Tissue' ? 'Tissues' : 'Cell lines';
         registry.push('tdpView', plain + '_inverted_expressiontable', function () {
-            return import('./views/DependentGeneTable');
+            return import('./views/DependentGeneTable').then((d) => d.DependentGeneTable);
         }, {
             name: 'Expression',
             factory: 'createExpressionTable',
@@ -289,7 +289,7 @@ module.exports = function (registry) {
             topics: ['tcga', plain, 'expression']
         });
         registry.push('tdpView', plain + '_inverted_copynumbertable', function () {
-            return import('./views/DependentGeneTable');
+            return import('./views/DependentGeneTable').then((d) => d.DependentGeneTable);
         }, {
             name: 'Copy Number',
             factory: 'createCopyNumberTable',
@@ -307,7 +307,7 @@ module.exports = function (registry) {
             topics: ['tcga', plain, 'copy-number']
         });
         registry.push('tdpView', plain + '_inverted_mutationtable', function () {
-            return import('./views/DependentGeneTable');
+            return import('./views/DependentGeneTable').then((d) => d.DependentGeneTable);
         }, {
             name: 'Mutation',
             factory: 'createMutationTable',
@@ -325,7 +325,7 @@ module.exports = function (registry) {
             topics: ['tcga', plain, 'mutation']
         });
         registry.push('tdpView', plain + '_combined_lineup', function () {
-            return import('./views/CombinedDependentGeneTable');
+            return import('./views/CombinedDependentGeneTable').then((c) => c.CombinedDependentGeneTable);
         }, {
             name: 'Combined View',
             idtype: idType,
@@ -344,7 +344,7 @@ module.exports = function (registry) {
             topics: ['tcga', plain, 'expression', 'copy-number', 'mutation']
         });
         registry.push('tdpView', plain + '_generic_detail_view', function () {
-            return import('./views/InfoTable');
+            return import('./views/InfoTable').then((i) => i.AInfoTable);
         }, {
             name: 'Database Info',
             factory: 'new ' + idType + 'InfoTable',
@@ -362,7 +362,7 @@ module.exports = function (registry) {
         });
         /// #if include('dTiles')
         registry.push('dTilesSearchProvider', idType.toLowerCase(), function () {
-            return import('./providers/SearchProvider');
+            return import('./providers/SearchProvider').then((s) => s.GeneSearchProvider);
         }, {
             factory: 'create' + idType,
             idType,
@@ -370,7 +370,7 @@ module.exports = function (registry) {
         });
         /// #endif
         registry.push('idTypeDetector', plain + 'IDTypeDetector', function () {
-            return import('./detectors/IDTypeDetector');
+            return import('./detectors/IDTypeDetector').then((i) => i.IDTypeDetector);
         }, {
             factory: 'create',
             name: label + ' IDType Detector',
@@ -386,7 +386,7 @@ module.exports = function (registry) {
         const prefix = 'gene_' + oppositeIDType.toLowerCase();
         const label = oppositeIDType === 'Tissue' ? 'Tissue Sample' : 'Cell Line';
         registry.push('tdpScore', prefix + '_single_score', function () {
-            return import('./scores/SingleScore');
+            return import('./scores/SingleScore').then((s) => s.SingleScore);
         }, {
             name: label + ' Score (Single)',
             idtype: 'Ensembl',
@@ -394,14 +394,14 @@ module.exports = function (registry) {
             oppositeType: oppositeIDType
         });
         registry.push('tdpScoreImpl', prefix + '_single_score', function () {
-            return import('./scores/SingleScore');
+            return import('./scores/SingleScore').then((s) => s.SingleScore);
         }, {
             factory: 'createScore',
             primaryType: 'Ensembl',
             oppositeType: oppositeIDType
         });
         registry.push('tdpScore', prefix + '_aggregated_score', function () {
-            return import('./scores');
+            return import('./scores/AggregatedScore').then((s) => s.AggregatedScore);
         }, {
             name: label + ' Score (Aggregated)',
             idtype: 'Ensembl',
@@ -409,7 +409,7 @@ module.exports = function (registry) {
             oppositeType: oppositeIDType
         });
         registry.push('tdpScoreImpl', prefix + '_aggregated_score', function () {
-            return import('./scores');
+            return import('./scores/AggregatedScore').then((s) => s.AggregatedScore);
         }, {
             factory: 'createScore',
             primaryType: 'Ensembl',
@@ -420,7 +420,7 @@ module.exports = function (registry) {
     ['Cellline', 'Tissue'].forEach(function (idType) {
         const prefix = idType.toLowerCase() + '_gene';
         registry.push('tdpScore', prefix + '_single_score', function () {
-            return import('./scores/SingleScore');
+            return import('./scores/SingleScore').then((s) => s.SingleScore);
         }, {
             name: 'Gene Score (Single)',
             idtype: idType,
@@ -428,14 +428,14 @@ module.exports = function (registry) {
             oppositeType: 'Ensembl'
         });
         registry.push('tdpScoreImpl', prefix + '_single_score', function () {
-            return import('./scores/SingleScore');
+            return import('./scores/SingleScore').then((s) => s.SingleScore);
         }, {
             factory: 'createScore',
             primaryType: idType,
             oppositeType: 'Ensembl'
         });
         registry.push('tdpScore', prefix + '_aggregated_score', function () {
-            return import('./scores');
+            return import('./scores/AggregatedScore').then((s) => s.AggregatedScore);
         }, {
             name: 'Gene Score (Aggregated)',
             idtype: idType,
@@ -443,7 +443,7 @@ module.exports = function (registry) {
             oppositeType: 'Ensembl'
         });
         registry.push('tdpScoreImpl', prefix + '_aggregated_score', function () {
-            return import('./scores');
+            return import('./scores/SingleScore').then((s) => s.SingleScore);
         }, {
             factory: 'createScore',
             primaryType: idType,
@@ -478,7 +478,7 @@ module.exports = function (registry) {
         ]
     });
     registry.push('tdpView', 'pubmed', function () {
-        return import('./views/GeneSymbolProxyView');
+        return import('./views/GeneSymbolProxyView').then((g) => g.GeneSymbolProxyView);
     }, {
         name: 'PubMed',
         factory: 'new',
@@ -499,7 +499,7 @@ module.exports = function (registry) {
     ['Cellline'].forEach(function (idType) {
         const prefix = idType.toLowerCase() + '_gene';
         registry.push('tdpScore', prefix + '_depletion_single_score', function () {
-            return import('./scores/SingleScore');
+            return import('./scores/SingleScoreDialog').then((s) => s.SingleScoreDialog);
         }, {
             name: 'Depletion Screen Score (Single)',
             idtype: idType,
@@ -508,14 +508,14 @@ module.exports = function (registry) {
             factory: 'createSingleDepletionScoreDialog'
         });
         registry.push('tdpScoreImpl', prefix + '_depletion_single_score', function () {
-            return import('./scores/SingleScore');
+            return import('./scores/SingleScore').then((s) => s.SingleDepletionScore);
         }, {
             factory: 'createSingleDepletionScore',
             primaryType: idType,
             oppositeType: 'Ensembl'
         });
         registry.push('tdpScore', prefix + '_depletion_aggregated_score', function () {
-            return import('./scores');
+            return import('./scores/AggregateScoreDialog').then((a) => a.AggregateScoreDialog);
         }, {
             name: 'Depletion Screen Score (Aggregated)',
             idtype: idType,
@@ -524,7 +524,7 @@ module.exports = function (registry) {
             factory: 'createAggregatedDepletionScoreDialog'
         });
         registry.push('tdpScoreImpl', prefix + '_depletion_aggregated_score', function () {
-            return import('./scores');
+            return import('./scores/AggregatedScore').then((a) => a.AggregatedDepletionScore);
         }, {
             primaryType: idType,
             oppositeType: 'Ensembl',
@@ -535,7 +535,7 @@ module.exports = function (registry) {
     ['Cellline'].forEach(function (oppositeIDType) {
         const prefix = 'gene_' + oppositeIDType.toLowerCase();
         registry.push('tdpScore', prefix + '_depletion_single_score', function () {
-            return import('./scores/SingleScore');
+            return import('./scores/SingleScoreDialog').then((s) => s.SingleScoreDialog);
         }, {
             name: 'Depletion Screen Score (Single)',
             idtype: 'Ensembl',
@@ -544,14 +544,14 @@ module.exports = function (registry) {
             factory: 'createSingleDepletionScoreDialog'
         });
         registry.push('tdpScoreImpl', prefix + '_depletion_single_score', function () {
-            return import('./scores/SingleScore');
+            return import('./scores/SingleScore').then((s) => s.SingleDepletionScore);
         }, {
             factory: 'createSingleDepletionScore',
             primaryType: 'Ensembl',
             oppositeType: oppositeIDType
         });
         registry.push('tdpScore', prefix + '_depletion_aggregated_score', function () {
-            return import('./scores');
+            return import('./scores/AggregateScoreDialog').then((a) => a.AggregateScoreDialog);
         }, {
             name: 'Depletion Screen Score (Aggregated)',
             idtype: 'Ensembl',
@@ -560,7 +560,7 @@ module.exports = function (registry) {
             factory: 'createAggregatedDepletionScoreDialog'
         });
         registry.push('tdpScoreImpl', prefix + '_depletion_aggregated_score', function () {
-            return import('./scores');
+            return import('./scores/AggregatedScore').then((a) => a.AggregatedDepletionScore);
         }, {
             primaryType: 'Ensembl',
             oppositeType: oppositeIDType,
@@ -572,20 +572,20 @@ module.exports = function (registry) {
         const prefix = idType.toLowerCase();
         const label = idType === 'Ensembl' ? 'Gene Set' : (idType === 'Tissue' ? idType : 'Cell Line') + ' Panel';
         registry.push('tdpScore', prefix + 'AnnotationColumn', function () {
-            return import('./scores/AnnotationColumn');
+            return import('./scores/AnnotationColumn').then((a) => a.AnnotationColumn);
         }, {
             'idtype': idType,
             'name': label + ' Annotation'
         });
         registry.push('tdpScoreImpl', prefix + 'AnnotationColumn', function () {
-            return import('./scores/AnnotationColumn');
+            return import('./scores/AnnotationColumn').then((a) => a.AnnotationColumn);
         }, {
             'factory': 'createScore',
             'primaryType': idType
         });
     });
     /// #if include('ordino')
-    registry.push('tdpTour', 'ordinoWelcome', function () { return import('./tours'); }, {
+    registry.push('tdpTour', 'ordinoWelcome', function () { return import('./tours').then((t) => t.createTour); }, {
         name: 'Ordino Welcome Tour',
         multiPage: true,
         level: 'beginner',
