@@ -495,10 +495,10 @@ module.exports = function (registry) {
         ]
     });
     registry.push('tdpView', 'pubmed', function () {
-        return import('./views/GeneSymbolProxyView').then((g) => g.GeneSymbolProxyView);
+        return import('./views/GeneSymbolProxyView');
     }, {
         name: 'PubMed',
-        factory: 'new',
+        factory: 'new GeneSymbolProxyView',
         site: '//www.ncbi.nlm.nih.gov/pubmed?term={gene}',
         argument: 'gene',
         idtype: 'Ensembl',
