@@ -9,8 +9,9 @@ module.exports = function (registry) {
     // generator-phovea:begin
     /// #if include('ordino')
     registry.push('ordinoStartMenuSubSection', 'celllinedb_genes_start', function () {
-        return import('./menu/GeneSubSection').then((g) => g.GeneSubSection);
+        return import('./menu/GeneSubSection');
     }, {
+        factory: 'new GeneSubSection',
         name: 'Genes',
         viewId: 'celllinedb_start',
         idType: 'Ensembl',
@@ -19,8 +20,9 @@ module.exports = function (registry) {
         cssClass: 'gene-entry-point'
     });
     registry.push('ordinoStartMenuSubSection', 'bioinfodb_tissue_start', function () {
-        return import('./menu/SampleSubSection').then((s) => s.SampleSubSection);
+        return import('./menu/SampleSubSection');
     }, {
+        factory: 'new SampleSubSection',
         name: 'Tissues',
         viewId: 'bioinfodb_tissue_start',
         idType: 'Tissue',
@@ -30,8 +32,9 @@ module.exports = function (registry) {
         cssClass: 'tissue-entry-point'
     });
     registry.push('ordinoStartMenuSubSection', 'celllinedb_cellline_start', function () {
-        return import('./menu/SampleSubSection').then((s) => s.SampleSubSection);
+        return import('./menu/SampleSubSection');
     }, {
+        factory: 'new SampleSubSection',
         name: 'Cell Lines',
         viewId: 'celllinedb_cellline',
         idType: 'Cellline',
@@ -43,8 +46,9 @@ module.exports = function (registry) {
     //gene views
     {
         registry.push('tdpView', 'celllinedb_start', function () {
-            return import('./views/GeneList').then((g) => g.GeneList);
+            return import('./views/GeneList');
         }, {
+            factory: 'new GeneList',
             name: 'Genes',
             idtype: 'Ensembl',
             selection: 'none'
@@ -53,7 +57,7 @@ module.exports = function (registry) {
             return import('./views/DependentSampleTable').then((d) => d.DependentSampleTable);
         }, {
             name: 'Expression',
-            factory: 'createExpressionTable',
+            factory: 'createExpressionDependentSampleTable',
             idtype: 'Ensembl',
             selection: 'some',
             preview() {
@@ -70,7 +74,7 @@ module.exports = function (registry) {
             return import('./views/DependentSampleTable').then((d) => d.DependentSampleTable);
         }, {
             name: 'Copy Number',
-            factory: 'createCopyNumberTable',
+            factory: 'createCopyNumberDependentSampleTable',
             idtype: 'Ensembl',
             selection: 'some',
             preview() {
@@ -87,7 +91,7 @@ module.exports = function (registry) {
             return import('./views/DependentSampleTable').then((d) => d.DependentSampleTable);
         }, {
             name: 'Mutation',
-            factory: 'createMutationTable',
+            factory: 'createMutationDependentSampleTable',
             idtype: 'Ensembl',
             selection: 'some',
             preview() {
@@ -101,7 +105,7 @@ module.exports = function (registry) {
             topics: ['tcga', 'tissue', 'cellline', 'mutation']
         });
         registry.push('tdpView', 'gene_generic_detail_view', function () {
-            return import('./views/InfoTable').then((i) => i.GeneInfoTable);
+            return import('./views/InfoTable');
         }, {
             name: 'Database Info',
             factory: 'new GeneInfoTable',
@@ -118,16 +122,18 @@ module.exports = function (registry) {
             topics: ['tcga', 'information']
         });
         registry.push('tdpInstantView', 'gene_instant_view', function () {
-            return import('./views/GeneInstantView').then((g) => g.GeneInstantView);
+            return import('./views/GeneInstantView');
         }, {
+            factory: 'new GeneInstantView',
             name: 'Database Info',
             idtype: 'Ensembl',
             selection: 'multiple',
             description: 'Shows all information from the database for the searched genes'
         });
         registry.push('tdpView', 'celllinedb_onco_print', function () {
-            return import('./views/OncoPrint').then((o) => o.OncoPrint);
+            return import('./views/OncoPrint');
         }, {
+            factory: 'new OncoPrint',
             name: 'OncoPrint',
             idtype: 'Ensembl',
             selection: 'some',
@@ -142,8 +148,9 @@ module.exports = function (registry) {
             topics: ['tcga', 'tissue', 'cellline', 'expression', 'copy-number', 'mutation']
         });
         registry.push('tdpView', 'celllinedb_expression_vs_copynumber', function () {
-            return import('./views/ExpressionVsCopyNumber').then((e) => e.ExpressionVsCopyNumber);
+            return import('./views/ExpressionVsCopyNumber');
         }, {
+            factory: 'new ExpressionVsCopyNumber',
             name: 'Expression vs. Copy Number',
             idtype: 'Ensembl',
             selection: 'some',
@@ -158,8 +165,9 @@ module.exports = function (registry) {
             topics: ['tcga', 'tissue', 'cellline', 'expression', 'copy-number']
         });
         registry.push('tdpView', 'celllinedb_co_expression', function () {
-            return import('./views/CoExpression').then((c) => c.CoExpression);
+            return import('./views/CoExpression');
         }, {
+            factory: 'new CoExpression',
             name: 'Co-Expression',
             idtype: 'Ensembl',
             selection: 'some',
@@ -176,6 +184,7 @@ module.exports = function (registry) {
         registry.push('tdpView', 'gene_combined_lineup', function () {
             return import('./views/CombinedDependentSampleTable').then((c) => c.CombinedDependentSampleTable);
         }, {
+            factory: 'createCombinedDependentSampleTable',
             name: 'Combined View',
             idtype: 'Ensembl',
             selection: 'some',
@@ -229,16 +238,18 @@ module.exports = function (registry) {
         /// #endif
     }
     registry.push('tdpView', 'celllinedb_cellline', function () {
-        return import('./views/CelllineList').then((c) => c.CelllineList);
+        return import('./views/CelllineList');
     }, {
+        factory: 'new CelllineList',
         name: 'Cell lines',
         idtype: 'Cellline',
         selection: 'none',
         sampleType: 'Cellline'
     });
     registry.push('tdpView', 'bioinfodb_tissue_start', function () {
-        return import('./views/TissueList').then((t) => t.TissueList);
+        return import('./views/TissueList');
     }, {
+        factory: 'new TissueList',
         name: 'Tissues',
         idtype: 'Tissue',
         selection: 'none',
@@ -246,8 +257,9 @@ module.exports = function (registry) {
     });
     // cellline views
     registry.push('tdpView', 'cosmic', function () {
-        return import('./views/CosmicProxyView').then((c) => c.CosmicProxyView);
+        return import('./views/CosmicProxyView');
     }, {
+        factory: 'new CosmicProxyView',
         name: 'COSMIC',
         site: '//cancer.sanger.ac.uk/cell_lines/sample/overview?id={cosmicid}&genome=38',
         argument: 'cosmicid',
@@ -274,7 +286,7 @@ module.exports = function (registry) {
             return import('./views/DependentGeneTable').then((d) => d.DependentGeneTable);
         }, {
             name: 'Expression',
-            factory: 'createExpressionTable',
+            factory: 'createExpressionDependentGeneTable',
             idtype: idType,
             sampleType: idType,
             selection: 'some',
@@ -292,7 +304,7 @@ module.exports = function (registry) {
             return import('./views/DependentGeneTable').then((d) => d.DependentGeneTable);
         }, {
             name: 'Copy Number',
-            factory: 'createCopyNumberTable',
+            factory: 'createCopyNumberDependentGeneTable',
             idtype: idType,
             sampleType: idType,
             selection: 'some',
@@ -310,7 +322,7 @@ module.exports = function (registry) {
             return import('./views/DependentGeneTable').then((d) => d.DependentGeneTable);
         }, {
             name: 'Mutation',
-            factory: 'createMutationTable',
+            factory: 'createMutationDependentGeneTable',
             idtype: idType,
             sampleType: idType,
             selection: 'some',
@@ -327,6 +339,7 @@ module.exports = function (registry) {
         registry.push('tdpView', plain + '_combined_lineup', function () {
             return import('./views/CombinedDependentGeneTable').then((c) => c.CombinedDependentGeneTable);
         }, {
+            factory: 'createCombinedDependentGeneTable',
             name: 'Combined View',
             idtype: idType,
             selection: 'some',
@@ -344,7 +357,7 @@ module.exports = function (registry) {
             topics: ['tcga', plain, 'expression', 'copy-number', 'mutation']
         });
         registry.push('tdpView', plain + '_generic_detail_view', function () {
-            return import('./views/InfoTable').then((i) => i.AInfoTable);
+            return import('./views/InfoTable');
         }, {
             name: 'Database Info',
             factory: 'new ' + idType + 'InfoTable',
@@ -372,7 +385,7 @@ module.exports = function (registry) {
         registry.push('idTypeDetector', plain + 'IDTypeDetector', function () {
             return import('./detectors/IDTypeDetector').then((i) => i.IDTypeDetector);
         }, {
-            factory: 'create',
+            factory: 'createIDTypeDetector',
             name: label + ' IDType Detector',
             idType,
             options: {
@@ -388,6 +401,7 @@ module.exports = function (registry) {
         registry.push('tdpScore', prefix + '_single_score', function () {
             return import('./scores/SingleScore').then((s) => s.SingleScore);
         }, {
+            factory: 'createScore',
             name: label + ' Score (Single)',
             idtype: 'Ensembl',
             primaryType: 'Ensembl',
@@ -401,17 +415,18 @@ module.exports = function (registry) {
             oppositeType: oppositeIDType
         });
         registry.push('tdpScore', prefix + '_aggregated_score', function () {
-            return import('./scores/AggregatedScore').then((s) => s.AggregatedScore);
+            return import('./scores/AggregatedScore');
         }, {
+            factory: 'new AggregatedScore',
             name: label + ' Score (Aggregated)',
             idtype: 'Ensembl',
             primaryType: 'Ensembl',
             oppositeType: oppositeIDType
         });
         registry.push('tdpScoreImpl', prefix + '_aggregated_score', function () {
-            return import('./scores/AggregatedScore').then((s) => s.AggregatedScore);
+            return import('./scores/AggregatedScore');
         }, {
-            factory: 'createScore',
+            factory: 'new AggregatedScore',
             primaryType: 'Ensembl',
             oppositeType: oppositeIDType
         });
@@ -422,6 +437,7 @@ module.exports = function (registry) {
         registry.push('tdpScore', prefix + '_single_score', function () {
             return import('./scores/SingleScore').then((s) => s.SingleScore);
         }, {
+            factory: 'createScore',
             name: 'Gene Score (Single)',
             idtype: idType,
             primaryType: idType,
@@ -435,8 +451,9 @@ module.exports = function (registry) {
             oppositeType: 'Ensembl'
         });
         registry.push('tdpScore', prefix + '_aggregated_score', function () {
-            return import('./scores/AggregatedScore').then((s) => s.AggregatedScore);
+            return import('./scores/AggregatedScore');
         }, {
+            factory: 'new AggregatedScore',
             name: 'Gene Score (Aggregated)',
             idtype: idType,
             primaryType: idType,
@@ -574,13 +591,14 @@ module.exports = function (registry) {
         registry.push('tdpScore', prefix + 'AnnotationColumn', function () {
             return import('./scores/AnnotationColumn').then((a) => a.AnnotationColumn);
         }, {
+            'factory': 'createAnnotationColumnScore',
             'idtype': idType,
             'name': label + ' Annotation'
         });
         registry.push('tdpScoreImpl', prefix + 'AnnotationColumn', function () {
             return import('./scores/AnnotationColumn').then((a) => a.AnnotationColumn);
         }, {
-            'factory': 'createScore',
+            'factory': 'createAnnotationColumnScore',
             'primaryType': idType
         });
     });
