@@ -385,8 +385,8 @@ module.exports = function (registry) {
         registry.push('idTypeDetector', plain + 'IDTypeDetector', function () {
             return import('./detectors/IDTypeDetector').then((i) => i.IDTypeDetector);
         }, {
-            factory: 'createIDTypeDetector',
             name: label + ' IDType Detector',
+            factory: 'createIDTypeDetector',
             idType,
             options: {
                 sampleType: idType
@@ -401,8 +401,8 @@ module.exports = function (registry) {
         registry.push('tdpScore', prefix + '_single_score', function () {
             return import('./scores/SingleScore').then((s) => s.SingleScore);
         }, {
-            factory: 'createScore',
             name: label + ' Score (Single)',
+            factory: 'createScore',
             idtype: 'Ensembl',
             primaryType: 'Ensembl',
             oppositeType: oppositeIDType
@@ -415,18 +415,18 @@ module.exports = function (registry) {
             oppositeType: oppositeIDType
         });
         registry.push('tdpScore', prefix + '_aggregated_score', function () {
-            return import('./scores/AggregatedScore');
+            return import('./scores/AggregatedScore').then((a) => a.AggregatedScore);
         }, {
-            factory: 'new AggregatedScore',
             name: label + ' Score (Aggregated)',
+            factory: 'createAggregationFrequencyScore',
             idtype: 'Ensembl',
             primaryType: 'Ensembl',
             oppositeType: oppositeIDType
         });
         registry.push('tdpScoreImpl', prefix + '_aggregated_score', function () {
-            return import('./scores/AggregatedScore');
+            return import('./scores/AggregatedScore').then((a) => a.AggregatedScore);
         }, {
-            factory: 'new AggregatedScore',
+            factory: 'createAggregationFrequencyScore',
             primaryType: 'Ensembl',
             oppositeType: oppositeIDType
         });
@@ -437,8 +437,8 @@ module.exports = function (registry) {
         registry.push('tdpScore', prefix + '_single_score', function () {
             return import('./scores/SingleScore').then((s) => s.SingleScore);
         }, {
-            factory: 'createScore',
             name: 'Gene Score (Single)',
+            factory: 'createScore',
             idtype: idType,
             primaryType: idType,
             oppositeType: 'Ensembl'
@@ -451,18 +451,18 @@ module.exports = function (registry) {
             oppositeType: 'Ensembl'
         });
         registry.push('tdpScore', prefix + '_aggregated_score', function () {
-            return import('./scores/AggregatedScore');
+            return import('./scores/AggregatedScore').then((a) => a.AggregatedScore);
         }, {
-            factory: 'new AggregatedScore',
             name: 'Gene Score (Aggregated)',
+            factory: 'createAggregationFrequencyScore',
             idtype: idType,
             primaryType: idType,
             oppositeType: 'Ensembl'
         });
         registry.push('tdpScoreImpl', prefix + '_aggregated_score', function () {
-            return import('./scores/SingleScore').then((s) => s.SingleScore);
+            return import('./scores/AggregatedScore').then((a) => a.AggregatedScore);
         }, {
-            factory: 'createScore',
+            factory: 'createAggregationFrequencyScore',
             primaryType: idType,
             oppositeType: 'Ensembl'
         });
