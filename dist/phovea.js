@@ -399,34 +399,34 @@ module.exports = function (registry) {
         const prefix = 'gene_' + oppositeIDType.toLowerCase();
         const label = oppositeIDType === 'Tissue' ? 'Tissue Sample' : 'Cell Line';
         registry.push('tdpScore', prefix + '_single_score', function () {
-            return import('./scores/SingleScore').then((s) => s.SingleScore);
+            return import('./scores/SingleScoreDialog').then((s) => s.SingleScoreDialog);
         }, {
             name: label + ' Score (Single)',
-            factory: 'createScore',
+            factory: 'create',
             idtype: 'Ensembl',
             primaryType: 'Ensembl',
             oppositeType: oppositeIDType
         });
         registry.push('tdpScoreImpl', prefix + '_single_score', function () {
-            return import('./scores/SingleScore').then((s) => s.SingleScore);
+            return import('./scores/SingleScoreDialog').then((s) => s.SingleScoreDialog);
         }, {
-            factory: 'createScore',
+            factory: 'create',
             primaryType: 'Ensembl',
             oppositeType: oppositeIDType
         });
         registry.push('tdpScore', prefix + '_aggregated_score', function () {
-            return import('./scores/AggregatedScore').then((a) => a.AggregatedScore);
+            return import('./scores/AggregateScoreDialog').then((a) => a.AggregateScoreDialog);
         }, {
             name: label + ' Score (Aggregated)',
-            factory: 'createAggregationFrequencyScore',
+            factory: 'create',
             idtype: 'Ensembl',
             primaryType: 'Ensembl',
             oppositeType: oppositeIDType
         });
         registry.push('tdpScoreImpl', prefix + '_aggregated_score', function () {
-            return import('./scores/AggregatedScore').then((a) => a.AggregatedScore);
+            return import('./scores/AggregateScoreDialog').then((a) => a.AggregateScoreDialog);
         }, {
-            factory: 'createAggregationFrequencyScore',
+            factory: 'create',
             primaryType: 'Ensembl',
             oppositeType: oppositeIDType
         });
@@ -435,34 +435,34 @@ module.exports = function (registry) {
     ['Cellline', 'Tissue'].forEach(function (idType) {
         const prefix = idType.toLowerCase() + '_gene';
         registry.push('tdpScore', prefix + '_single_score', function () {
-            return import('./scores/SingleScore').then((s) => s.SingleScore);
+            return import('./scores/SingleScoreDialog').then((s) => s.SingleScoreDialog);
         }, {
             name: 'Gene Score (Single)',
-            factory: 'createScore',
+            factory: 'create',
             idtype: idType,
             primaryType: idType,
             oppositeType: 'Ensembl'
         });
         registry.push('tdpScoreImpl', prefix + '_single_score', function () {
-            return import('./scores/SingleScore').then((s) => s.SingleScore);
+            return import('./scores/SingleScoreDialog').then((s) => s.SingleScoreDialog);
         }, {
-            factory: 'createScore',
+            factory: 'create',
             primaryType: idType,
             oppositeType: 'Ensembl'
         });
         registry.push('tdpScore', prefix + '_aggregated_score', function () {
-            return import('./scores/AggregatedScore').then((a) => a.AggregatedScore);
+            return import('./scores/AggregateScoreDialog').then((a) => a.AggregateScoreDialog);
         }, {
             name: 'Gene Score (Aggregated)',
-            factory: 'createAggregationFrequencyScore',
+            factory: 'create',
             idtype: idType,
             primaryType: idType,
             oppositeType: 'Ensembl'
         });
         registry.push('tdpScoreImpl', prefix + '_aggregated_score', function () {
-            return import('./scores/AggregatedScore').then((a) => a.AggregatedScore);
+            return import('./scores/AggregateScoreDialog').then((a) => a.AggregateScoreDialog);
         }, {
-            factory: 'createAggregationFrequencyScore',
+            factory: 'create',
             primaryType: idType,
             oppositeType: 'Ensembl'
         });
