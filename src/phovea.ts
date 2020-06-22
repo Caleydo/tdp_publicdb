@@ -443,9 +443,9 @@ module.exports = function (registry) {
       oppositeType: oppositeIDType
     });
     registry.push('tdpScoreImpl', prefix + '_single_score', function () {
-      return import ('./scores/SingleScoreDialog').then((s) => s.SingleScoreDialog);
+      return import ('./scores/SingleScore').then((s) => s.SingleScore);
     }, {
-      factory: 'create',
+      factory: 'createScore',
       primaryType: 'Ensembl',
       oppositeType: oppositeIDType
     });
@@ -460,9 +460,9 @@ module.exports = function (registry) {
       oppositeType: oppositeIDType
     });
     registry.push('tdpScoreImpl', prefix + '_aggregated_score', function () {
-      return import ('./scores/AggregateScoreDialog').then((a) => a.AggregateScoreDialog);
+      return import ('./scores/AggregatedScore').then((a) => a.AggregatedScore);
     }, {
-      factory: 'create',
+      factory: 'createAggregationFrequencyScore',
       primaryType: 'Ensembl',
       oppositeType: oppositeIDType
     });
@@ -482,9 +482,9 @@ module.exports = function (registry) {
       oppositeType: 'Ensembl'
     });
     registry.push('tdpScoreImpl', prefix + '_single_score', function () {
-      return import ('./scores/SingleScoreDialog').then((s) => s.SingleScoreDialog);
+      return import ('./scores/SingleScore').then((s) => s.SingleScore);
     }, {
-      factory: 'create',
+      factory: 'createScore',
       primaryType: idType,
       oppositeType: 'Ensembl'
     });
@@ -499,9 +499,9 @@ module.exports = function (registry) {
       oppositeType: 'Ensembl'
     });
     registry.push('tdpScoreImpl', prefix + '_aggregated_score', function () {
-      return import ('./scores/AggregateScoreDialog').then((a) => a.AggregateScoreDialog);
+      return import ('./scores/AggregatedScore').then((a) => a.AggregatedScore);
     }, {
-      factory: 'create',
+      factory: 'createAggregationFrequencyScore',
       primaryType: idType,
       oppositeType: 'Ensembl'
     });
