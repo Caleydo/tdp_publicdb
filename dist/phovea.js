@@ -603,7 +603,8 @@ module.exports = function (registry) {
         });
     });
     /// #if include('ordino')
-    registry.push('tdpTour', 'ordinoWelcome', function () { return import('./tours').then((t) => t.createTour); }, {
+    registry.push('tdpTour', 'ordinoWelcome', function () { return import('./tours').then((t) => t.Tour); }, {
+        factory: 'createTour',
         name: 'Ordino Welcome Tour',
         multiPage: true,
         level: 'beginner',
