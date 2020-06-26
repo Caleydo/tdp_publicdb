@@ -43,13 +43,13 @@ export function create(): IStep[] {
       pageBreak: 'manual'
     },
     {
-      selector: '.lineup-engine.lineup-multi-engine',
+      selector: '.le.le-multi.lineup-engine',
       placement: 'centered',
       html: `The information is presented in a tabular format. Additionally to the gene ID, a set of columns containing some basic information is shown by default.`,
-      preAction: () => waitFor('.lineup-engine.lineup-multi-engine', Infinity).then(() => wait(500))
+      preAction: () => waitFor('.le.le-multi.lineup-engine', Infinity).then(() => wait(500))
     },
     {
-      selector: '.lu-side-panel button.fa-plus',
+      selector: '.lu-side-panel-wrapper button.fa-plus',
       html: `Additional columns can be added using the plus sign.`,
       placement: 'centered',
       postAction: clickSelector
@@ -77,7 +77,7 @@ export function create(): IStep[] {
       postAction: clickSelector
     },
     {
-      selector: '.lineup-engine header section[title=Strand]',
+      selector: '.le header section[title=Strand]',
       placement: 'centered',
       html: `The strand information was added as a new column`,
       preAction: waitForSelector
@@ -87,7 +87,7 @@ export function create(): IStep[] {
       placement: 'centered',
       html: `Now, we want to add two columns containing the copy number information of two specific cell lines. To do so, we open the <i>'Cell Line Score'</i> dialog`,
       preAction: () => {
-        click('.lu-side-panel button.fa-plus');
+        click('.lu-side-panel-wrapper button.fa-plus');
       },
       postAction: () => {
         click('.lu-search .lu-search-group .lu-search-item');
@@ -118,28 +118,28 @@ export function create(): IStep[] {
       postAction: clickSelector
     },
     {
-      selector: ['.lineup-engine header section[title^=BT], .lineup-engine header section[title^=HCC]'],
+      selector: ['.le header section[title^=BT], .le header section[title^=HCC]'],
       placement: 'centered',
-      preAction: () => waitFor('.lineup-engine header section[title^=BT]', 10000),
+      preAction: () => waitFor('.le header section[title^=BT]', 10000),
       html: `The copy number information for each selected cell line has been added as additional columns`,
     },
     {
-      selector: '.lineup-engine > header',
+      selector: '.le > header',
       placement: 'centered',
       html: `The column headers can be used to sort and filter the list of genes based on any of the available data`,
     },
     {
-      selector: '.lineup-engine header section[title^=HCC] i[title^=Sort]',
+      selector: '.le header section[title^=HCC] i[title^=Sort]',
       placement: 'centered',
       html: `For example, you can use this icon to sort all genes by their copy number in the cell line <i>'HCC-827'</i>`,
       postAction: clickSelector
     },
     {
-      selector: '.lu-row[data-meta=first]',
+      selector: '.le-tr[data-index="0"]',
       placement: 'centered',
       html: `In order to obtain additional information about one or more genes, click on the respective line or use the checkboxes`,
       preAction: () => waitFor(() => {
-        const r = document.querySelector<HTMLElement>('.lu-row[data-meta=first]');
+        const r = document.querySelector<HTMLElement>('.le-tr[data-index="0"]');
         if (!r) {
           return null;
         }
