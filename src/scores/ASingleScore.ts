@@ -17,6 +17,7 @@ interface ISingleScoreParam {
   name: {id: string, text: string};
   data_type: string;
   data_subtype: string;
+  screen_type?: string;
   /**
    * see config.MAX_FILTER_SCORE_ROWS_BEFORE_ALL maximal number of rows for computing limiting the score to this subset
    */
@@ -34,8 +35,8 @@ export abstract class ASingleScore extends AScore implements IScore<any> {
 
   createDesc(): any {
     return Object.assign(ScoreUtils.createDesc(this.dataSubType.type, `${this.parameter.name.text}: ${this.dataSubType.name}`, this.dataSubType,
-    `${this.oppositeDataSource.name} Name: "${this.parameter.name.text}"\nData Type: ${this.dataType.name}\nData Subtype: ${this.dataSubType.name}`), {
-      scoreID: `dC${`${this.dataSubType.name} of ${this.parameter.name.text}`.replace(/\s+/,'')}` // column name that is stored in old provenance graphs
+      `${this.oppositeDataSource.name} Name: "${this.parameter.name.text}"\nData Type: ${this.parameter.screen_type || ''} ${this.dataType.name}\nData Subtype: ${this.dataSubType.name}`), {
+      scoreID: `dC${`${this.dataSubType.name} of ${this.parameter.name.text}`.replace(/\s+/, '')}` // column name that is stored in old provenance graphs
     });
   }
 

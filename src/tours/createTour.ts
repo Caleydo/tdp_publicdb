@@ -7,7 +7,7 @@ export class Tour {
     return [
       {
         html: `<p>Welcome to this short tour showing the basic features of Ordino!</p>
-
+  
         <p>
           Use the "Next" button to iterate through all the steps. You can use the
           <i>"Cancel"</i> button at any time to stop the tour and to interact with Ordino.
@@ -26,7 +26,7 @@ export class Tour {
         },
         postAction: TourUtils.clickSelector
       },
-
+  
       {
         selector: '.startMenu.open .speciesSelector .nav-tabs',
         html: `<p>You can choose between the three entity types <i>'Cell Lines'</i>, <i>'Genes'</i>, and <i>'Tissues'</i>.</p> <p>In this example we will work with a list of genes</p>`,
@@ -34,7 +34,7 @@ export class Tour {
         preAction: TourUtils.waitForSelector,
         postAction: () => TourUtils.click('#entityType_gene-entry-point')
       },
-
+  
       {
         selector: '#entity_gene-entry-point .predefined-named-sets',
         html: `Of the available predefined gene sets, we open a list of known cancer genes, called <i>'Cancer Gene Census'</i>`,
@@ -45,13 +45,13 @@ export class Tour {
         pageBreak: 'manual'
       },
       {
-        selector: '.lineup-engine.lineup-multi-engine',
+        selector: '.le.le-multi.lineup-engine',
         placement: 'centered',
         html: `The information is presented in a tabular format. Additionally to the gene ID, a set of columns containing some basic information is shown by default.`,
-        preAction: () => TourUtils.waitFor('.lineup-engine.lineup-multi-engine', Infinity).then(() => TourUtils.wait(500))
+        preAction: () => TourUtils.waitFor('.le.le-multi.lineup-engine', Infinity).then(() => TourUtils.wait(500))
       },
       {
-        selector: '.lu-side-panel button.fa-plus',
+        selector: '.lu-side-panel-wrapper button.fa-plus',
         html: `Additional columns can be added using the plus sign.`,
         placement: 'centered',
         postAction: TourUtils.clickSelector
@@ -79,7 +79,7 @@ export class Tour {
         postAction: TourUtils.clickSelector
       },
       {
-        selector: '.lineup-engine header section[title=Strand]',
+        selector: '.le header section[title=Strand]',
         placement: 'centered',
         html: `The strand information was added as a new column`,
         preAction: TourUtils.waitForSelector
@@ -89,7 +89,7 @@ export class Tour {
         placement: 'centered',
         html: `Now, we want to add two columns containing the copy number information of two specific cell lines. To do so, we open the <i>'Cell Line Score'</i> dialog`,
         preAction: () => {
-          TourUtils.click('.lu-side-panel button.fa-plus');
+          TourUtils.click('.lu-side-panel-wrapper button.fa-plus');
         },
         postAction: () => {
           TourUtils.click('.lu-search .lu-search-group .lu-search-item');
@@ -120,28 +120,28 @@ export class Tour {
         postAction: TourUtils.clickSelector
       },
       {
-        selector: ['.lineup-engine header section[title^=BT], .lineup-engine header section[title^=HCC]'],
+        selector: ['.le header section[title^=BT], .le header section[title^=HCC]'],
         placement: 'centered',
-        preAction: () => TourUtils.waitFor('.lineup-engine header section[title^=BT]', 10000),
+        preAction: () => TourUtils.waitFor('.le header section[title^=BT]', 10000),
         html: `The copy number information for each selected cell line has been added as additional columns`,
       },
       {
-        selector: '.lineup-engine > header',
+        selector: '.le > header',
         placement: 'centered',
         html: `The column headers can be used to sort and filter the list of genes based on any of the available data`,
       },
       {
-        selector: '.lineup-engine header section[title^=HCC] i[title^=Sort]',
+        selector: '.le header section[title^=HCC] i[title^=Sort]',
         placement: 'centered',
         html: `For example, you can use this icon to sort all genes by their copy number in the cell line <i>'HCC-827'</i>`,
         postAction: TourUtils.clickSelector
       },
       {
-        selector: '.lu-row[data-meta=first]',
+        selector: '.le-tr[data-index="0"]',
         placement: 'centered',
         html: `In order to obtain additional information about one or more genes, click on the respective line or use the checkboxes`,
         preAction: () => TourUtils.waitFor(() => {
-          const r = document.querySelector<HTMLElement>('.lu-row[data-meta=first]');
+          const r = document.querySelector<HTMLElement>('.le-tr[data-index="0"]');
           if (!r) {
             return null;
           }

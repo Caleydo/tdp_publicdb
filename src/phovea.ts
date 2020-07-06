@@ -591,8 +591,25 @@ module.exports = function (registry) {
       oppositeType: 'Ensembl',
       factory: 'createAggregatedDepletionScore'
     });
-  });
 
+    registry.push('tdpScore', prefix + '_prism_drug_single_score', function () {
+      return import('./src/scores/SingleScore');
+    }, {
+      name: 'Drug Screen Score',
+      idtype: idType,
+      primaryType: idType,
+      oppositeType: 'Drug',
+      factory: 'createSingleDrugScoreDialog'
+    });
+
+    registry.push('tdpScoreImpl', prefix + '_prism_drug_single_score', function () {
+      return import('./src/scores/SingleScore');
+    }, {
+      factory: 'createSingleDrugScore',
+      primaryType: idType,
+      oppositeType: 'Drug'
+    });
+  });
   //gene_(Tissue|Celline)
   ['Cellline'].forEach(function (oppositeIDType) {
     const prefix = 'gene_' + oppositeIDType.toLowerCase();

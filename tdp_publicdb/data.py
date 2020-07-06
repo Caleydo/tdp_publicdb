@@ -14,3 +14,11 @@ depletion_attributes = ['rsa', 'ataris', 'ceres']
 cellline_data = DataEntity(cellline.schema, tables, attributes, operators)
 tissue_data = DataEntity(tissue.schema, tables, attributes, operators)
 cellline_depletion = DataEntity(cellline.schema, depletion_tables, depletion_attributes, operators)
+
+drug_tables = ['drugscore']
+drug_attributes = ['actarea', 'ic50', 'ec50']
+cellline_drug = DataEntity(cellline.schema, drug_tables, drug_attributes, operators)
+
+
+DrugSceen = namedtuple('DrugScreen', ['schema', 'table'])
+cellline_drug_screen = DrugSceen(cellline.schema, 'drugscreen')

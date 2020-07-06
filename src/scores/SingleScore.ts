@@ -13,6 +13,7 @@ interface ISingleScoreParam {
   name: {id: string, text: string};
   data_type: string;
   data_subtype: string;
+  screen_type?: string;
   /**
    * see config.MAX_FILTER_SCORE_ROWS_BEFORE_ALL maximal number of rows for computing limiting the score to this subset
    */
@@ -67,4 +68,26 @@ export class SingleDepletionScore extends ASingleScore implements IScore<any> {
   static createSingleDepletionScore(data: ISingleScoreParam, pluginDesc: IPluginDesc): IScore<number>|IScore<any>[] {
     return initializeScore(data, pluginDesc, (parameter, dataSource, oppositeDataSource) => new SingleDepletionScore(parameter, dataSource, oppositeDataSource));
   }
+}
+
+export class SingleDrugScore extends ASingleScore implements IScore<any> {
+  private readonly drugscreen: string;
+
+  constructor(parameter: ISingleScoreParam, dataSource: IDataSourceConfig, oppositeDataSource: IDataSourceConfig) {
+    super(parameter, dataSource, oppositeDataSource);
+    this.drugscreen = parameter.screen_type;
+  }
+
+  protected getViewPrefix(): string {
+    return 'drug_';
+  }
+
+  protected createFilter(): IParams {
+    return {
+      campaign: this.drugscreen
+    };
+  }
+  static createSingleDrugScore(data: ISingleScoreParam, pluginDesc: IPluginDesc): IScore<number> | IScore<any>[] {
+    return initializeScore(data, pluginDesc, (parameter, dataSource, oppositeDataSource) => new SingleDrugScore(parameter, dataSource, oppositeDataSource));
+  }  
 }
