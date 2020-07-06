@@ -43,7 +43,7 @@ export class SingleScoreDialog {
       case drug:
         formDesc.splice(1, 0, enableMultiple(FORM_DRUG_NAME));
         formDesc.push(FORCE_COMPUTE_ALL_CELLLINE);
-        break;  
+        break;
     }
 
     if (typeof countHint === 'number' && countHint > MAX_FILTER_SCORE_ROWS_BEFORE_ALL) {
@@ -92,7 +92,7 @@ export class SingleScoreDialog {
         case drug:
           data.name = data[ParameterFormIds.DRUG_NAME];
           delete data[ParameterFormIds.DRUG_NAME];
-          break;          
+          break;
       }
       return data;
     });

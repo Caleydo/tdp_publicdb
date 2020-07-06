@@ -71,7 +71,6 @@ export interface IDataSubtypeConfig {
         name: string;
         color: string;
     }[];
-    missingCategory?: string;
     domain?: number[];
     missingValue?: number;
     constantDomain?: boolean;
@@ -80,6 +79,8 @@ export declare const expression: IDataTypeConfig;
 export declare const copyNumber: IDataTypeConfig;
 export declare const mutation: IDataTypeConfig;
 export declare const depletion: IDataTypeConfig;
+export declare const drugScreen: IDataTypeConfig;
+export declare const drug: IDataSourceConfig;
 export declare const dataTypes: IDataTypeConfig[];
 /**
  * splits strings in the form of "DATA_TYPE-DATA_SUBTYPE" and returns the corresponding DATA_TYPE and DATA_SUBTYPE objects

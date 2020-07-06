@@ -220,8 +220,7 @@ export const copyNumber = {
             type: dataSubtypes.cat,
             categories: toLineUpCategories(Categories.copyNumberCat),
             domain: [0, 100],
-            missingValue: NaN,
-            missingCategory: Categories.unknownCopyNumberValue,
+            missingValue: Categories.unknownCopyNumberValue,
             useForAggregation: 'copynumberclass'
         }
     ],
@@ -238,14 +237,16 @@ export const mutation = {
             name: 'AA Mutated',
             type: dataSubtypes.cat,
             categories: toLineUpCategories(Categories.mutationCat),
-            missingCategory: Categories.unknownMutationValue,
             useForAggregation: 'aa_mutated',
             domain: [0, 100],
-            missingValue: NaN
+            missingValue: Categories.unknownMutationValue
         },
         //just for single score:
         {
-            id: 'aamutation', name: 'AA Mutation', type: dataSubtypes.string, useForAggregation: '',
+            id: 'aamutation',
+            name: 'AA Mutation',
+            type: dataSubtypes.string,
+            useForAggregation: '',
             domain: [0, 100],
             missingValue: NaN
         },
@@ -254,14 +255,16 @@ export const mutation = {
             name: 'DNA Mutated',
             type: dataSubtypes.cat,
             categories: toLineUpCategories(Categories.mutationCat),
-            missingCategory: Categories.unknownMutationValue,
             useForAggregation: 'dna_mutated',
             domain: [0, 100],
-            missingValue: NaN
+            missingValue: Categories.unknownMutationValue
         },
         //just for single score:
         {
-            id: 'dnamutation', name: 'DNA Mutation', type: dataSubtypes.string, useForAggregation: '',
+            id: 'dnamutation',
+            name: 'DNA Mutation',
+            type: dataSubtypes.string,
+            useForAggregation: '',
             domain: [0, 100],
             missingValue: NaN
         },
@@ -310,6 +313,51 @@ export const depletion = {
         }
     ]
 };
+export const drugScreen = {
+    id: 'drug',
+    name: 'Drug Screen',
+    tableName: 'drugscore',
+    query: 'drug_score',
+    dataSubtypes: [
+        {
+            id: 'actarea',
+            name: 'Activity Area',
+            type: dataSubtypes.number,
+            domain: [-3, 3],
+            missingValue: NaN,
+            constantDomain: false,
+            useForAggregation: 'actarea'
+        },
+        {
+            id: 'ic50',
+            name: 'IC50',
+            type: dataSubtypes.number,
+            domain: [-3, 3],
+            missingValue: NaN,
+            constantDomain: false,
+            useForAggregation: 'ic50'
+        },
+        {
+            id: 'ec50',
+            name: 'EC50',
+            type: dataSubtypes.number,
+            domain: [-3, 3],
+            missingValue: NaN,
+            constantDomain: false,
+            useForAggregation: 'ec50'
+        }
+    ]
+};
+export const drug = {
+    idType: 'Drug',
+    name: 'Drug',
+    db: 'publicdb',
+    schema: 'public',
+    tableName: 'tdp_drug',
+    entityName: 'drugid',
+    base: 'drug',
+    columns: () => []
+};
 export const dataTypes = [expression, copyNumber, mutation];
 function toLineUpCategories(arr) {
     return arr.map((a) => ({ label: a.name, name: String(a.value), color: a.color }));
@@ -336,6 +384,9 @@ export function resolveDataTypes(dataTypeId, dataSubTypeId) {
             break;
         case depletion.id:
             dataType = depletion;
+            break;
+        case drugScreen.id:
+            dataType = drugScreen;
             break;
     }
     const dataSubType = dataType.dataSubtypes.find((element) => element.id === dataSubTypeId);

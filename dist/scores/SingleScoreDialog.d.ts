@@ -7,4 +7,5 @@ export declare class SingleScoreDialog {
     static createScoreDialog(pluginDesc: IPluginDesc, extra: any, formDesc: IFormElementDesc[], countHint?: number): Promise<any>;
     static create(pluginDesc: IPluginDesc, extra: any, countHint?: number): Promise<any>;
     static createSingleDepletionScoreDialog(pluginDesc: IPluginDesc, extra: any, countHint?: number): Promise<any>;
+    static createSingleDrugScoreDialog(pluginDesc: IPluginDesc, extra: any, countHint?: number): Promise<any>;
 }

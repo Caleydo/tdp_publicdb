@@ -21,7 +21,7 @@ export class ScoreUtils {
                     label,
                     description,
                     categories: subtype.categories,
-                    missingValue: subtype.missingCategory,
+                    missingValue: subtype.missingValue,
                     lazyLoaded: true
                 };
             case dataSubtypes.string:

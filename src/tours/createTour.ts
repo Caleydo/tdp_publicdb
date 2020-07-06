@@ -7,7 +7,6 @@ export class Tour {
     return [
       {
         html: `<p>Welcome to this short tour showing the basic features of Ordino!</p>
-  
         <p>
           Use the "Next" button to iterate through all the steps. You can use the
           <i>"Cancel"</i> button at any time to stop the tour and to interact with Ordino.
@@ -26,7 +25,6 @@ export class Tour {
         },
         postAction: TourUtils.clickSelector
       },
-  
       {
         selector: '.startMenu.open .speciesSelector .nav-tabs',
         html: `<p>You can choose between the three entity types <i>'Cell Lines'</i>, <i>'Genes'</i>, and <i>'Tissues'</i>.</p> <p>In this example we will work with a list of genes</p>`,
@@ -34,7 +32,6 @@ export class Tour {
         preAction: TourUtils.waitForSelector,
         postAction: () => TourUtils.click('#entityType_gene-entry-point')
       },
-  
       {
         selector: '#entity_gene-entry-point .predefined-named-sets',
         html: `Of the available predefined gene sets, we open a list of known cancer genes, called <i>'Cancer Gene Census'</i>`,

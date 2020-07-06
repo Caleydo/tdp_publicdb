@@ -8,6 +8,7 @@ export declare const FORM_AGGREGATED_SCORE: ({
     };
     required: boolean;
     options: {
+        placeholder: string;
         data: {
             text: string;
             children: {
@@ -124,6 +125,7 @@ export declare const FORM_SINGLE_SCORE: {
     };
     required: boolean;
     options: {
+        placeholder: string;
         data: {
             text: string;
             children: {
@@ -143,6 +145,7 @@ export declare const FORM_AGGREGATED_SCORE_DEPLETION: ({
     };
     required: boolean;
     options: {
+        placeholder: string;
         data: {
             id: string;
             text: string;
@@ -206,6 +209,7 @@ export declare const FORM_SINGLE_SCORE_DEPLETION: {
     };
     required: boolean;
     options: {
+        placeholder: string;
         data: {
             id: string;
             text: string;
@@ -213,3 +217,36 @@ export declare const FORM_SINGLE_SCORE_DEPLETION: {
     };
     useSession: boolean;
 }[];
+export declare const FORM_SINGLE_SCORE_DRUG: ({
+    type: FormElementType;
+    label: string;
+    id: string;
+    attributes: {
+        style: string;
+    };
+    required: boolean;
+    options: {
+        placeholder: string;
+        data: {
+            id: string;
+            text: string;
+        }[];
+    };
+    useSession: boolean;
+} | {
+    type: FormElementType;
+    label: string;
+    id: string;
+    attributes: {
+        style: string;
+    };
+    required: boolean;
+    options: {
+        placeholder: string;
+        optionsData: any[];
+        search: typeof import("..").GeneUtils.searchDrugScreen;
+        validate: typeof import("..").GeneUtils.validateDrugScreen;
+        format: typeof import("..").GeneUtils.formatDrugScreen;
+    };
+    useSession: boolean;
+})[];

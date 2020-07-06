@@ -13,6 +13,8 @@ export declare class ParameterFormIds {
     static GENE_SYMBOL: string;
     static CELLLINE_NAME: string;
     static TISSUE_NAME: string;
+    static DRUG_NAME: string;
+    static SCREEN_TYPE: string;
     static DATA_SUBTYPE: string;
     static DATA_HIERARCHICAL_SUBTYPE: string;
     static COPYNUMBER_SUBTYPE: string;
@@ -48,10 +50,28 @@ export declare const FORM_GENE_NAME: {
     };
     required: boolean;
     options: {
+        placeholder: string;
         optionsData: any[];
         search: typeof GeneUtils.searchGene;
         validate: typeof GeneUtils.validateGene;
         format: typeof GeneUtils.formatGene;
+    };
+    useSession: boolean;
+};
+export declare const FORM_DRUG_NAME: {
+    type: FormElementType;
+    label: string;
+    id: string;
+    attributes: {
+        style: string;
+    };
+    required: boolean;
+    options: {
+        placeholder: string;
+        optionsData: any[];
+        search: typeof GeneUtils.searchDrug;
+        validate: typeof GeneUtils.validateDrug;
+        format: typeof GeneUtils.formatDrug;
     };
     useSession: boolean;
 };
@@ -64,6 +84,7 @@ export declare const FORM_TISSUE_NAME: {
     };
     required: boolean;
     options: {
+        placeholder: string;
         optionsData: any[];
         search: (query: any, page: any, pageSize: any) => Promise<{
             more: boolean;
@@ -85,6 +106,7 @@ export declare const FORM_CELLLINE_NAME: {
     };
     required: boolean;
     options: {
+        placeholder: string;
         optionsData: any[];
         search: (query: any, page: any, pageSize: any) => Promise<{
             more: boolean;
@@ -114,6 +136,9 @@ export declare const FORM_GENE_FILTER: {
             multiple: boolean;
             return: string;
             optionsData: () => Promise<string[]>;
+            options: {
+                placeholder: string;
+            };
             search?: undefined;
             validate?: undefined;
             format?: undefined;
@@ -127,6 +152,9 @@ export declare const FORM_GENE_FILTER: {
                 name: string;
                 value: string | number;
             }[]>;
+            options: {
+                placeholder: string;
+            };
             search?: undefined;
             validate?: undefined;
             format?: undefined;
@@ -136,6 +164,9 @@ export declare const FORM_GENE_FILTER: {
             type: FormElementType;
             multiple: boolean;
             optionsData: any;
+            options: {
+                placeholder: string;
+            };
             return?: undefined;
             search?: undefined;
             validate?: undefined;
@@ -148,6 +179,9 @@ export declare const FORM_GENE_FILTER: {
             search: typeof GeneUtils.searchGene;
             validate: typeof GeneUtils.validateGene;
             format: typeof GeneUtils.formatGene;
+            options: {
+                placeholder: string;
+            };
             return?: undefined;
             optionsData?: undefined;
         })[];
@@ -224,6 +258,7 @@ export declare const FORM_DATA_HIERARCHICAL_SUBTYPE: {
     };
     required: boolean;
     options: {
+        placeholder: string;
         data: {
             text: string;
             children: {
@@ -243,6 +278,7 @@ export declare const FORM_DATA_HIERARCHICAL_SUBTYPE_AGGREGATED_SELECTION: {
     };
     required: boolean;
     options: {
+        placeholder: string;
         data: {
             text: string;
             children: {
@@ -262,6 +298,7 @@ export declare const FORM_DATA_HIERARCHICAL_SUBTYPE_DEPLETION: {
     };
     required: boolean;
     options: {
+        placeholder: string;
         data: {
             id: string;
             text: string;
@@ -278,10 +315,45 @@ export declare const FORM_DATA_HIERARCHICAL_SUBTYPE_AGGREGATED_SELECTION_DEPLETI
     };
     required: boolean;
     options: {
+        placeholder: string;
         data: {
             id: string;
             text: string;
         }[];
+    };
+    useSession: boolean;
+};
+export declare const FORM_DATA_HIERARCHICAL_SUBTYPE_DRUG: {
+    type: FormElementType;
+    label: string;
+    id: string;
+    attributes: {
+        style: string;
+    };
+    required: boolean;
+    options: {
+        placeholder: string;
+        data: {
+            id: string;
+            text: string;
+        }[];
+    };
+    useSession: boolean;
+};
+export declare const DRUG_SCREEN_SCORE_FORM_ELEMENT: {
+    type: FormElementType;
+    label: string;
+    id: string;
+    attributes: {
+        style: string;
+    };
+    required: boolean;
+    options: {
+        placeholder: string;
+        optionsData: any[];
+        search: typeof GeneUtils.searchDrugScreen;
+        validate: typeof GeneUtils.validateDrugScreen;
+        format: typeof GeneUtils.formatDrugScreen;
     };
     useSession: boolean;
 };

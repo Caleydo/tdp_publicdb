@@ -48,4 +48,21 @@ export class SingleDepletionScore extends ASingleScore {
         return initializeScore(data, pluginDesc, (parameter, dataSource, oppositeDataSource) => new SingleDepletionScore(parameter, dataSource, oppositeDataSource));
     }
 }
+export class SingleDrugScore extends ASingleScore {
+    constructor(parameter, dataSource, oppositeDataSource) {
+        super(parameter, dataSource, oppositeDataSource);
+        this.drugscreen = parameter.screen_type;
+    }
+    getViewPrefix() {
+        return 'drug_';
+    }
+    createFilter() {
+        return {
+            campaign: this.drugscreen
+        };
+    }
+    static createSingleDrugScore(data, pluginDesc) {
+        return initializeScore(data, pluginDesc, (parameter, dataSource, oppositeDataSource) => new SingleDrugScore(parameter, dataSource, oppositeDataSource));
+    }
+}
 //# sourceMappingURL=SingleScore.js.map

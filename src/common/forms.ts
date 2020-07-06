@@ -93,9 +93,9 @@ export const FORM_DRUG_NAME = {
   options: {
     placeholder: 'Start typing...',
     optionsData: [],
-    search: searchDrug,
-    validate: validateDrug,
-    format: formatDrug
+    search: GeneUtils.searchDrug,
+    validate: GeneUtils.validateDrug,
+    format: GeneUtils.formatDrug
   },
   useSession: true
 };

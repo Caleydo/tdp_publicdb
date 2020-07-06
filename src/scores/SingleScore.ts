@@ -89,5 +89,5 @@ export class SingleDrugScore extends ASingleScore implements IScore<any> {
   }
   static createSingleDrugScore(data: ISingleScoreParam, pluginDesc: IPluginDesc): IScore<number> | IScore<any>[] {
     return initializeScore(data, pluginDesc, (parameter, dataSource, oppositeDataSource) => new SingleDrugScore(parameter, dataSource, oppositeDataSource));
-  }  
+  }
 }

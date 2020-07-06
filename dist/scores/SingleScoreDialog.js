@@ -1,10 +1,10 @@
 /**
  * Created by sam on 06.03.2017.
  */
-import { gene, tissue, cellline, MAX_FILTER_SCORE_ROWS_BEFORE_ALL, splitTypes } from '../common/config';
+import { gene, tissue, cellline, MAX_FILTER_SCORE_ROWS_BEFORE_ALL, splitTypes, drug } from '../common/config';
 import { FormElementType } from 'tdp_core';
-import { ParameterFormIds, FORM_GENE_NAME, FORM_TISSUE_NAME, FORM_CELLLINE_NAME } from '../common/forms';
-import { FORCE_COMPUTE_ALL_CELLLINE, FORCE_COMPUTE_ALL_GENES, FORCE_COMPUTE_ALL_TISSUE, FORM_SINGLE_SCORE, FORM_SINGLE_SCORE_DEPLETION } from './forms';
+import { ParameterFormIds, FORM_GENE_NAME, FORM_TISSUE_NAME, FORM_CELLLINE_NAME, FORM_DRUG_NAME } from '../common/forms';
+import { FORCE_COMPUTE_ALL_CELLLINE, FORCE_COMPUTE_ALL_GENES, FORCE_COMPUTE_ALL_TISSUE, FORM_SINGLE_SCORE, FORM_SINGLE_SCORE_DEPLETION, FORM_SINGLE_SCORE_DRUG } from './forms';
 import { ScoreUtils } from './ScoreUtils';
 import { BaseUtils } from 'phovea_core';
 import { FormDialog } from 'tdp_core';
@@ -31,6 +31,10 @@ export class SingleScoreDialog {
                 formDesc.unshift(enableMultiple(FORM_CELLLINE_NAME));
                 formDesc.push(FORCE_COMPUTE_ALL_GENES);
                 break;
+            case drug:
+                formDesc.splice(1, 0, enableMultiple(FORM_DRUG_NAME));
+                formDesc.push(FORCE_COMPUTE_ALL_CELLLINE);
+                break;
         }
         if (typeof countHint === 'number' && countHint > MAX_FILTER_SCORE_ROWS_BEFORE_ALL) {
             formDesc.pop();
@@ -39,6 +43,11 @@ export class SingleScoreDialog {
         return dialog.showAsPromise((form) => {
             const data = form.getElementData();
             {
+                const screenType = data[ParameterFormIds.SCREEN_TYPE];
+                if (screenType) {
+                    delete data[ParameterFormIds.SCREEN_TYPE];
+                    data.screen_type = screenType.id;
+                }
                 const datatypes = data[ParameterFormIds.DATA_HIERARCHICAL_SUBTYPE];
                 delete data[ParameterFormIds.DATA_HIERARCHICAL_SUBTYPE];
                 const resolved = datatypes.map((entry) => {
@@ -66,6 +75,10 @@ export class SingleScoreDialog {
                     data.name = data[ParameterFormIds.CELLLINE_NAME];
                     delete data[ParameterFormIds.CELLLINE_NAME];
                     break;
+                case drug:
+                    data.name = data[ParameterFormIds.DRUG_NAME];
+                    delete data[ParameterFormIds.DRUG_NAME];
+                    break;
             }
             return data;
         });
@@ -76,6 +89,9 @@ export class SingleScoreDialog {
     // Factories for depletion scores for DRIVE data
     static createSingleDepletionScoreDialog(pluginDesc, extra, countHint) {
         return SingleScoreDialog.createScoreDialog(pluginDesc, extra, FORM_SINGLE_SCORE_DEPLETION.slice(), countHint);
+    }
+    static createSingleDrugScoreDialog(pluginDesc, extra, countHint) {
+        return SingleScoreDialog.createScoreDialog(pluginDesc, extra, FORM_SINGLE_SCORE_DRUG.slice(), countHint);
     }
 }
 //# sourceMappingURL=SingleScoreDialog.js.map

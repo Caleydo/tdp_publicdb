@@ -15,6 +15,7 @@ interface ISingleScoreParam {
     };
     data_type: string;
     data_subtype: string;
+    screen_type?: string;
     /**
      * see config.MAX_FILTER_SCORE_ROWS_BEFORE_ALL maximal number of rows for computing limiting the score to this subset
      */
