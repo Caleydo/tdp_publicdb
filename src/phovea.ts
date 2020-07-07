@@ -656,7 +656,7 @@ module.exports = function (registry) {
     registry.push('tdpScore', prefix + 'AnnotationColumn', function () {
       return import ('./scores/AnnotationColumn').then((a) => a.AnnotationColumn);
     }, {
-      'factory': 'createAnnotationColumnScore',
+      'factory': 'createAnnotationColumn',
       'idtype': idType,
       'name': label + ' Annotation'
     });
