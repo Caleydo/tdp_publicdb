@@ -645,7 +645,7 @@ module.exports = function (registry) {
     }, {
       primaryType: 'Ensembl',
       oppositeType: oppositeIDType,
-      factory: 'createAggregatedDepletionScore'
+      factory: 'createAggregatedFrequencyDepletionScore'
     });
   });
 
