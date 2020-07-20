@@ -526,6 +526,7 @@ module.exports = function (registry) {
     site: '//www.ncbi.nlm.nih.gov/pubmed?term={gene}',
     argument: 'gene',
     idtype: 'Ensembl',
+    openExternally: true,
     selection: 'chooser',
     preview: function () {
       return import ('./src/assets/previews/pubmed.jpg')
