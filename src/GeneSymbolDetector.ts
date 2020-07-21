@@ -1,12 +1,12 @@
 import {getTDPData} from 'tdp_core/src/rest';
 
-async function detectIDType(data: any[], accessor: (row: any) => string, sampleSize: number) {
+async function detectIDType(data: any[], accessor: (row: any) => string, sampleSize: number): Promise<number> {
   const values = [];
   let validSize = 0;
   for(let i = 0; i < sampleSize; ++i) {
     const v = accessor(data[i]);
 
-    if (!v || v.trim().length === 0) {
+    if (v == null || typeof(v) !== 'string' || v.trim().length === 0) {
       continue; //skip empty samples
     }
     values.push(v);

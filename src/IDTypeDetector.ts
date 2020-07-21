@@ -16,7 +16,7 @@ async function detectIDType(data: any[], accessor: (row: any) => string, sampleS
   for(let i = 0; i < testSize; ++i) {
     const v = accessor(data[i]);
 
-    if (v == null || v.trim().length === 0) {
+    if (v == null || typeof(v) !== 'string' || v.trim().length === 0) {
       continue; //skip empty samples
     }
     values.push(v);
