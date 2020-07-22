@@ -392,8 +392,7 @@ function generateFilter(d) {
                     options: {
                         placeholder: 'Start typing...',
                     }
-                },
-                ...specificFilters,
+                }, ...specificFilters,
                 {
                     name: 'Predefined Named Sets',
                     value: 'panel_' + d.entityName,
