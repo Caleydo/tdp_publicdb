@@ -10,7 +10,7 @@ export class IDTypeDetector {
         const values = [];
         for (let i = 0; i < testSize; ++i) {
             const v = accessor(data[i]);
-            if (v == null || v.trim().length === 0) {
+            if (v == null || typeof (v) !== 'string' || v.trim().length === 0) {
                 continue; //skip empty samples
             }
             values.push(v);

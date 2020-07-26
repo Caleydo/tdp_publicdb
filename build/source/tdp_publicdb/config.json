@@ -1,5 +1,0 @@
-{
-  "dburl": "postgresql://publicdb:publicdb@publicdb:5432/publicdb",
-  "statement_timeout": "'5min'",
-  "statement_timeout_query": "set statement_timeout to {}"
-}

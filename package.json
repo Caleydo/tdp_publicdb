@@ -30,6 +30,7 @@
   ],
   "scripts": {
     "clean": "rimraf build dist",
+    "delete-dependencies": "rimraf node_modules",
     "check": "flake8 --exclude=.git,venv,deploy,docs,__pycache__,node_modules",
     "pretest": "echo hybrid",
     "test": "npm run test:web && npm run test:python",
@@ -94,10 +95,10 @@
   },
   "dependencies": {
     "madge": "^3.9.1",
-    "tdp_gene": "github:Caleydo/tdp_gene#vstoiber/refactoring"
+    "tdp_gene": "github:Caleydo/tdp_gene#develop"
   },
   "optionalDependencies": {
-    "dTiles": "github:datavisyn/dTiles#vstoiber/use_refactoring_branches",
-    "ordino": "github:Caleydo/ordino#vstoiber/use_refactoring_branches"
+    "dTiles": "github:datavisyn/dTiles#develop",
+    "ordino": "github:Caleydo/ordino#develop"
   }
 }
