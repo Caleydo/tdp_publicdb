@@ -227,15 +227,6 @@ module.exports = function (registry) {
             idType: 'Ensembl'
         });
         /// #endif
-        /// #if include('dTiles')
-        registry.push('dTilesSearchProvider', 'gene', function () {
-            return import('./providers/SearchProvider').then((s) => s.GeneSearchProvider);
-        }, {
-            factory: 'createGene',
-            idType: 'Ensembl',
-            name: 'Genes'
-        });
-        /// #endif
     }
     registry.push('tdpView', 'celllinedb_cellline', function () {
         return import('./views/CelllineList');
@@ -373,15 +364,6 @@ module.exports = function (registry) {
             description: 'Shows all information from the database',
             topics: [plain, 'information']
         });
-        /// #if include('dTiles')
-        registry.push('dTilesSearchProvider', idType.toLowerCase(), function () {
-            return import('./providers/SearchProvider').then((s) => s.GeneSearchProvider);
-        }, {
-            factory: 'create' + idType,
-            idType,
-            name: label
-        });
-        /// #endif
         registry.push('idTypeDetector', plain + 'IDTypeDetector', function () {
             return import('./detectors/IDTypeDetector').then((i) => i.IDTypeDetector);
         }, {
