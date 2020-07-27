@@ -4,7 +4,8 @@
  * Licensed under the new BSD license, available at http://caleydo.org/license
  **************************************************************************** */
 
-import {register} from 'phovea_core/src/plugin';
+import {PluginRegistry} from 'phovea_core';
+import reg from './dist/phovea';
 
 /**
  * build a registry by registering all phovea modules
@@ -12,4 +13,4 @@ import {register} from 'phovea_core/src/plugin';
 //other modules
 import 'tdp_gene/phovea_registry.js';
 //self
-register('tdp_publicdb',require('./phovea.js'));
+PluginRegistry.getInstance().register('tdp_publicdb',reg);

@@ -6,7 +6,7 @@ services:
     links:
     - db_publicdb:publicdb
   db_publicdb:
-    image: postgres:9.6-alpine
+    image: postgres:12.1
     environment:
        POSTGRES_USER: publicdb
        POSTGRES_PASSWORD: publicdb

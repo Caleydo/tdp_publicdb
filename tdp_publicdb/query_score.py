@@ -80,7 +80,7 @@ def create_gene_sample_score(views, gene, sample, data, prefix='', inline_aggreg
 
   views[basename + '_frequency_copynumberclass_score'] = aggregate(
     """SUM(({attribute} in ({value}))::INT4) as count, COUNT({attribute}) as total""") \
-    .replace('attribute', data.attributes).replace('value', re.compile('([-\d]+)(,[-\d])*')) \
+    .replace('attribute', data.attributes).replace('value', re.compile(r'([-\d]+)(,[-\d])*')) \
     .build()
 
   views[basename + '_score'] = aggregate("""{agg_score} AS score""") \

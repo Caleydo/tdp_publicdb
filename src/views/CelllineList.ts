@@ -1,11 +1,11 @@
 
 
-import {ACommonList, IACommonListOptions} from 'tdp_gene/src/views/ACommonList';
-import {ISelection, IViewContext} from 'tdp_core/src/views';
-import {cellline} from '../config';
-import {IServerColumn} from 'tdp_core/src/rest';
+import {ACommonList, IACommonListOptions} from 'tdp_gene';
+import {ISelection, IViewContext} from 'tdp_core';
+import {cellline} from '../common/config';
+import {IServerColumn} from 'tdp_core';
 
-export default class CelllineList extends ACommonList {
+export class CelllineList extends ACommonList {
 
   constructor(context:IViewContext, selection: ISelection, parent:HTMLElement, options: IACommonListOptions) {
     super(context, selection, parent, cellline, Object.assign({
