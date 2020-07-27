@@ -2,18 +2,18 @@
  * Created by Stefan Luger on 06.12.17
  */
 
-import {resolveIds} from 'tdp_core/src/views/resolve';
-import ProxyView from 'tdp_core/src/views/ProxyView';
-import {IFormSelectOption} from 'tdp_core/src/form/elements/FormSelect';
+import {ResolveUtils} from 'tdp_core';
+import {ProxyView} from 'tdp_core';
+import {IFormSelectOption} from 'tdp_core';
 
 /**
  * Proxy view for the idType Cosmic which fetches the original cell line data based on the mapping from Cell line to
  * Cosmic.
  */
-export default class CosmicProxyView extends ProxyView {
+export class CosmicProxyView extends ProxyView {
 
   protected async getSelectionSelectData(names: string[]): Promise<IFormSelectOption[]> {
-    const cosmics = await resolveIds(this.selection.idtype, this.selection.range,'Cosmic');
+    const cosmics = await ResolveUtils.resolveIds(this.selection.idtype, this.selection.range,'Cosmic');
 
     return Promise.resolve(cosmics.map((cosmicId: string, index: number) => ({
       value: cosmicId,

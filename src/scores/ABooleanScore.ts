@@ -1,9 +1,8 @@
-import {IScore, IScoreRow} from 'tdp_core/src/extensions';
-import {resolve} from 'phovea_core/src/idtype';
-import {booleanCol} from 'tdp_core/src/lineup';
-import {getTDPScore} from 'tdp_core/src/rest';
-import {ICommonScoreParam} from './AScore';
-import {IDataSourceConfig} from '../config';
+import {IScore, IScoreRow} from 'tdp_core';
+import {IDTypeManager} from 'phovea_core';
+import {ColumnDescUtils} from 'tdp_core';
+import {RestBaseUtils} from 'tdp_core';
+import {IDataSourceConfig} from '../common/config';
 
 
 export interface IBooleanScoreParams {
@@ -13,14 +12,14 @@ export interface IBooleanScoreParams {
 /**
  * score implementation in this case a numeric score is computed
  */
-abstract class ABooleanScore implements IScore<number> {
+export abstract class ABooleanScore implements IScore<number> {
 
   /**
    * defines the IDType of which score values are returned. A score row is a pair of id and its score, e.g. {id: 'EGFR', score: 100}
    * @type {IDType}
    */
   get idType() {
-    return resolve(this.dataSource.idType);
+    return IDTypeManager.getInstance().resolveIdType(this.dataSource.idType);
   }
 
   constructor(protected readonly params: IBooleanScoreParams, protected readonly dataSource: IDataSourceConfig) {}
@@ -31,7 +30,7 @@ abstract class ABooleanScore implements IScore<number> {
    */
   createDesc() {
     const label = this.label;
-    return booleanCol(this.columnName, {label, width: 50});
+    return ColumnDescUtils.booleanCol(this.columnName, {label, width: 50});
   }
 
   /**
@@ -39,11 +38,9 @@ abstract class ABooleanScore implements IScore<number> {
    * @returns {Promise<IScoreRow<number>[]>}
    */
   compute(): Promise<IScoreRow<number>[]> {
-    return getTDPScore(this.dataSource.db, `${this.dataSource.base}_${this.columnName}_score`, this.params);
+    return RestBaseUtils.getTDPScore(this.dataSource.db, `${this.dataSource.base}_${this.columnName}_score`, this.params);
   }
 
   protected abstract get label(): string;
   protected abstract get columnName(): string;
 }
-
-export default ABooleanScore;

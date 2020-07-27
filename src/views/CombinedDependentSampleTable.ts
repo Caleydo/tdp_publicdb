@@ -1,4 +1,4 @@
-import {IViewContext, ISelection} from 'tdp_core/src/views';
+import {IViewContext, ISelection} from 'tdp_core';
 import {
   gene,
   expression,
@@ -6,12 +6,12 @@ import {
   mutation,
   IDataTypeConfig,
   IDataSourceConfig,
-} from '../config';
-import {ParameterFormIds, FORM_DATA_SOURCE, FORM_TISSUE_OR_CELLLINE_FILTER} from '../forms';
-import ACombinedTable from './ACombinedDependentTable';
-import {loadFirstName} from './utils';
+} from '../common/config';
+import {ParameterFormIds, FORM_DATA_SOURCE, FORM_TISSUE_OR_CELLLINE_FILTER} from '../common/forms';
+import {ACombinedDependentTable} from './ACombinedDependentTable';
+import {ViewUtils} from './ViewUtils';
 
-export class CombinedDependentSampleTable extends ACombinedTable {
+export class CombinedDependentSampleTable extends ACombinedDependentTable {
   constructor(context: IViewContext, selection: ISelection, parent: HTMLElement, dataType: IDataTypeConfig[]) {
     super(context, selection, parent, dataType);
 
@@ -38,10 +38,11 @@ export class CombinedDependentSampleTable extends ACombinedTable {
   }
 
   protected getSelectionColumnLabel(ensg: string) {
-    return loadFirstName(ensg);
+    return ViewUtils.loadFirstName(ensg);
   }
-}
 
-export function create(context: IViewContext, selection: ISelection, parent: HTMLElement) {
-  return new CombinedDependentSampleTable(context, selection, parent, [copyNumber, expression, mutation]);
+  static createCombinedDependentSampleTable(context: IViewContext, selection: ISelection, parent: HTMLElement) {
+    return new CombinedDependentSampleTable(context, selection, parent, [copyNumber, expression, mutation]);
+  }
+
 }

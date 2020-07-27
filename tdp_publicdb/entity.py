@@ -50,7 +50,12 @@ def _tissue_columns(query):
                                                             dict(name='false', label='Deceased', color='black')]) \
     .column('height', type='number') \
     .column('weight', type='number') \
-    .column('bmi', type='number')
+    .column('bmi', type='number')\
+    .column('microsatellite_stability_score', type='number') \
+    .column('microsatellite_stability_class', type='categorical') \
+    .column('mutational_fraction', type='number') \
+    .column('hla_a_allele1', type='categorical') \
+    .column('hla_a_allele2', type='categorical')
 
 
 tissue = Entity('tissue',
@@ -60,7 +65,9 @@ tissue = Entity('tissue',
                 table='tissue.tdp_tissue',
                 columns=['tissuename', 'species', 'tumortype', 'organ', 'gender', 'tumortype_adjacent', 'vendorname',
                          'race', 'ethnicity', 'age', 'days_to_last_followup', 'days_to_death', 'vital_status', 'height',
-                         'weight', 'bmi'],
+                         'weight', 'bmi','microsatellite_stability_class', 'microsatellite_stability_score',
+                         'hla_a_allele1', 'hla_a_allele2', 'mutational_fraction'
+                         ],
                 panel_table='tissue.tdp_panelassignment',
                 panel_name='panel',
                 panel='d.tissuename = ANY(ARRAY(SELECT tissuename FROM tissue.tdp_panelassignment WHERE panel {operator} {value}))',
@@ -79,7 +86,13 @@ def _cellline_columns(query):
     .column('morphology', type='categorical') \
     .column('growth_type', type='categorical') \
     .column('age_at_surgery', type='categorical') \
-    .column('cosmicid', type='number')
+    .column('cosmicid', type='number')\
+    .column('mutational_fraction', type='number') \
+    .column('microsatellite_stability_score', type='number') \
+    .column('microsatellite_stability_class', type='categorical') \
+    .column('hla_a_allele1', type='categorical') \
+    .column('hla_a_allele2', type='categorical')
+
 
 
 cellline = Entity('cellline',
@@ -88,10 +101,25 @@ cellline = Entity('cellline',
                   schema='cellline',
                   table='cellline.tdp_cellline',
                   columns=['celllinename', 'cosmicid', 'species', 'tumortype', 'organ', 'gender', 'metastatic_site',
-                           'histology_type', 'morphology', 'growth_type', 'age_at_surgery'],
+                           'histology_type', 'morphology', 'growth_type', 'age_at_surgery','microsatellite_stability_class',
+                           'hla_a_allele1', 'hla_a_allele2','microsatellite_stability_score', 'mutational_fraction'],
                   panel_table='cellline.tdp_panelassignment',
                   panel_name='panel',
                   panel='d.celllinename = ANY(ARRAY(SELECT celllinename FROM cellline.tdp_panelassignment WHERE panel {operator} {value}))',
                   panel_join=None,
                   sort='celllinename',
                   column_def=_cellline_columns)
+
+drug = Entity('drug',
+              idtype='Drug',
+              id='drugid',
+              schema='public',
+              table='public.tdp_drug',
+              columns=['drugid', 'moa', 'target'],
+              panel_table= None,
+              panel_name=None,
+              panel=None,
+              panel_join=None,
+              sort='drugid',
+              column_def=None
+              )

@@ -1,0 +1,20 @@
+
+@import "~select2/dist/css/select2.min.css";
+
+@at-root {
+  .select2-results__option,
+  .select2-selection__rendered {
+    .drug-target,
+    .drug-moa {
+      font-size: 13px;
+      color: #999;
+    }
+
+    &.select2-results__option--highlighted {
+      .drug-target,
+      .drug-moa {
+        color: #afcde9;
+      }
+    }
+  }
+}

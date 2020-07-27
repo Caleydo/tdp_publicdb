@@ -1,4 +1,4 @@
-import {IViewContext, ISelection} from 'tdp_core/src/views';
+import {IViewContext, ISelection} from 'tdp_core';
 import {
   gene,
   expression,
@@ -6,11 +6,11 @@ import {
   mutation,
   IDataTypeConfig,
   chooseDataSource,
-} from '../config';
-import {FORM_GENE_FILTER} from '../forms';
-import ACombinedTable from './ACombinedDependentTable';
+} from '../common/config';
+import {FORM_GENE_FILTER} from '../common/forms';
+import {ACombinedDependentTable} from './ACombinedDependentTable';
 
-export default class CombinedDependentGeneTable extends ACombinedTable {
+export class CombinedDependentGeneTable extends ACombinedDependentTable {
   constructor(context: IViewContext, selection: ISelection, parent: HTMLElement, dataType: IDataTypeConfig[]) {
     super(context, selection, parent, dataType);
 
@@ -24,8 +24,7 @@ export default class CombinedDependentGeneTable extends ACombinedTable {
   protected getParameterFormDescs() {
     return super.getParameterFormDescs().concat([FORM_GENE_FILTER]);
   }
-}
-
-export function create(context: IViewContext, selection: ISelection, parent: HTMLElement) {
-  return new CombinedDependentGeneTable(context, selection, parent, [copyNumber, expression, mutation]);
+  static createCombinedDependentGeneTable(context: IViewContext, selection: ISelection, parent: HTMLElement) {
+    return new CombinedDependentGeneTable(context, selection, parent, [copyNumber, expression, mutation]);
+  }
 }

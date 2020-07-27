@@ -2,12 +2,12 @@
  * Created by Samuel Gratzl on 27.04.2016.
  */
 
-import {resolveIds} from 'tdp_core/src/views';
-import AInstantView from 'tdp_core/src/views/AInstantView';
-import {getSelectedSpecies} from 'tdp_gene/src/common';
-import {gene} from '../config';
-import {getTDPFilteredRows} from 'tdp_core/src/rest';
-import {errorAlert} from 'tdp_core/src/notifications';
+import {ResolveUtils} from 'tdp_core';
+import {AInstantView} from 'tdp_core';
+import {SpeciesUtils} from 'tdp_gene';
+import {gene} from '../common/config';
+import {RestBaseUtils} from 'tdp_core';
+import {ErrorAlertHandler} from 'tdp_core';
 
 interface IGeneInfo {
   _id: number;
@@ -20,7 +20,7 @@ interface IGeneInfo {
   chromosome: string;
 }
 
-export default class GeneInstantView extends AInstantView {
+export class GeneInstantView extends AInstantView {
 
   protected initImpl() {
     super.initImpl();
@@ -28,9 +28,9 @@ export default class GeneInstantView extends AInstantView {
   }
 
   private async loadData(): Promise<IGeneInfo[]> {
-    const ids = await resolveIds(this.selection.idtype, this.selection.range, gene.idType);
-    return <any>getTDPFilteredRows(gene.db, `${gene.base}_all_columns`, {
-      species: getSelectedSpecies()
+    const ids = await ResolveUtils.resolveIds(this.selection.idtype, this.selection.range, gene.idType);
+    return <any>RestBaseUtils.getTDPFilteredRows(gene.db, `${gene.base}_all_columns`, {
+      species: SpeciesUtils.getSelectedSpecies()
     }, {[gene.entityName] : ids});
   }
 
@@ -44,7 +44,7 @@ export default class GeneInstantView extends AInstantView {
         <p>${first.name}</p>
         <p>Location: ${first.chromosome} @ ${first.species}</p>
       `;
-    }).catch(errorAlert)
+    }).catch(ErrorAlertHandler.getInstance().errorAlert)
       .catch(() => this.node.classList.remove('tdp-busy'));
   }
 }
