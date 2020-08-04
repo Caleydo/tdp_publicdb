@@ -660,6 +660,20 @@ module.exports = function (registry) {
     level: 'beginner',
     canJumpAround: false
   });
+
+  registry.push('tdpTour', 'startMenu', function() { return import('./src/tours/startMenu'); }, {
+    name: 'Overview of Start Menu',
+    multiPage: true,
+    level: 'beginner',
+    canJumpAround: false
+  });
+
+  registry.push('tdpTour', 'addColumnToGeneList', function() { return import('./src/tours/addColumnToGeneList'); }, {
+    name: 'Adding Data Columns',
+    multiPage: true,
+    level: 'beginner',
+    canJumpAround: false
+  });
   /// #endif
   // generator-phovea:end
 };
