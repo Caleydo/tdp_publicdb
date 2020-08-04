@@ -56,7 +56,7 @@ export function create(): IStep[] {
     },
     {
       selector: '.lu-search .lu-search-item',
-      html: `First, we want to add a metadata column`,
+      html: `First, we want to add an annotation column`,
       placement: 'centered',
       postAction: () => {
         click('.lu-search .lu-search-item');
