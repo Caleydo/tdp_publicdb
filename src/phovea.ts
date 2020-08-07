@@ -672,7 +672,7 @@ module.exports = function (registry) {
 
 
   /// #if include('ordino')
-  registry.push('tdpTour', 'ordinoWelcome', function() { return import('./tours').then((t) => t.Tour); }, {
+  registry.push('tdpTour', 'ordinoWelcomeTour', function() { return import('./tours').then((t) => t.WelcomeTour); }, {
     factory: 'createTour',
     name: 'Ordino Welcome Tour',
     multiPage: true,
@@ -680,14 +680,16 @@ module.exports = function (registry) {
     canJumpAround: false
   });
 
-  registry.push('tdpTour', 'startMenu', function() { return import('./src/tours/startMenu'); }, {
+  registry.push('tdpTour', 'ordinoStartMenuTour', function() { return import('./tours').then((t) => t.StartMenuTour); }, {
+    factory: 'createTour',
     name: 'Overview of Start Menu',
     multiPage: true,
     level: 'beginner',
     canJumpAround: false
   });
 
-  registry.push('tdpTour', 'addColumnToGeneList', function() { return import('./src/tours/addColumnToGeneList'); }, {
+  registry.push('tdpTour', 'ordinoAddColumnToGeneListTour', function() { return import('./tours').then((t) => t.AddColumnToGeneListTour); }, {
+    factory: 'createTour',
     name: 'Adding Data Columns',
     multiPage: true,
     level: 'beginner',
