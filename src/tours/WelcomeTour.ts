@@ -1,7 +1,7 @@
 import {IStep} from 'tdp_core';
 import {TourUtils} from 'tdp_core';
 
-export class Tour {
+export class WelcomeTour {
 
   static createTour(): IStep[] {
     return [
