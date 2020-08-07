@@ -1,11 +1,11 @@
 import {
   ParameterFormIds, CATEGORICAL_AGGREGATION, NUMERIC_AGGREGATION, COMPARISON_OPERATORS,
   FORM_DATA_HIERARCHICAL_SUBTYPE, FORM_DATA_HIERARCHICAL_SUBTYPE_AGGREGATED_SELECTION,
-  FORM_DATA_HIERARCHICAL_SUBTYPE_DEPLETION, FORM_DATA_HIERARCHICAL_SUBTYPE_AGGREGATED_SELECTION_DEPLETION, FORM_DATA_HIERARCHICAL_SUBTYPE_DRUG, DRUG_SCREEN_SCORE_FORM_ELEMENT
-} from '../forms';
-import {FormElementType} from 'tdp_core/src/form';
-import {MAX_FILTER_SCORE_ROWS_BEFORE_ALL, splitTypes, dataSubtypes} from '../config';
-import {copyNumberCat, unknownCopyNumberValue} from 'tdp_gene/src/constants';
+  FORM_DATA_HIERARCHICAL_SUBTYPE_DEPLETION, FORM_DATA_HIERARCHICAL_SUBTYPE_AGGREGATED_SELECTION_DEPLETION, DRUG_SCREEN_SCORE_FORM_ELEMENT, FORM_DATA_HIERARCHICAL_SUBTYPE_DRUG
+} from '../common/forms';
+import {FormElementType} from 'tdp_core';
+import {MAX_FILTER_SCORE_ROWS_BEFORE_ALL, splitTypes, dataSubtypes} from '../common/config';
+import {Categories} from 'tdp_gene';
 /**
  * Created by Samuel Gratzl on 15.03.2017.
  */
@@ -95,7 +95,7 @@ export const FORM_AGGREGATED_SCORE = [
     },
     useSession: true,
     options: {
-      data: copyNumberCat.filter((d) => d.value !== unknownCopyNumberValue).map((d) => ({text: d.name, id: String(d.value)}))
+      data: Categories.copyNumberCat.filter((d) => d.value !== Categories.unknownCopyNumberValue).map((d) => ({text: d.name, id: String(d.value)}))
     }
   }
 ];

@@ -1,21 +1,21 @@
-import {IViewContext, ISelection, resolveIds} from 'tdp_core/src/views';
-import {getSelectedSpecies} from 'tdp_gene/src/common';
+import {IViewContext, ISelection, ResolveUtils} from 'tdp_core';
+import {SpeciesUtils} from 'tdp_gene';
 import {
   IDataTypeConfig,
   IDataSourceConfig,
   splitTypes
-} from '../config';
-import {ParameterFormIds, FORM_DATA_HIERARCHICAL_SUBTYPE} from '../forms';
-import {ARankingView, multi} from 'tdp_core/src/lineup';
-import {getTDPDesc, getTDPFilteredRows, getTDPScore, IParams, IServerColumn} from 'tdp_core/src/rest';
-import {IAdditionalColumnDesc} from 'tdp_core/src/lineup/desc';
-import {postProcessScore, subTypeDesc} from './utils';
-import {IScoreRow} from 'tdp_core/src/extensions';
-import {resolve} from 'phovea_core/src/idtype';
-import {toFilter} from 'tdp_core/src/lineup';
+} from '../common/config';
+import {ParameterFormIds, FORM_DATA_HIERARCHICAL_SUBTYPE} from '../common/forms';
+import {ARankingView} from 'tdp_core';
+import {RestBaseUtils, IParams, IServerColumn} from 'tdp_core';
+import {IAdditionalColumnDesc} from 'tdp_core';
+import {ViewUtils} from './ViewUtils';
+import {IScoreRow} from 'tdp_core';
+import {IDTypeManager} from 'phovea_core';
+import {LineupUtils, AdapterUtils} from 'tdp_core';
 
 
-abstract class ACombinedDependentTable extends ARankingView {
+export abstract class ACombinedDependentTable extends ARankingView {
 
   protected dataSource: IDataSourceConfig;
 
@@ -33,7 +33,7 @@ abstract class ACombinedDependentTable extends ARankingView {
   protected abstract get oppositeDataSource(): IDataSourceConfig;
 
   get itemIDType() {
-    return resolve(this.oppositeDataSource.idType);
+    return IDTypeManager.getInstance().resolveIdType(this.oppositeDataSource.idType);
   }
 
   protected getParameterFormDescs() {
@@ -60,14 +60,14 @@ abstract class ACombinedDependentTable extends ARankingView {
   }
 
   protected createSelectionAdapter() {
-    return multi({
+    return AdapterUtils.multi({
       createDescs: async (_id: number, id: string) => {
-        const ids = await resolveIds(this.selection.idtype, [_id], this.dataSource.idType);
+        const ids = await ResolveUtils.resolveIds(this.selection.idtype, [_id], this.dataSource.idType);
         return this.getSelectionColumnDesc(_id, ids[0]);
       },
       loadData: (_id: number, id: string, descs: IAdditionalColumnDesc[]): Promise<IScoreRow<any>[]>[] => {
         return descs.map(async (desc) => { // map descs here to return Promise array
-          const ids = await resolveIds(this.selection.idtype, [_id], this.dataSource.idType);
+          const ids = await ResolveUtils.resolveIds(this.selection.idtype, [_id], this.dataSource.idType);
           return this.loadSelectionColumnData(ids[0], [desc])[0]; // send single desc and pick immediately
         });
       },
@@ -83,16 +83,16 @@ abstract class ACombinedDependentTable extends ARankingView {
   }
 
   protected loadColumnDesc() {
-    return getTDPDesc(this.dataSource.db, this.oppositeDataSource.base);
+    return RestBaseUtils.getTDPDesc(this.dataSource.db, this.oppositeDataSource.base);
   }
   protected getColumnDescs(columns: IServerColumn[]) {
     return this.oppositeDataSource.columns((c) => columns.find((d) => d.column === c));
   }
 
   protected loadRows() {
-    const filter = toFilter(this.getParameter('filter'));
-    filter.species = getSelectedSpecies();
-    return getTDPFilteredRows(this.dataSource.db, this.oppositeDataSource.tableName, {}, filter);
+    const filter = LineupUtils.toFilter(this.getParameter('filter'));
+    filter.species = SpeciesUtils.getSelectedSpecies();
+    return RestBaseUtils.getTDPFilteredRows(this.dataSource.db, this.oppositeDataSource.tableName, {}, filter);
   }
 
   protected getSelectionColumnLabel(name: string): Promise<string>|string {
@@ -102,27 +102,25 @@ abstract class ACombinedDependentTable extends ARankingView {
   protected async getSelectionColumnDesc(_id: number, name: string) {
     return Promise.resolve(this.getSelectionColumnLabel(name)).then((nlabel) => this.subTypes.map(({label, dataSubType, id}) => {
       const clabel = `${nlabel} (${label})`;
-      const desc = subTypeDesc(dataSubType, _id, clabel, `col_${id}`);
+      const desc = ViewUtils.subTypeDesc(dataSubType, _id, clabel, `col_${id}`);
       desc.selectedSubtype = id;
       return desc;
     }));
   }
 
   protected loadSelectionColumnData(name: string, descs: IAdditionalColumnDesc[]): Promise<IScoreRow<any>[]>[] {
-    const filter = toFilter(this.getParameter('filter'));
+    const filter = LineupUtils.toFilter(this.getParameter('filter'));
     const param: IParams = {
       name,
-      species: getSelectedSpecies()
+      species: SpeciesUtils.getSelectedSpecies()
     };
     const config = descs.map((option) => splitTypes(option.selectedSubtype));
 
     return config.map(({dataType, dataSubType}) => {
-      return getTDPScore(this.dataSource.db, `${this.oppositeDataSource.base}_${this.dataSource.base}_single_score`, Object.assign({
+      return RestBaseUtils.getTDPScore(this.dataSource.db, `${this.oppositeDataSource.base}_${this.dataSource.base}_single_score`, Object.assign({
         table: dataType.tableName,
         attribute: dataSubType.id
-      }, param), filter).then(postProcessScore(dataSubType));
+      }, param), filter).then(ViewUtils.postProcessScore(dataSubType));
     });
   }
 }
-
-export default ACombinedDependentTable;

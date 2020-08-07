@@ -17,7 +17,7 @@ if(pluginsToTransform.length > 0) {
  */
 module.exports = {
   transform: {
-    "^.+\\.tsx?$": "ts-jest",
+    "^.+\\.(js|ts|tsx)$": "ts-jest",
     "\\.xml$": "jest-raw-loader"
   },
   testRegex: "(.*(test|spec))\\.(tsx?)$",
@@ -30,26 +30,20 @@ module.exports = {
     "node"
   ],
   modulePaths: [
-    "src",
-    "../node_modules",
-    "../"
+    "src"
   ],
   transformIgnorePatterns: [`../node_modules/${pluginsToTransform}`, `node_modules/${pluginsToTransform}`],
   globals: {
     "__VERSION__": "TEST_VERSION",
     "__APP_CONTEXT__": "TEST_CONTEXT",
-    'ts-jest': {
-      // has to be set to true, otherwise i18n import fails
+    // has to be set to true, otherwise i18n import fails
+    "ts-jest": {
       "tsConfig": {
-        "esModuleInterop": true,
+        "esModuleInterop": true
       }
     }
   },
   moduleNameMapper: {
-    "^.+\\.(css|less|scss|sass|png|jpg|gif)$": "identity-obj-proxy",
-    "imports-loader?.*": "imports-loader",
-    "raw-loader?.*": "raw-loader",
-    "file-loader?.*": "file-loader",
-    "script-loader?.*": "script-loader"
+    "^.+\\.(css|less|scss|sass|png|jpg|gif)$": "identity-obj-proxy"
   }
 }
