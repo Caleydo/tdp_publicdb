@@ -58,7 +58,13 @@ mappings = [
                FROM {g.table} WHERE {g.id} = ANY(:ids)""".format(g=gene)),
   DBMapping('GeneSymbol', gene.idtype,
             """SELECT symbol as f, {g.id} AS t
-               FROM {g.table} WHERE symbol = ANY(:ids)""".format(g=gene))
+               FROM {g.table} WHERE symbol = ANY(:ids)""".format(g=gene)),
+  DBMapping(gene.idtype, 'EntrezGene',
+            """SELECT ensg AS f, geneid as t
+               FROM public.entrezgene2ensemblgene WHERE ensg = ANY(:ids)"""),
+  DBMapping('EntrezGene', gene.idtype,
+            """SELECT geneid as f, ensg AS t
+               FROM public.entrezgene2ensemblgene WHERE geneid = ANY(:ids)""", integer_ids=True)
 ]
 
 def create():
