@@ -1,5 +1,5 @@
 import { TourUtils } from 'tdp_core';
-export class Tour {
+export class WelcomeTour {
     static createTour() {
         return [
             {
@@ -166,4 +166,4 @@ export class Tour {
         ];
     }
 }
-//# sourceMappingURL=createTour.js.map
+//# sourceMappingURL=WelcomeTour.js.map
