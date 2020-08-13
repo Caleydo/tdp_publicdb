@@ -1,7 +1,7 @@
 {
   "name": "tdp_publicdb",
   "description": "",
-  "version": "8.0.0",
+  "version": "8.0.1",
   "author": {
     "name": "The Caleydo Team",
     "email": "contact@caleydo.org",
@@ -95,10 +95,10 @@
   },
   "dependencies": {
     "madge": "^3.9.1",
-    "tdp_gene": "github:Caleydo/tdp_gene#semver:^7.0.0"
+    "tdp_gene": "github:Caleydo/tdp_gene#semver:^7.0.1"
   },
   "optionalDependencies": {
-    "dTiles": "github:datavisyn/dTiles#semver:^7.0.0",
-    "ordino": "github:Caleydo/ordino#semver:^8.0.0"
+    "dTiles": "github:datavisyn/dTiles#semver:^7.0.1",
+    "ordino": "github:Caleydo/ordino#semver:^8.0.1"
   }
 }
