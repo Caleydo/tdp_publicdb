@@ -3,17 +3,17 @@
  */
 
 
-import {IFormSelectDesc} from 'tdp_core/src/form';
-import AOncoPrint, {IDataFormatRow, ISample} from 'tdp_gene/src/views/AOncoPrint';
-import {getSelectedSpecies} from 'tdp_gene/src/common';
-import {ParameterFormIds, FORM_TISSUE_OR_CELLLINE_FILTER, FORM_DATA_SOURCE} from '../forms';
-import {loadFirstName} from './utils';
-import {IDataSourceConfig} from '../config';
-import {resolve} from 'phovea_core/src/idtype';
-import {getTDPData, getTDPFilteredRows, IParams, mergeParamAndFilters} from 'tdp_core/src/rest';
-import {toFilter} from 'tdp_core/src/lineup';
+import {IFormSelectDesc} from 'tdp_core';
+import {AOncoPrint, IDataFormatRow, ISample} from 'tdp_gene';
+import {SpeciesUtils} from 'tdp_gene';
+import {ParameterFormIds, FORM_TISSUE_OR_CELLLINE_FILTER, FORM_DATA_SOURCE} from '../common/forms';
+import {ViewUtils} from './ViewUtils';
+import {IDataSourceConfig} from '../common/config';
+import {IDTypeManager} from 'phovea_core';
+import {RestBaseUtils, IParams} from 'tdp_core';
+import {LineupUtils} from 'tdp_core';
 
-export default class OncoPrint extends AOncoPrint {
+export class OncoPrint extends AOncoPrint {
 
 
   protected getParameterFormDescs(): IFormSelectDesc[] {
@@ -31,27 +31,27 @@ export default class OncoPrint extends AOncoPrint {
   protected async loadSampleList(): Promise<ISample[]> {
     const ds = this.dataSource;
     const param: IParams = {
-      species: getSelectedSpecies()
+      species: SpeciesUtils.getSelectedSpecies()
     };
-    const rows = await getTDPFilteredRows(ds.db, `${ds.base}_onco_print_sample_list`, param, toFilter(this.getParameter('filter')));
+    const rows = await RestBaseUtils.getTDPFilteredRows(ds.db, `${ds.base}_onco_print_sample_list`, param, LineupUtils.toFilter(this.getParameter('filter')));
     return rows.map((r) => ({name: r.id, id: r._id}));
   }
 
   protected getSampleIdType() {
     const ds = this.dataSource;
-    return resolve(ds.idType);
+    return IDTypeManager.getInstance().resolveIdType(ds.idType);
   }
 
   protected loadRows(ensg: string): Promise<IDataFormatRow[]> {
     const ds = this.dataSource;
     const param: IParams = {
       ensg,
-      species: getSelectedSpecies()
+      species: SpeciesUtils.getSelectedSpecies()
     };
-    return getTDPData(ds.db, `${ds.base}_onco_print`, mergeParamAndFilters(param, toFilter(this.getParameter('filter'))));
+    return RestBaseUtils.getTDPData(ds.db, `${ds.base}_onco_print`, RestBaseUtils.mergeParamAndFilters(param, LineupUtils.toFilter(this.getParameter('filter'))));
   }
 
   protected loadFirstName(ensg: string): Promise<string> {
-    return loadFirstName(ensg);
+    return ViewUtils.loadFirstName(ensg);
   }
 }

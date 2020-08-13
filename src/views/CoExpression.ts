@@ -2,19 +2,19 @@
  * Created by sam on 16.02.2017.
  */
 
-import {FormElementType, IFormSelectDesc} from 'tdp_core/src/form';
-import ACoExpression, {IDataFormatRow, IGeneOption} from 'tdp_gene/src/views/ACoExpression';
-import {getSelectedSpecies} from 'tdp_gene/src/common';
-import {expression, IDataSourceConfig, IDataSubtypeConfig} from '../config';
-import {ParameterFormIds, FORM_TISSUE_OR_CELLLINE_FILTER, FORM_DATA_SOURCE, FORM_COLOR_CODING} from '../forms';
-import {loadGeneList, loadFirstName} from './utils';
-import {resolve} from 'phovea_core/src/idtype/manager';
-import Range from 'phovea_core/src/range/Range';
-import {getTDPData, IParams, mergeParamAndFilters} from 'tdp_core/src/rest';
-import {toFilter} from 'tdp_core/src/lineup';
+import {FormElementType, IFormSelectDesc} from 'tdp_core';
+import {ACoExpression, ICoExprDataFormatRow, IGeneOption} from 'tdp_gene';
+import {SpeciesUtils} from 'tdp_gene';
+import {expression, IDataSourceConfig, IDataSubtypeConfig} from '../common/config';
+import {ParameterFormIds, FORM_TISSUE_OR_CELLLINE_FILTER, FORM_DATA_SOURCE, FORM_COLOR_CODING} from '../common/forms';
+import {ViewUtils} from './ViewUtils';
+import {IDTypeManager} from 'phovea_core';
+import {Range} from 'phovea_core';
+import {RestBaseUtils, IParams} from 'tdp_core';
+import {LineupUtils} from 'tdp_core';
 
 
-export default class CoExpression extends ACoExpression {
+export class CoExpression extends ACoExpression {
 
   protected getParameterFormDescs(): IFormSelectDesc[] {
     const base = super.getParameterFormDescs();
@@ -41,26 +41,26 @@ export default class CoExpression extends ACoExpression {
   }
 
   loadGeneList(ensgs: string[]) {
-    return loadGeneList(ensgs);
+    return ViewUtils.loadGeneList(ensgs);
   }
 
-  loadData(ensg: string): Promise<IDataFormatRow[]> {
+  loadData(ensg: string): Promise<ICoExprDataFormatRow[]> {
     const ds = this.dataSource;
 
     const param: IParams = {
       ensg,
       attribute: this.dataSubType.id,
-      species: getSelectedSpecies()
+      species: SpeciesUtils.getSelectedSpecies()
     };
     const color = this.getParameterData(ParameterFormIds.COLOR_CODING);
     if (color) {
       param.color = color;
     }
-    return getTDPData(ds.db, `${ds.base}_co_expression${!color ? '_plain': ''}/filter`, mergeParamAndFilters(param, toFilter(this.getParameter('filter'))));
+    return RestBaseUtils.getTDPData(ds.db, `${ds.base}_co_expression${!color ? '_plain': ''}/filter`, RestBaseUtils.mergeParamAndFilters(param, LineupUtils.toFilter(this.getParameter('filter'))));
   }
 
   loadFirstName(ensg: string) {
-    return loadFirstName(ensg);
+    return ViewUtils.loadFirstName(ensg);
   }
 
   protected getAttributeName() {
@@ -68,7 +68,7 @@ export default class CoExpression extends ACoExpression {
   }
 
   get itemIDType() {
-    return resolve(this.dataSource.idType);
+    return IDTypeManager.getInstance().resolveIdType(this.dataSource.idType);
   }
 
   protected select(range: Range): void {

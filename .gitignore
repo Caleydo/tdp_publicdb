@@ -1,8 +1,7 @@
 # general things to ignore
 /.tscache
 /.idea
-/build/
-/dist/
+/lib/
 *.egg-info/
 *.egg
 *.py[cod]
@@ -20,7 +19,7 @@ __pycache__/
 node_modules/
 /src/**/*.js
 /tests/**/*.js
-*.map
+/src/**/*.map
+/tests/**/*.map 
 *.css
-/.cache-loader
 package-lock.json

@@ -2,26 +2,27 @@
  * Created by Marc Streit on 26.07.2016.
  */
 
-import {IScoreRow, ARankingView, single} from 'tdp_core/src/lineup';
-import {getSelectedSpecies} from 'tdp_gene/src/common';
+import {ARankingView, AdapterUtils, IARankingViewOptions} from 'tdp_core';
+import {IScoreRow} from 'tdp_core';
+import {SpeciesUtils} from 'tdp_gene';
 import {
   expression,
   copyNumber,
   mutation,
   IDataTypeConfig,
   IDataSourceConfig, IDataSubtypeConfig
-} from '../config';
-import {ParameterFormIds, FORM_DATA_SOURCE, FORM_TISSUE_OR_CELLLINE_FILTER} from '../forms';
-import {FormElementType} from 'tdp_core/src/form';
-import {ISelection, IViewContext} from 'tdp_core/src/views';
-import {getTDPDesc, getTDPFilteredRows, getTDPScore, IServerColumn} from 'tdp_core/src/rest';
-import {resolve} from 'phovea_core/src/idtype';
-import {loadFirstName, postProcessScore, subTypeDesc} from './utils';
-import {toFilter} from 'tdp_core/src/lineup';
+} from '../common/config';
+import {ParameterFormIds, FORM_DATA_SOURCE, FORM_TISSUE_OR_CELLLINE_FILTER} from '../common/forms';
+import {FormElementType} from 'tdp_core';
+import {ISelection, IViewContext} from 'tdp_core';
+import {RestBaseUtils, IServerColumn} from 'tdp_core';
+import {IDTypeManager} from 'phovea_core';
+import {ViewUtils} from './ViewUtils';
+import {LineupUtils} from 'tdp_core';
 
-export default class DependentSampleTable extends ARankingView {
+export class DependentSampleTable extends ARankingView {
 
-  constructor(context: IViewContext, selection: ISelection, parent: HTMLElement, private readonly dataType: IDataTypeConfig, options = {}) {
+  constructor(context: IViewContext, selection: ISelection, parent: HTMLElement, private readonly dataType: IDataTypeConfig, options: Partial<IARankingViewOptions> = {}) {
     super(context, selection, parent, Object.assign({
       additionalScoreParameter: () => this.dataSource,
       itemName: () => this.dataSource.name,
@@ -48,7 +49,7 @@ export default class DependentSampleTable extends ARankingView {
   }
 
   get itemIDType() {
-    return resolve(this.dataSource.idType);
+    return IDTypeManager.getInstance().resolveIdType(this.dataSource.idType);
   }
 
   private get dataSource() {
@@ -65,12 +66,12 @@ export default class DependentSampleTable extends ARankingView {
 
   protected loadColumnDesc() {
     const dataSource = this.dataSource;
-    return getTDPDesc(dataSource.db, dataSource.base);
+    return RestBaseUtils.getTDPDesc(dataSource.db, dataSource.base);
   }
 
   protected createSelectionAdapter() {
-    return single({
-      createDesc: (_id: number, id: string) => loadFirstName(id).then((label) => subTypeDesc(this.dataSubType, _id, label)),
+    return AdapterUtils.single({
+      createDesc: (_id: number, id: string) => ViewUtils.loadFirstName(id).then((label) => ViewUtils.subTypeDesc(this.dataSubType, _id, label)),
       loadData: (_id: number, id: string) => this.loadSelectionColumnData(id)
     });
   }
@@ -81,9 +82,9 @@ export default class DependentSampleTable extends ARankingView {
 
   protected loadRows() {
     const dataSource = this.dataSource;
-    const filter = toFilter(this.getParameter('filter'));
-    filter.species = getSelectedSpecies();
-    return getTDPFilteredRows(dataSource.db, dataSource.base, {}, filter);
+    const filter = LineupUtils.toFilter(this.getParameter('filter'));
+    filter.species = SpeciesUtils.getSelectedSpecies();
+    return RestBaseUtils.getTDPFilteredRows(dataSource.db, dataSource.base, {}, filter);
   }
 
   private loadSelectionColumnData(name: string): Promise<IScoreRow<any>[]> {
@@ -93,21 +94,22 @@ export default class DependentSampleTable extends ARankingView {
       table: this.dataType.tableName,
       attribute: subType.id,
       name,
-      species: getSelectedSpecies()
+      species: SpeciesUtils.getSelectedSpecies()
     };
-    const filter = toFilter(this.getParameter('filter'));
-    return getTDPScore(dataSource.db, `${dataSource.base}_gene_single_score`, param, filter).then(postProcessScore(subType));
+    const filter = LineupUtils.toFilter(this.getParameter('filter'));
+    return RestBaseUtils.getTDPScore(dataSource.db, `${dataSource.base}_gene_single_score`, param, filter).then(ViewUtils.postProcessScore(subType));
   }
-}
 
-export function createExpressionTable(context: IViewContext, selection: ISelection, parent: HTMLElement, options?) {
-  return new DependentSampleTable(context, selection, parent, expression, options);
-}
+  static createExpressionDependentSampleTable(context: IViewContext, selection: ISelection, parent: HTMLElement, options?) {
+    return new DependentSampleTable(context, selection, parent, expression, options);
+  }
 
-export function createCopyNumberTable(context: IViewContext, selection: ISelection, parent: HTMLElement, options?) {
-  return new DependentSampleTable(context, selection, parent, copyNumber, options);
-}
+  static createCopyNumberDependentSampleTable(context: IViewContext, selection: ISelection, parent: HTMLElement, options?) {
+    return new DependentSampleTable(context, selection, parent, copyNumber, options);
+  }
 
-export function createMutationTable(context: IViewContext, selection: ISelection, parent: HTMLElement, options?) {
-  return new DependentSampleTable(context, selection, parent, mutation, options);
+  static createMutationDependentSampleTable(context: IViewContext, selection: ISelection, parent: HTMLElement, options?) {
+    return new DependentSampleTable(context, selection, parent, mutation, options);
+  }
+
 }

@@ -12,6 +12,14 @@ def phovea(registry):
   """
   # generator-phovea:begin
   registry.append('tdp-sql-database-definition', 'publicdb', 'tdp_publicdb.sql', dict(configKey='tdp_publicdb'))
+
+  from os import path
+  registry.append('tdp-sql-database-migration', 'tdp_publicdb', '', {
+    'scriptLocation': path.join(path.abspath(path.dirname(__file__)), 'migration'),
+    'configKey': 'tdp_publicdb.migration',
+    'dbKey': 'publicdb',
+    'autoUpgrade': False
+  })
   # generator-phovea:end
   pass
 

@@ -1,12 +1,14 @@
 # flake8: noqa
 from tdp_core.dbview import DBConnector, DBMapping
 from .pg_agg_score import agg_score
-from .entity import cellline, gene, tissue
-from .data import cellline_data, tissue_data, cellline_depletion
+from .entity import cellline, gene, tissue, drug
+from .data import cellline_data, tissue_data, cellline_depletion, cellline_drug, cellline_drug_screen
 from .query_common import create_common
 from .query_gene import create_gene
 from .query_sample import create_sample
 from .query_score import create_gene_sample_score
+from tdp_core.dbview import DBViewBuilder, inject_where, limit_offset
+from .query_drug import create_drug, create_drug_sample_score, create_drug_screen_sample
 
 __author__ = 'Samuel Gratzl'
 
@@ -19,6 +21,11 @@ create_gene(views, gene)
 # cellline
 create_common(views, cellline)
 create_sample(views, cellline, gene, cellline_data)
+
+# drug
+create_drug(views, drug)
+create_drug_screen_sample(views,cellline, cellline_drug_screen)
+create_drug_sample_score(views, cellline, drug, cellline_drug, 'drug_')
 
 # scores cellline x gene
 create_gene_sample_score(views, gene, cellline, cellline_data)
@@ -55,6 +62,6 @@ mappings = [
 ]
 
 def create():
-  d = DBConnector(views, agg_score, mappings=mappings)
-  d.description = 'TCGA/CCLE database as assembled by Boehringer Ingelheim GmbH'
-  return d
+   d = DBConnector(views, agg_score, mappings=mappings)
+   d.description = 'TCGA/CCLE database as assembled by Boehringer Ingelheim GmbH'
+   return d
