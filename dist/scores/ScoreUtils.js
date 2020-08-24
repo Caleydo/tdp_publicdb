@@ -1,7 +1,7 @@
 /**
  * Created by Samuel Gratzl on 27.04.2016.
  */
-import { dataSubtypes, cellline, tissue, gene } from '../common/config';
+import { dataSubtypes, cellline, tissue, gene, drug } from '../common/config';
 import { FORM_GENE_FILTER, FORM_TISSUE_FILTER, FORM_CELLLINE_FILTER } from '../common/forms';
 import { LineupUtils } from 'tdp_core';
 export class ScoreUtils {
@@ -65,7 +65,7 @@ export class ScoreUtils {
         }
     }
     static select(idType) {
-        return [gene, cellline, tissue].find((d) => d.idType === idType);
+        return [gene, cellline, tissue, drug].find((d) => d.idType === idType);
     }
     static selectDataSources(pluginDesc) {
         const primary = ScoreUtils.select(pluginDesc.primaryType);
