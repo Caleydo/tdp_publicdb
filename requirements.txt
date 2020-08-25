@@ -1,2 +1,2 @@
 psycopg2==2.8.4
-tdp_core>=10.0.0,<11.0.0
+-e git+https://github.com/datavisyn/tdp_core.git@develop#egg=tdp_core
