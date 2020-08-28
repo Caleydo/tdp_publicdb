@@ -94,7 +94,6 @@
     "typescript": "~3.9.7"
   },
   "dependencies": {
-    "madge": "^3.9.1",
     "tdp_gene": "github:Caleydo/tdp_gene#develop"
   },
   "optionalDependencies": {
