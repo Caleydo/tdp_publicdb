@@ -13,11 +13,9 @@ def phovea(registry):
   # generator-phovea:begin
   registry.append('tdp-sql-database-definition', 'publicdb', 'tdp_publicdb.sql', dict(configKey='tdp_publicdb'))
 
-  registry.append('tdp_proxy', 'genehopper_similar', '',
-                 {
-                      'name': 'Gene Hopper Similar Genes Proxy',
-                      'url': 'http://genehopper.ifis.cs.tu-bs.de/rest/similargenes?q={gene}'
-                 })
+  registry.append('tdp_proxy', 'genehopper_similar', '', {
+                  'name': 'Gene Hopper Similar Genes Proxy',
+                  'url': 'http://genehopper.ifis.cs.tu-bs.de/rest/similargenes?q={gene}'})
 
   from os import path
   registry.append('tdp-sql-database-migration', 'tdp_publicdb', '', {
