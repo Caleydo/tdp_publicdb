@@ -261,7 +261,7 @@ module.exports = function (registry) {
     }, {
         factory: 'new CosmicProxyView',
         name: 'COSMIC',
-        site: '//cancer.sanger.ac.uk/cell_lines/sample/overview?id={cosmicid}&genome=38',
+        site: 'https://cancer.sanger.ac.uk/cell_lines/sample/overview?id={cosmicid}&genome=38',
         argument: 'cosmicid',
         idtype: 'Cellline',
         selection: 'chooser',
@@ -548,7 +548,7 @@ module.exports = function (registry) {
     }, {
         name: 'PubMed',
         factory: 'new GeneSymbolProxyView',
-        site: '//www.ncbi.nlm.nih.gov/pubmed?term={gene}',
+        site: 'https://www.ncbi.nlm.nih.gov/pubmed?term={gene}',
         argument: 'gene',
         idtype: 'Ensembl',
         openExternally: true,
