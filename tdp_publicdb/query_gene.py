@@ -40,3 +40,9 @@ def create_gene(views, gene):
       """) \
     .call(inject_where) \
     .build()
+
+  views[gene.prefix+'_signature'] = DBViewBuilder('helper').query("""
+        SELECT  g.signature as id, g.description
+        FROM {g.schema}.tdp_genesignature g
+     """.format(g=gene)) \
+    .build()
