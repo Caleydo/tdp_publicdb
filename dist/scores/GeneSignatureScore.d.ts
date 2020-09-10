@@ -1,12 +1,11 @@
 import { IScore, IScoreRow, INamedSet } from 'tdp_core';
-import { IBooleanScoreParams } from './ABooleanScore';
 import { IDataSourceConfig } from '../common/config';
 import { RangeLike, IDType } from 'phovea_core';
 import { IPluginDesc } from 'phovea_core';
 /**
  * Interface describing the parameter needed for a `Gene Signature Score`.
  */
-interface IGeneSignatureParam extends IBooleanScoreParams {
+interface IGeneSignatureParam {
     signature: string;
 }
 /**

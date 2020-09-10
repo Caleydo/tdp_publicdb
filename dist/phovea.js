@@ -507,6 +507,55 @@ module.exports = function (registry) {
             }
         ]
     });
+    registry.push('tdpView', 'gene_details', function () {
+        return import('tdp_gene/dist/views/GeneProxyView');
+    }, {
+        name: 'Genehopper',
+        factory: 'new GeneProxyView',
+        site: 'http://genehopper.ifis.cs.tu-bs.de/search?q={gene}',
+        argument: 'gene',
+        idtype: 'Ensembl',
+        selection: 'multiple',
+        group: {
+            name: 'External Resources'
+            // 'order: 10
+        },
+        filter: {
+            species: 'human'
+        }
+    });
+    registry.push('tdpView', 'gene_similarity', function () {
+        return import('./views/SimilarityView');
+    }, {
+        name: 'Gene Similarity (internal)',
+        factory: 'new SimilarityView',
+        idtype: 'Ensembl',
+        selection: 'multiple',
+        group: {
+            name: 'External Resources'
+            // 'order: 30
+        },
+        filter: {
+            species: 'human'
+        }
+    });
+    registry.push('tdpView', 'gene_similarity_external', function () {
+        return import('tdp_gene/dist/views/GeneProxyView');
+    }, {
+        name: 'Gene Similarity',
+        factory: 'new GeneProxyView',
+        site: 'http://genehopper.ifis.cs.tu-bs.de/similargenes?q={gene}&plain=1',
+        argument: 'gene',
+        idtype: 'Ensembl',
+        selection: 'multiple',
+        group: {
+            name: 'External Resources'
+            // 'order: 20
+        },
+        filter: {
+            species: 'human'
+        }
+    });
     registry.push('tdpView', 'pubmed', function () {
         return import('./views/GeneSymbolProxyView');
     }, {
