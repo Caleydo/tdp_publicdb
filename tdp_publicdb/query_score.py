@@ -103,5 +103,6 @@ def create_gene_sample_score(views, gene, sample, data, prefix='', inline_aggreg
     """.format(s=sample)) \
     .arg('signature') \
     .arg('species') \
+    .call(inject_where) \
     .filter('panel_' + sample.id, sample.panel, join=sample.panel_join) \
     .build()
