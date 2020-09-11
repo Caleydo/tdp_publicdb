@@ -466,6 +466,19 @@ module.exports = function (registry) {
             primaryType: idType,
             oppositeType: 'Ensembl'
         });
+        registry.push('tdpScore', prefix + '_signature_score', function () {
+            return import('./scores/GeneSignatureScore').then((a) => a.GeneSignatureScore);
+        }, {
+            'factory': 'createGeneSignatureDialog',
+            'idtype': idType,
+            'name': 'Gene Signature Score'
+        });
+        registry.push('tdpScoreImpl', prefix + '_signature_score', function () {
+            return import('./scores/GeneSignatureScore').then((a) => a.GeneSignatureScore);
+        }, {
+            'factory': 'createGeneSignatureScore',
+            'primaryType': idType
+        });
     });
     registry.push('tdpViewGroups', 'chooser_header_order', function () { }, {
         groups: [{
