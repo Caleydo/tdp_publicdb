@@ -608,7 +608,7 @@ module.exports = function (registry) {
         }, {
             primaryType: idType,
             oppositeType: 'Ensembl',
-            factory: 'createAggregatedDepletionScore'
+            factory: 'createAggregatedFrequencyDepletionScore'
         });
         registry.push('tdpScore', prefix + '_prism_drug_single_score', function () {
             return import('./scores/SingleScoreDialog').then((a) => a.SingleScoreDialog);
