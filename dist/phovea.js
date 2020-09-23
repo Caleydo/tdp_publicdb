@@ -608,7 +608,7 @@ module.exports = function (registry) {
         }, {
             primaryType: idType,
             oppositeType: 'Ensembl',
-            factory: 'createAggregatedFrequencyDepletionScore'
+            factory: 'createAggregatedDepletionScore'
         });
         registry.push('tdpScore', prefix + '_prism_drug_single_score', function () {
             return import('./scores/SingleScoreDialog').then((a) => a.SingleScoreDialog);
@@ -660,7 +660,7 @@ module.exports = function (registry) {
         }, {
             primaryType: 'Ensembl',
             oppositeType: oppositeIDType,
-            factory: 'createAggregatedFrequencyDepletionScore'
+            factory: 'createAggregatedDepletionScore'
         });
     });
     // Common scores for all IDTypes

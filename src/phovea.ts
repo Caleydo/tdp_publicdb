@@ -656,7 +656,7 @@ module.exports = function (registry) {
     }, {
       primaryType: idType,
       oppositeType: 'Ensembl',
-      factory: 'createAggregatedFrequencyDepletionScore'
+      factory: 'createAggregatedDepletionScore'
     });
 
     registry.push('tdpScore', prefix + '_prism_drug_single_score', function () {
@@ -712,7 +712,7 @@ module.exports = function (registry) {
     }, {
       primaryType: 'Ensembl',
       oppositeType: oppositeIDType,
-      factory: 'createAggregatedFrequencyDepletionScore'
+      factory: 'createAggregatedDepletionScore'
     });
   });
 
