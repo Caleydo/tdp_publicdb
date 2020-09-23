@@ -660,7 +660,7 @@ module.exports = function (registry) {
         }, {
             primaryType: 'Ensembl',
             oppositeType: oppositeIDType,
-            factory: 'createAggregatedFrequencyDepletionScore'
+            factory: 'createAggregatedDepletionScore'
         });
     });
     // Common scores for all IDTypes

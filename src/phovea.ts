@@ -712,7 +712,7 @@ module.exports = function (registry) {
     }, {
       primaryType: 'Ensembl',
       oppositeType: oppositeIDType,
-      factory: 'createAggregatedFrequencyDepletionScore'
+      factory: 'createAggregatedDepletionScore'
     });
   });
 
