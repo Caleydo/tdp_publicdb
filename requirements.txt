@@ -1,2 +1,5 @@
 psycopg2==2.8.4
 -e git+https://github.com/datavisyn/tdp_core.git@develop#egg=tdp_core
+
+# greenlet is necessary v0.4.16 since v0.4.17 breaks the build
+greenlet==0.4.16
