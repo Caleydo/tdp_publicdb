@@ -21,6 +21,6 @@ export declare class AggregatedDepletionScore extends AAggregatedScore implement
     constructor(parameter: IAggregatedScoreParam, dataSource: IDataSourceConfig, oppositeDataSource: IDataSourceConfig);
     protected getViewPrefix(): string;
     protected createFilter(): IParams;
-    static createAggregatedFrequencyDepletionScore(data: any, pluginDesc: IPluginDesc): IScore<number>;
+    static createAggregatedDepletionScore(data: any, pluginDesc: IPluginDesc): IScore<number>;
 }
 export {};

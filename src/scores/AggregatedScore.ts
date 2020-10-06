@@ -55,9 +55,7 @@ export class AggregatedDepletionScore extends AAggregatedScore implements IScore
     };
   }
   // Factories for depletion scores for DRIVE data
-  static createAggregatedFrequencyDepletionScore(data, pluginDesc: IPluginDesc): IScore<number> {
+  static createAggregatedDepletionScore(data, pluginDesc: IPluginDesc): IScore<number> {
     return AggregatedScore.initializeAggregationFrequencyScore(data, pluginDesc, (data, primary, opposite) => new AggregatedDepletionScore(data, primary, opposite), (data, primary, opposite, countOnly) => new FrequencyDepletionScore(data, primary, opposite, countOnly));
   }
 }
-
-
