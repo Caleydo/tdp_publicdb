@@ -44,11 +44,11 @@ export declare class GeneSignatureScore implements IScore<number> {
      * @returns {Promise<IScoreRow<number>[]>}
      */
     compute(ids: RangeLike, idtype: IDType, namedSet?: INamedSet): Promise<IScoreRow<number>[]>;
-    static createGeneSignatureScore(data: IGeneSignatureData, pluginDesc: IPluginDesc): GeneSignatureScore;
+    static createGeneSignatureScore(data: IGeneSignatureData[], pluginDesc: IPluginDesc): GeneSignatureScore[];
     /**
      * Builder function for building the parameters of the score.
      * @returns {Promise<ISignatureColumnParam>} a promise for the parameter.
      */
-    static createGeneSignatureDialog(pluginDesc: IPluginDesc): Promise<IGeneSignatureData>;
+    static createGeneSignatureDialog(pluginDesc: IPluginDesc): Promise<IGeneSignatureData[]>;
 }
 export {};
