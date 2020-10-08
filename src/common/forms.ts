@@ -526,7 +526,7 @@ function selectCategoricalColumn(ds: IDataSourceConfig) {
 }
 
 function addEmptyOption(options: IFormSelectOption[]) {
-  return [{name: '', value: '', data: null}].concat(options);
+  return [{name: 'None', value: '', data: null}].concat(options);
 }
 
 
