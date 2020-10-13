@@ -33,8 +33,9 @@ export class AnnotationColumn extends ABooleanScore implements IScore<number> {
   protected get columnName() {
     return 'namedset_containment';
   }
-  static createAnnotationColumnScore(data: IAnnotationColumnParam[], pluginDesc: IPluginDesc) {
+  static createAnnotationColumnScore(data: IAnnotationColumnParam | IAnnotationColumnParam[], pluginDesc: IPluginDesc) {
     const {primary} = ScoreUtils.selectDataSources(pluginDesc);
+    data = (Array.isArray(data) ? data : [data]) as IAnnotationColumnParam[];
     return data.map((d) => new AnnotationColumn(d, primary));
   }
 

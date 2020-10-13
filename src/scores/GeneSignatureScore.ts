@@ -77,8 +77,9 @@ export class GeneSignatureScore implements IScore<number> {
     return RestBaseUtils.getTDPScore(this.dataSource.db, `${this.dataSource.base}_gene_signature_score`, params);
   }
 
-  static createGeneSignatureScore(data: IGeneSignatureData[], pluginDesc: IPluginDesc) {
+  static createGeneSignatureScore(data: IGeneSignatureData | IGeneSignatureData[], pluginDesc: IPluginDesc) {
     const {primary} = ScoreUtils.selectDataSources(pluginDesc);
+    data = (Array.isArray(data) ? data : [data]) as IGeneSignatureData[];
     return data.map(({params, options}) => new GeneSignatureScore(params, primary, options));
   }
 

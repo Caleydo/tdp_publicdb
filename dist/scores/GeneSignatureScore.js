@@ -43,6 +43,7 @@ export class GeneSignatureScore {
     }
     static createGeneSignatureScore(data, pluginDesc) {
         const { primary } = ScoreUtils.selectDataSources(pluginDesc);
+        data = (Array.isArray(data) ? data : [data]);
         return data.map(({ params, options }) => new GeneSignatureScore(params, primary, options));
     }
     /**

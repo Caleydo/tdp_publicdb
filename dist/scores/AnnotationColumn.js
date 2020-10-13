@@ -19,6 +19,7 @@ export class AnnotationColumn extends ABooleanScore {
     }
     static createAnnotationColumnScore(data, pluginDesc) {
         const { primary } = ScoreUtils.selectDataSources(pluginDesc);
+        data = (Array.isArray(data) ? data : [data]);
         return data.map((d) => new AnnotationColumn(d, primary));
     }
     /**
