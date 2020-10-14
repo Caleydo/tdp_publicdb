@@ -2,7 +2,7 @@ import { ColumnDescUtils, RestBaseUtils } from 'tdp_core';
 import { FormDialog } from 'tdp_core';
 import { MAX_FILTER_SCORE_ROWS_BEFORE_ALL } from '../common/config';
 import { FormElementType } from 'tdp_core';
-import { AppContext, IDTypeManager } from 'phovea_core';
+import { AppContext, IDTypeManager, I18nextManager } from 'phovea_core';
 import { ScoreUtils } from './ScoreUtils';
 import { SpeciesUtils, FieldUtils } from 'tdp_gene';
 /**
@@ -43,32 +43,42 @@ export class GeneSignatureScore {
     }
     static createGeneSignatureScore(data, pluginDesc) {
         const { primary } = ScoreUtils.selectDataSources(pluginDesc);
-        return new GeneSignatureScore(data.params, primary, data.options);
+        data = (Array.isArray(data) ? data : [data]);
+        return data.map(({ params, options }) => new GeneSignatureScore(params, primary, options));
     }
     /**
      * Builder function for building the parameters of the score.
      * @returns {Promise<ISignatureColumnParam>} a promise for the parameter.
      */
     static async createGeneSignatureDialog(pluginDesc) {
-        const dialog = new FormDialog('Add Gene Signature Column', 'Add');
+        const dialog = new FormDialog(I18nextManager.getInstance().i18n.t('tdp:publicdb.addGeneSignature'), I18nextManager.getInstance().i18n.t('tdp:publicdb.add'));
         const data = await AppContext.getInstance().getAPIJSON(`/tdp/db/publicdb/gene_signature`);
-        const optionsData = data.map((item) => ({ name: `${item.id} (${item.description})`, value: item.id }));
+        const optionsData = data.map((item) => ({ text: `${item.id} (${item.description})`, id: item.id }));
         dialog.append({
-            type: FormElementType.SELECT,
-            label: 'Signature',
-            id: 'signature',
+            type: FormElementType.SELECT2_MULTIPLE,
+            label: 'Signatures',
+            id: 'signatures',
             attributes: {
                 style: 'width:100%'
             },
             required: true,
             options: {
-                optionsData
+                data: optionsData
             }
         });
         return dialog.showAsPromise((r) => {
-            const chosen = (r.getElementValues());
-            const result = { params: chosen, options: { description: (data.find((item) => item.id === chosen.signature).description) } };
-            return result;
+            var _a;
+            const signatures = (_a = r.getElementValues()) === null || _a === void 0 ? void 0 : _a.signatures.map(({ id }) => {
+                return {
+                    params: {
+                        signature: id
+                    },
+                    options: {
+                        description: (data.find((item) => item.id === id).description)
+                    }
+                };
+            });
+            return signatures;
         });
     }
 }

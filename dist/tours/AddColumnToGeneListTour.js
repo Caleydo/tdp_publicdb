@@ -73,16 +73,15 @@ export class AddColumnToGeneListTour {
                 }
             },
             {
-                selector: '.modal.in select[name=column]',
+                selector: '.modal.in .form-group > .select2',
                 html: `<p>This opens a dialog where you can select which information you want to add as a new column.</p>
         <p>In this example, we select <i>'Strand'</i> &hellip;</p>`,
                 placement: 'centered',
-                preAction: () => TourUtils.waitFor('.modal.in select[name=column]').then(() => TourUtils.wait(250)),
-                postAction: TourUtils.setValueAndTriggerSelector('strand')
+                postAction: () => TourUtils.setValueAndTrigger('.form-group > select', 'strand', 'change')
             },
             {
                 selector: '.modal.in .modal-footer button[type=submit]',
-                html: `&hellip; and click <i>'Add Column'</i>`,
+                html: `&hellip; and click <i>'Add'</i>`,
                 placement: 'centered',
                 postAction: TourUtils.clickSelector
             },
@@ -140,7 +139,7 @@ export class AddColumnToGeneListTour {
             },
             {
                 selector: '.modal.in .modal-footer button[type=submit]',
-                html: `Finally, click <i>'Add Single Score Column'</i>`,
+                html: `Finally, click <i>'Add'</i>`,
                 placement: 'centered',
                 postAction: TourUtils.clickSelector
             },
@@ -206,7 +205,7 @@ export class AddColumnToGeneListTour {
             },
             {
                 selector: '.modal.in .modal-footer button[type=submit]',
-                html: `Finally, we click <i>'Add Aggregated Score Column'</i>`,
+                html: `Finally, we click <i>'Add'</i>`,
                 placement: 'centered',
                 postAction: TourUtils.clickSelector
             },

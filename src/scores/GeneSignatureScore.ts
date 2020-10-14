@@ -2,7 +2,7 @@ import {IScore, ColumnDescUtils, IScoreRow, RestBaseUtils, INamedSet} from 'tdp_
 import {FormDialog} from 'tdp_core';
 import {IDataSourceConfig, MAX_FILTER_SCORE_ROWS_BEFORE_ALL} from '../common/config';
 import {FormElementType} from 'tdp_core';
-import {AppContext, IDTypeManager, RangeLike, IDType} from 'phovea_core';
+import {AppContext, IDTypeManager, RangeLike, IDType, I18nextManager} from 'phovea_core';
 import {IPluginDesc} from 'phovea_core';
 import {ScoreUtils} from './ScoreUtils';
 import {SpeciesUtils, FieldUtils} from 'tdp_gene';
@@ -77,9 +77,10 @@ export class GeneSignatureScore implements IScore<number> {
     return RestBaseUtils.getTDPScore(this.dataSource.db, `${this.dataSource.base}_gene_signature_score`, params);
   }
 
-  static createGeneSignatureScore(data: IGeneSignatureData, pluginDesc: IPluginDesc) {
+  static createGeneSignatureScore(data: IGeneSignatureData | IGeneSignatureData[], pluginDesc: IPluginDesc) {
     const {primary} = ScoreUtils.selectDataSources(pluginDesc);
-    return new GeneSignatureScore(data.params, primary, data.options);
+    data = (Array.isArray(data) ? data : [data]) as IGeneSignatureData[];
+    return data.map(({params, options}) => new GeneSignatureScore(params, primary, options));
   }
 
   /**
@@ -87,27 +88,35 @@ export class GeneSignatureScore implements IScore<number> {
    * @returns {Promise<ISignatureColumnParam>} a promise for the parameter.
    */
   static async createGeneSignatureDialog(pluginDesc: IPluginDesc) {
-    const dialog = new FormDialog('Add Gene Signature Column', 'Add');
+    const dialog = new FormDialog(I18nextManager.getInstance().i18n.t('tdp:publicdb.addGeneSignature'), I18nextManager.getInstance().i18n.t('tdp:publicdb.add'));
     const data = await AppContext.getInstance().getAPIJSON(`/tdp/db/publicdb/gene_signature`);
-    const optionsData = data.map((item: IGeneSignature) => ({name: `${item.id} (${item.description})`, value: item.id}));
+    const optionsData = data.map((item: IGeneSignature) => ({text: `${item.id} (${item.description})`, id: item.id}));
 
     dialog.append({
-      type: FormElementType.SELECT,
-      label: 'Signature',
-      id: 'signature',
+      type: FormElementType.SELECT2_MULTIPLE,
+      label: 'Signatures',
+      id: 'signatures',
       attributes: {
         style: 'width:100%'
       },
       required: true,
       options: {
-        optionsData
+        data: optionsData
       }
     });
 
     return dialog.showAsPromise((r) => {
-      const chosen = <{signature: 'string'}>(r.getElementValues());
-      const result = {params: chosen, options: {description: <string>(data.find((item: IGeneSignature) => item.id === chosen.signature).description)}};
-      return <IGeneSignatureData>result;
+      const signatures = r.getElementValues()?.signatures.map(({id}) => {
+        return {
+          params: {
+            signature: id
+          },
+          options: {
+            description: <string>(data.find((item: IGeneSignature) => item.id === id).description)
+          }
+        };
+      });
+      return <IGeneSignatureData[]>signatures;
     });
   }
 }

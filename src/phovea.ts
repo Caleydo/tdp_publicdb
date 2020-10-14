@@ -4,8 +4,10 @@
  * Licensed under the new BSD license, available at http://caleydo.org/license
  **************************************************************************** */
 
+import {EP_PHOVEA_CORE_LOCALE, ILocaleEPDesc, PluginRegistry} from 'phovea_core';
+
 //register all extensions in the registry following the given pattern
-module.exports = function (registry) {
+export default function (registry) {
   //registry.push('extension-type', 'extension-id', function() { return import('./src/extension_impl'); }, {});
   // generator-phovea:begin
 
@@ -762,5 +764,11 @@ module.exports = function (registry) {
     canJumpAround: false
   });
   /// #endif
+
+  registry.push(EP_PHOVEA_CORE_LOCALE, 'tdpPublicDBLocaleEN', function () {
+    return import('./locales/en/tdp.json').then(PluginRegistry.getInstance().asResource);
+  }, <ILocaleEPDesc>{
+    ns: 'tdp',
+  });
   // generator-phovea:end
-};
+}
