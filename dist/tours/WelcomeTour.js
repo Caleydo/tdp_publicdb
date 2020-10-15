@@ -63,6 +63,7 @@ export class WelcomeTour {
                 selector: '.modal.in .form-group > .select2',
                 html: `Here we select <i>'Strand'</i> &hellip;`,
                 placement: 'centered',
+                preAction: () => TourUtils.waitFor('.modal.in').then(() => TourUtils.wait(250)),
                 postAction: () => TourUtils.setValueAndTrigger('.form-group > select', 'strand', 'change')
             },
             {
