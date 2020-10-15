@@ -87,6 +87,7 @@ export class AddColumnToGeneListTour {
         html: `<p>This opens a dialog where you can select which information you want to add as a new column.</p>
         <p>In this example, we select <i>'Strand'</i> &hellip;</p>`,
         placement: 'centered',
+        preAction: () => TourUtils.waitFor('.modal.in').then(() => TourUtils.wait(250)),
         postAction: () => TourUtils.setValueAndTrigger('.form-group > select', 'strand', 'change')
       },
 
