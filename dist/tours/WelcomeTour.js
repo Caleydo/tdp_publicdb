@@ -60,15 +60,14 @@ export class WelcomeTour {
                 }
             },
             {
-                selector: '.modal.in select[name=column]',
+                selector: '.modal.in .form-group > .select2',
                 html: `Here we select <i>'Strand'</i> &hellip;`,
                 placement: 'centered',
-                preAction: () => TourUtils.waitFor('.modal.in select[name=column]').then(() => TourUtils.wait(250)),
-                postAction: TourUtils.setValueAndTriggerSelector('strand')
+                postAction: () => TourUtils.setValueAndTrigger('.form-group > select', 'strand', 'change')
             },
             {
                 selector: '.modal.in .modal-footer button[type=submit]',
-                html: `&hellip; and click <i>'Add Column'</i>`,
+                html: `&hellip; and click <i>'Add'</i>`,
                 placement: 'centered',
                 postAction: TourUtils.clickSelector
             },
@@ -109,7 +108,7 @@ export class WelcomeTour {
             },
             {
                 selector: '.modal.in .modal-footer button[type=submit]',
-                html: `Finally, click <i>'Add Single Score Column'</i>`,
+                html: `Finally, click <i>'Add'</i>`,
                 placement: 'centered',
                 postAction: TourUtils.clickSelector
             },
