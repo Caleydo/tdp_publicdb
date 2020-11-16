@@ -507,7 +507,7 @@ function selectCategoricalColumn(ds) {
     return cats.map((c) => ({ name: c.label, value: c.column, data: c.column }));
 }
 function addEmptyOption(options) {
-    return [{ name: '', value: '', data: null }].concat(options);
+    return [{ name: 'None', value: '', data: null }].concat(options);
 }
 export const FORM_DATA_HIERARCHICAL_SUBTYPE = {
     type: FormElementType.SELECT2_MULTIPLE,
