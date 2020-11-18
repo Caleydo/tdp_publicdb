@@ -3,7 +3,7 @@
  */
 
 import {IPluginDesc} from 'phovea_core';
-import {IDataSubtypeConfig, dataSubtypes, cellline, tissue, gene, IDataSourceConfig} from '../common/config';
+import {IDataSubtypeConfig, dataSubtypes, cellline, tissue, gene, drug, IDataSourceConfig} from '../common/config';
 import {FORM_GENE_FILTER, FORM_TISSUE_FILTER, FORM_CELLLINE_FILTER} from '../common/forms';
 import {LineupUtils} from 'tdp_core';
 import {IFormMultiMap} from 'tdp_core';
@@ -72,7 +72,7 @@ export class ScoreUtils {
   }
 
   private static select(idType: string) {
-    return [gene, cellline, tissue].find((d) => d.idType === idType);
+    return [gene, cellline, tissue, drug].find((d) => d.idType === idType);
   }
 
   static selectDataSources(pluginDesc: IPluginDesc) {
