@@ -1,6 +1,5 @@
 import { SearchProvider } from 'tdp_gene';
 import { cellline, gene, tissue } from '../common/config';
-import '../scss/idtype_color.scss';
 import { SpeciesUtils } from 'tdp_gene';
 import { RestBaseUtils } from 'tdp_core';
 export class GeneSearchProvider extends SearchProvider {
