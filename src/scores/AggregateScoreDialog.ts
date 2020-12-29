@@ -2,7 +2,7 @@
  * Created by Samuel Gratzl on 27.04.2016.
  */
 
-import {IPluginDesc} from 'phovea_core';
+import {I18nextManager, IPluginDesc} from 'phovea_core';
 import {ParameterFormIds, FORM_GENE_FILTER, FORM_TISSUE_FILTER, FORM_CELLLINE_FILTER} from '../common/forms';
 import {
   FORCE_COMPUTE_ALL_CELLLINE, FORCE_COMPUTE_ALL_GENES, FORCE_COMPUTE_ALL_TISSUE,
@@ -21,7 +21,7 @@ export class AggregateScoreDialog {
   static createScoreDialog(pluginDesc: IPluginDesc, extras: any, formDesc: IFormElementDesc[], countHint?: number) {
     const {primary, opposite} = ScoreUtils.selectDataSources(pluginDesc);
 
-    const dialog = new FormDialog('Add Aggregated Score Column', 'Add Aggregated Score Column');
+    const dialog = new FormDialog(I18nextManager.getInstance().i18n.t('tdp:publicdb.addAggregated'), I18nextManager.getInstance().i18n.t('tdp:publicdb.add'));
     switch(opposite) {
       case gene:
         formDesc.unshift(FORM_GENE_FILTER);

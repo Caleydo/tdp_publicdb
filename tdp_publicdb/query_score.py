@@ -94,3 +94,15 @@ def create_gene_sample_score(views, gene, sample, data, prefix='', inline_aggreg
     """.format(g=gene)) \
     .arg('panel') \
     .build()
+
+  views[sample.prefix + '_gene_signature_score'] = DBViewBuilder('score').idtype(gene.idtype).query("""
+      SELECT a.{s.id} as id, a.score
+      FROM {s.schema}.tdp_{s.schema}2genesignature a
+      INNER JOIN {s.table} d ON a.{s.id} = d.{s.id}
+      WHERE signature = :signature
+    """.format(s=sample)) \
+    .arg('signature') \
+    .arg('species') \
+    .filter('panel_' + sample.id, sample.panel, join=sample.panel_join) \
+    .call(inject_where) \
+    .build()

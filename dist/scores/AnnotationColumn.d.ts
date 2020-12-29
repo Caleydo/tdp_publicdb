@@ -15,10 +15,10 @@ export declare class AnnotationColumn extends ABooleanScore implements IScore<nu
     constructor(params: IAnnotationColumnParam, dataSource: IDataSourceConfig);
     protected get label(): string;
     protected get columnName(): string;
-    static createAnnotationColumnScore(data: any, pluginDesc: IPluginDesc): AnnotationColumn;
+    static createAnnotationColumnScore(data: IAnnotationColumnParam | IAnnotationColumnParam[], pluginDesc: IPluginDesc): AnnotationColumn[];
     /**
      * builder function for building the parameters of the score
      * @returns {Promise<IAnnotationColumnParam>} a promise for the parameter
      */
-    static createAnnotationColumn(pluginDesc: IPluginDesc): Promise<IAnnotationColumnParam>;
+    static createAnnotationColumn(pluginDesc: IPluginDesc): Promise<IAnnotationColumnParam[]>;
 }

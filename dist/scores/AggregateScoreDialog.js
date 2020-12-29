@@ -1,6 +1,7 @@
 /**
  * Created by Samuel Gratzl on 27.04.2016.
  */
+import { I18nextManager } from 'phovea_core';
 import { ParameterFormIds, FORM_GENE_FILTER, FORM_TISSUE_FILTER, FORM_CELLLINE_FILTER } from '../common/forms';
 import { FORCE_COMPUTE_ALL_CELLLINE, FORCE_COMPUTE_ALL_GENES, FORCE_COMPUTE_ALL_TISSUE, FORM_AGGREGATED_SCORE, FORM_AGGREGATED_SCORE_DEPLETION } from './forms';
 import { gene, tissue, cellline, splitTypes, MAX_FILTER_SCORE_ROWS_BEFORE_ALL } from '../common/config';
@@ -10,7 +11,7 @@ import { FormMap } from 'tdp_core';
 export class AggregateScoreDialog {
     static createScoreDialog(pluginDesc, extras, formDesc, countHint) {
         const { primary, opposite } = ScoreUtils.selectDataSources(pluginDesc);
-        const dialog = new FormDialog('Add Aggregated Score Column', 'Add Aggregated Score Column');
+        const dialog = new FormDialog(I18nextManager.getInstance().i18n.t('tdp:publicdb.addAggregated'), I18nextManager.getInstance().i18n.t('tdp:publicdb.add'));
         switch (opposite) {
             case gene:
                 formDesc.unshift(FORM_GENE_FILTER);
