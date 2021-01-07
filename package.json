@@ -94,10 +94,10 @@
     "typescript": "~3.9.7"
   },
   "dependencies": {
-    "tdp_gene": "github:Caleydo/tdp_gene#develop"
+    "tdp_gene": "github:Caleydo/tdp_gene#vstoiber/update_dependencies"
   },
   "optionalDependencies": {
-    "dTiles": "github:datavisyn/dTiles#develop",
-    "ordino": "github:Caleydo/ordino#develop"
+    "dTiles": "github:datavisyn/dTiles#vstoiber/update_requirements",
+    "ordino": "github:Caleydo/ordino#vstoiber/update_requirements"
   }
 }
