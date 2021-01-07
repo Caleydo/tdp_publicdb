@@ -1,6 +1,5 @@
 import { SearchProvider } from 'tdp_gene';
 import { IResult } from 'tdp_core';
-import '../scss/idtype_color.scss';
 export declare class GeneSearchProvider extends SearchProvider {
     get searchView(): string;
     get verifyView(): string;
