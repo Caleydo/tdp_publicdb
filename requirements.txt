@@ -1,2 +1,2 @@
 psycopg2==2.8.6
--e git+https://github.com/datavisyn/tdp_core.git@vstoiber/update_requirements#egg=tdp_core
+-e git+https://github.com/datavisyn/tdp_core.git@develop#egg=tdp_core
