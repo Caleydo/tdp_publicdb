@@ -2,6 +2,8 @@
 /.tscache
 /.idea
 /lib/
+/build/
+/dist/tsBuildInfoFile
 *.egg-info/
 *.egg
 *.py[cod]
