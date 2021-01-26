@@ -94,10 +94,10 @@
     "typescript": "~3.9.7"
   },
   "dependencies": {
-    "tdp_gene": "github:Caleydo/tdp_gene#semver:^release-8.0.0"
+    "tdp_gene": "github:Caleydo/tdp_gene#release-8.0.0"
   },
   "optionalDependencies": {
-    "dTiles": "github:datavisyn/dTiles#semver:^release-8.0.0",
-    "ordino": "github:Caleydo/ordino#semver:^release-9.0.0"
+    "dTiles": "github:datavisyn/dTiles#release-8.0.0",
+    "ordino": "github:Caleydo/ordino#release-9.0.0"
   }
 }
