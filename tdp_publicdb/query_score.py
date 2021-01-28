@@ -45,7 +45,7 @@ def create_gene_sample_score(views, gene, sample, data, prefix='', inline_aggreg
                     INNER JOIN {s.table} s ON d.{s.id} = s.{s.id}
                     {{joins}}
                     WHERE s.species = :species
-                    {{and_where}}""".format(g=gene, s=sample, d=data))
+                    {{and_where}}""".format(s=sample, d=data))
       b.filters(sample.columns, table='s')
     else:
       b.query("""SELECT d.{g.id} AS id, {attr}
@@ -59,7 +59,7 @@ def create_gene_sample_score(views, gene, sample, data, prefix='', inline_aggreg
               FROM {d.schema}.tdp_{{table}} d
               {{joins}}
               WHERE d.{s.id} = ANY(ARRAY(SELECT {s.id} FROM {s.table} WHERE species = :species {{and_sample_where}}))
-              {{and_where}}""".format(g=gene, s=sample, d=data))
+              {{and_where}}""".format(s=sample, d=data))
       b.filters(sample.columns, group='sample')
     b.replace('and_sample_where').replace('and_where').replace('joins')
     # specific to have the proper key
