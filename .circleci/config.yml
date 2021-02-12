@@ -116,5 +116,11 @@ workflows:
 #      - web-build
   build-branches-and-tags:
     jobs:
-      - python-build   
-      - web-build
+      - python-build:
+          filters:
+            tags:
+              only: /.*/      
+      - web-build:
+          filters:
+            tags:
+              only: /.*/      
