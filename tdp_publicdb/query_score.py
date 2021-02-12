@@ -45,7 +45,7 @@ def create_gene_sample_score(views, gene, sample, data, prefix='', inline_aggreg
                     INNER JOIN {s.table} s ON d.{s.id} = s.{s.id}
                     {{joins}}
                     WHERE s.species = :species
-                    {{and_where}}""".format(g=gene, s=sample, d=data))
+                    {{and_where}}""".format(s=sample, d=data))
       b.filters(sample.columns, table='s')
     else:
       b.query("""SELECT d.{g.id} AS id, {attr}
@@ -59,7 +59,7 @@ def create_gene_sample_score(views, gene, sample, data, prefix='', inline_aggreg
               FROM {d.schema}.tdp_{{table}} d
               {{joins}}
               WHERE d.{s.id} = ANY(ARRAY(SELECT {s.id} FROM {s.table} WHERE species = :species {{and_sample_where}}))
-              {{and_where}}""".format(g=gene, s=sample, d=data))
+              {{and_where}}""".format(s=sample, d=data))
       b.filters(sample.columns, group='sample')
     b.replace('and_sample_where').replace('and_where').replace('joins')
     # specific to have the proper key
@@ -93,4 +93,16 @@ def create_gene_sample_score(views, gene, sample, data, prefix='', inline_aggreg
       WHERE {g.panel_name} = :panel
     """.format(g=gene)) \
     .arg('panel') \
+    .build()
+
+  views[sample.prefix + '_gene_signature_score'] = DBViewBuilder('score').idtype(gene.idtype).query("""
+      SELECT a.{s.id} as id, a.score
+      FROM {s.schema}.tdp_{s.schema}2genesignature a
+      INNER JOIN {s.table} d ON a.{s.id} = d.{s.id}
+      WHERE signature = :signature
+    """.format(s=sample)) \
+    .arg('signature') \
+    .arg('species') \
+    .filter('panel_' + sample.id, sample.panel, join=sample.panel_join) \
+    .call(inject_where) \
     .build()

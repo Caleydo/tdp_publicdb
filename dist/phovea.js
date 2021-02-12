@@ -3,8 +3,9 @@
  * Copyright (c) The Caleydo Team. All rights reserved.
  * Licensed under the new BSD license, available at http://caleydo.org/license
  **************************************************************************** */
+import { EP_PHOVEA_CORE_LOCALE, PluginRegistry } from 'phovea_core';
 //register all extensions in the registry following the given pattern
-module.exports = function (registry) {
+export default function (registry) {
     //registry.push('extension-type', 'extension-id', function() { return import('./src/extension_impl'); }, {});
     // generator-phovea:begin
     /// #if include('ordino')
@@ -261,7 +262,7 @@ module.exports = function (registry) {
     }, {
         factory: 'new CosmicProxyView',
         name: 'COSMIC',
-        site: '//cancer.sanger.ac.uk/cell_lines/sample/overview?id={cosmicid}&genome=38',
+        site: 'https://cancer.sanger.ac.uk/cell_lines/sample/overview?id={cosmicid}&genome=38',
         argument: 'cosmicid',
         idtype: 'Cellline',
         selection: 'chooser',
@@ -466,6 +467,19 @@ module.exports = function (registry) {
             primaryType: idType,
             oppositeType: 'Ensembl'
         });
+        registry.push('tdpScore', prefix + '_signature_score', function () {
+            return import('./scores/GeneSignatureScore').then((a) => a.GeneSignatureScore);
+        }, {
+            'factory': 'createGeneSignatureDialog',
+            'idtype': idType,
+            'name': 'Gene Signature Score'
+        });
+        registry.push('tdpScoreImpl', prefix + '_signature_score', function () {
+            return import('./scores/GeneSignatureScore').then((a) => a.GeneSignatureScore);
+        }, {
+            'factory': 'createGeneSignatureScore',
+            'primaryType': idType
+        });
     });
     registry.push('tdpViewGroups', 'chooser_header_order', function () { }, {
         groups: [{
@@ -494,12 +508,61 @@ module.exports = function (registry) {
             }
         ]
     });
+    registry.push('tdpView', 'gene_details', function () {
+        return import('tdp_gene/dist/views/GeneProxyView');
+    }, {
+        name: 'Genehopper',
+        factory: 'new GeneProxyView',
+        site: 'http://genehopper.ifis.cs.tu-bs.de/search?q={gene}',
+        argument: 'gene',
+        idtype: 'Ensembl',
+        selection: 'multiple',
+        group: {
+            name: 'External Resources'
+            // 'order: 10
+        },
+        filter: {
+            species: 'human'
+        }
+    });
+    registry.push('tdpView', 'gene_similarity', function () {
+        return import('./views/SimilarityView');
+    }, {
+        name: 'Gene Similarity (internal)',
+        factory: 'new SimilarityView',
+        idtype: 'Ensembl',
+        selection: 'multiple',
+        group: {
+            name: 'External Resources'
+            // 'order: 30
+        },
+        filter: {
+            species: 'human'
+        }
+    });
+    registry.push('tdpView', 'gene_similarity_external', function () {
+        return import('tdp_gene/dist/views/GeneProxyView');
+    }, {
+        name: 'Gene Similarity',
+        factory: 'new GeneProxyView',
+        site: 'http://genehopper.ifis.cs.tu-bs.de/similargenes?q={gene}&plain=1',
+        argument: 'gene',
+        idtype: 'Ensembl',
+        selection: 'multiple',
+        group: {
+            name: 'External Resources'
+            // 'order: 20
+        },
+        filter: {
+            species: 'human'
+        }
+    });
     registry.push('tdpView', 'pubmed', function () {
         return import('./views/GeneSymbolProxyView');
     }, {
         name: 'PubMed',
         factory: 'new GeneSymbolProxyView',
-        site: '//www.ncbi.nlm.nih.gov/pubmed?term={gene}',
+        site: 'https://www.ncbi.nlm.nih.gov/pubmed?term={gene}',
         argument: 'gene',
         idtype: 'Ensembl',
         openExternally: true,
@@ -598,7 +661,7 @@ module.exports = function (registry) {
         }, {
             primaryType: 'Ensembl',
             oppositeType: oppositeIDType,
-            factory: 'createAggregatedFrequencyDepletionScore'
+            factory: 'createAggregatedDepletionScore'
         });
     });
     // Common scores for all IDTypes
@@ -642,6 +705,11 @@ module.exports = function (registry) {
         canJumpAround: false
     });
     /// #endif
+    registry.push(EP_PHOVEA_CORE_LOCALE, 'tdpPublicDBLocaleEN', function () {
+        return import('./locales/en/tdp.json').then(PluginRegistry.getInstance().asResource);
+    }, {
+        ns: 'tdp',
+    });
     // generator-phovea:end
-};
+}
 //# sourceMappingURL=phovea.js.map

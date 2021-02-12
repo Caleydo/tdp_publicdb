@@ -14,4 +14,5 @@ export * from './GeneSymbolProxyView';
 export * from './InfoTable';
 export * from './OncoPrint';
 export * from './TissueList';
+export * from './SimilarityView';
 

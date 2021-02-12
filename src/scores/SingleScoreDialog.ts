@@ -5,7 +5,7 @@
 import {gene, tissue, cellline, MAX_FILTER_SCORE_ROWS_BEFORE_ALL, splitTypes, drug} from '../common/config';
 import {IFormElementDesc, FormElementType} from 'tdp_core';
 import {ParameterFormIds, FORM_GENE_NAME, FORM_TISSUE_NAME, FORM_CELLLINE_NAME, FORM_DRUG_NAME} from '../common/forms';
-import {IPluginDesc} from 'phovea_core';
+import {I18nextManager, IPluginDesc} from 'phovea_core';
 import {
   FORCE_COMPUTE_ALL_CELLLINE, FORCE_COMPUTE_ALL_GENES, FORCE_COMPUTE_ALL_TISSUE,
   FORM_SINGLE_SCORE, FORM_SINGLE_SCORE_DEPLETION, FORM_SINGLE_SCORE_DRUG
@@ -26,7 +26,7 @@ export class SingleScoreDialog {
 
   static createScoreDialog(pluginDesc: IPluginDesc, extra: any, formDesc: IFormElementDesc[], countHint?: number) {
     const {primary, opposite} = ScoreUtils.selectDataSources(pluginDesc);
-    const dialog = new FormDialog('Add Single Score Column', 'Add Single Score Column');
+    const dialog = new FormDialog(I18nextManager.getInstance().i18n.t('tdp:publicdb.addSingle'), I18nextManager.getInstance().i18n.t('tdp:publicdb.add'));
     switch(opposite) {
       case gene:
         formDesc.unshift(enableMultiple(FORM_GENE_NAME));

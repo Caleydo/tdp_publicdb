@@ -1,0 +1,9 @@
+{
+  "publicdb": {
+    "addAnnotation": "Add Annotation Column",
+    "addSingle": "Add Single Score Column",
+    "addAggregated": "Add Aggregated Score Column",
+    "addGeneSignature": "Add Gene Signature Score Column",
+    "add": "Add"
+  }
+}
