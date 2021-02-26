@@ -23,7 +23,7 @@ export abstract class AInfoTable extends AD3View {
 
     this.$table = this.$node
       .append('table')
-      .classed('table table-striped table-hover table-bordered table-condensed', true);
+      .classed('table table-striped table-hover table-bordered table-sm', true);
     this.$thead = this.$table.append('thead').append('tr');
     this.$tbody = this.$table.append('tbody');
   }
