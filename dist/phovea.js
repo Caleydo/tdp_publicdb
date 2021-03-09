@@ -11,10 +11,7 @@ export default function (registry) {
     //registry.push('extension-type', 'extension-id', function() { return import('./src/extension_impl'); }, {});
     // generator-phovea:begin
     /// #if include('ordino')
-    registry.push(EXTENSION_POINT_STARTMENU_DATASET, 'celllinedb_genes_start', function () {
-        return import('./menu/GeneSubSection');
-    }, {
-        factory: 'new GeneSubSection',
+    registry.push(EXTENSION_POINT_STARTMENU_DATASET, 'celllinedb_genes_start', () => import('./menu/DatasetCard'), {
         name: 'Genes',
         headerIcon: 'fas fa-database',
         viewId: 'celllinedb_start',
@@ -28,10 +25,7 @@ export default function (registry) {
             { id: 'mouse', tabText: 'Mouse', tabIcon: 'fas fa-fw mouse-icon' }
         ]
     });
-    registry.push(EXTENSION_POINT_STARTMENU_DATASET, 'bioinfodb_tissue_start', function () {
-        return import('./menu/SampleSubSection');
-    }, {
-        factory: 'new SampleSubSection',
+    registry.push(EXTENSION_POINT_STARTMENU_DATASET, 'bioinfodb_tissue_start', () => import('./menu/DatasetCard'), {
         name: 'Tissues',
         headerIcon: 'fas fa-database',
         viewId: 'bioinfodb_tissue_start',
@@ -46,10 +40,7 @@ export default function (registry) {
             { id: 'mouse', tabText: 'Mouse', tabIcon: 'fas fa-fw mouse-icon' }
         ]
     });
-    registry.push(EXTENSION_POINT_STARTMENU_DATASET, 'celllinedb_cellline_start', function () {
-        return import('./menu/SampleSubSection');
-    }, {
-        factory: 'new SampleSubSection',
+    registry.push(EXTENSION_POINT_STARTMENU_DATASET, 'celllinedb_cellline_start', () => import('./menu/DatasetCard'), {
         name: 'Cell Lines',
         headerIcon: 'fas fa-database',
         viewId: 'celllinedb_cellline',
