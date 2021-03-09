@@ -61,6 +61,7 @@ export const cellline: IDataSourceConfig = {
   schema: 'cellline',
   tableName: 'cellline',
   entityName: 'celllinename',
+  dbViewSuffix: `_items`,
   base: 'cellline',
   columns: (find: (column: string) => IServerColumn) => {
     return [
@@ -96,6 +97,7 @@ export const tissue: IDataSourceConfig = {
   schema: 'tissue',
   tableName: 'tissue',
   entityName: 'tissuename',
+  dbViewSuffix: `_items`,
   base: 'tissue',
   columns: (find: (column: string) => IServerColumn) => {
     return [
@@ -165,6 +167,7 @@ export const gene: IDataSourceConfig = {
   schema: 'public',
   tableName: 'gene',
   entityName: 'ensg',
+  dbViewSuffix: `_gene_items`,
   base: 'gene',
   columns: (find: (column: string) => IServerColumn) => {
     const maxRegion = Math.max(find('seqregionstart').max, find('seqregionend').max);

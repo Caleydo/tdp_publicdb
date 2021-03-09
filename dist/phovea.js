@@ -3,45 +3,65 @@
  * Copyright (c) The Caleydo Team. All rights reserved.
  * Licensed under the new BSD license, available at http://caleydo.org/license
  **************************************************************************** */
+import { EXTENSION_POINT_STARTMENU_DATASET } from 'ordino';
 import { EP_PHOVEA_CORE_LOCALE, PluginRegistry } from 'phovea_core';
+import { gene, cellline, tissue } from './common/config';
 //register all extensions in the registry following the given pattern
 export default function (registry) {
     //registry.push('extension-type', 'extension-id', function() { return import('./src/extension_impl'); }, {});
     // generator-phovea:begin
     /// #if include('ordino')
-    registry.push('ordinoStartMenuSubSection', 'celllinedb_genes_start', function () {
+    registry.push(EXTENSION_POINT_STARTMENU_DATASET, 'celllinedb_genes_start', function () {
         return import('./menu/GeneSubSection');
     }, {
         factory: 'new GeneSubSection',
         name: 'Genes',
+        headerIcon: 'fas fa-database',
         viewId: 'celllinedb_start',
         idType: 'Ensembl',
+        datasource: gene,
         selection: 'none',
         description: 'Gene Sets',
-        cssClass: 'gene-entry-point'
+        cssClass: 'gene-entry-point',
+        tabs: [
+            { id: 'human', tabText: 'Human', tabIcon: 'fas fa-male' },
+            { id: 'mouse', tabText: 'Mouse', tabIcon: 'fas fa-fw mouse-icon' }
+        ]
     });
-    registry.push('ordinoStartMenuSubSection', 'bioinfodb_tissue_start', function () {
+    registry.push(EXTENSION_POINT_STARTMENU_DATASET, 'bioinfodb_tissue_start', function () {
         return import('./menu/SampleSubSection');
     }, {
         factory: 'new SampleSubSection',
         name: 'Tissues',
+        headerIcon: 'fas fa-database',
         viewId: 'bioinfodb_tissue_start',
         idType: 'Tissue',
+        datasource: tissue,
         selection: 'none',
         sampleType: 'Tissue',
         description: 'Tissue Panels',
-        cssClass: 'tissue-entry-point'
+        cssClass: 'tissue-entry-point',
+        tabs: [
+            { id: 'human', tabText: 'Human', tabIcon: 'fas fa-male' },
+            { id: 'mouse', tabText: 'Mouse', tabIcon: 'fas fa-fw mouse-icon' }
+        ]
     });
-    registry.push('ordinoStartMenuSubSection', 'celllinedb_cellline_start', function () {
+    registry.push(EXTENSION_POINT_STARTMENU_DATASET, 'celllinedb_cellline_start', function () {
         return import('./menu/SampleSubSection');
     }, {
         factory: 'new SampleSubSection',
         name: 'Cell Lines',
+        headerIcon: 'fas fa-database',
         viewId: 'celllinedb_cellline',
         idType: 'Cellline',
+        datasource: cellline,
         selection: 'none',
         description: 'Cell Line Panels',
-        cssClass: 'cellline-entry-point'
+        cssClass: 'cellline-entry-point',
+        tabs: [
+            { id: 'human', tabText: 'Human', tabIcon: 'fas fa-male' },
+            { id: 'mouse', tabText: 'Mouse', tabIcon: 'fas fa-fw mouse-icon' }
+        ]
     });
     /// #endif
     //gene views
