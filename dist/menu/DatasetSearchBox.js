@@ -5,11 +5,11 @@ import { Species, SpeciesUtils } from 'tdp_gene';
 import { AsyncPaginate } from 'react-select-async-paginate';
 import Highlighter from 'react-highlight-words';
 import { I18nextManager, IDTypeManager, UserSession } from 'phovea_core';
-import { OrdinoAppContext, SESSION_KEY_NEW_ENTRY_POINT } from 'ordino';
+import { GraphContext, SESSION_KEY_NEW_ENTRY_POINT } from 'ordino';
 export function DatasetSearchBox({ placeholder, datasource, viewId }) {
     const { db, base, dbViewSuffix, entityName, idType: idtype } = datasource;
     const [items, setItems] = React.useState(null);
-    const { app } = React.useContext(OrdinoAppContext);
+    const { manager } = React.useContext(GraphContext);
     const search = (query) => {
         return RestBaseUtils.getTDPLookup(db, base + dbViewSuffix, {
             column: entityName,
@@ -39,7 +39,7 @@ export function DatasetSearchBox({ placeholder, datasource, viewId }) {
             view,
             options,
         });
-        app.graphManager.newGraph();
+        manager.newGraph();
     };
     // Todo push named sets
     const saveDataset = () => {
