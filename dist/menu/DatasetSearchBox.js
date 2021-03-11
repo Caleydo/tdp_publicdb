@@ -41,7 +41,6 @@ export function DatasetSearchBox({ placeholder, datasource, viewId }) {
         });
         manager.newGraph();
     };
-    // Todo push named sets
     const saveDataset = () => {
         StoreUtils.editDialog(null, I18nextManager.getInstance().i18n.t(`tdp:core.editDialog.listOfEntities.default`), async (name, description, isPublic) => {
             const idStrings = items === null || items === void 0 ? void 0 : items.map((i) => i.id);
@@ -51,6 +50,7 @@ export function DatasetSearchBox({ placeholder, datasource, viewId }) {
                 key: Species.SPECIES_SESSION_KEY,
                 value: SpeciesUtils.getSelectedSpecies()
             }, description, isPublic);
+            // TODO: refresh NamedSetList component
             // this.push(response);
         });
     };
