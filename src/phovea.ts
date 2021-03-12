@@ -4,7 +4,7 @@
  * Licensed under the new BSD license, available at http://caleydo.org/license
  **************************************************************************** */
 
-import {EP_ORDINO_STARTMENU_DATASET} from 'ordino';
+import {EP_ORDINO_STARTMENU_DATASET_SECTION} from 'ordino';
 import {EP_PHOVEA_CORE_LOCALE, ILocaleEPDesc, PluginRegistry} from 'phovea_core';
 import {gene, cellline, tissue} from './common/config';
 
@@ -14,7 +14,7 @@ export default function (registry) {
   // generator-phovea:begin
 
   /// #if include('ordino')
-  registry.push(EP_ORDINO_STARTMENU_DATASET, 'celllinedb_genes_start', () => import('./menu/DatasetCard'), {
+  registry.push(EP_ORDINO_STARTMENU_DATASET_SECTION, 'celllinedb_genes_start', () => import('./menu/DatasetCard'), {
     name: 'Genes',
     headerIcon: 'fas fa-database',
     viewId: 'celllinedb_start',
@@ -29,7 +29,7 @@ export default function (registry) {
     ]
   });
 
-  registry.push(EP_ORDINO_STARTMENU_DATASET, 'bioinfodb_tissue_start', () => import('./menu/DatasetCard'), {
+  registry.push(EP_ORDINO_STARTMENU_DATASET_SECTION, 'bioinfodb_tissue_start', () => import('./menu/DatasetCard'), {
     name: 'Tissues',
     headerIcon: 'fas fa-database',
     viewId: 'bioinfodb_tissue_start',
@@ -45,7 +45,7 @@ export default function (registry) {
     ]
   });
 
-  registry.push(EP_ORDINO_STARTMENU_DATASET, 'celllinedb_cellline_start', () => import('./menu/DatasetCard'), {
+  registry.push(EP_ORDINO_STARTMENU_DATASET_SECTION, 'celllinedb_cellline_start', () => import('./menu/DatasetCard'), {
     name: 'Cell Lines',
     headerIcon: 'fas fa-database',
     viewId: 'celllinedb_cellline',

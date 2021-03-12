@@ -1,12 +1,12 @@
 import React from 'react';
 import {Card, Nav, Tab, Row} from 'react-bootstrap';
 import {INamedSet, ENamedSetType, RestBaseUtils, RestStorageUtils} from 'tdp_core';
-import {NamedSetList, useAsync, IStartMenuDatasetDesc} from 'ordino';
+import {NamedSetList, useAsync, IStartMenuDatasetSectionDesc} from 'ordino';
 import {UserSession} from 'phovea_core';
 import {DatasetSearchBox} from './DatasetSearchBox';
 import {IDataSourceConfig} from '../../dist';
 
-interface IDatasetCardProps extends IStartMenuDatasetDesc {
+interface IDatasetCardProps extends IStartMenuDatasetSectionDesc {
   dataSource: IDataSourceConfig;
 }
 

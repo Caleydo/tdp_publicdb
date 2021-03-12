@@ -1,6 +1,6 @@
-import { IStartMenuDatasetDesc } from 'ordino';
+import { IStartMenuDatasetSectionDesc } from 'ordino';
 import { IDataSourceConfig } from '../../dist';
-interface IDatasetCardProps extends IStartMenuDatasetDesc {
+interface IDatasetCardProps extends IStartMenuDatasetSectionDesc {
     dataSource: IDataSourceConfig;
 }
 export default function DatasetCard({ name, headerIcon, tabs, viewId, dataSource }: IDatasetCardProps): JSX.Element;
