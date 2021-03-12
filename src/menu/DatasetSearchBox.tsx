@@ -11,63 +11,65 @@ import {GraphContext, SESSION_KEY_NEW_ENTRY_POINT} from 'ordino';
 
 interface IDatasetSearchBoxProps {
     placeholder: string;
-    viewId: string;
+    startViewId: string;
     datasource: IDataSourceConfig;
 }
 
-export function DatasetSearchBox({placeholder, datasource, viewId}: IDatasetSearchBoxProps) {
-    const {db, base, dbViewSuffix, entityName, idType: idtype} = datasource;
+export function DatasetSearchBox({placeholder, datasource, startViewId}: IDatasetSearchBoxProps) {
     const [items, setItems] = React.useState<IdTextPair[]>(null);
     const {manager} = React.useContext(GraphContext);
-    const search = (query: string): Promise<{more: boolean, items: Readonly<IdTextPair>[]}> => {
+
+    const loadOptions = async (query: string, _, {page}: {page: number}) => {
+        const {db, base, dbViewSuffix, entityName} = datasource;
+
         return RestBaseUtils.getTDPLookup(db, base + dbViewSuffix, {
             column: entityName,
             species: SpeciesUtils.getSelectedSpecies(),
             query
-        });
-    };
-
-
-    const loadOptions = async (inputValue: string, _, {page}: {page: number}) => {
-        const options = await search(inputValue);
-        return {
-            options: options.items,
-            hasMore: options.more,
+        }).then(({items, more}) => ({
+            options: items,
+            hasMore: more,
             additional: {
                 page: page + 1,
-            },
-        };
+            }
+        }));
     };
 
-    function formatOptionLabel(option: IdTextPair, ctx: FormatOptionLabelMeta<IdTextPair, true>) {
+    const formatOptionLabel = (option: IdTextPair, ctx: FormatOptionLabelMeta<IdTextPair, true>) => {
+        // do not highlight selected elements
         if (!ctx.inputValue || ctx.selectValue.some((o) => o.id === option.id)) {
             return option.text;
         }
         return (
             <Highlighter
-                highlightClassName="YourHighlightClass"
                 searchWords={[ctx.inputValue]}
                 autoEscape={true}
                 textToHighlight={option.text}
             />
         );
-    }
+    };
 
-    const open = (event: React.MouseEvent<HTMLElement, MouseEvent>, view: string, options: any) => {
+    // TODO: maybe we this should be passed as props from the parent
+    const startAnalyis = (event: React.MouseEvent<HTMLElement, MouseEvent>) => {
         event.preventDefault();
+        const options = {
+            search: {
+                ids: items?.map((i) => i.id),
+                type: datasource.tableName
+            }
+        };
         UserSession.getInstance().store(SESSION_KEY_NEW_ENTRY_POINT, {
-            view,
+            viewId: startViewId,
             options,
         });
         manager.newGraph();
     };
 
-
-    const saveDataset = () => {
+    // TODO: maybe this should be passed as props from the parent
+    const saveAsNamedSet = () => {
         StoreUtils.editDialog(null, I18nextManager.getInstance().i18n.t(`tdp:core.editDialog.listOfEntities.default`), async (name, description, isPublic) => {
             const idStrings = items?.map((i) => i.id);
-
-            const idType = IDTypeManager.getInstance().resolveIdType(idtype);
+            const idType = IDTypeManager.getInstance().resolveIdType(datasource.idType);
             const ids = await idType.map(idStrings);
 
             const response = await RestStorageUtils.saveNamedSet(name, idType, ids, {
@@ -79,15 +81,9 @@ export function DatasetSearchBox({placeholder, datasource, viewId}: IDatasetSear
         });
     };
 
-    const extra = {
-        search: {
-            ids: items?.map((i) => i.id),
-            type: 'gene'
-        }
-    };
     return (
         <Row>
-            <Col >
+            <Col>
                 <AsyncPaginate
                     placeholder={placeholder}
                     noOptionsMessage={() => 'No results found'}
@@ -104,8 +100,8 @@ export function DatasetSearchBox({placeholder, datasource, viewId}: IDatasetSear
                     }}
                 />
             </Col>
-            <Button variant="secondary" disabled={!items?.length} className="mr-2 pt-1 pb-1" onClick={(event) => open(event, viewId, extra)}>Open</Button>
-            <Button variant="outline-secondary" className="mr-2 pt-1 pb-1" disabled={!items?.length} onClick={saveDataset}>Save as set</Button>
+            <Button variant="secondary" disabled={!items?.length} className="mr-2 pt-1 pb-1" onClick={startAnalyis}>Open</Button>
+            <Button variant="outline-secondary" className="mr-2 pt-1 pb-1" disabled={!items?.length} onClick={saveAsNamedSet}>Save as set</Button>
         </Row>
     );
 }

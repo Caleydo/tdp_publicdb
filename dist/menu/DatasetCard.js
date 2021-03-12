@@ -50,7 +50,7 @@ export default function DatasetCard({ name, headerIcon, tabs, viewId, datasource
                     })),
                     React.createElement(Tab.Content, null, tabs.map((tab) => {
                         return (React.createElement(Tab.Pane, { key: tab.id, eventKey: tab.id, className: "mt-4" },
-                            React.createElement(DatasetSearchBox, { placeholder: `Add ${name}`, viewId: viewId, datasource: datasource }),
+                            React.createElement(DatasetSearchBox, { placeholder: `Add ${name}`, startViewId: viewId, datasource: datasource }),
                             React.createElement(Row, { className: "mt-4" },
                                 React.createElement(NamedSetList, { headerIcon: "fas fa-database", headerText: "Predefined Sets", viewId: viewId, status: predefinedNamedSets.status, value: filterValue(predefinedNamedSets.value, tab.id), readonly: true }),
                                 React.createElement(NamedSetList, { headerIcon: "fas fa-user", headerText: "My Sets", viewId: viewId, status: myNamedSets.status, value: filterValue(myNamedSets.value, tab.id) }),

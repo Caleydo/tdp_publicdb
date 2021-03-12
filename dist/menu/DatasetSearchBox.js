@@ -6,45 +6,50 @@ import { AsyncPaginate } from 'react-select-async-paginate';
 import Highlighter from 'react-highlight-words';
 import { I18nextManager, IDTypeManager, UserSession } from 'phovea_core';
 import { GraphContext, SESSION_KEY_NEW_ENTRY_POINT } from 'ordino';
-export function DatasetSearchBox({ placeholder, datasource, viewId }) {
-    const { db, base, dbViewSuffix, entityName, idType: idtype } = datasource;
+export function DatasetSearchBox({ placeholder, datasource, startViewId }) {
     const [items, setItems] = React.useState(null);
     const { manager } = React.useContext(GraphContext);
-    const search = (query) => {
+    const loadOptions = async (query, _, { page }) => {
+        const { db, base, dbViewSuffix, entityName } = datasource;
         return RestBaseUtils.getTDPLookup(db, base + dbViewSuffix, {
             column: entityName,
             species: SpeciesUtils.getSelectedSpecies(),
             query
-        });
-    };
-    const loadOptions = async (inputValue, _, { page }) => {
-        const options = await search(inputValue);
-        return {
-            options: options.items,
-            hasMore: options.more,
+        }).then(({ items, more }) => ({
+            options: items,
+            hasMore: more,
             additional: {
                 page: page + 1,
-            },
-        };
+            }
+        }));
     };
-    function formatOptionLabel(option, ctx) {
+    const formatOptionLabel = (option, ctx) => {
+        // do not highlight selected elements
         if (!ctx.inputValue || ctx.selectValue.some((o) => o.id === option.id)) {
             return option.text;
         }
-        return (React.createElement(Highlighter, { highlightClassName: "YourHighlightClass", searchWords: [ctx.inputValue], autoEscape: true, textToHighlight: option.text }));
-    }
-    const open = (event, view, options) => {
+        return (React.createElement(Highlighter, { searchWords: [ctx.inputValue], autoEscape: true, textToHighlight: option.text }));
+    };
+    // TODO: maybe we this should be passed as props from the parent
+    const startAnalyis = (event) => {
         event.preventDefault();
+        const options = {
+            search: {
+                ids: items === null || items === void 0 ? void 0 : items.map((i) => i.id),
+                type: datasource.tableName
+            }
+        };
         UserSession.getInstance().store(SESSION_KEY_NEW_ENTRY_POINT, {
-            view,
+            viewId: startViewId,
             options,
         });
         manager.newGraph();
     };
-    const saveDataset = () => {
+    // TODO: maybe this should be passed as props from the parent
+    const saveAsNamedSet = () => {
         StoreUtils.editDialog(null, I18nextManager.getInstance().i18n.t(`tdp:core.editDialog.listOfEntities.default`), async (name, description, isPublic) => {
             const idStrings = items === null || items === void 0 ? void 0 : items.map((i) => i.id);
-            const idType = IDTypeManager.getInstance().resolveIdType(idtype);
+            const idType = IDTypeManager.getInstance().resolveIdType(datasource.idType);
             const ids = await idType.map(idStrings);
             const response = await RestStorageUtils.saveNamedSet(name, idType, ids, {
                 key: Species.SPECIES_SESSION_KEY,
@@ -54,18 +59,12 @@ export function DatasetSearchBox({ placeholder, datasource, viewId }) {
             // this.push(response);
         });
     };
-    const extra = {
-        search: {
-            ids: items === null || items === void 0 ? void 0 : items.map((i) => i.id),
-            type: 'gene'
-        }
-    };
     return (React.createElement(Row, null,
         React.createElement(Col, null,
             React.createElement(AsyncPaginate, { placeholder: placeholder, noOptionsMessage: () => 'No results found', isMulti: true, loadOptions: loadOptions, onChange: setItems, defaultOptions: true, formatOptionLabel: formatOptionLabel, getOptionLabel: (option) => option.text, getOptionValue: (option) => option.id, captureMenuScroll: false, additional: {
                     page: 1
                 } })),
-        React.createElement(Button, { variant: "secondary", disabled: !(items === null || items === void 0 ? void 0 : items.length), className: "mr-2 pt-1 pb-1", onClick: (event) => open(event, viewId, extra) }, "Open"),
-        React.createElement(Button, { variant: "outline-secondary", className: "mr-2 pt-1 pb-1", disabled: !(items === null || items === void 0 ? void 0 : items.length), onClick: saveDataset }, "Save as set")));
+        React.createElement(Button, { variant: "secondary", disabled: !(items === null || items === void 0 ? void 0 : items.length), className: "mr-2 pt-1 pb-1", onClick: startAnalyis }, "Open"),
+        React.createElement(Button, { variant: "outline-secondary", className: "mr-2 pt-1 pb-1", disabled: !(items === null || items === void 0 ? void 0 : items.length), onClick: saveAsNamedSet }, "Save as set")));
 }
 //# sourceMappingURL=DatasetSearchBox.js.map
