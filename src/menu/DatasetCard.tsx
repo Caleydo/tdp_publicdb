@@ -1,7 +1,7 @@
 import React from 'react';
 import {Card, Nav, Tab, Row} from 'react-bootstrap';
 import {INamedSet, ENamedSetType, RestBaseUtils, RestStorageUtils} from 'tdp_core';
-import {NamedSetList, useAsync, IStartMenuDatasetSectionDesc} from 'ordino';
+import {NamedSetList, useAsync, IStartMenuDatasetSectionDesc, GraphContext, OrdinoContext} from 'ordino';
 import {UserSession} from 'phovea_core';
 import {DatasetSearchBox} from './DatasetSearchBox';
 import {IDataSourceConfig} from '../common';
@@ -12,6 +12,8 @@ interface IDatasetCardProps extends IStartMenuDatasetSectionDesc {
 
 
 export default function DatasetCard({name, headerIcon, tabs, viewId, dataSource}: IDatasetCardProps) {
+  const {app} = React.useContext(OrdinoContext);
+
   const subTypeKey = 'species';
 
   const loadPredefinedSet = React.useMemo(() => {
@@ -44,6 +46,17 @@ export default function DatasetCard({name, headerIcon, tabs, viewId, dataSource}
   const publicNamedSets = {...namedSets, ...{value: namedSets.value?.filter((d) => d.type === ENamedSetType.NAMEDSET && d.creator !== me)}};
   const filterValue = (value: INamedSet[], tab: string) => value?.filter((entry) => entry.subTypeValue === tab);
 
+  const onOpenNamedSet = (event, {namedSet, species}: {namedSet: INamedSet, species: string}) => {
+    event.preventDefault();
+
+    const viewId = 'celllinedb_start'; // TODO make configurable
+    const defaultSessionValues = {
+      [subTypeKey]: species
+    };
+
+    app.startNewSession(viewId, {namedSet}, defaultSessionValues);
+  };
+
   return (
     <>
       <h4 className="text-left mt-4 mb-3"><i className={'mr-2 ordino-icon-2 ' + headerIcon}></i> {name}</h4>
@@ -65,9 +78,9 @@ export default function DatasetCard({name, headerIcon, tabs, viewId, dataSource}
                   <Tab.Pane key={tab.id} eventKey={tab.id} className="mt-4">
                     <DatasetSearchBox placeholder={`Add ${name}`} startViewId={viewId} dataSource={dataSource} ></DatasetSearchBox>
                     <Row className="mt-4">
-                      <NamedSetList headerIcon="fas fa-database" headerText="Predefined Sets" viewId={viewId} status={predefinedNamedSets.status} value={filterValue(predefinedNamedSets.value, tab.id)} readonly />
-                      <NamedSetList headerIcon="fas fa-user" headerText="My Sets" viewId={viewId} status={myNamedSets.status} value={filterValue(myNamedSets.value, tab.id)} />
-                      <NamedSetList headerIcon="fas fa-users" headerText="Public Sets" viewId={viewId} status={publicNamedSets.status} value={filterValue(publicNamedSets.value, tab.id)} readonly />
+                      <NamedSetList headerIcon="fas fa-database" headerText="Predefined Sets" onOpen={(event, namedSet: INamedSet) => { onOpenNamedSet(event, {namedSet, species: tab.id}); }} status={predefinedNamedSets.status} value={filterValue(predefinedNamedSets.value, tab.id)} readonly />
+                      <NamedSetList headerIcon="fas fa-user" headerText="My Sets" onOpen={(event, namedSet: INamedSet) => { onOpenNamedSet(event, {namedSet, species: tab.id}); }} status={myNamedSets.status} value={filterValue(myNamedSets.value, tab.id)} />
+                      <NamedSetList headerIcon="fas fa-users" headerText="Public Sets" onOpen={(event, namedSet: INamedSet) => { onOpenNamedSet(event, {namedSet, species: tab.id}); }} status={publicNamedSets.status} value={filterValue(publicNamedSets.value, tab.id)} readonly />
                     </Row>
                   </Tab.Pane>
                 );
