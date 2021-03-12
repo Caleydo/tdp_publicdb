@@ -49,7 +49,7 @@ export function DatasetSearchBox({placeholder, dataSource, startViewId}: IDatase
         );
     };
 
-    // TODO: maybe we this should be passed as props from the parent
+    // TODO: maybe this should be passed as props from the parent
     const startAnalyis = (event: React.MouseEvent<HTMLElement, MouseEvent>) => {
         event.preventDefault();
         const options = {

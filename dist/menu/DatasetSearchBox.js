@@ -30,7 +30,7 @@ export function DatasetSearchBox({ placeholder, dataSource, startViewId }) {
         }
         return (React.createElement(Highlighter, { searchWords: [ctx.inputValue], autoEscape: true, textToHighlight: option.text }));
     };
-    // TODO: maybe we this should be passed as props from the parent
+    // TODO: maybe this should be passed as props from the parent
     const startAnalyis = (event) => {
         event.preventDefault();
         const options = {
