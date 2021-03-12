@@ -31,11 +31,11 @@ export default function DatasetCard({name, headerIcon, tabs, viewId, dataSource}
             };
           });
       });
-  }, [dataSource.db, dataSource.base, dataSource.idType]);
+  }, [dataSource.idType]);
 
   const loadNamedSets = React.useMemo(() => {
     return () => RestStorageUtils.listNamedSets(dataSource.idType);
-  }, [dataSource.db, dataSource.base, dataSource.idType]);
+  }, [dataSource.idType]);
 
   const predefinedNamedSets = useAsync<INamedSet[], Error>(loadPredefinedSet);
   const me = UserSession.getInstance().currentUserNameOrAnonymous();
