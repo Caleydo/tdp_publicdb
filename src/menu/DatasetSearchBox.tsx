@@ -91,7 +91,6 @@ export function DatasetSearchBox({placeholder, dataSource, startViewId}: IDatase
                     isMulti={true}
                     loadOptions={loadOptions}
                     onChange={setItems}
-                    defaultOptions
                     formatOptionLabel={formatOptionLabel}
                     getOptionLabel={(option) => option.text}
                     getOptionValue={(option) => option.id}

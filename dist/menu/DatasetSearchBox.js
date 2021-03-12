@@ -62,7 +62,7 @@ export function DatasetSearchBox({ placeholder, dataSource, startViewId }) {
     };
     return (React.createElement(Row, null,
         React.createElement(Col, null,
-            React.createElement(AsyncPaginate, { placeholder: placeholder, noOptionsMessage: () => 'No results found', isMulti: true, loadOptions: loadOptions, onChange: setItems, defaultOptions: true, formatOptionLabel: formatOptionLabel, getOptionLabel: (option) => option.text, getOptionValue: (option) => option.id, captureMenuScroll: false, additional: {
+            React.createElement(AsyncPaginate, { placeholder: placeholder, noOptionsMessage: () => 'No results found', isMulti: true, loadOptions: loadOptions, onChange: setItems, formatOptionLabel: formatOptionLabel, getOptionLabel: (option) => option.text, getOptionValue: (option) => option.id, captureMenuScroll: false, additional: {
                     page: 1
                 } })),
         React.createElement(Button, { variant: "secondary", disabled: !(items === null || items === void 0 ? void 0 : items.length), className: "mr-2 pt-1 pb-1", onClick: startAnalyis }, "Open"),
