@@ -4,7 +4,7 @@ import {INamedSet, ENamedSetType, RestBaseUtils, RestStorageUtils} from 'tdp_cor
 import {NamedSetList, useAsync, IStartMenuDatasetSectionDesc} from 'ordino';
 import {UserSession} from 'phovea_core';
 import {DatasetSearchBox} from './DatasetSearchBox';
-import {IDataSourceConfig} from '../../dist';
+import {IDataSourceConfig} from '../common';
 
 interface IDatasetCardProps extends IStartMenuDatasetSectionDesc {
   dataSource: IDataSourceConfig;

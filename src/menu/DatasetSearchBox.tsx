@@ -6,8 +6,8 @@ import {FormatOptionLabelMeta} from 'react-select';
 import {AsyncPaginate} from 'react-select-async-paginate';
 import Highlighter from 'react-highlight-words';
 import {I18nextManager, IDTypeManager, UserSession} from 'phovea_core';
-import {IDataSourceConfig} from 'tdp_publicdb';
 import {GraphContext, SESSION_KEY_NEW_ENTRY_POINT} from 'ordino';
+import {IDataSourceConfig} from '../common';
 
 interface IDatasetSearchBoxProps {
     placeholder: string;

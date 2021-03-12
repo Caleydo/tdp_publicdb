@@ -3,11 +3,11 @@
  */
 import { ACommonSubSection } from 'tdp_gene';
 import { IStartMenuSubSectionDesc } from 'tdp_gene';
-import { IStartMenuSectionOptions } from 'ordino';
+import { IStartMenuSessionSectionOptions } from 'ordino';
 /**
  * Entry point list from all species and LineUp named sets (aka stored LineUp sessions)
  */
 export declare class GeneSubSection extends ACommonSubSection {
-    constructor(parent: HTMLElement, desc: IStartMenuSubSectionDesc, options: IStartMenuSectionOptions);
+    constructor(parent: HTMLElement, desc: IStartMenuSubSectionDesc, options: IStartMenuSessionSectionOptions);
     protected searchOptions(): any;
 }
