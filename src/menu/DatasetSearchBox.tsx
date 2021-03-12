@@ -12,15 +12,15 @@ import {GraphContext, SESSION_KEY_NEW_ENTRY_POINT} from 'ordino';
 interface IDatasetSearchBoxProps {
     placeholder: string;
     startViewId: string;
-    datasource: IDataSourceConfig;
+    dataSource: IDataSourceConfig;
 }
 
-export function DatasetSearchBox({placeholder, datasource, startViewId}: IDatasetSearchBoxProps) {
+export function DatasetSearchBox({placeholder, dataSource, startViewId}: IDatasetSearchBoxProps) {
     const [items, setItems] = React.useState<IdTextPair[]>(null);
     const {manager} = React.useContext(GraphContext);
 
     const loadOptions = async (query: string, _, {page}: {page: number}) => {
-        const {db, base, dbViewSuffix, entityName} = datasource;
+        const {db, base, dbViewSuffix, entityName} = dataSource;
 
         return RestBaseUtils.getTDPLookup(db, base + dbViewSuffix, {
             column: entityName,
@@ -55,12 +55,13 @@ export function DatasetSearchBox({placeholder, datasource, startViewId}: IDatase
         const options = {
             search: {
                 ids: items?.map((i) => i.id),
-                type: datasource.tableName
+                type: dataSource.tableName
             }
         };
         UserSession.getInstance().store(SESSION_KEY_NEW_ENTRY_POINT, {
-            viewId: startViewId,
+            view: startViewId,
             options,
+            defaultSessionValues: {[Species.SPECIES_SESSION_KEY]: SpeciesUtils.getSelectedSpecies()}
         });
         manager.newGraph();
     };
@@ -69,7 +70,7 @@ export function DatasetSearchBox({placeholder, datasource, startViewId}: IDatase
     const saveAsNamedSet = () => {
         StoreUtils.editDialog(null, I18nextManager.getInstance().i18n.t(`tdp:core.editDialog.listOfEntities.default`), async (name, description, isPublic) => {
             const idStrings = items?.map((i) => i.id);
-            const idType = IDTypeManager.getInstance().resolveIdType(datasource.idType);
+            const idType = IDTypeManager.getInstance().resolveIdType(dataSource.idType);
             const ids = await idType.map(idStrings);
 
             const response = await RestStorageUtils.saveNamedSet(name, idType, ids, {

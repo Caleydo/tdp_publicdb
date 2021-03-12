@@ -4,15 +4,18 @@ import {INamedSet, ENamedSetType, RestBaseUtils, RestStorageUtils} from 'tdp_cor
 import {NamedSetList, useAsync, IStartMenuDatasetDesc} from 'ordino';
 import {UserSession} from 'phovea_core';
 import {DatasetSearchBox} from './DatasetSearchBox';
+import {IDataSourceConfig} from '../../dist';
+
+interface IDatasetCardProps extends IStartMenuDatasetDesc {
+  dataSource: IDataSourceConfig;
+}
 
 
-
-
-export default function DatasetCard({name, headerIcon, tabs, viewId, datasource}: IStartMenuDatasetDesc) {
+export default function DatasetCard({name, headerIcon, tabs, viewId, dataSource}: IDatasetCardProps) {
   const subTypeKey = 'species';
 
   const loadPredefinedSet = React.useMemo(() => {
-    return () => RestBaseUtils.getTDPData(datasource.db, `${datasource.base}_panel`)
+    return () => RestBaseUtils.getTDPData(dataSource.db, `${dataSource.base}_panel`)
       .then((panels: {id: string, description: string, species: string}[]) => {
         return panels
           .map(function panel2NamedSet({id, description, species}): INamedSet {
@@ -28,11 +31,11 @@ export default function DatasetCard({name, headerIcon, tabs, viewId, datasource}
             };
           });
       });
-  }, [datasource.db, datasource.base, datasource.idType]);
+  }, [dataSource.db, dataSource.base, dataSource.idType]);
 
   const loadNamedSets = React.useMemo(() => {
-    return () => RestStorageUtils.listNamedSets(datasource.idType);
-  }, [datasource.db, datasource.base, datasource.idType]);
+    return () => RestStorageUtils.listNamedSets(dataSource.idType);
+  }, [dataSource.db, dataSource.base, dataSource.idType]);
 
   const predefinedNamedSets = useAsync<INamedSet[], Error>(loadPredefinedSet);
   const me = UserSession.getInstance().currentUserNameOrAnonymous();
@@ -60,7 +63,7 @@ export default function DatasetCard({name, headerIcon, tabs, viewId, datasource}
               {tabs.map((tab) => {
                 return (
                   <Tab.Pane key={tab.id} eventKey={tab.id} className="mt-4">
-                    <DatasetSearchBox placeholder={`Add ${name}`} startViewId={viewId} datasource={datasource} ></DatasetSearchBox>
+                    <DatasetSearchBox placeholder={`Add ${name}`} startViewId={viewId} dataSource={dataSource} ></DatasetSearchBox>
                     <Row className="mt-4">
                       <NamedSetList headerIcon="fas fa-database" headerText="Predefined Sets" viewId={viewId} status={predefinedNamedSets.status} value={filterValue(predefinedNamedSets.value, tab.id)} readonly />
                       <NamedSetList headerIcon="fas fa-user" headerText="My Sets" viewId={viewId} status={myNamedSets.status} value={filterValue(myNamedSets.value, tab.id)} />

@@ -4,11 +4,11 @@ import { ENamedSetType, RestBaseUtils, RestStorageUtils } from 'tdp_core';
 import { NamedSetList, useAsync } from 'ordino';
 import { UserSession } from 'phovea_core';
 import { DatasetSearchBox } from './DatasetSearchBox';
-export default function DatasetCard({ name, headerIcon, tabs, viewId, datasource }) {
+export default function DatasetCard({ name, headerIcon, tabs, viewId, dataSource }) {
     var _a, _b;
     const subTypeKey = 'species';
     const loadPredefinedSet = React.useMemo(() => {
-        return () => RestBaseUtils.getTDPData(datasource.db, `${datasource.base}_panel`)
+        return () => RestBaseUtils.getTDPData(dataSource.db, `${dataSource.base}_panel`)
             .then((panels) => {
             return panels
                 .map(function panel2NamedSet({ id, description, species }) {
@@ -24,10 +24,10 @@ export default function DatasetCard({ name, headerIcon, tabs, viewId, datasource
                 };
             });
         });
-    }, [datasource.db, datasource.base, datasource.idType]);
+    }, [dataSource.db, dataSource.base, dataSource.idType]);
     const loadNamedSets = React.useMemo(() => {
-        return () => RestStorageUtils.listNamedSets(datasource.idType);
-    }, [datasource.db, datasource.base, datasource.idType]);
+        return () => RestStorageUtils.listNamedSets(dataSource.idType);
+    }, [dataSource.db, dataSource.base, dataSource.idType]);
     const predefinedNamedSets = useAsync(loadPredefinedSet);
     const me = UserSession.getInstance().currentUserNameOrAnonymous();
     const namedSets = useAsync(loadNamedSets);
@@ -50,7 +50,7 @@ export default function DatasetCard({ name, headerIcon, tabs, viewId, datasource
                     })),
                     React.createElement(Tab.Content, null, tabs.map((tab) => {
                         return (React.createElement(Tab.Pane, { key: tab.id, eventKey: tab.id, className: "mt-4" },
-                            React.createElement(DatasetSearchBox, { placeholder: `Add ${name}`, startViewId: viewId, datasource: datasource }),
+                            React.createElement(DatasetSearchBox, { placeholder: `Add ${name}`, startViewId: viewId, dataSource: dataSource }),
                             React.createElement(Row, { className: "mt-4" },
                                 React.createElement(NamedSetList, { headerIcon: "fas fa-database", headerText: "Predefined Sets", viewId: viewId, status: predefinedNamedSets.status, value: filterValue(predefinedNamedSets.value, tab.id), readonly: true }),
                                 React.createElement(NamedSetList, { headerIcon: "fas fa-user", headerText: "My Sets", viewId: viewId, status: myNamedSets.status, value: filterValue(myNamedSets.value, tab.id) }),
