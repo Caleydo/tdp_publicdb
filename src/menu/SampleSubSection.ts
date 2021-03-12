@@ -5,7 +5,7 @@
 import {chooseDataSource} from '../common/config';
 import {ACommonSubSection} from 'tdp_gene';
 import {IStartMenuSubSectionDesc} from 'tdp_gene';
-import {IStartMenuSectionOptions} from 'ordino';
+import {IStartMenuSessionSectionOptions} from 'ordino';
 import {GeneUtils} from '../common/GeneUtils';
 import {BaseUtils} from 'phovea_core';
 
@@ -13,7 +13,7 @@ import {BaseUtils} from 'phovea_core';
  * Entry point list from all species and LineUp named sets (aka stored LineUp sessions)
  */
 export class SampleSubSection extends ACommonSubSection {
-  constructor(parent: HTMLElement, desc: IStartMenuSubSectionDesc, options: IStartMenuSectionOptions) {
+  constructor(parent: HTMLElement, desc: IStartMenuSubSectionDesc, options: IStartMenuSessionSectionOptions) {
     super(parent, desc, chooseDataSource(desc), options);
   }
 

@@ -6,7 +6,7 @@ import {gene} from '../common/config';
 import {BaseUtils} from 'phovea_core';
 import {ACommonSubSection} from 'tdp_gene';
 import {IStartMenuSubSectionDesc} from 'tdp_gene';
-import {IStartMenuSectionOptions} from 'ordino';
+import {IStartMenuSessionSectionOptions} from 'ordino';
 import {GeneUtils} from '../common/GeneUtils';
 
 /**
@@ -14,7 +14,7 @@ import {GeneUtils} from '../common/GeneUtils';
  */
 export class GeneSubSection extends ACommonSubSection {
 
-  constructor(parent: HTMLElement, desc: IStartMenuSubSectionDesc, options: IStartMenuSectionOptions) {
+  constructor(parent: HTMLElement, desc: IStartMenuSubSectionDesc, options: IStartMenuSessionSectionOptions) {
     super(parent, desc, gene, options);
   }
 
