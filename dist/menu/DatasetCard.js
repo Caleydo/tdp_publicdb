@@ -1,12 +1,11 @@
 import React from 'react';
 import { Card, Nav, Tab, Row } from 'react-bootstrap';
 import { ENamedSetType, RestBaseUtils, RestStorageUtils } from 'tdp_core';
-import { NamedSetList, useAsync, GraphContext, OrdinoContext } from 'ordino';
+import { NamedSetList, useAsync, OrdinoContext } from 'ordino';
 import { UserSession } from 'phovea_core';
 import { DatasetSearchBox } from './DatasetSearchBox';
 export default function DatasetCard({ name, headerIcon, tabs, viewId, dataSource }) {
     var _a, _b;
-    const { manager } = React.useContext(GraphContext);
     const { app } = React.useContext(OrdinoContext);
     const subTypeKey = 'species';
     const loadPredefinedSet = React.useMemo(() => {
@@ -38,11 +37,10 @@ export default function DatasetCard({ name, headerIcon, tabs, viewId, dataSource
     const filterValue = (value, tab) => value === null || value === void 0 ? void 0 : value.filter((entry) => entry.subTypeValue === tab);
     const onOpenNamedSet = (event, { namedSet, species }) => {
         event.preventDefault();
-        const viewId = 'celllinedb_start';
+        const viewId = 'celllinedb_start'; // TODO make configurable
         const defaultSessionValues = {
-            ['species']: species
+            [subTypeKey]: species
         };
-        console.log(viewId, namedSet, species);
         app.startNewSession(viewId, { namedSet }, defaultSessionValues);
     };
     return (React.createElement(React.Fragment, null,
