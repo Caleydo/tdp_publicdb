@@ -14,9 +14,6 @@ interface IDatasetCardProps extends IStartMenuDatasetSectionDesc {
 
 export default function DatasetCard({name, headerIcon, tabs, viewId, dataSource}: IDatasetCardProps) {
 
-  // TODO pass the species value as props
-  const subTypeKey = 'species';
-
   const loadPredefinedSet = React.useMemo<() => Promise<INamedSet[]>>(() => {
     return () => RestBaseUtils.getTDPData(dataSource.db, `${dataSource.base}_panel`)
       .then((panels: {id: string, description: string, species: string}[]) => {
@@ -37,7 +34,7 @@ export default function DatasetCard({name, headerIcon, tabs, viewId, dataSource}
               id,
               name: id,
               description,
-              subTypeKey,
+              subTypeKey: Species.SPECIES_SESSION_KEY,
               subTypeFromSession: false,
               subTypeValue: species,
               idType: ''

@@ -7,8 +7,6 @@ import { DatasetSearchBox } from './DatasetSearchBox';
 import { Species, SpeciesUtils } from 'tdp_gene';
 export default function DatasetCard({ name, headerIcon, tabs, viewId, dataSource }) {
     var _a, _b;
-    // TODO pass the species value as props
-    const subTypeKey = 'species';
     const loadPredefinedSet = React.useMemo(() => {
         return () => RestBaseUtils.getTDPData(dataSource.db, `${dataSource.base}_panel`)
             .then((panels) => {
@@ -29,7 +27,7 @@ export default function DatasetCard({ name, headerIcon, tabs, viewId, dataSource
                         id,
                         name: id,
                         description,
-                        subTypeKey,
+                        subTypeKey: Species.SPECIES_SESSION_KEY,
                         subTypeFromSession: false,
                         subTypeValue: species,
                         idType: ''
