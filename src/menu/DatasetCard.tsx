@@ -16,6 +16,7 @@ export default function DatasetCard({name, headerIcon, tabs, viewId, dataSource}
 
   // TODO pass the species value as props
   const subTypeKey = 'species';
+  const [dirtyNamedSets, setDirtyNamedSets] = React.useState(false)
 
   const loadPredefinedSet = React.useMemo<() => Promise<INamedSet[]>>(() => {
     return () => RestBaseUtils.getTDPData(dataSource.db, `${dataSource.base}_panel`)
@@ -48,7 +49,7 @@ export default function DatasetCard({name, headerIcon, tabs, viewId, dataSource}
 
   const loadNamedSets = React.useMemo<() => Promise<INamedSet[]>>(() => {
     return () => RestStorageUtils.listNamedSets(dataSource.idType);
-  }, [dataSource.idType]);
+  }, [dataSource.idType, dirtyNamedSets]);
 
   const predefinedNamedSets = useAsync(loadPredefinedSet);
   const me = UserSession.getInstance().currentUserNameOrAnonymous();
@@ -56,6 +57,7 @@ export default function DatasetCard({name, headerIcon, tabs, viewId, dataSource}
   const myNamedSets = {...namedSets, ...{value: namedSets.value?.filter((d) => d.type === ENamedSetType.NAMEDSET && d.creator === me)}};
   const publicNamedSets = {...namedSets, ...{value: namedSets.value?.filter((d) => d.type === ENamedSetType.NAMEDSET && d.creator !== me)}};
   const filterValue = (value: INamedSet[], tab: string) => value?.filter((entry) => entry.subTypeValue === tab);
+  const onNamedSetsChanged = () => setDirtyNamedSets((d) => !d)
 
   return (
     <>
@@ -76,7 +78,7 @@ export default function DatasetCard({name, headerIcon, tabs, viewId, dataSource}
               {tabs.map((tab) => {
                 return (
                   <Tab.Pane key={tab.id} eventKey={tab.id} className="mt-4">
-                    <DatasetSearchBox placeholder={`Add ${name}`} startViewId={viewId} dataSource={dataSource} ></DatasetSearchBox>
+                    <DatasetSearchBox placeholder={`Add ${name}`} startViewId={viewId} dataSource={dataSource} onNamedSetsChanged={onNamedSetsChanged}></DatasetSearchBox>
                     <Row className="mt-4">
                       <NamedSetList headerIcon="fas fa-database" headerText="Predefined Sets" startViewId={viewId} status={predefinedNamedSets.status} value={filterValue(predefinedNamedSets.value, tab.id)} />
                       <NamedSetList headerIcon="fas fa-user" headerText="My Sets" startViewId={viewId} status={myNamedSets.status} value={filterValue(myNamedSets.value, tab.id)} />

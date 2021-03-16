@@ -13,9 +13,10 @@ interface IDatasetSearchBoxProps {
     placeholder: string;
     startViewId: string;
     dataSource: IDataSourceConfig;
+    onNamedSetsChanged: () => void;
 }
 
-export function DatasetSearchBox({placeholder, dataSource, startViewId}: IDatasetSearchBoxProps) {
+export function DatasetSearchBox({placeholder, dataSource, startViewId, onNamedSetsChanged}: IDatasetSearchBoxProps) {
     const [items, setItems] = React.useState<IdTextPair[]>(null);
     const {manager} = React.useContext(GraphContext);
 
@@ -77,8 +78,7 @@ export function DatasetSearchBox({placeholder, dataSource, startViewId}: IDatase
                 key: Species.SPECIES_SESSION_KEY,
                 value: SpeciesUtils.getSelectedSpecies()
             }, description, isPublic);
-            setItems(null)
-            // TODO: refresh NamedSetList component
+            onNamedSetsChanged()
         });
     };
 

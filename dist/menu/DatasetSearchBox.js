@@ -6,7 +6,7 @@ import { AsyncPaginate } from 'react-select-async-paginate';
 import Highlighter from 'react-highlight-words';
 import { I18nextManager, IDTypeManager, UserSession } from 'phovea_core';
 import { GraphContext, SESSION_KEY_NEW_ENTRY_POINT } from 'ordino';
-export function DatasetSearchBox({ placeholder, dataSource, startViewId }) {
+export function DatasetSearchBox({ placeholder, dataSource, startViewId, onNamedSetsChanged }) {
     const [items, setItems] = React.useState(null);
     const { manager } = React.useContext(GraphContext);
     const loadOptions = async (query, _, { page }) => {
@@ -56,8 +56,7 @@ export function DatasetSearchBox({ placeholder, dataSource, startViewId }) {
                 key: Species.SPECIES_SESSION_KEY,
                 value: SpeciesUtils.getSelectedSpecies()
             }, description, isPublic);
-            setItems(null);
-            // TODO: refresh NamedSetList component
+            onNamedSetsChanged();
         });
     };
     return (React.createElement(Row, null,

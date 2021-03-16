@@ -9,6 +9,7 @@ export default function DatasetCard({ name, headerIcon, tabs, viewId, dataSource
     var _a, _b;
     // TODO pass the species value as props
     const subTypeKey = 'species';
+    const [dirtyNamedSets, setDirtyNamedSets] = React.useState(false);
     const loadPredefinedSet = React.useMemo(() => {
         return () => RestBaseUtils.getTDPData(dataSource.db, `${dataSource.base}_panel`)
             .then((panels) => {
@@ -39,13 +40,14 @@ export default function DatasetCard({ name, headerIcon, tabs, viewId, dataSource
     }, [dataSource.idType]);
     const loadNamedSets = React.useMemo(() => {
         return () => RestStorageUtils.listNamedSets(dataSource.idType);
-    }, [dataSource.idType]);
+    }, [dataSource.idType, dirtyNamedSets]);
     const predefinedNamedSets = useAsync(loadPredefinedSet);
     const me = UserSession.getInstance().currentUserNameOrAnonymous();
     const namedSets = useAsync(loadNamedSets);
     const myNamedSets = { ...namedSets, ...{ value: (_a = namedSets.value) === null || _a === void 0 ? void 0 : _a.filter((d) => d.type === ENamedSetType.NAMEDSET && d.creator === me) } };
     const publicNamedSets = { ...namedSets, ...{ value: (_b = namedSets.value) === null || _b === void 0 ? void 0 : _b.filter((d) => d.type === ENamedSetType.NAMEDSET && d.creator !== me) } };
     const filterValue = (value, tab) => value === null || value === void 0 ? void 0 : value.filter((entry) => entry.subTypeValue === tab);
+    const onNamedSetsChanged = () => setDirtyNamedSets((d) => !d);
     return (React.createElement(React.Fragment, null,
         React.createElement("h4", { className: "text-left mt-4 mb-3" },
             React.createElement("i", { className: 'mr-2 ordino-icon-2 ' + headerIcon }),
@@ -62,7 +64,7 @@ export default function DatasetCard({ name, headerIcon, tabs, viewId, dataSource
                     })),
                     React.createElement(Tab.Content, null, tabs.map((tab) => {
                         return (React.createElement(Tab.Pane, { key: tab.id, eventKey: tab.id, className: "mt-4" },
-                            React.createElement(DatasetSearchBox, { placeholder: `Add ${name}`, startViewId: viewId, dataSource: dataSource }),
+                            React.createElement(DatasetSearchBox, { placeholder: `Add ${name}`, startViewId: viewId, dataSource: dataSource, onNamedSetsChanged: onNamedSetsChanged }),
                             React.createElement(Row, { className: "mt-4" },
                                 React.createElement(NamedSetList, { headerIcon: "fas fa-database", headerText: "Predefined Sets", startViewId: viewId, status: predefinedNamedSets.status, value: filterValue(predefinedNamedSets.value, tab.id) }),
                                 React.createElement(NamedSetList, { headerIcon: "fas fa-user", headerText: "My Sets", startViewId: viewId, status: myNamedSets.status, value: filterValue(myNamedSets.value, tab.id) }),
