@@ -1,6 +1,6 @@
 import React from 'react';
 import {Button, Col, Row} from 'react-bootstrap';
-import {RestBaseUtils, RestStorageUtils, StoreUtils} from 'tdp_core';
+import {RestBaseUtils, RestStorageUtils, StoreUtils, IdTextPair} from 'tdp_core';
 import {Species, SpeciesUtils} from 'tdp_gene';
 import {FormatOptionLabelMeta} from 'react-select';
 import {AsyncPaginate} from 'react-select-async-paginate';
