@@ -1,5 +1,5 @@
 import { IStartMenuDatasetSectionDesc } from 'ordino';
-import { IDataSourceConfig } from '../../dist';
+import { IDataSourceConfig } from '../common';
 interface IDatasetCardProps extends IStartMenuDatasetSectionDesc {
     dataSource: IDataSourceConfig;
 }
