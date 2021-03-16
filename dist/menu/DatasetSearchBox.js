@@ -56,13 +56,13 @@ export function DatasetSearchBox({ placeholder, dataSource, startViewId }) {
                 key: Species.SPECIES_SESSION_KEY,
                 value: SpeciesUtils.getSelectedSpecies()
             }, description, isPublic);
+            setItems(null);
             // TODO: refresh NamedSetList component
-            // this.push(response);
         });
     };
     return (React.createElement(Row, null,
         React.createElement(Col, null,
-            React.createElement(AsyncPaginate, { placeholder: placeholder, noOptionsMessage: () => 'No results found', isMulti: true, loadOptions: loadOptions, onChange: setItems, formatOptionLabel: formatOptionLabel, getOptionLabel: (option) => option.text, getOptionValue: (option) => option.id, captureMenuScroll: false, additional: {
+            React.createElement(AsyncPaginate, { placeholder: placeholder, noOptionsMessage: () => 'No results found', isMulti: true, loadOptions: loadOptions, value: items, onChange: setItems, formatOptionLabel: formatOptionLabel, getOptionLabel: (option) => option.text, getOptionValue: (option) => option.id, captureMenuScroll: false, additional: {
                     page: 1
                 } })),
         React.createElement(Button, { variant: "secondary", disabled: !(items === null || items === void 0 ? void 0 : items.length), className: "mr-2 pt-1 pb-1", onClick: startAnalyis }, "Open"),

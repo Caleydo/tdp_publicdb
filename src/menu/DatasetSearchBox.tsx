@@ -77,8 +77,8 @@ export function DatasetSearchBox({placeholder, dataSource, startViewId}: IDatase
                 key: Species.SPECIES_SESSION_KEY,
                 value: SpeciesUtils.getSelectedSpecies()
             }, description, isPublic);
+            setItems(null)
             // TODO: refresh NamedSetList component
-            // this.push(response);
         });
     };
 
@@ -90,6 +90,7 @@ export function DatasetSearchBox({placeholder, dataSource, startViewId}: IDatase
                     noOptionsMessage={() => 'No results found'}
                     isMulti={true}
                     loadOptions={loadOptions}
+                    value={items}
                     onChange={setItems}
                     formatOptionLabel={formatOptionLabel}
                     getOptionLabel={(option) => option.text}
