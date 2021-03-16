@@ -15,6 +15,7 @@ export const cellline = {
     schema: 'cellline',
     tableName: 'cellline',
     entityName: 'celllinename',
+    dbViewSuffix: `_items`,
     base: 'cellline',
     columns: (find) => {
         return [
@@ -48,6 +49,7 @@ export const tissue = {
     schema: 'tissue',
     tableName: 'tissue',
     entityName: 'tissuename',
+    dbViewSuffix: `_items`,
     base: 'tissue',
     columns: (find) => {
         return [
@@ -113,6 +115,7 @@ export const gene = {
     schema: 'public',
     tableName: 'gene',
     entityName: 'ensg',
+    dbViewSuffix: `_gene_items`,
     base: 'gene',
     columns: (find) => {
         const maxRegion = Math.max(find('seqregionstart').max, find('seqregionend').max);
