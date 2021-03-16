@@ -4,25 +4,35 @@ import { ENamedSetType, RestBaseUtils, RestStorageUtils } from 'tdp_core';
 import { NamedSetList, useAsync } from 'ordino';
 import { UserSession } from 'phovea_core';
 import { DatasetSearchBox } from './DatasetSearchBox';
+import { Species, SpeciesUtils } from 'tdp_gene';
 export default function DatasetCard({ name, headerIcon, tabs, viewId, dataSource }) {
     var _a, _b;
-    const subTypeKey = 'species';
     const loadPredefinedSet = React.useMemo(() => {
         return () => RestBaseUtils.getTDPData(dataSource.db, `${dataSource.base}_panel`)
             .then((panels) => {
-            return panels
-                .map(function panel2NamedSet({ id, description, species }) {
-                return {
-                    type: ENamedSetType.PANEL,
-                    id,
-                    name: id,
-                    description,
-                    subTypeKey,
-                    subTypeFromSession: false,
-                    subTypeValue: species,
-                    idType: ''
-                };
-            });
+            return [{
+                    name: 'All',
+                    type: ENamedSetType.CUSTOM,
+                    subTypeKey: Species.SPECIES_SESSION_KEY,
+                    subTypeFromSession: true,
+                    subTypeValue: SpeciesUtils.getSelectedSpecies(),
+                    description: '',
+                    idType: '',
+                    ids: '',
+                    creator: ''
+                }, ...panels
+                    .map(function panel2NamedSet({ id, description, species }) {
+                    return {
+                        type: ENamedSetType.PANEL,
+                        id,
+                        name: id,
+                        description,
+                        subTypeKey: Species.SPECIES_SESSION_KEY,
+                        subTypeFromSession: false,
+                        subTypeValue: species,
+                        idType: ''
+                    };
+                })];
         });
     }, [dataSource.idType]);
     const loadNamedSets = React.useMemo(() => {
@@ -52,9 +62,9 @@ export default function DatasetCard({ name, headerIcon, tabs, viewId, dataSource
                         return (React.createElement(Tab.Pane, { key: tab.id, eventKey: tab.id, className: "mt-4" },
                             React.createElement(DatasetSearchBox, { placeholder: `Add ${name}`, startViewId: viewId, dataSource: dataSource }),
                             React.createElement(Row, { className: "mt-4" },
-                                React.createElement(NamedSetList, { headerIcon: "fas fa-database", headerText: "Predefined Sets", viewId: viewId, status: predefinedNamedSets.status, value: filterValue(predefinedNamedSets.value, tab.id), readonly: true }),
-                                React.createElement(NamedSetList, { headerIcon: "fas fa-user", headerText: "My Sets", viewId: viewId, status: myNamedSets.status, value: filterValue(myNamedSets.value, tab.id) }),
-                                React.createElement(NamedSetList, { headerIcon: "fas fa-users", headerText: "Public Sets", viewId: viewId, status: publicNamedSets.status, value: filterValue(publicNamedSets.value, tab.id), readonly: true }))));
+                                React.createElement(NamedSetList, { headerIcon: "fas fa-database", headerText: "Predefined Sets", startViewId: viewId, status: predefinedNamedSets.status, namedSets: filterValue(predefinedNamedSets.value, tab.id), readonly: true }),
+                                React.createElement(NamedSetList, { headerIcon: "fas fa-user", headerText: "My Sets", startViewId: viewId, status: myNamedSets.status, namedSets: filterValue(myNamedSets.value, tab.id) }),
+                                React.createElement(NamedSetList, { headerIcon: "fas fa-users", headerText: "Public Sets", startViewId: viewId, status: publicNamedSets.status, namedSets: filterValue(publicNamedSets.value, tab.id), readonly: true }))));
                     })))))));
 }
 //# sourceMappingURL=DatasetCard.js.map

@@ -5,6 +5,7 @@ import {NamedSetList, useAsync, IStartMenuDatasetSectionDesc} from 'ordino';
 import {UserSession} from 'phovea_core';
 import {DatasetSearchBox} from './DatasetSearchBox';
 import {IDataSourceConfig} from '../common';
+import {Species, SpeciesUtils} from 'tdp_gene';
 
 interface IDatasetCardProps extends IStartMenuDatasetSectionDesc {
   dataSource: IDataSourceConfig;
@@ -12,34 +13,43 @@ interface IDatasetCardProps extends IStartMenuDatasetSectionDesc {
 
 
 export default function DatasetCard({name, headerIcon, tabs, viewId, dataSource}: IDatasetCardProps) {
-  const subTypeKey = 'species';
 
-  const loadPredefinedSet = React.useMemo(() => {
+  const loadPredefinedSet = React.useMemo<() => Promise<INamedSet[]>>(() => {
     return () => RestBaseUtils.getTDPData(dataSource.db, `${dataSource.base}_panel`)
       .then((panels: {id: string, description: string, species: string}[]) => {
-        return panels
+        return [{
+          name: 'All',
+          type: ENamedSetType.CUSTOM,
+          subTypeKey: Species.SPECIES_SESSION_KEY,
+          subTypeFromSession: true,
+          subTypeValue: SpeciesUtils.getSelectedSpecies(),
+          description: '',
+          idType: '',
+          ids: '',
+          creator: ''
+        }, ...panels
           .map(function panel2NamedSet({id, description, species}): INamedSet {
             return {
               type: ENamedSetType.PANEL,
               id,
               name: id,
               description,
-              subTypeKey,
+              subTypeKey: Species.SPECIES_SESSION_KEY,
               subTypeFromSession: false,
               subTypeValue: species,
               idType: ''
             };
-          });
+          })];
       });
   }, [dataSource.idType]);
 
-  const loadNamedSets = React.useMemo(() => {
+  const loadNamedSets = React.useMemo<() => Promise<INamedSet[]>>(() => {
     return () => RestStorageUtils.listNamedSets(dataSource.idType);
   }, [dataSource.idType]);
 
-  const predefinedNamedSets = useAsync<INamedSet[], Error>(loadPredefinedSet);
+  const predefinedNamedSets = useAsync(loadPredefinedSet);
   const me = UserSession.getInstance().currentUserNameOrAnonymous();
-  const namedSets = useAsync<INamedSet[], Error>(loadNamedSets);
+  const namedSets = useAsync(loadNamedSets);
   const myNamedSets = {...namedSets, ...{value: namedSets.value?.filter((d) => d.type === ENamedSetType.NAMEDSET && d.creator === me)}};
   const publicNamedSets = {...namedSets, ...{value: namedSets.value?.filter((d) => d.type === ENamedSetType.NAMEDSET && d.creator !== me)}};
   const filterValue = (value: INamedSet[], tab: string) => value?.filter((entry) => entry.subTypeValue === tab);
@@ -65,9 +75,9 @@ export default function DatasetCard({name, headerIcon, tabs, viewId, dataSource}
                   <Tab.Pane key={tab.id} eventKey={tab.id} className="mt-4">
                     <DatasetSearchBox placeholder={`Add ${name}`} startViewId={viewId} dataSource={dataSource} ></DatasetSearchBox>
                     <Row className="mt-4">
-                      <NamedSetList headerIcon="fas fa-database" headerText="Predefined Sets" viewId={viewId} status={predefinedNamedSets.status} value={filterValue(predefinedNamedSets.value, tab.id)} readonly />
-                      <NamedSetList headerIcon="fas fa-user" headerText="My Sets" viewId={viewId} status={myNamedSets.status} value={filterValue(myNamedSets.value, tab.id)} />
-                      <NamedSetList headerIcon="fas fa-users" headerText="Public Sets" viewId={viewId} status={publicNamedSets.status} value={filterValue(publicNamedSets.value, tab.id)} readonly />
+                      <NamedSetList headerIcon="fas fa-database" headerText="Predefined Sets" startViewId={viewId} status={predefinedNamedSets.status} namedSets={filterValue(predefinedNamedSets.value, tab.id)} readonly />
+                      <NamedSetList headerIcon="fas fa-user" headerText="My Sets" startViewId={viewId} status={myNamedSets.status} namedSets={filterValue(myNamedSets.value, tab.id)} />
+                      <NamedSetList headerIcon="fas fa-users" headerText="Public Sets" startViewId={viewId} status={publicNamedSets.status} namedSets={filterValue(publicNamedSets.value, tab.id)} readonly />
                     </Row>
                   </Tab.Pane>
                 );
