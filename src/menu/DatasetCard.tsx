@@ -4,8 +4,8 @@ import {INamedSet, ENamedSetType, RestBaseUtils, RestStorageUtils} from 'tdp_cor
 import {NamedSetList, useAsync, IStartMenuDatasetSectionDesc} from 'ordino';
 import {UserSession} from 'phovea_core';
 import {DatasetSearchBox} from './DatasetSearchBox';
-import {IDataSourceConfig} from '../../dist';
 import {Species, SpeciesUtils} from 'tdp_gene';
+import {IDataSourceConfig} from '..';
 
 interface IDatasetCardProps extends IStartMenuDatasetSectionDesc {
   dataSource: IDataSourceConfig;
@@ -78,9 +78,9 @@ export default function DatasetCard({name, headerIcon, tabs, viewId, dataSource}
                   <Tab.Pane key={tab.id} eventKey={tab.id} className="mt-4">
                     <DatasetSearchBox placeholder={`Add ${name}`} startViewId={viewId} dataSource={dataSource} ></DatasetSearchBox>
                     <Row className="mt-4">
-                      <NamedSetList headerIcon="fas fa-database" headerText="Predefined Sets" startViewId={viewId} status={predefinedNamedSets.status} namedSets={filterValue(predefinedNamedSets.value, tab.id)} readonly />
-                      <NamedSetList headerIcon="fas fa-user" headerText="My Sets" startViewId={viewId} status={myNamedSets.status} namedSets={filterValue(myNamedSets.value, tab.id)} />
-                      <NamedSetList headerIcon="fas fa-users" headerText="Public Sets" startViewId={viewId} status={publicNamedSets.status} namedSets={filterValue(publicNamedSets.value, tab.id)} readonly />
+                      <NamedSetList headerIcon="fas fa-database" headerText="Predefined Sets" startViewId={viewId} status={predefinedNamedSets.status} value={filterValue(predefinedNamedSets.value, tab.id)} />
+                      <NamedSetList headerIcon="fas fa-user" headerText="My Sets" startViewId={viewId} status={myNamedSets.status} value={filterValue(myNamedSets.value, tab.id)} />
+                      <NamedSetList headerIcon="fas fa-users" headerText="Public Sets" startViewId={viewId} status={publicNamedSets.status} value={filterValue(publicNamedSets.value, tab.id)} />
                     </Row>
                   </Tab.Pane>
                 );

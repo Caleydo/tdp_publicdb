@@ -1,4 +1,4 @@
-import { IDataSourceConfig } from 'tdp_publicdb';
+import { IDataSourceConfig } from '..';
 interface IDatasetSearchBoxProps {
     placeholder: string;
     startViewId: string;

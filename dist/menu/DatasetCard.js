@@ -64,9 +64,9 @@ export default function DatasetCard({ name, headerIcon, tabs, viewId, dataSource
                         return (React.createElement(Tab.Pane, { key: tab.id, eventKey: tab.id, className: "mt-4" },
                             React.createElement(DatasetSearchBox, { placeholder: `Add ${name}`, startViewId: viewId, dataSource: dataSource }),
                             React.createElement(Row, { className: "mt-4" },
-                                React.createElement(NamedSetList, { headerIcon: "fas fa-database", headerText: "Predefined Sets", startViewId: viewId, status: predefinedNamedSets.status, namedSets: filterValue(predefinedNamedSets.value, tab.id), readonly: true }),
-                                React.createElement(NamedSetList, { headerIcon: "fas fa-user", headerText: "My Sets", startViewId: viewId, status: myNamedSets.status, namedSets: filterValue(myNamedSets.value, tab.id) }),
-                                React.createElement(NamedSetList, { headerIcon: "fas fa-users", headerText: "Public Sets", startViewId: viewId, status: publicNamedSets.status, namedSets: filterValue(publicNamedSets.value, tab.id), readonly: true }))));
+                                React.createElement(NamedSetList, { headerIcon: "fas fa-database", headerText: "Predefined Sets", startViewId: viewId, status: predefinedNamedSets.status, value: filterValue(predefinedNamedSets.value, tab.id) }),
+                                React.createElement(NamedSetList, { headerIcon: "fas fa-user", headerText: "My Sets", startViewId: viewId, status: myNamedSets.status, value: filterValue(myNamedSets.value, tab.id) }),
+                                React.createElement(NamedSetList, { headerIcon: "fas fa-users", headerText: "Public Sets", startViewId: viewId, status: publicNamedSets.status, value: filterValue(publicNamedSets.value, tab.id) }))));
                     })))))));
 }
 //# sourceMappingURL=DatasetCard.js.map
