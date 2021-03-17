@@ -4,6 +4,7 @@ import {INamedSet, ENamedSetType, RestBaseUtils, RestStorageUtils} from 'tdp_cor
 import {NamedSetList, useAsync, IStartMenuDatasetSectionDesc} from 'ordino';
 import {UserSession} from 'phovea_core';
 import {DatasetSearchBox} from './DatasetSearchBox';
+import {IDataSourceConfig} from '../common';
 import {Species, SpeciesUtils} from 'tdp_gene';
 import {IDataSourceConfig} from '..';
 
@@ -38,7 +39,7 @@ export default function DatasetCard({name, headerIcon, tabs, viewId, dataSource}
               id,
               name: id,
               description,
-              subTypeKey,
+              subTypeKey: Species.SPECIES_SESSION_KEY,
               subTypeFromSession: false,
               subTypeValue: species,
               idType: ''
