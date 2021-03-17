@@ -4,26 +4,36 @@ import { ENamedSetType, RestBaseUtils, RestStorageUtils } from 'tdp_core';
 import { NamedSetList, useAsync, OrdinoContext } from 'ordino';
 import { UserSession } from 'phovea_core';
 import { DatasetSearchBox } from './DatasetSearchBox';
+import { Species, SpeciesUtils } from 'tdp_gene';
 export default function DatasetCard({ name, headerIcon, tabs, viewId, dataSource }) {
     var _a, _b;
     const { app } = React.useContext(OrdinoContext);
-    const subTypeKey = 'species';
     const loadPredefinedSet = React.useMemo(() => {
         return () => RestBaseUtils.getTDPData(dataSource.db, `${dataSource.base}_panel`)
             .then((panels) => {
-            return panels
-                .map(function panel2NamedSet({ id, description, species }) {
-                return {
-                    type: ENamedSetType.PANEL,
-                    id,
-                    name: id,
-                    description,
-                    subTypeKey,
-                    subTypeFromSession: false,
-                    subTypeValue: species,
-                    idType: ''
-                };
-            });
+            return [{
+                    name: 'All',
+                    type: ENamedSetType.CUSTOM,
+                    subTypeKey: Species.SPECIES_SESSION_KEY,
+                    subTypeFromSession: true,
+                    subTypeValue: SpeciesUtils.getSelectedSpecies(),
+                    description: '',
+                    idType: '',
+                    ids: '',
+                    creator: ''
+                }, ...panels
+                    .map(function panel2NamedSet({ id, description, species }) {
+                    return {
+                        type: ENamedSetType.PANEL,
+                        id,
+                        name: id,
+                        description,
+                        subTypeKey: Species.SPECIES_SESSION_KEY,
+                        subTypeFromSession: false,
+                        subTypeValue: species,
+                        idType: ''
+                    };
+                })];
         });
     }, [dataSource.idType]);
     const loadNamedSets = React.useMemo(() => {
@@ -39,7 +49,7 @@ export default function DatasetCard({ name, headerIcon, tabs, viewId, dataSource
         event.preventDefault();
         const viewId = 'celllinedb_start'; // TODO make configurable
         const defaultSessionValues = {
-            [subTypeKey]: species
+            [Species.SPECIES_SESSION_KEY]: species
         };
         app.startNewSession(viewId, { namedSet }, defaultSessionValues);
     };

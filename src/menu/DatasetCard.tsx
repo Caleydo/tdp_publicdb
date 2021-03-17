@@ -5,6 +5,7 @@ import {NamedSetList, useAsync, IStartMenuDatasetSectionDesc, GraphContext, Ordi
 import {UserSession} from 'phovea_core';
 import {DatasetSearchBox} from './DatasetSearchBox';
 import {IDataSourceConfig} from '../common';
+import {Species, SpeciesUtils} from 'tdp_gene';
 
 interface IDatasetCardProps extends IStartMenuDatasetSectionDesc {
   dataSource: IDataSourceConfig;
@@ -14,34 +15,42 @@ interface IDatasetCardProps extends IStartMenuDatasetSectionDesc {
 export default function DatasetCard({name, headerIcon, tabs, viewId, dataSource}: IDatasetCardProps) {
   const {app} = React.useContext(OrdinoContext);
 
-  const subTypeKey = 'species';
-
-  const loadPredefinedSet = React.useMemo(() => {
+  const loadPredefinedSet = React.useMemo<() => Promise<INamedSet[]>>(() => {
     return () => RestBaseUtils.getTDPData(dataSource.db, `${dataSource.base}_panel`)
       .then((panels: {id: string, description: string, species: string}[]) => {
-        return panels
+        return [{
+          name: 'All',
+          type: ENamedSetType.CUSTOM,
+          subTypeKey: Species.SPECIES_SESSION_KEY,
+          subTypeFromSession: true,
+          subTypeValue: SpeciesUtils.getSelectedSpecies(),
+          description: '',
+          idType: '',
+          ids: '',
+          creator: ''
+        }, ...panels
           .map(function panel2NamedSet({id, description, species}): INamedSet {
             return {
               type: ENamedSetType.PANEL,
               id,
               name: id,
               description,
-              subTypeKey,
+              subTypeKey: Species.SPECIES_SESSION_KEY,
               subTypeFromSession: false,
               subTypeValue: species,
               idType: ''
             };
-          });
+          })];
       });
   }, [dataSource.idType]);
 
-  const loadNamedSets = React.useMemo(() => {
+  const loadNamedSets = React.useMemo<() => Promise<INamedSet[]>>(() => {
     return () => RestStorageUtils.listNamedSets(dataSource.idType);
   }, [dataSource.idType]);
 
-  const predefinedNamedSets = useAsync<INamedSet[], Error>(loadPredefinedSet);
+  const predefinedNamedSets = useAsync(loadPredefinedSet);
   const me = UserSession.getInstance().currentUserNameOrAnonymous();
-  const namedSets = useAsync<INamedSet[], Error>(loadNamedSets);
+  const namedSets = useAsync(loadNamedSets);
   const myNamedSets = {...namedSets, ...{value: namedSets.value?.filter((d) => d.type === ENamedSetType.NAMEDSET && d.creator === me)}};
   const publicNamedSets = {...namedSets, ...{value: namedSets.value?.filter((d) => d.type === ENamedSetType.NAMEDSET && d.creator !== me)}};
   const filterValue = (value: INamedSet[], tab: string) => value?.filter((entry) => entry.subTypeValue === tab);
@@ -51,7 +60,7 @@ export default function DatasetCard({name, headerIcon, tabs, viewId, dataSource}
 
     const viewId = 'celllinedb_start'; // TODO make configurable
     const defaultSessionValues = {
-      [subTypeKey]: species
+      [Species.SPECIES_SESSION_KEY]: species
     };
 
     app.startNewSession(viewId, {namedSet}, defaultSessionValues);
