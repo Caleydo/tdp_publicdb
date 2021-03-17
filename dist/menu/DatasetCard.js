@@ -1,12 +1,13 @@
 import React from 'react';
 import { Card, Nav, Tab, Row } from 'react-bootstrap';
 import { ENamedSetType, RestBaseUtils, RestStorageUtils } from 'tdp_core';
-import { NamedSetList, useAsync } from 'ordino';
+import { NamedSetList, useAsync, OrdinoContext } from 'ordino';
 import { UserSession } from 'phovea_core';
 import { DatasetSearchBox } from './DatasetSearchBox';
 import { Species, SpeciesUtils } from 'tdp_gene';
 export default function DatasetCard({ name, headerIcon, tabs, viewId, dataSource }) {
     var _a, _b;
+    const { app } = React.useContext(OrdinoContext);
     const loadPredefinedSet = React.useMemo(() => {
         return () => RestBaseUtils.getTDPData(dataSource.db, `${dataSource.base}_panel`)
             .then((panels) => {
@@ -44,6 +45,14 @@ export default function DatasetCard({ name, headerIcon, tabs, viewId, dataSource
     const myNamedSets = { ...namedSets, ...{ value: (_a = namedSets.value) === null || _a === void 0 ? void 0 : _a.filter((d) => d.type === ENamedSetType.NAMEDSET && d.creator === me) } };
     const publicNamedSets = { ...namedSets, ...{ value: (_b = namedSets.value) === null || _b === void 0 ? void 0 : _b.filter((d) => d.type === ENamedSetType.NAMEDSET && d.creator !== me) } };
     const filterValue = (value, tab) => value === null || value === void 0 ? void 0 : value.filter((entry) => entry.subTypeValue === tab);
+    const onOpenNamedSet = (event, { namedSet, species }) => {
+        event.preventDefault();
+        const viewId = 'celllinedb_start'; // TODO make configurable
+        const defaultSessionValues = {
+            [Species.SPECIES_SESSION_KEY]: species
+        };
+        app.startNewSession(viewId, { namedSet }, defaultSessionValues);
+    };
     return (React.createElement(React.Fragment, null,
         React.createElement("h4", { className: "text-left mt-4 mb-3" },
             React.createElement("i", { className: 'mr-2 ordino-icon-2 ' + headerIcon }),
@@ -62,9 +71,9 @@ export default function DatasetCard({ name, headerIcon, tabs, viewId, dataSource
                         return (React.createElement(Tab.Pane, { key: tab.id, eventKey: tab.id, className: "mt-4" },
                             React.createElement(DatasetSearchBox, { placeholder: `Add ${name}`, startViewId: viewId, dataSource: dataSource }),
                             React.createElement(Row, { className: "mt-4" },
-                                React.createElement(NamedSetList, { headerIcon: "fas fa-database", headerText: "Predefined Sets", startViewId: viewId, status: predefinedNamedSets.status, namedSets: filterValue(predefinedNamedSets.value, tab.id), readonly: true }),
-                                React.createElement(NamedSetList, { headerIcon: "fas fa-user", headerText: "My Sets", startViewId: viewId, status: myNamedSets.status, namedSets: filterValue(myNamedSets.value, tab.id) }),
-                                React.createElement(NamedSetList, { headerIcon: "fas fa-users", headerText: "Public Sets", startViewId: viewId, status: publicNamedSets.status, namedSets: filterValue(publicNamedSets.value, tab.id), readonly: true }))));
+                                React.createElement(NamedSetList, { headerIcon: "fas fa-database", headerText: "Predefined Sets", onOpen: (event, namedSet) => { onOpenNamedSet(event, { namedSet, species: tab.id }); }, status: predefinedNamedSets.status, value: filterValue(predefinedNamedSets.value, tab.id), readonly: true }),
+                                React.createElement(NamedSetList, { headerIcon: "fas fa-user", headerText: "My Sets", onOpen: (event, namedSet) => { onOpenNamedSet(event, { namedSet, species: tab.id }); }, status: myNamedSets.status, value: filterValue(myNamedSets.value, tab.id) }),
+                                React.createElement(NamedSetList, { headerIcon: "fas fa-users", headerText: "Public Sets", onOpen: (event, namedSet) => { onOpenNamedSet(event, { namedSet, species: tab.id }); }, status: publicNamedSets.status, value: filterValue(publicNamedSets.value, tab.id), readonly: true }))));
                     })))))));
 }
 //# sourceMappingURL=DatasetCard.js.map

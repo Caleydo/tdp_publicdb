@@ -4,11 +4,11 @@ import { RestBaseUtils, RestStorageUtils, StoreUtils } from 'tdp_core';
 import { Species, SpeciesUtils } from 'tdp_gene';
 import { AsyncPaginate } from 'react-select-async-paginate';
 import Highlighter from 'react-highlight-words';
-import { I18nextManager, IDTypeManager, UserSession } from 'phovea_core';
-import { GraphContext, SESSION_KEY_NEW_ENTRY_POINT } from 'ordino';
+import { I18nextManager, IDTypeManager } from 'phovea_core';
+import { OrdinoContext } from 'ordino';
 export function DatasetSearchBox({ placeholder, dataSource, startViewId }) {
     const [items, setItems] = React.useState(null);
-    const { manager } = React.useContext(GraphContext);
+    const { app } = React.useContext(OrdinoContext);
     const loadOptions = async (query, _, { page }) => {
         const { db, base, dbViewSuffix, entityName } = dataSource;
         return RestBaseUtils.getTDPLookup(db, base + dbViewSuffix, {
@@ -33,18 +33,13 @@ export function DatasetSearchBox({ placeholder, dataSource, startViewId }) {
     // TODO: maybe this should be passed as props from the parent
     const startAnalyis = (event) => {
         event.preventDefault();
-        const options = {
+        const startViewOptions = {
             search: {
                 ids: items === null || items === void 0 ? void 0 : items.map((i) => i.id),
                 type: dataSource.tableName
             }
         };
-        UserSession.getInstance().store(SESSION_KEY_NEW_ENTRY_POINT, {
-            view: startViewId,
-            options,
-            defaultSessionValues: { [Species.SPECIES_SESSION_KEY]: SpeciesUtils.getSelectedSpecies() }
-        });
-        manager.newGraph();
+        app.startNewSession(startViewId, startViewOptions, { [Species.SPECIES_SESSION_KEY]: SpeciesUtils.getSelectedSpecies() });
     };
     // TODO: maybe this should be passed as props from the parent
     const saveAsNamedSet = () => {
