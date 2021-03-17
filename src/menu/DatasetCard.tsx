@@ -16,7 +16,7 @@ export default function DatasetCard({name, headerIcon, tabs, viewId, dataSource}
 
   // TODO pass the species value as props
   const subTypeKey = 'species';
-  const [dirtyNamedSets, setDirtyNamedSets] = React.useState(false)
+  const [dirtyNamedSets, setDirtyNamedSets] = React.useState(false);
 
   const loadPredefinedSet = React.useMemo<() => Promise<INamedSet[]>>(() => {
     return () => RestBaseUtils.getTDPData(dataSource.db, `${dataSource.base}_panel`)
@@ -57,7 +57,7 @@ export default function DatasetCard({name, headerIcon, tabs, viewId, dataSource}
   const myNamedSets = {...namedSets, ...{value: namedSets.value?.filter((d) => d.type === ENamedSetType.NAMEDSET && d.creator === me)}};
   const publicNamedSets = {...namedSets, ...{value: namedSets.value?.filter((d) => d.type === ENamedSetType.NAMEDSET && d.creator !== me)}};
   const filterValue = (value: INamedSet[], tab: string) => value?.filter((entry) => entry.subTypeValue === tab);
-  const onNamedSetsChanged = () => setDirtyNamedSets((d) => !d)
+  const onNamedSetsChanged = () => setDirtyNamedSets((d) => !d);
 
   return (
     <>

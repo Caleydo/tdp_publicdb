@@ -78,7 +78,7 @@ export function DatasetSearchBox({placeholder, dataSource, startViewId, onNamedS
                 key: Species.SPECIES_SESSION_KEY,
                 value: SpeciesUtils.getSelectedSpecies()
             }, description, isPublic);
-            onNamedSetsChanged()
+            onNamedSetsChanged();
         });
     };
 
