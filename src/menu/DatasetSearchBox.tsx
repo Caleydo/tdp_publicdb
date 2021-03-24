@@ -5,7 +5,7 @@ import {Species, SpeciesUtils} from 'tdp_gene';
 import {FormatOptionLabelMeta} from 'react-select';
 import {AsyncPaginate} from 'react-select-async-paginate';
 import Highlighter from 'react-highlight-words';
-import {I18nextManager, IDTypeManager, UserSession} from 'phovea_core';
+import {I18nextManager, IDTypeManager} from 'phovea_core';
 import {OrdinoContext} from 'ordino';
 import {IDataSourceConfig} from '../common';
 
@@ -51,7 +51,7 @@ export function DatasetSearchBox({placeholder, dataSource, startViewId, onNamedS
     };
 
     // TODO: maybe this should be passed as props from the parent
-    const startAnalyis = (event: React.MouseEvent<HTMLElement, MouseEvent>) => {
+    const startAnalysis = (event: React.MouseEvent<HTMLElement, MouseEvent>) => {
         event.preventDefault();
         const startViewOptions = {
             search: {
@@ -96,7 +96,7 @@ export function DatasetSearchBox({placeholder, dataSource, startViewId, onNamedS
                     }}
                 />
             </Col>
-            <Button variant="secondary" disabled={!items?.length} className="mr-2 pt-1 pb-1" onClick={startAnalyis}>Open</Button>
+            <Button variant="secondary" disabled={!items?.length} className="mr-2 pt-1 pb-1" onClick={startAnalysis}>Open</Button>
             <Button variant="outline-secondary" className="mr-2 pt-1 pb-1" disabled={!items?.length} onClick={saveAsNamedSet}>Save as set</Button>
         </Row>
     );

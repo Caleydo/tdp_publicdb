@@ -1,4 +1,4 @@
-import { IDataSourceConfig } from '..';
+import { IDataSourceConfig } from '../common';
 interface IDatasetSearchBoxProps {
     placeholder: string;
     startViewId: string;
