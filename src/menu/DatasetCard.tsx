@@ -97,8 +97,7 @@ export default function DatasetCard({name, headerIcon, tabs, viewId, dataSource}
                         headerText="Predefined Sets"
                         onOpen={(event, namedSet: INamedSet) => {onOpenNamedSet(event, {namedSet, species: tab.id});}}
                         status={predefinedNamedSets.status}
-                        value={filterValue(predefinedNamedSets.value, tab.id)}
-                        readonly />
+                        value={filterValue(predefinedNamedSets.value, tab.id)} />
                       <NamedSetList
                         headerIcon="fas fa-user"
                         headerText="My Sets" onOpen={(event, namedSet: INamedSet) => {onOpenNamedSet(event, {namedSet, species: tab.id});}}
@@ -109,8 +108,7 @@ export default function DatasetCard({name, headerIcon, tabs, viewId, dataSource}
                         headerText="Public Sets"
                         onOpen={(event, namedSet: INamedSet) => {onOpenNamedSet(event, {namedSet, species: tab.id});}}
                         status={publicNamedSets.status}
-                        value={filterValue(publicNamedSets.value, tab.id)}
-                        readonly />
+                        value={filterValue(publicNamedSets.value, tab.id)} />
                     </Row>
                   </Tab.Pane>
                 );
