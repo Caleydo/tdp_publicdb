@@ -54,6 +54,13 @@ export default function DatasetCard({ name, headerIcon, tabs, viewId, dataSource
         };
         app.startNewSession(viewId, { namedSet }, defaultSessionValues);
     };
+    const onOpenSearchResult = (event, { searchResult, species }) => {
+        event.preventDefault();
+        const defaultSessionValues = {
+            [Species.SPECIES_SESSION_KEY]: species
+        };
+        app.startNewSession(viewId, searchResult, defaultSessionValues);
+    };
     return (React.createElement(React.Fragment, null,
         React.createElement("h4", { className: "text-left mt-4 mb-3" },
             React.createElement("i", { className: 'mr-2 ordino-icon-2 ' + headerIcon }),
@@ -69,7 +76,7 @@ export default function DatasetCard({ name, headerIcon, tabs, viewId, dataSource
                     })),
                     React.createElement(Tab.Content, null, tabs.map((tab) => {
                         return (React.createElement(Tab.Pane, { key: tab.id, eventKey: tab.id, className: "mt-4" },
-                            React.createElement(DatasetSearchBox, { placeholder: `Add ${name}`, startViewId: viewId, dataSource: dataSource, onNamedSetsChanged: onNamedSetsChanged }),
+                            React.createElement(DatasetSearchBox, { placeholder: `Add ${name}`, dataSource: dataSource, onNamedSetsChanged: onNamedSetsChanged, onOpen: (event, searchResult) => { onOpenSearchResult(event, { searchResult, species: tab.id }); } }),
                             React.createElement(Row, { className: "mt-4" },
                                 React.createElement(NamedSetList, { headerIcon: "fas fa-database", headerText: "Predefined Sets", onOpen: (event, namedSet) => { onOpenNamedSet(event, { namedSet, species: tab.id }); }, status: predefinedNamedSets.status, value: filterValue(predefinedNamedSets.value, tab.id) }),
                                 React.createElement(NamedSetList, { headerIcon: "fas fa-user", headerText: "My Sets", onOpen: (event, namedSet) => { onOpenNamedSet(event, { namedSet, species: tab.id }); }, status: myNamedSets.status, value: filterValue(myNamedSets.value, tab.id) }),

@@ -4,7 +4,7 @@ import {INamedSet, ENamedSetType, RestBaseUtils, RestStorageUtils} from 'tdp_cor
 import {NamedSetList, useAsync, IStartMenuDatasetSectionDesc, GraphContext, OrdinoContext} from 'ordino';
 import {UserSession} from 'phovea_core';
 import {DatasetSearchBox} from './DatasetSearchBox';
-import {Species, SpeciesUtils} from 'tdp_gene';
+import {Species, SpeciesUtils, IACommonListOptions} from 'tdp_gene';
 import {IDataSourceConfig} from '..';
 
 interface IDatasetCardProps extends IStartMenuDatasetSectionDesc {
@@ -67,6 +67,16 @@ export default function DatasetCard({name, headerIcon, tabs, viewId, dataSource}
     app.startNewSession(viewId, {namedSet}, defaultSessionValues);
   };
 
+  const onOpenSearchResult = (event: React.MouseEvent<HTMLElement>, {searchResult, species}: {searchResult: Partial<IACommonListOptions>, species: string}) => {
+    event.preventDefault();
+
+    const defaultSessionValues = {
+      [Species.SPECIES_SESSION_KEY]: species
+    };
+
+    app.startNewSession(viewId, searchResult, defaultSessionValues);
+  };
+
   return (
     <>
       <h4 className="text-left mt-4 mb-3"><i className={'mr-2 ordino-icon-2 ' + headerIcon}></i>{name}</h4>
@@ -88,9 +98,9 @@ export default function DatasetCard({name, headerIcon, tabs, viewId, dataSource}
                   <Tab.Pane key={tab.id} eventKey={tab.id} className="mt-4">
                     <DatasetSearchBox
                       placeholder={`Add ${name}`}
-                      startViewId={viewId}
                       dataSource={dataSource}
-                      onNamedSetsChanged={onNamedSetsChanged} />
+                      onNamedSetsChanged={onNamedSetsChanged}
+                      onOpen={(event, searchResult: Partial<IACommonListOptions>) => {onOpenSearchResult(event, {searchResult, species: tab.id});}} />
                     <Row className="mt-4">
                       <NamedSetList
                         headerIcon="fas fa-database"
