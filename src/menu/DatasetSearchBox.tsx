@@ -6,7 +6,7 @@ import {FormatOptionLabelMeta} from 'react-select';
 import {AsyncPaginate} from 'react-select-async-paginate';
 import Highlighter from 'react-highlight-words';
 import {I18nextManager, IDTypeManager, UserSession} from 'phovea_core';
-import {GraphContext, SESSION_KEY_NEW_ENTRY_POINT} from 'ordino';
+import {OrdinoContext} from 'ordino';
 import {IDataSourceConfig} from '../common';
 
 interface IDatasetSearchBoxProps {
@@ -18,7 +18,7 @@ interface IDatasetSearchBoxProps {
 
 export function DatasetSearchBox({placeholder, dataSource, startViewId, onNamedSetsChanged}: IDatasetSearchBoxProps) {
     const [items, setItems] = React.useState<IdTextPair[]>(null);
-    const {manager} = React.useContext(GraphContext);
+    const {app} = React.useContext(OrdinoContext);
 
     const loadOptions = async (query: string, _, {page}: {page: number}) => {
         const {db, base, dbViewSuffix, entityName} = dataSource;
@@ -53,18 +53,13 @@ export function DatasetSearchBox({placeholder, dataSource, startViewId, onNamedS
     // TODO: maybe this should be passed as props from the parent
     const startAnalyis = (event: React.MouseEvent<HTMLElement, MouseEvent>) => {
         event.preventDefault();
-        const options = {
+        const startViewOptions = {
             search: {
                 ids: items?.map((i) => i.id),
                 type: dataSource.tableName
             }
         };
-        UserSession.getInstance().store(SESSION_KEY_NEW_ENTRY_POINT, {
-            view: startViewId,
-            options,
-            defaultSessionValues: {[Species.SPECIES_SESSION_KEY]: SpeciesUtils.getSelectedSpecies()}
-        });
-        manager.newGraph();
+        app.startNewSession(startViewId, startViewOptions, {[Species.SPECIES_SESSION_KEY]: SpeciesUtils.getSelectedSpecies()});
     };
 
     // TODO: maybe this should be passed as props from the parent
