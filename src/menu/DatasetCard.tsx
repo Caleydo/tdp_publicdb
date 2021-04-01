@@ -79,7 +79,7 @@ export default function DatasetCard({name, headerIcon, tabs, viewId, dataSource}
 
   return (
     <>
-      <h4 className="text-left mt-4 mb-3"><i className={'mr-2 ordino-icon-2 ' + headerIcon}></i>{name}</h4>
+      <h4 className="text-left mb-3"><i className={'mr-2 ordino-icon-2 ' + headerIcon}></i>{name}</h4>
       <Card className="shadow-sm">
         <Card.Body className="p-3">
           <Tab.Container defaultActiveKey={tabs[0].id}>
