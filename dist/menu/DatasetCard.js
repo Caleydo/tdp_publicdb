@@ -62,7 +62,7 @@ export default function DatasetCard({ name, headerIcon, tabs, viewId, dataSource
         app.startNewSession(viewId, searchResult, defaultSessionValues);
     };
     return (React.createElement(React.Fragment, null,
-        React.createElement("h4", { className: "text-left mt-4 mb-3" },
+        React.createElement("h4", { className: "text-left mb-3" },
             React.createElement("i", { className: 'mr-2 ordino-icon-2 ' + headerIcon }),
             name),
         React.createElement(Card, { className: "shadow-sm" },
