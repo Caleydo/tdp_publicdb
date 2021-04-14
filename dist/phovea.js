@@ -697,6 +697,10 @@ export default function (registry) {
     registry.push('tdpTour', 'ordinoWelcomeTour', function () { return import('./tours').then((t) => t.WelcomeTour); }, {
         factory: 'createTour',
         name: 'Ordino Welcome Tour',
+        description: 'Learn the basic features of Ordino in a short welcome tour.',
+        preview() {
+            return import('./assets/previews/expression.jpg'); // TODO update preview image
+        },
         multiPage: true,
         level: 'beginner',
         canJumpAround: false
@@ -704,6 +708,10 @@ export default function (registry) {
     registry.push('tdpTour', 'ordinoStartMenuTour', function () { return import('./tours').then((t) => t.StartMenuTour); }, {
         factory: 'createTour',
         name: 'Overview of Start Menu',
+        description: 'This tour provides an overview of the Ordino start menu.',
+        preview() {
+            return import('./assets/previews/expression.jpg'); // TODO update preview image
+        },
         multiPage: true,
         level: 'beginner',
         canJumpAround: false
@@ -711,6 +719,10 @@ export default function (registry) {
     registry.push('tdpTour', 'ordinoAddColumnToGeneListTour', function () { return import('./tours').then((t) => t.AddColumnToGeneListTour); }, {
         factory: 'createTour',
         name: 'Adding Data Columns',
+        description: 'Learn how to add data columns to rankings in Ordino.',
+        preview() {
+            return import('./assets/previews/expression.jpg'); // TODO update preview image
+        },
         multiPage: true,
         level: 'beginner',
         canJumpAround: false
