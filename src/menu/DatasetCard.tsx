@@ -7,7 +7,7 @@ import {DatasetSearchBox} from './DatasetSearchBox';
 import {Species, SpeciesUtils, IACommonListOptions} from 'tdp_gene';
 import {IPublicDbStartMenuDatasetSectionDesc} from '../base/extensions';
 
-export default function DatasetCard({name, headerIcon, tabs, viewId, dataSource}: IPublicDbStartMenuDatasetSectionDesc) {
+export default function DatasetCard({name, icon, tabs, startViewId, dataSource}: IPublicDbStartMenuDatasetSectionDesc) {
   const {app} = React.useContext(OrdinoContext);
   const [dirtyNamedSets, setDirtyNamedSets] = React.useState(false);
 
@@ -59,7 +59,7 @@ export default function DatasetCard({name, headerIcon, tabs, viewId, dataSource}
       [Species.SPECIES_SESSION_KEY]: species
     };
 
-    app.startNewSession(viewId, {namedSet}, defaultSessionValues);
+    app.startNewSession(startViewId, {namedSet}, defaultSessionValues);
   };
 
   const onOpenSearchResult = (event: React.MouseEvent<HTMLElement>, {searchResult, species}: {searchResult: Partial<IACommonListOptions>, species: string}) => {
@@ -69,12 +69,12 @@ export default function DatasetCard({name, headerIcon, tabs, viewId, dataSource}
       [Species.SPECIES_SESSION_KEY]: species
     };
 
-    app.startNewSession(viewId, searchResult, defaultSessionValues);
+    app.startNewSession(startViewId, searchResult, defaultSessionValues);
   };
 
   return (
     <>
-      <h4 className="text-left mb-3"><i className={'mr-2 ordino-icon-2 ' + headerIcon}></i>{name}</h4>
+      <h4 className="text-left mb-3"><i className={'mr-2 ordino-icon-2 ' + icon}></i>{name}</h4>
       <Card className="shadow-sm">
         <Card.Body className="p-3">
           <Tab.Container defaultActiveKey={tabs[0].id}>
