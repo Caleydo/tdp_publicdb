@@ -71,8 +71,8 @@ export default function DatasetCard({ name, headerIcon, tabs, viewId, dataSource
                     React.createElement(Nav, { className: "session-tab", variant: "pills" }, tabs.map((tab) => {
                         return (React.createElement(Nav.Item, { key: tab.id },
                             React.createElement(Nav.Link, { eventKey: tab.id },
-                                React.createElement("i", { className: 'mr-2 ' + tab.tabIcon }),
-                                tab.tabText)));
+                                React.createElement("i", { className: 'mr-2 ' + tab.icon }),
+                                tab.name)));
                     })),
                     React.createElement(Tab.Content, null, tabs.map((tab) => {
                         return (React.createElement(Tab.Pane, { key: tab.id, eventKey: tab.id, className: "mt-4" },

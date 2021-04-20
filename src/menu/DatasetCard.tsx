@@ -1,18 +1,13 @@
 import React from 'react';
 import {Card, Nav, Tab, Row} from 'react-bootstrap';
 import {INamedSet, ENamedSetType, RestBaseUtils, RestStorageUtils} from 'tdp_core';
-import {NamedSetList, useAsync, IStartMenuDatasetSectionDesc, GraphContext, OrdinoContext} from 'ordino';
+import {NamedSetList, useAsync, OrdinoContext} from 'ordino';
 import {UserSession} from 'phovea_core';
 import {DatasetSearchBox} from './DatasetSearchBox';
 import {Species, SpeciesUtils, IACommonListOptions} from 'tdp_gene';
-import {IDataSourceConfig} from '..';
+import {IPublicDbStartMenuDatasetSectionDesc} from '../base/extensions';
 
-interface IDatasetCardProps extends IStartMenuDatasetSectionDesc {
-  dataSource: IDataSourceConfig;
-}
-
-
-export default function DatasetCard({name, headerIcon, tabs, viewId, dataSource}: IDatasetCardProps) {
+export default function DatasetCard({name, headerIcon, tabs, viewId, dataSource}: IPublicDbStartMenuDatasetSectionDesc) {
   const {app} = React.useContext(OrdinoContext);
   const [dirtyNamedSets, setDirtyNamedSets] = React.useState(false);
 
@@ -87,7 +82,7 @@ export default function DatasetCard({name, headerIcon, tabs, viewId, dataSource}
               {tabs.map((tab) => {
                 return (
                   <Nav.Item key={tab.id}>
-                    <Nav.Link eventKey={tab.id}><i className={'mr-2 ' + tab.tabIcon}></i>{tab.tabText}</Nav.Link>
+                    <Nav.Link eventKey={tab.id}><i className={'mr-2 ' + tab.icon}></i>{tab.name}</Nav.Link>
                   </Nav.Item>
                 );
               })}
