@@ -5,7 +5,7 @@ import { NamedSetList, useAsync, OrdinoContext } from 'ordino';
 import { UserSession } from 'phovea_core';
 import { DatasetSearchBox } from './DatasetSearchBox';
 import { Species, SpeciesUtils } from 'tdp_gene';
-export default function DatasetCard({ name, headerIcon, tabs, viewId, dataSource }) {
+export default function DatasetCard({ name, icon, tabs, startViewId, dataSource }) {
     var _a, _b;
     const { app } = React.useContext(OrdinoContext);
     const [dirtyNamedSets, setDirtyNamedSets] = React.useState(false);
@@ -52,18 +52,18 @@ export default function DatasetCard({ name, headerIcon, tabs, viewId, dataSource
         const defaultSessionValues = {
             [Species.SPECIES_SESSION_KEY]: species
         };
-        app.startNewSession(viewId, { namedSet }, defaultSessionValues);
+        app.startNewSession(startViewId, { namedSet }, defaultSessionValues);
     };
     const onOpenSearchResult = (event, { searchResult, species }) => {
         event.preventDefault();
         const defaultSessionValues = {
             [Species.SPECIES_SESSION_KEY]: species
         };
-        app.startNewSession(viewId, searchResult, defaultSessionValues);
+        app.startNewSession(startViewId, searchResult, defaultSessionValues);
     };
     return (React.createElement(React.Fragment, null,
         React.createElement("h4", { className: "text-left mb-3" },
-            React.createElement("i", { className: 'mr-2 ordino-icon-2 ' + headerIcon }),
+            React.createElement("i", { className: 'mr-2 ordino-icon-2 ' + icon }),
             name),
         React.createElement(Card, { className: "shadow-sm" },
             React.createElement(Card.Body, { className: "p-3" },
@@ -71,8 +71,8 @@ export default function DatasetCard({ name, headerIcon, tabs, viewId, dataSource
                     React.createElement(Nav, { className: "session-tab", variant: "pills" }, tabs.map((tab) => {
                         return (React.createElement(Nav.Item, { key: tab.id },
                             React.createElement(Nav.Link, { eventKey: tab.id },
-                                React.createElement("i", { className: 'mr-2 ' + tab.tabIcon }),
-                                tab.tabText)));
+                                React.createElement("i", { className: 'mr-2 ' + tab.icon }),
+                                tab.name)));
                     })),
                     React.createElement(Tab.Content, null, tabs.map((tab) => {
                         return (React.createElement(Tab.Pane, { key: tab.id, eventKey: tab.id, className: "mt-4" },

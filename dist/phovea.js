@@ -13,45 +13,38 @@ export default function (registry) {
     /// #if include('ordino')
     registry.push(EP_ORDINO_STARTMENU_DATASET_SECTION, 'celllinedb_genes_start', () => import('./menu/DatasetCard'), {
         name: 'Genes',
-        headerIcon: 'fas fa-database',
-        viewId: 'celllinedb_start',
+        icon: 'fas fa-database',
+        startViewId: 'celllinedb_start',
         idType: 'Ensembl',
         dataSource: gene,
-        selection: 'none',
         description: 'Gene Sets',
-        cssClass: 'gene-entry-point',
         tabs: [
-            { id: 'human', tabText: 'Human', tabIcon: 'fas fa-male' },
-            { id: 'mouse', tabText: 'Mouse', tabIcon: 'fas fa-fw mouse-icon' }
+            { id: 'human', name: 'Human', icon: 'fas fa-male' },
+            { id: 'mouse', name: 'Mouse', icon: 'fas fa-fw mouse-icon' }
         ]
     });
     registry.push(EP_ORDINO_STARTMENU_DATASET_SECTION, 'bioinfodb_tissue_start', () => import('./menu/DatasetCard'), {
         name: 'Tissues',
-        headerIcon: 'fas fa-database',
-        viewId: 'bioinfodb_tissue_start',
+        icon: 'fas fa-database',
+        startViewId: 'bioinfodb_tissue_start',
         idType: 'Tissue',
         dataSource: tissue,
-        selection: 'none',
-        sampleType: 'Tissue',
         description: 'Tissue Panels',
-        cssClass: 'tissue-entry-point',
         tabs: [
-            { id: 'human', tabText: 'Human', tabIcon: 'fas fa-male' },
-            { id: 'mouse', tabText: 'Mouse', tabIcon: 'fas fa-fw mouse-icon' }
+            { id: 'human', name: 'Human', icon: 'fas fa-male' },
+            { id: 'mouse', name: 'Mouse', icon: 'fas fa-fw mouse-icon' }
         ]
     });
     registry.push(EP_ORDINO_STARTMENU_DATASET_SECTION, 'celllinedb_cellline_start', () => import('./menu/DatasetCard'), {
         name: 'Cell Lines',
-        headerIcon: 'fas fa-database',
-        viewId: 'celllinedb_cellline',
+        icon: 'fas fa-database',
+        startViewId: 'celllinedb_cellline',
         idType: 'Cellline',
         dataSource: cellline,
-        selection: 'none',
         description: 'Cell Line Panels',
-        cssClass: 'cellline-entry-point',
         tabs: [
-            { id: 'human', tabText: 'Human', tabIcon: 'fas fa-male' },
-            { id: 'mouse', tabText: 'Mouse', tabIcon: 'fas fa-fw mouse-icon' }
+            { id: 'human', name: 'Human', icon: 'fas fa-male' },
+            { id: 'mouse', name: 'Mouse', icon: 'fas fa-fw mouse-icon' }
         ]
     });
     /// #endif

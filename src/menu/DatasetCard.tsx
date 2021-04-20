@@ -1,18 +1,13 @@
 import React from 'react';
 import {Card, Nav, Tab, Row} from 'react-bootstrap';
 import {INamedSet, ENamedSetType, RestBaseUtils, RestStorageUtils} from 'tdp_core';
-import {NamedSetList, useAsync, IStartMenuDatasetSectionDesc, GraphContext, OrdinoContext} from 'ordino';
+import {NamedSetList, useAsync, OrdinoContext} from 'ordino';
 import {UserSession} from 'phovea_core';
 import {DatasetSearchBox} from './DatasetSearchBox';
 import {Species, SpeciesUtils, IACommonListOptions} from 'tdp_gene';
-import {IDataSourceConfig} from '..';
+import {IPublicDbStartMenuDatasetSectionDesc} from '../base/extensions';
 
-interface IDatasetCardProps extends IStartMenuDatasetSectionDesc {
-  dataSource: IDataSourceConfig;
-}
-
-
-export default function DatasetCard({name, headerIcon, tabs, viewId, dataSource}: IDatasetCardProps) {
+export default function DatasetCard({name, icon, tabs, startViewId, dataSource}: IPublicDbStartMenuDatasetSectionDesc) {
   const {app} = React.useContext(OrdinoContext);
   const [dirtyNamedSets, setDirtyNamedSets] = React.useState(false);
 
@@ -64,7 +59,7 @@ export default function DatasetCard({name, headerIcon, tabs, viewId, dataSource}
       [Species.SPECIES_SESSION_KEY]: species
     };
 
-    app.startNewSession(viewId, {namedSet}, defaultSessionValues);
+    app.startNewSession(startViewId, {namedSet}, defaultSessionValues);
   };
 
   const onOpenSearchResult = (event: React.MouseEvent<HTMLElement>, {searchResult, species}: {searchResult: Partial<IACommonListOptions>, species: string}) => {
@@ -74,12 +69,12 @@ export default function DatasetCard({name, headerIcon, tabs, viewId, dataSource}
       [Species.SPECIES_SESSION_KEY]: species
     };
 
-    app.startNewSession(viewId, searchResult, defaultSessionValues);
+    app.startNewSession(startViewId, searchResult, defaultSessionValues);
   };
 
   return (
     <>
-      <h4 className="text-left mb-3"><i className={'mr-2 ordino-icon-2 ' + headerIcon}></i>{name}</h4>
+      <h4 className="text-left mb-3"><i className={'mr-2 ordino-icon-2 ' + icon}></i>{name}</h4>
       <Card className="shadow-sm">
         <Card.Body className="p-3">
           <Tab.Container defaultActiveKey={tabs[0].id}>
@@ -87,7 +82,7 @@ export default function DatasetCard({name, headerIcon, tabs, viewId, dataSource}
               {tabs.map((tab) => {
                 return (
                   <Nav.Item key={tab.id}>
-                    <Nav.Link eventKey={tab.id}><i className={'mr-2 ' + tab.tabIcon}></i>{tab.tabText}</Nav.Link>
+                    <Nav.Link eventKey={tab.id}><i className={'mr-2 ' + tab.icon}></i>{tab.name}</Nav.Link>
                   </Nav.Item>
                 );
               })}
