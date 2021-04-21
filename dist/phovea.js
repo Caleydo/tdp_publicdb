@@ -664,29 +664,6 @@ export default function (registry) {
             'primaryType': idType
         });
     });
-    /// #if include('ordino')
-    registry.push('tdpTour', 'ordinoWelcomeTour', function () { return import('./tours').then((t) => t.WelcomeTour); }, {
-        factory: 'createTour',
-        name: 'Ordino Welcome Tour',
-        multiPage: true,
-        level: 'beginner',
-        canJumpAround: false
-    });
-    registry.push('tdpTour', 'ordinoStartMenuTour', function () { return import('./tours').then((t) => t.StartMenuTour); }, {
-        factory: 'createTour',
-        name: 'Overview of Start Menu',
-        multiPage: true,
-        level: 'beginner',
-        canJumpAround: false
-    });
-    registry.push('tdpTour', 'ordinoAddColumnToGeneListTour', function () { return import('./tours').then((t) => t.AddColumnToGeneListTour); }, {
-        factory: 'createTour',
-        name: 'Adding Data Columns',
-        multiPage: true,
-        level: 'beginner',
-        canJumpAround: false
-    });
-    /// #endif
     registry.push(EP_PHOVEA_CORE_LOCALE, 'tdpPublicDBLocaleEN', function () {
         return import('./locales/en/tdp.json').then(PluginRegistry.getInstance().asResource);
     }, {
