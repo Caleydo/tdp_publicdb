@@ -150,7 +150,7 @@ export declare const FORM_GENE_FILTER: {
             return: string;
             optionsData: () => Promise<{
                 name: string;
-                value: string | number;
+                value: import("lineupjs").ICompareValue;
             }[]>;
             options: {
                 placeholder: string;

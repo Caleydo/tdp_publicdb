@@ -1,5 +1,4 @@
 import React from 'react';
-import {Button, Col, Row} from 'react-bootstrap';
 import {RestBaseUtils, RestStorageUtils, StoreUtils, IdTextPair, INamedSet} from 'tdp_core';
 import {Species, SpeciesUtils} from 'tdp_gene';
 import {FormatOptionLabelMeta} from 'react-select';
@@ -73,8 +72,8 @@ export function DatasetSearchBox({placeholder, dataSource, onOpen, onNamedSetsCh
     };
 
     return (
-        <Row>
-            <Col>
+        <div className="row">
+            <div className="col">
                 <AsyncPaginate
                     placeholder={placeholder}
                     noOptionsMessage={() => 'No results found'}
@@ -90,9 +89,9 @@ export function DatasetSearchBox({placeholder, dataSource, onOpen, onNamedSetsCh
                         page: 1
                     }}
                 />
-            </Col>
-            <Button variant="secondary" disabled={!items?.length} className="mr-2 pt-1 pb-1" onClick={(event) => onOpen(event, searchResults)}>Open</Button>
-            <Button variant="outline-secondary" className="mr-2 pt-1 pb-1" disabled={!items?.length} onClick={saveAsNamedSet}>Save as set</Button>
-        </Row>
+            </div>
+            <button className="mr-2 pt-1 pb-1 btn btn-secondary" disabled={!items?.length} onClick={(event) => onOpen(event, searchResults)}>Open</button>
+            <button className="mr-2 pt-1 pb-1 btn btn-outline-secondary" disabled={!items?.length} onClick={saveAsNamedSet}>Save as set</button>
+        </div>
     );
 }
