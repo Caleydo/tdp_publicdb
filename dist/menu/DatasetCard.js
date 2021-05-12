@@ -1,8 +1,7 @@
 import React from 'react';
-import { Card, Nav, Tab, Row } from 'react-bootstrap';
 import { ENamedSetType, RestBaseUtils, RestStorageUtils } from 'tdp_core';
 import { NamedSetList, useAsync, OrdinoContext } from 'ordino';
-import { UserSession } from 'phovea_core';
+import { UserSession, UniqueIdManager } from 'phovea_core';
 import { DatasetSearchBox } from './DatasetSearchBox';
 import { Species, SpeciesUtils } from 'tdp_gene';
 export default function DatasetCard({ name, icon, tabs, startViewId, dataSource }) {
@@ -61,26 +60,27 @@ export default function DatasetCard({ name, icon, tabs, startViewId, dataSource 
         };
         app.startNewSession(startViewId, searchResult, defaultSessionValues);
     };
+    const id = React.useMemo(() => UniqueIdManager.getInstance().uniqueId(), []);
+    const activeTabIndex = 0;
     return (React.createElement(React.Fragment, null,
         React.createElement("h4", { className: "text-left mb-3" },
             React.createElement("i", { className: 'mr-2 ordino-icon-2 ' + icon }),
             name),
-        React.createElement(Card, { className: "shadow-sm" },
-            React.createElement(Card.Body, { className: "p-3" },
-                React.createElement(Tab.Container, { defaultActiveKey: tabs[0].id },
-                    React.createElement(Nav, { className: "session-tab", variant: "pills" }, tabs.map((tab) => {
-                        return (React.createElement(Nav.Item, { key: tab.id },
-                            React.createElement(Nav.Link, { eventKey: tab.id },
-                                React.createElement("i", { className: 'mr-2 ' + tab.icon }),
-                                tab.name)));
-                    })),
-                    React.createElement(Tab.Content, null, tabs.map((tab) => {
-                        return (React.createElement(Tab.Pane, { key: tab.id, eventKey: tab.id, className: "mt-4" },
-                            React.createElement(DatasetSearchBox, { placeholder: `Add ${name}`, dataSource: dataSource, onNamedSetsChanged: onNamedSetsChanged, onOpen: (event, searchResult) => { onOpenSearchResult(event, { searchResult, species: tab.id }); } }),
-                            React.createElement(Row, { className: "mt-4" },
-                                React.createElement(NamedSetList, { headerIcon: "fas fa-database", headerText: "Predefined Sets", onOpen: (event, namedSet) => { onOpenNamedSet(event, { namedSet, species: tab.id }); }, status: predefinedNamedSets.status, value: filterValue(predefinedNamedSets.value, tab.id) }),
-                                React.createElement(NamedSetList, { headerIcon: "fas fa-user", headerText: "My Sets", onOpen: (event, namedSet) => { onOpenNamedSet(event, { namedSet, species: tab.id }); }, status: myNamedSets.status, value: filterValue(myNamedSets.value, tab.id) }),
-                                React.createElement(NamedSetList, { headerIcon: "fas fa-users", headerText: "Public Sets", onOpen: (event, namedSet) => { onOpenNamedSet(event, { namedSet, species: tab.id }); }, status: publicNamedSets.status, value: filterValue(publicNamedSets.value, tab.id) }))));
-                    })))))));
+        React.createElement("div", { className: "card shadow-sm" },
+            React.createElement("div", { className: "card-body p-3" },
+                React.createElement("ul", { className: "nav nav-pills session-tab" }, tabs.map((tab, index) => {
+                    return (React.createElement("li", { key: tab.id, className: "nav-item", role: "presentation" },
+                        React.createElement("a", { className: `nav-link ${(index === activeTabIndex) ? 'active' : ''}`, id: `dataset-tab-${tab.id}-${id}`, "data-toggle": "tab", href: `#dataset-panel-${tab.id}-${id}`, role: "tab", "aria-controls": `dataset-panel-${tab.id}-${id}`, "aria-selected": (index === activeTabIndex) },
+                            React.createElement("i", { className: 'mr-2 ' + tab.icon }),
+                            tab.name)));
+                })),
+                React.createElement("div", { className: "tab-content" }, tabs.map((tab, index) => {
+                    return (React.createElement("div", { key: tab.id, className: `tab-pane fade mt-4 ${(index === activeTabIndex) ? 'show active' : ''}`, role: "tabpanel", id: `dataset-panel-${tab.id}-${id}`, "aria-labelledby": `dataset-tab-${tab.id}-${id}` },
+                        React.createElement(DatasetSearchBox, { placeholder: `Add ${name}`, dataSource: dataSource, onNamedSetsChanged: onNamedSetsChanged, onOpen: (event, searchResult) => { onOpenSearchResult(event, { searchResult, species: tab.id }); } }),
+                        React.createElement("div", { className: "row mt-4" },
+                            React.createElement(NamedSetList, { headerIcon: "fas fa-database", headerText: "Predefined Sets", onOpen: (event, namedSet) => { onOpenNamedSet(event, { namedSet, species: tab.id }); }, status: predefinedNamedSets.status, value: filterValue(predefinedNamedSets.value, tab.id) }),
+                            React.createElement(NamedSetList, { headerIcon: "fas fa-user", headerText: "My Sets", onOpen: (event, namedSet) => { onOpenNamedSet(event, { namedSet, species: tab.id }); }, status: myNamedSets.status, value: filterValue(myNamedSets.value, tab.id) }),
+                            React.createElement(NamedSetList, { headerIcon: "fas fa-users", headerText: "Public Sets", onOpen: (event, namedSet) => { onOpenNamedSet(event, { namedSet, species: tab.id }); }, status: publicNamedSets.status, value: filterValue(publicNamedSets.value, tab.id) }))));
+                }))))));
 }
 //# sourceMappingURL=DatasetCard.js.map

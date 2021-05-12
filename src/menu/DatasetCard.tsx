@@ -1,8 +1,7 @@
 import React from 'react';
-import {Card, Nav, Tab, Row} from 'react-bootstrap';
 import {INamedSet, ENamedSetType, RestBaseUtils, RestStorageUtils} from 'tdp_core';
 import {NamedSetList, useAsync, OrdinoContext} from 'ordino';
-import {UserSession} from 'phovea_core';
+import {UserSession, UniqueIdManager} from 'phovea_core';
 import {DatasetSearchBox} from './DatasetSearchBox';
 import {Species, SpeciesUtils, IACommonListOptions} from 'tdp_gene';
 import {IPublicDbStartMenuDatasetSectionDesc} from '../base/extensions';
@@ -72,56 +71,59 @@ export default function DatasetCard({name, icon, tabs, startViewId, dataSource}:
     app.startNewSession(startViewId, searchResult, defaultSessionValues);
   };
 
+  const id = React.useMemo(() => UniqueIdManager.getInstance().uniqueId(), []);
+  const activeTabIndex = 0;
+
   return (
     <>
       <h4 className="text-left mb-3"><i className={'mr-2 ordino-icon-2 ' + icon}></i>{name}</h4>
-      <Card className="shadow-sm">
-        <Card.Body className="p-3">
-          <Tab.Container defaultActiveKey={tabs[0].id}>
-            <Nav className="session-tab" variant="pills">
-              {tabs.map((tab) => {
-                return (
-                  <Nav.Item key={tab.id}>
-                    <Nav.Link eventKey={tab.id}><i className={'mr-2 ' + tab.icon}></i>{tab.name}</Nav.Link>
-                  </Nav.Item>
-                );
-              })}
-            </Nav>
-            <Tab.Content>
-              {tabs.map((tab) => {
-                return (
-                  <Tab.Pane key={tab.id} eventKey={tab.id} className="mt-4">
-                    <DatasetSearchBox
-                      placeholder={`Add ${name}`}
-                      dataSource={dataSource}
-                      onNamedSetsChanged={onNamedSetsChanged}
-                      onOpen={(event, searchResult: Partial<IACommonListOptions>) => {onOpenSearchResult(event, {searchResult, species: tab.id});}} />
-                    <Row className="mt-4">
-                      <NamedSetList
-                        headerIcon="fas fa-database"
-                        headerText="Predefined Sets"
-                        onOpen={(event, namedSet: INamedSet) => {onOpenNamedSet(event, {namedSet, species: tab.id});}}
-                        status={predefinedNamedSets.status}
-                        value={filterValue(predefinedNamedSets.value, tab.id)} />
-                      <NamedSetList
-                        headerIcon="fas fa-user"
-                        headerText="My Sets" onOpen={(event, namedSet: INamedSet) => {onOpenNamedSet(event, {namedSet, species: tab.id});}}
-                        status={myNamedSets.status}
-                        value={filterValue(myNamedSets.value, tab.id)} />
-                      <NamedSetList
-                        headerIcon="fas fa-users"
-                        headerText="Public Sets"
-                        onOpen={(event, namedSet: INamedSet) => {onOpenNamedSet(event, {namedSet, species: tab.id});}}
-                        status={publicNamedSets.status}
-                        value={filterValue(publicNamedSets.value, tab.id)} />
-                    </Row>
-                  </Tab.Pane>
-                );
-              })}
-            </Tab.Content>
-          </Tab.Container>
-        </Card.Body>
-      </Card>
+      <div className="card shadow-sm">
+        <div className="card-body p-3">
+          <ul className="nav nav-pills session-tab">
+            {tabs.map((tab, index) => {
+              return (
+                <li key={tab.id} className="nav-item" role="presentation">
+                  <a className={`nav-link ${(index === activeTabIndex) ? 'active' : ''}`} id={`dataset-tab-${tab.id}-${id}`} data-toggle="tab" href={`#dataset-panel-${tab.id}-${id}`} role="tab" aria-controls={`dataset-panel-${tab.id}-${id}`} aria-selected={(index === activeTabIndex)}>
+                    <i className={'mr-2 ' + tab.icon}></i>{tab.name}
+                  </a>
+                </li>
+              );
+            })}
+          </ul>
+          <div className="tab-content">
+            {tabs.map((tab, index) => {
+              return (
+                <div key={tab.id} className={`tab-pane fade mt-4 ${(index === activeTabIndex) ? 'show active' : ''}`} role="tabpanel" id={`dataset-panel-${tab.id}-${id}`} aria-labelledby={`dataset-tab-${tab.id}-${id}`}>
+                  <DatasetSearchBox
+                    placeholder={`Add ${name}`}
+                    dataSource={dataSource}
+                    onNamedSetsChanged={onNamedSetsChanged}
+                    onOpen={(event, searchResult: Partial<IACommonListOptions>) => {onOpenSearchResult(event, {searchResult, species: tab.id});}} />
+                  <div className="row mt-4">
+                    <NamedSetList
+                      headerIcon="fas fa-database"
+                      headerText="Predefined Sets"
+                      onOpen={(event, namedSet: INamedSet) => {onOpenNamedSet(event, {namedSet, species: tab.id});}}
+                      status={predefinedNamedSets.status}
+                      value={filterValue(predefinedNamedSets.value, tab.id)} />
+                    <NamedSetList
+                      headerIcon="fas fa-user"
+                      headerText="My Sets" onOpen={(event, namedSet: INamedSet) => {onOpenNamedSet(event, {namedSet, species: tab.id});}}
+                      status={myNamedSets.status}
+                      value={filterValue(myNamedSets.value, tab.id)} />
+                    <NamedSetList
+                      headerIcon="fas fa-users"
+                      headerText="Public Sets"
+                      onOpen={(event, namedSet: INamedSet) => {onOpenNamedSet(event, {namedSet, species: tab.id});}}
+                      status={publicNamedSets.status}
+                      value={filterValue(publicNamedSets.value, tab.id)} />
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </div>
     </>
   );
 }

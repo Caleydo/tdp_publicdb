@@ -1,5 +1,4 @@
 import React from 'react';
-import { Button, Col, Row } from 'react-bootstrap';
 import { RestBaseUtils, RestStorageUtils, StoreUtils } from 'tdp_core';
 import { Species, SpeciesUtils } from 'tdp_gene';
 import { AsyncPaginate } from 'react-select-async-paginate';
@@ -47,12 +46,12 @@ export function DatasetSearchBox({ placeholder, dataSource, onOpen, onNamedSetsC
             onNamedSetsChanged();
         });
     };
-    return (React.createElement(Row, null,
-        React.createElement(Col, null,
+    return (React.createElement("div", { className: "row" },
+        React.createElement("div", { className: "col" },
             React.createElement(AsyncPaginate, { placeholder: placeholder, noOptionsMessage: () => 'No results found', isMulti: true, loadOptions: loadOptions, value: items, onChange: setItems, formatOptionLabel: formatOptionLabel, getOptionLabel: (option) => option.text, getOptionValue: (option) => option.id, captureMenuScroll: false, additional: {
                     page: 1
                 } })),
-        React.createElement(Button, { variant: "secondary", disabled: !(items === null || items === void 0 ? void 0 : items.length), className: "mr-2 pt-1 pb-1", onClick: (event) => onOpen(event, searchResults) }, "Open"),
-        React.createElement(Button, { variant: "outline-secondary", className: "mr-2 pt-1 pb-1", disabled: !(items === null || items === void 0 ? void 0 : items.length), onClick: saveAsNamedSet }, "Save as set")));
+        React.createElement("button", { className: "mr-2 pt-1 pb-1 btn btn-secondary", disabled: !(items === null || items === void 0 ? void 0 : items.length), onClick: (event) => onOpen(event, searchResults) }, "Open"),
+        React.createElement("button", { className: "mr-2 pt-1 pb-1 btn btn-outline-secondary", disabled: !(items === null || items === void 0 ? void 0 : items.length), onClick: saveAsNamedSet }, "Save as set")));
 }
 //# sourceMappingURL=DatasetSearchBox.js.map
