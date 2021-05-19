@@ -94,10 +94,11 @@
     "typescript": "~3.9.7"
   },
   "dependencies": {
-    "tdp_gene": "github:Caleydo/tdp_gene#bootstrap-v4"
+    "tdp_gene": "github:Caleydo/tdp_gene#vstoiber/bootstrap_v5",
+    "react-bootstrap": "1.6.0"
   },
   "optionalDependencies": {
     "dTiles": "github:datavisyn/dTiles#develop",
-    "ordino": "github:Caleydo/ordino#welcome-page"
+    "ordino": "github:Caleydo/ordino#vstoiber/bootstrap_v5"
   }
 }
