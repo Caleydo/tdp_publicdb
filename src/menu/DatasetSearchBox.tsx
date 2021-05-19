@@ -1,11 +1,10 @@
 import React from 'react';
-import {RestBaseUtils, RestStorageUtils, StoreUtils, IdTextPair, INamedSet} from 'tdp_core';
+import {RestBaseUtils, RestStorageUtils, StoreUtils, IdTextPair} from 'tdp_core';
 import {Species, SpeciesUtils} from 'tdp_gene';
 import {FormatOptionLabelMeta} from 'react-select';
 import {AsyncPaginate} from 'react-select-async-paginate';
 import Highlighter from 'react-highlight-words';
 import {I18nextManager, IDTypeManager} from 'phovea_core';
-import {OrdinoContext} from 'ordino';
 import {IDataSourceConfig} from '../common';
 import {IACommonListOptions} from 'tdp_gene';
 
