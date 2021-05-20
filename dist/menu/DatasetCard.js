@@ -63,15 +63,15 @@ export default function DatasetCard({ name, icon, tabs, startViewId, dataSource 
     const id = React.useMemo(() => UniqueIdManager.getInstance().uniqueId(), []);
     const activeTabIndex = 0;
     return (React.createElement(React.Fragment, null,
-        React.createElement("h4", { className: "text-left mb-3" },
-            React.createElement("i", { className: 'mr-2 ordino-icon-2 ' + icon }),
+        React.createElement("h4", { className: "text-start mb-3" },
+            React.createElement("i", { className: 'me-2 ordino-icon-2 ' + icon }),
             name),
         React.createElement("div", { className: "card shadow-sm" },
             React.createElement("div", { className: "card-body p-3" },
                 React.createElement("ul", { className: "nav nav-pills session-tab" }, tabs.map((tab, index) => {
                     return (React.createElement("li", { key: tab.id, className: "nav-item", role: "presentation" },
                         React.createElement("a", { className: `nav-link ${(index === activeTabIndex) ? 'active' : ''}`, id: `dataset-tab-${tab.id}-${id}`, "data-toggle": "tab", href: `#dataset-panel-${tab.id}-${id}`, role: "tab", "aria-controls": `dataset-panel-${tab.id}-${id}`, "aria-selected": (index === activeTabIndex) },
-                            React.createElement("i", { className: 'mr-2 ' + tab.icon }),
+                            React.createElement("i", { className: 'me-2 ' + tab.icon }),
                             tab.name)));
                 })),
                 React.createElement("div", { className: "tab-content" }, tabs.map((tab, index) => {

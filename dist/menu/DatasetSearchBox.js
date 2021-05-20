@@ -51,7 +51,7 @@ export function DatasetSearchBox({ placeholder, dataSource, onOpen, onNamedSetsC
             React.createElement(AsyncPaginate, { placeholder: placeholder, noOptionsMessage: () => 'No results found', isMulti: true, loadOptions: loadOptions, value: items, onChange: setItems, formatOptionLabel: formatOptionLabel, getOptionLabel: (option) => option.text, getOptionValue: (option) => option.id, captureMenuScroll: false, additional: {
                     page: 1
                 } })),
-        React.createElement("button", { className: "mr-2 pt-1 pb-1 btn btn-secondary", disabled: !(items === null || items === void 0 ? void 0 : items.length), onClick: (event) => onOpen(event, searchResults) }, "Open"),
-        React.createElement("button", { className: "mr-2 pt-1 pb-1 btn btn-outline-secondary", disabled: !(items === null || items === void 0 ? void 0 : items.length), onClick: saveAsNamedSet }, "Save as set")));
+        React.createElement("button", { className: "me-2 pt-1 pb-1 btn btn-secondary", disabled: !(items === null || items === void 0 ? void 0 : items.length), onClick: (event) => onOpen(event, searchResults) }, "Open"),
+        React.createElement("button", { className: "me-2 pt-1 pb-1 btn btn-outline-secondary", disabled: !(items === null || items === void 0 ? void 0 : items.length), onClick: saveAsNamedSet }, "Save as set")));
 }
 //# sourceMappingURL=DatasetSearchBox.js.map
