@@ -70,7 +70,7 @@ export default function DatasetCard({ name, icon, tabs, startViewId, dataSource 
             React.createElement("div", { className: "card-body p-3" },
                 React.createElement("ul", { className: "nav nav-pills session-tab" }, tabs.map((tab, index) => {
                     return (React.createElement("li", { key: tab.id, className: "nav-item", role: "presentation" },
-                        React.createElement("a", { className: `nav-link ${(index === activeTabIndex) ? 'active' : ''}`, id: `dataset-tab-${tab.id}-${id}`, "data-toggle": "tab", href: `#dataset-panel-${tab.id}-${id}`, role: "tab", "aria-controls": `dataset-panel-${tab.id}-${id}`, "aria-selected": (index === activeTabIndex) },
+                        React.createElement("a", { className: `nav-link ${(index === activeTabIndex) ? 'active' : ''}`, id: `dataset-tab-${tab.id}-${id}`, "data-bs-toggle": "tab", href: `#dataset-panel-${tab.id}-${id}`, role: "tab", "aria-controls": `dataset-panel-${tab.id}-${id}`, "aria-selected": (index === activeTabIndex) },
                             React.createElement("i", { className: 'me-2 ' + tab.icon }),
                             tab.name)));
                 })),

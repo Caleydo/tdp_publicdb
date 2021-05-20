@@ -83,7 +83,7 @@ export default function DatasetCard({name, icon, tabs, startViewId, dataSource}:
             {tabs.map((tab, index) => {
               return (
                 <li key={tab.id} className="nav-item" role="presentation">
-                  <a className={`nav-link ${(index === activeTabIndex) ? 'active' : ''}`} id={`dataset-tab-${tab.id}-${id}`} data-toggle="tab" href={`#dataset-panel-${tab.id}-${id}`} role="tab" aria-controls={`dataset-panel-${tab.id}-${id}`} aria-selected={(index === activeTabIndex)}>
+                  <a className={`nav-link ${(index === activeTabIndex) ? 'active' : ''}`} id={`dataset-tab-${tab.id}-${id}`} data-bs-toggle="tab" href={`#dataset-panel-${tab.id}-${id}`} role="tab" aria-controls={`dataset-panel-${tab.id}-${id}`} aria-selected={(index === activeTabIndex)}>
                     <i className={'me-2 ' + tab.icon}></i>{tab.name}
                   </a>
                 </li>
