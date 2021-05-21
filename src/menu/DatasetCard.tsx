@@ -1,5 +1,5 @@
 import React from 'react';
-import {INamedSet, ENamedSetType, RestBaseUtils, RestStorageUtils, StoreUtils} from 'tdp_core';
+import {INamedSet, ENamedSetType, RestBaseUtils, RestStorageUtils, StoreUtils, IdTextPair} from 'tdp_core';
 import {NamedSetList, useAsync, OrdinoContext} from 'ordino';
 import {UserSession, UniqueIdManager, I18nextManager, IDTypeManager} from 'phovea_core';
 import {DatasetSearchBox} from './DatasetSearchBox';
