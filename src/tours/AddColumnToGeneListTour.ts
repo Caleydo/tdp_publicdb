@@ -119,7 +119,7 @@ export class AddColumnToGeneListTour {
         For instance, one can add a column that shows the average gene expression values across all breast cancer cell lines.</li></ul>`,
         placement: 'centered',
         preAction: async () => {
-          await TourUtils.waitFor('.lu-search .lu-search-group')
+          await TourUtils.waitFor('.lu-search .lu-search-group');
           TourUtils.click('.lu-side-panel-wrapper button.fa-plus');
         }
       },
