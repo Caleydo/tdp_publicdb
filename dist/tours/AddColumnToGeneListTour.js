@@ -184,7 +184,7 @@ export class AddColumnToGeneListTour {
                 selector: '.modal-body form > .form-group:nth-child(1) .form-row:nth-child(1) div:nth-child(2) .select2',
                 html: `&hellip; and for the filter value we select <i>'breast carcinoma'</i>.`,
                 placement: 'centered',
-                preAction: () => TourUtils.waitFor('.modal-body form > .form-group:nth-child(1) .form-group:nth-child(1) div:nth-child(2) .select2').then(() => TourUtils.wait(250)),
+                preAction: () => TourUtils.waitFor('.modal-body form > .form-group:nth-child(1) .form-row:nth-child(1) div:nth-child(2) .select2').then(() => TourUtils.wait(250)),
                 postAction: () => {
                     TourUtils.setValueAndTrigger('.modal-body form > .form-group:nth-child(1) .form-row:nth-child(1) div:nth-child(2) select', 'breast carcinoma', 'change');
                 }
