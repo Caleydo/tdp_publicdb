@@ -22,11 +22,10 @@ export class WelcomeTour {
                     }
                     datasetTab.querySelector('a').click();
                 },
-                postAction: TourUtils.clickSelector,
                 pageBreak: 'manual'
             },
             {
-                selector: '.ordino-dataset.genes-dataset',
+                selector: '.ordino-dataset.genes-dataset > .card',
                 html: `<p>You can choose between the three entity types <i>'Cell Lines'</i>, <i>'Genes'</i>, and <i>'Tissues'</i>.</p> <p>In this example we will work with a list of genes</p>`,
                 placement: 'centered',
                 preAction: TourUtils.waitForSelector,
