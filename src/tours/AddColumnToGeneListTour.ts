@@ -18,34 +18,34 @@ export class AddColumnToGeneListTour {
         </p>`,
       },
       {
-        selector: '.homeButton > a',
-        html: `<p>In order to load a list of genes we open the start menu by clicking on the <i>'Home'</i> button.</p>`,
+        selector: 'ul[data-header="mainMenu"] > li:first-child > a',
+        html: `<p>In order to load a list of genes we open the datasets tab by clicking on the <i>'Dataset'</i> button.</p>`,
         placement: 'centered',
         preAction: () => {
-          if (document.querySelector('.startMenu.open')) {
-            TourUtils.click('.startMenu .closeButton');
+          const datasetTab = document.querySelector('ul[data-header="mainMenu"] > li:nth-child(1)') as HTMLElement;
+          if (datasetTab.classList.contains('active')) {
+            return;
           }
-        },
-        postAction: TourUtils.clickSelector
+          datasetTab.querySelector('a').click();
+        }
       },
-
       {
-        selector: '.startMenu.open .speciesSelector .nav-tabs',
-        html: `<p>In the start menu, we select <i>'Gene Sets'</i> &hellip;</p>`,
+        selector: '#ordino_dataset_tab > .ordino-scrollspy-container .genes-dataset > .card',
+        html: `<p>In the dataset tab, we scroll to the <i>'Genes'</i> &hellip;</p>`,
         placement: 'centered',
-        preAction: () => TourUtils.waitFor('.menu').then(() => TourUtils.wait(1000)).then(() => TourUtils.waitForSelector),
-        postAction: () => TourUtils.click('#entityType_gene-entry-point')
+        preAction: TourUtils.waitForSelector,
+        postAction: () => TourUtils.click('#ordino_dataset_tab > .ordino-scrollspy-nav > a:nth-child(2)'),
       },
-
       {
-        selector: '#entity_gene-entry-point .predefined-named-sets a[title^="Name: Cancer Gene Census"]',
+        selector: '.ordino-dataset.genes-dataset .dataset-entry button[title^="Name: Cancer Gene Census"]',
         html: `<p>&hellip; and afterwards we select the already predefined set of known cancer genes, called <i>'Cancer Gene Census'</i>.</p>`,
         placement: 'centered',
         postAction: () => {
-          return TourUtils.waitFor('#entity_gene-entry-point .predefined-named-sets a[title^="Name: Cancer Gene Census"]').then(TourUtils.click);
+          return TourUtils.waitFor('.ordino-dataset.genes-dataset .dataset-entry button[title^="Name: Cancer Gene Census"]').then(TourUtils.click);
         },
         pageBreak: 'manual'
       },
+
 
       {
         selector: '.le.le-multi.lineup-engine',
@@ -83,16 +83,16 @@ export class AddColumnToGeneListTour {
       },
 
       {
-        selector: '.modal.in .form-group > .select2',
+        selector: '.modal.show .form-group > .select2',
         html: `<p>This opens a dialog where you can select which information you want to add as a new column.</p>
         <p>In this example, we select <i>'Strand'</i> &hellip;</p>`,
         placement: 'centered',
-        preAction: () => TourUtils.waitFor('.modal.in').then(() => TourUtils.wait(250)),
+        preAction: () => TourUtils.waitFor('.modal.show').then(() => TourUtils.wait(250)),
         postAction: () => TourUtils.setValueAndTrigger('.form-group > select', 'strand', 'change')
       },
 
       {
-        selector: '.modal.in .modal-footer button[type=submit]',
+        selector: '.modal.show .modal-footer button[type=submit]',
         html: `&hellip; and click <i>'Add'</i>`,
         placement: 'centered',
         postAction: TourUtils.clickSelector
@@ -118,7 +118,8 @@ export class AddColumnToGeneListTour {
         <li><i>Aggregated</i>. This allows to aggregate the information across multiple cell lines or tissue samples.
         For instance, one can add a column that shows the average gene expression values across all breast cancer cell lines.</li></ul>`,
         placement: 'centered',
-        preAction: () => {
+        preAction: async () => {
+          await TourUtils.waitFor('.lu-search .lu-search-group')
           TourUtils.click('.lu-side-panel-wrapper button.fa-plus');
         }
       },
@@ -137,17 +138,17 @@ export class AddColumnToGeneListTour {
       },
 
       {
-        selector: '.modal.in .form-group > .select3',
+        selector: '.modal.show .form-group > .select3',
         placement: 'centered',
-        preAction: () => TourUtils.waitFor('.modal.in').then(() => TourUtils.wait(250)),
+        preAction: () => TourUtils.waitFor('.modal.show').then(() => TourUtils.wait(250)),
         html: `We select the cell lines <i>'HCC-827'</i> and <i>'BT-20'</i>.`,
         postAction: () => {
-          TourUtils.setValueAndTrigger('.modal.in .select3 input.select2-search__field', 'HCC-827;BT-20;', 'input');
+          TourUtils.setValueAndTrigger('.modal.show .select3 input.select2-search__field', 'HCC-827;BT-20;', 'input');
         }
       },
 
       {
-        selector: '.modal.in .form-group > .select2',
+        selector: '.modal.show .form-group > .select2',
         placement: 'centered',
         html: `As data type, we choose <i>'Relative Copy Number'</i>`,
         postAction: () => {
@@ -156,7 +157,7 @@ export class AddColumnToGeneListTour {
       },
 
       {
-        selector: '.modal.in .modal-footer button[type=submit]',
+        selector: '.modal.show .modal-footer button[type=submit]',
         html: `Finally, click <i>'Add'</i>`,
         placement: 'centered',
         postAction: TourUtils.clickSelector
@@ -184,29 +185,29 @@ export class AddColumnToGeneListTour {
       },
 
       {
-        selector: '.modal.in .modal-content',
+        selector: '.modal.show .modal-content',
         html: `<p>This opens a dialog where you can specify the settings for the new column.</p>`,
         placement: 'centered',
-        preAction: () => TourUtils.waitFor('.modal.in .modal-content').then(() => TourUtils.wait(250))
+        preAction: () => TourUtils.waitFor('.modal.show .modal-content').then(() => TourUtils.wait(250))
       },
 
       {
-        selector: '.modal-body form > .form-group:nth-child(1) .form-group:nth-child(1) div:nth-child(1) select',
+        selector: '.modal-body form > .form-group:nth-child(1) .form-row:nth-child(1) div:nth-child(1) select',
         html: `<p>First, we need to define the subset of cell lines which we want to aggregate.</p>
         <p>For the filter attribute we select <i>'Tumor Type'</i> &hellip;</p>`,
         placement: 'centered',
         postAction: () => {
-          TourUtils.setValueAndTrigger('.modal-body form > .form-group:nth-child(1) .form-group:nth-child(1) div:nth-child(1) select', 'tumortype', 'change');
+          TourUtils.setValueAndTrigger('.modal-body form > .form-group:nth-child(1) .form-row:nth-child(1) div:nth-child(1) select', 'tumortype', 'change');
         }
       },
 
       {
-        selector: '.modal-body form > .form-group:nth-child(1) .form-group:nth-child(1) div:nth-child(2) .select2',
+        selector: '.modal-body form > .form-group:nth-child(1) .form-row:nth-child(1) div:nth-child(2) .select2',
         html: `&hellip; and for the filter value we select <i>'breast carcinoma'</i>.`,
         placement: 'centered',
         preAction: () => TourUtils.waitFor('.modal-body form > .form-group:nth-child(1) .form-group:nth-child(1) div:nth-child(2) .select2').then(() => TourUtils.wait(250)),
         postAction: () => {
-          TourUtils.setValueAndTrigger('.modal-body form > .form-group:nth-child(1) .form-group:nth-child(1) div:nth-child(2) select', 'breast carcinoma', 'change');
+          TourUtils.setValueAndTrigger('.modal-body form > .form-group:nth-child(1) .form-row:nth-child(1) div:nth-child(2) select', 'breast carcinoma', 'change');
         }
       },
 
@@ -230,7 +231,7 @@ export class AddColumnToGeneListTour {
       },
 
       {
-        selector: '.modal.in .modal-footer button[type=submit]',
+        selector: '.modal.show .modal-footer button[type=submit]',
         html: `Finally, we click <i>'Add'</i>`,
         placement: 'centered',
         postAction: TourUtils.clickSelector

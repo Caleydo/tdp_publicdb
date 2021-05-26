@@ -46,7 +46,7 @@ export function DatasetSearchBox({ placeholder, dataSource, onOpen, onNamedSetsC
             onNamedSetsChanged();
         });
     };
-    return (React.createElement("div", { className: "row" },
+    return (React.createElement("div", { className: "row ordino-dataset-searchbox" },
         React.createElement("div", { className: "col" },
             React.createElement(AsyncPaginate, { placeholder: placeholder, noOptionsMessage: () => 'No results found', isMulti: true, loadOptions: loadOptions, value: items, onChange: setItems, formatOptionLabel: formatOptionLabel, getOptionLabel: (option) => option.text, getOptionValue: (option) => option.id, captureMenuScroll: false, additional: {
                     page: 1
