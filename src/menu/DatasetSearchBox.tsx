@@ -72,7 +72,7 @@ export function DatasetSearchBox({placeholder, dataSource, onOpen, onNamedSetsCh
 
     return (
         <div className="row">
-            <div className="col">
+            <div className="col mb-3">
                 <AsyncPaginate
                     placeholder={placeholder}
                     noOptionsMessage={() => 'No results found'}
