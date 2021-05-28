@@ -1,4 +1,4 @@
-import {SpeciesUtils} from 'tdp_gene';
+import {Categories, SpeciesUtils} from 'tdp_gene';
 import {Select3Utils, ISelect3Item, IdTextPair} from 'tdp_core';
 import {gene, IDataSourceConfig, drug} from './config';
 import {RestBaseUtils} from 'tdp_core';
@@ -75,9 +75,9 @@ export class GeneUtils {
 
   static validate(config: IDataSourceConfig | ICommonDBConfig, query: string[]): Promise<Readonly<IdTextPair>[]> {
     return RestBaseUtils.getTDPData(config.db, `${config.base}_items_verify/filter`, {
-      column: config.entityName,
+      column: 'symbol',
       species: SpeciesUtils.getSelectedSpecies(),
-      [`filter_${config.entityName}`]: query,
+      [`filter_symbol`]: query,
     });
   }
 
@@ -186,4 +186,21 @@ export class GeneUtils {
     }
     return item.id;
   }
+
+/**
+ * Chooses which validation function to use depending on the dataSource provided.
+ * @param dataSource
+ * @param query
+ * @returns {Promise<Readonly<IdTextPair>[]>} Return the validated entity as id-text pairs.
+ */
+  static validateGeneric = (dataSource: IDataSourceConfig, query: string[]) => {
+    switch (dataSource.idType) {
+        case Categories.GENE_IDTYPE:
+            return GeneUtils.validateGene(query);
+            break;
+        // TODO: add other cases when needed
+        default:
+            return GeneUtils.validate(dataSource, query);
+    }
+}
 }

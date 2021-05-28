@@ -99,5 +99,12 @@ export declare class GeneUtils {
      * @returns {string} The string how the drugscreen is actually rendered.
      */
     static formatDrugScreen(item: ISelect3Item<IdTextPair>, node: HTMLElement, mode: 'result' | 'selection', currentSearchQuery?: RegExp): string;
+    /**
+     * Chooses which validation function to use depending on the dataSource provided.
+     * @param dataSource
+     * @param query
+     * @returns {Promise<Readonly<IdTextPair>[]>} Return the validated entity as id-text pairs.
+     */
+    static validateGeneric: (dataSource: IDataSourceConfig, query: string[]) => Promise<Readonly<IdTextPair>[]>;
 }
 export {};
