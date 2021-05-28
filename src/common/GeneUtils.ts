@@ -72,12 +72,12 @@ export class GeneUtils {
       limit: pageSize
     });
   }
-
+  
   static validate(config: IDataSourceConfig | ICommonDBConfig, query: string[]): Promise<Readonly<IdTextPair>[]> {
     return RestBaseUtils.getTDPData(config.db, `${config.base}_items_verify/filter`, {
-      column: 'symbol',
+      column: config.entityName,
       species: SpeciesUtils.getSelectedSpecies(),
-      [`filter_symbol`]: query,
+      [`filter_${config.entityName}`]: query,
     });
   }
 

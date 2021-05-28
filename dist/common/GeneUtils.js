@@ -62,9 +62,9 @@ export class GeneUtils {
     }
     static validate(config, query) {
         return RestBaseUtils.getTDPData(config.db, `${config.base}_items_verify/filter`, {
-            column: 'symbol',
+            column: config.entityName,
             species: SpeciesUtils.getSelectedSpecies(),
-            [`filter_symbol`]: query,
+            [`filter_${config.entityName}`]: query,
         });
     }
     static format(item, node, mode, currentSearchQuery) {
