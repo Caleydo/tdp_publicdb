@@ -1,21 +1,28 @@
 import React from 'react';
-import {RestBaseUtils, RestStorageUtils, StoreUtils, IdTextPair} from 'tdp_core';
-import {Species, SpeciesUtils} from 'tdp_gene';
+import {RestBaseUtils, IdTextPair} from 'tdp_core';
 import {FormatOptionLabelMeta} from 'react-select';
 import {AsyncPaginate} from 'react-select-async-paginate';
 import Highlighter from 'react-highlight-words';
-import {I18nextManager, IDTypeManager} from 'phovea_core';
 import {IDataSourceConfig} from '../common';
 import {IACommonListOptions} from 'tdp_gene';
+
+
+interface IDatasetSearchBoxParams {
+    [key: string]: any;
+}
 
 interface IDatasetSearchBoxProps {
     placeholder: string;
     dataSource: IDataSourceConfig;
-    onNamedSetsChanged: () => void;
+    onSaveAsNamedSet: (items: IdTextPair[]) => void;
     onOpen: (event: React.MouseEvent<HTMLElement>, search: Partial<IACommonListOptions>) => void;
+    /**
+     * Extra parameters when querying the options of the searchbox,
+     */
+    params?: IDatasetSearchBoxParams;
 }
 
-export function DatasetSearchBox({placeholder, dataSource, onOpen, onNamedSetsChanged}: IDatasetSearchBoxProps) {
+export function DatasetSearchBox({placeholder, dataSource, onOpen, onSaveAsNamedSet, params = {}}: IDatasetSearchBoxProps) {
     const [items, setItems] = React.useState<IdTextPair[]>(null);
 
     const loadOptions = async (query: string, _, {page}: {page: number}) => {
@@ -23,7 +30,7 @@ export function DatasetSearchBox({placeholder, dataSource, onOpen, onNamedSetsCh
 
         return RestBaseUtils.getTDPLookup(db, base + dbViewSuffix, {
             column: entityName,
-            species: SpeciesUtils.getSelectedSpecies(),
+            ...params,
             query
         }).then(({items, more}) => ({
             options: items,
@@ -49,25 +56,10 @@ export function DatasetSearchBox({placeholder, dataSource, onOpen, onNamedSetsCh
     };
 
     const searchResults = {
-      search: {
-          ids: items?.map((i) => i.id),
-          type: dataSource.tableName
-      }
-    };
-
-    // TODO: maybe this should be passed as props from the parent
-    const saveAsNamedSet = () => {
-        StoreUtils.editDialog(null, I18nextManager.getInstance().i18n.t(`tdp:core.editDialog.listOfEntities.default`), async (name, description, isPublic) => {
-            const idStrings = items?.map((i) => i.id);
-            const idType = IDTypeManager.getInstance().resolveIdType(dataSource.idType);
-            const ids = await idType.map(idStrings);
-
-            const response = await RestStorageUtils.saveNamedSet(name, idType, ids, {
-                key: Species.SPECIES_SESSION_KEY,
-                value: SpeciesUtils.getSelectedSpecies()
-            }, description, isPublic);
-            onNamedSetsChanged();
-        });
+        search: {
+            ids: items?.map((i) => i.id),
+            type: dataSource.tableName
+        }
     };
 
     return (
@@ -90,7 +82,7 @@ export function DatasetSearchBox({placeholder, dataSource, onOpen, onNamedSetsCh
                 />
             </div>
             <button className="mr-2 pt-1 pb-1 btn btn-secondary" disabled={!items?.length} onClick={(event) => onOpen(event, searchResults)}>Open</button>
-            <button className="mr-2 pt-1 pb-1 btn btn-outline-secondary" disabled={!items?.length} onClick={saveAsNamedSet}>Save as set</button>
+            <button className="mr-2 pt-1 pb-1 btn btn-outline-secondary" disabled={!items?.length} onClick={() => onSaveAsNamedSet(items)}>Save as set</button>
         </div>
     );
 }

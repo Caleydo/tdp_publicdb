@@ -1,11 +1,19 @@
 import React from 'react';
+import { IdTextPair } from 'tdp_core';
 import { IDataSourceConfig } from '../common';
 import { IACommonListOptions } from 'tdp_gene';
+interface IDatasetSearchBoxParams {
+    [key: string]: any;
+}
 interface IDatasetSearchBoxProps {
     placeholder: string;
     dataSource: IDataSourceConfig;
-    onNamedSetsChanged: () => void;
+    onSaveAsNamedSet: (items: IdTextPair[]) => void;
     onOpen: (event: React.MouseEvent<HTMLElement>, search: Partial<IACommonListOptions>) => void;
+    /**
+     * Extra parameters when querying the options of the searchbox,
+     */
+    params?: IDatasetSearchBoxParams;
 }
-export declare function DatasetSearchBox({ placeholder, dataSource, onOpen, onNamedSetsChanged }: IDatasetSearchBoxProps): JSX.Element;
+export declare function DatasetSearchBox({ placeholder, dataSource, onOpen, onSaveAsNamedSet, params }: IDatasetSearchBoxProps): JSX.Element;
 export {};
