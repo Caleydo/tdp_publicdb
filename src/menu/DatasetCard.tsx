@@ -6,7 +6,7 @@ import {DatasetSearchBox} from './DatasetSearchBox';
 import {Species, SpeciesUtils, IACommonListOptions} from 'tdp_gene';
 import {IPublicDbStartMenuDatasetSectionDesc} from '../base/extensions';
 
-export default function DatasetCard({name, icon, tabs, startViewId, dataSource}: IPublicDbStartMenuDatasetSectionDesc) {
+export default function DatasetCard({name, icon, tabs, startViewId, dataSource, cssClass}: IPublicDbStartMenuDatasetSectionDesc) {
   const {app} = React.useContext(OrdinoContext);
   const [dirtyNamedSets, setDirtyNamedSets] = React.useState(false);
 
@@ -90,7 +90,7 @@ export default function DatasetCard({name, icon, tabs, startViewId, dataSource}:
   const activeTabIndex = 0;
 
   return (
-    <>
+    <div className={`ordino-dataset ${cssClass || ''}`}>
       <h4 className="text-left mb-3"><i className={'mr-2 ordino-icon-2 ' + icon}></i>{name}</h4>
       <div className="card shadow-sm">
         <div className="card-body p-3">
@@ -140,6 +140,6 @@ export default function DatasetCard({name, icon, tabs, startViewId, dataSource}:
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 }

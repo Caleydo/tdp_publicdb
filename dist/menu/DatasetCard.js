@@ -4,7 +4,7 @@ import { NamedSetList, useAsync, OrdinoContext } from 'ordino';
 import { UserSession, UniqueIdManager, I18nextManager, IDTypeManager } from 'phovea_core';
 import { DatasetSearchBox } from './DatasetSearchBox';
 import { Species, SpeciesUtils } from 'tdp_gene';
-export default function DatasetCard({ name, icon, tabs, startViewId, dataSource }) {
+export default function DatasetCard({ name, icon, tabs, startViewId, dataSource, cssClass }) {
     var _a, _b;
     const { app } = React.useContext(OrdinoContext);
     const [dirtyNamedSets, setDirtyNamedSets] = React.useState(false);
@@ -74,7 +74,7 @@ export default function DatasetCard({ name, icon, tabs, startViewId, dataSource 
     };
     const id = React.useMemo(() => UniqueIdManager.getInstance().uniqueId(), []);
     const activeTabIndex = 0;
-    return (React.createElement(React.Fragment, null,
+    return (React.createElement("div", { className: `ordino-dataset ${cssClass || ''}` },
         React.createElement("h4", { className: "text-left mb-3" },
             React.createElement("i", { className: 'mr-2 ordino-icon-2 ' + icon }),
             name),

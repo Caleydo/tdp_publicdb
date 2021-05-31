@@ -63,7 +63,7 @@ export function DatasetSearchBox({placeholder, dataSource, onOpen, onSaveAsNamed
     };
 
     return (
-        <div className="row">
+        <div className="row ordino-dataset-searchbox">
             <div className="col">
                 <AsyncPaginate
                     placeholder={placeholder}
