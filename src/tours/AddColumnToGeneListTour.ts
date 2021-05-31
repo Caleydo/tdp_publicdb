@@ -19,7 +19,7 @@ export class AddColumnToGeneListTour {
       },
       {
         selector: 'ul[data-header="mainMenu"] > li:first-child > a',
-        html: `<p>In order to load a list of genes we open the datasets tab by clicking on the <i>'Dataset'</i> button.</p>`,
+        html: `<p>In order to load a list of genes we open the datasets tab by clicking on the <i>'Datasets'</i> button in the header.</p>`,
         placement: 'centered',
         preAction: () => {
           const datasetTab = document.querySelector('ul[data-header="mainMenu"] > li:nth-child(1)') as HTMLElement;
@@ -31,7 +31,7 @@ export class AddColumnToGeneListTour {
       },
       {
         selector: '#ordino_dataset_tab > .ordino-scrollspy-container .genes-dataset > .card',
-        html: `<p>In the dataset tab, we scroll to the <i>'Genes'</i> &hellip;</p>`,
+        html: `<p>In the datasets tab, we scroll to the <i>'Genes'</i> section &hellip;</p>`,
         placement: 'centered',
         preAction: TourUtils.waitForSelector,
         postAction: () => TourUtils.click('#ordino_dataset_tab > .ordino-scrollspy-nav > a:nth-child(2)'),

@@ -14,7 +14,7 @@ export class StartMenuTour {
             },
             {
                 selector: 'ul[data-header="mainMenu"] > li:first-child > a',
-                html: `<p>To open the start menu and to initiate an analysis, click on the <i>'Datasets'</i> tab.</p>`,
+                html: `<p>To open the start menu and to initiate an analysis, click on the <i>'Datasets'</i> button in the header.</p>`,
                 placement: 'centered',
                 preAction: () => {
                     const datasetTab = document.querySelector('ul[data-header="mainMenu"] > li:nth-child(1)');
@@ -28,19 +28,19 @@ export class StartMenuTour {
                 selector: 'ul[data-header="mainMenu"]',
                 html: `<p>The start menu allows you to load the data / entities that you want to analyze in Ordino (e.g., a set of cell lines).
         Furthermore, you can upload data and open previous analysis sessions.</p>
-        <p>The menu contains three tabs ...</p>`,
+        <p>The menu contains three tabs &hellip;</p>`,
                 placement: 'centered',
             },
             {
                 selector: '#ordino_dataset_tab > .ordino-scrollspy-container .genes-dataset > .card',
-                html: `<p>The first tab is open by default and allows you select a set of genes, ...</p>`,
+                html: `<p>The first tab is open by default and allows you select a set of genes, &hellip;</p>`,
                 placement: 'centered',
                 preAction: TourUtils.waitForSelector,
                 postAction: () => TourUtils.click('#ordino_dataset_tab > .ordino-scrollspy-nav > a:nth-child(2)'),
             },
             {
                 selector: '#ordino_dataset_tab > .ordino-scrollspy-container .tissue-dataset > .card',
-                html: `<p>...tissue samples, ...</p>`,
+                html: `<p>&hellip; tissue samples, &hellip;</p>`,
                 placement: 'centered',
                 preAction: () => TourUtils.waitFor('#ordino_dataset_tab > .ordino-scrollspy-container .tissue-dataset > .card').then(() => TourUtils.wait(400)),
                 postAction: () => TourUtils.click('#ordino_dataset_tab > .ordino-scrollspy-nav > a:nth-child(3)'),
@@ -48,7 +48,7 @@ export class StartMenuTour {
             },
             {
                 selector: '#ordino_dataset_tab > .ordino-scrollspy-container .cellline-dataset > .card',
-                html: `<p>...cell lines, ...</p>`,
+                html: `<p>&hellip; cell lines, &hellip;</p>`,
                 placement: 'centered',
                 preAction: () => TourUtils.waitFor('#ordino_dataset_tab > .ordino-scrollspy-container .cellline-dataset > .card').then(() => TourUtils.wait(400)),
                 postAction: () => TourUtils.click('#ordino_dataset_tab > .ordino-scrollspy-nav > a:nth-child(4)'),
@@ -56,7 +56,7 @@ export class StartMenuTour {
             },
             {
                 selector: '#ordino_dataset_tab > .ordino-scrollspy-container div[id^="tdp_uploaded_dataset"] > .card',
-                html: `<p>... or upload tabular data to analyze.</p>`,
+                html: `<p>&hellip;  or upload tabular data to analyze.</p>`,
                 placement: 'centered',
                 preAction: () => TourUtils.waitFor('#ordino_dataset_tab > .ordino-scrollspy-container div[id^="tdp_uploaded_dataset"] > .card').then(() => TourUtils.wait(400)),
                 postAction: () => {
@@ -66,7 +66,7 @@ export class StartMenuTour {
             },
             {
                 selector: '#ordino_sessions_tab > .ordino-scrollspy-container div[id^="targid_current_session"] > .card',
-                html: `<p>In the next tab you can modify the currently open session, ...</p>`,
+                html: `<p>In the next tab you can modify the currently open session, &hellip;</p>`,
                 preAction: TourUtils.waitForSelector,
                 placement: 'centered',
                 postAction: () => TourUtils.click('#ordino_sessions_tab > .ordino-scrollspy-nav > a:nth-child(2)'),
@@ -74,8 +74,8 @@ export class StartMenuTour {
             },
             {
                 selector: '#ordino_sessions_tab > .ordino-scrollspy-container div[id^="targid_persistent_session"] > .card',
-                html: `<p>...load previously saved analysis sessions.
-         This includes your analyses as well as analyses by other users that were shared with you, ...</p>`,
+                html: `<p>&hellip; load previously saved analysis sessions.
+         This includes your analyses as well as analyses by other users that were shared with you, &hellip;</p>`,
                 placement: 'centered',
                 // preAction: (ctx) => TourUtils.waitForSelector.call(ctx).then(() => TourUtils.wait(400)),
                 preAction: () => TourUtils.waitFor('#ordino_sessions_tab > .ordino-scrollspy-container div[id^="targid_persistent_session"] > .card').then(() => TourUtils.wait(400)),
@@ -84,7 +84,7 @@ export class StartMenuTour {
             },
             {
                 selector: '#ordino_sessions_tab > .ordino-scrollspy-container div[id^="targid_temporary_session"] > .card',
-                html: `<p>...open your last 10 analyses even if they were not saved, ...</p>`,
+                html: `<p>&hellip; open your last 10 analyses even if they were not saved, &hellip;</p>`,
                 placement: 'centered',
                 preAction: () => TourUtils.waitFor('#ordino_sessions_tab > .ordino-scrollspy-container div[id^="targid_temporary_session"] > .card').then(() => TourUtils.wait(400)),
                 postAction: () => TourUtils.click('#ordino_sessions_tab > .ordino-scrollspy-nav > a:nth-child(4)'),
@@ -92,7 +92,7 @@ export class StartMenuTour {
             },
             {
                 selector: '#ordino_sessions_tab > .ordino-scrollspy-container div[id^="targid_import_session"] > .card',
-                html: `<p>...or import a previously exported session.</p>`,
+                html: `<p>&hellip; or import a previously exported session.</p>`,
                 placement: 'centered',
                 preAction: () => TourUtils.waitFor('#ordino_sessions_tab > .ordino-scrollspy-container div[id^="targid_import_session"] > .card').then(() => TourUtils.wait(400)),
                 postAction: () => TourUtils.click('ul[data-header="mainMenu"] > li:nth-child(3) > a'),
@@ -122,12 +122,12 @@ export class StartMenuTour {
             },
             {
                 selector: '.ordino-dataset-searchbox > div:first-child',
-                html: `<p>For each entity type you can either start with a manually defined set by adding ids (e.g., gene symbols or cell line names) into the search field, or ...</p>`,
+                html: `<p>For each entity type you can either start with a manually defined set by adding ids (e.g., gene symbols or cell line names) into the search field, or &hellip;</p>`,
                 placement: 'centered',
             },
             {
                 selector: '.genes-dataset .tab-content .tab-pane .row:nth-child(2)',
-                html: `<p>... you can select an already defined set. There are three list: </p>
+                html: `<p>&hellip;  you can select an already defined set. There are three list: </p>
         <ul>
           <li><i>Predefined Sets</i> - These are already defined sets that are of general interest, including the set of all entities (e.g., the lists of all cell lines and all genes in our database).</li>
           <li><i>My Sets</i> - You can also define your own subsets of interesting/relevant genes, cell lines, etc. These will be listed here.</li>
