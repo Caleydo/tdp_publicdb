@@ -26,7 +26,7 @@ export interface IPublicDbStartMenuDatasetSectionDesc extends IStartMenuDatasetS
      */
     dataSource: IDataSourceConfig;
     /**
-     * Optional css class to add to the section
+     * Optional CSS class to add to the section
      */
     cssClass?: string;
 }
