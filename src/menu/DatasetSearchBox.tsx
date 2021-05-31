@@ -72,7 +72,7 @@ export function DatasetSearchBox({placeholder, dataSource, onOpen, onNamedSetsCh
 
     return (
         <div className="row">
-            <div className="col mb-3">
+            <div className="col-sm-10">
                 <AsyncPaginate
                     placeholder={placeholder}
                     noOptionsMessage={() => 'No results found'}
@@ -89,8 +89,10 @@ export function DatasetSearchBox({placeholder, dataSource, onOpen, onNamedSetsCh
                     }}
                 />
             </div>
-            <button className="me-2 pt-1 pb-1 btn btn-secondary" disabled={!items?.length} onClick={(event) => onOpen(event, searchResults)}>Open</button>
-            <button className="me-2 pt-1 pb-1 btn btn-outline-secondary" disabled={!items?.length} onClick={saveAsNamedSet}>Save as set</button>
+            <div className="col-sm-2">
+                <button className="me-2 pt-1 pb-1 btn btn-secondary" disabled={!items?.length} onClick={(event) => onOpen(event, searchResults)}>Open</button>
+                <button className="me-2 pt-1 pb-1 btn btn-outline-secondary" disabled={!items?.length} onClick={saveAsNamedSet}>Save as set</button>
+            </div>
         </div>
     );
 }
