@@ -1,12 +1,12 @@
 import React from 'react';
-import {INamedSet, ENamedSetType, RestBaseUtils, RestStorageUtils} from 'tdp_core';
+import {INamedSet, ENamedSetType, RestBaseUtils, RestStorageUtils, StoreUtils, IdTextPair} from 'tdp_core';
 import {NamedSetList, useAsync, OrdinoContext} from 'ordino';
-import {UserSession, UniqueIdManager} from 'phovea_core';
+import {UserSession, UniqueIdManager, I18nextManager, IDTypeManager} from 'phovea_core';
 import {DatasetSearchBox} from './DatasetSearchBox';
 import {Species, SpeciesUtils, IACommonListOptions} from 'tdp_gene';
 import {IPublicDbStartMenuDatasetSectionDesc} from '../base/extensions';
 
-export default function DatasetCard({name, icon, tabs, startViewId, dataSource}: IPublicDbStartMenuDatasetSectionDesc) {
+export default function DatasetCard({name, icon, tabs, startViewId, dataSource, cssClass}: IPublicDbStartMenuDatasetSectionDesc) {
   const {app} = React.useContext(OrdinoContext);
   const [dirtyNamedSets, setDirtyNamedSets] = React.useState(false);
 
@@ -49,7 +49,6 @@ export default function DatasetCard({name, icon, tabs, startViewId, dataSource}:
   const myNamedSets = {...namedSets, ...{value: namedSets.value?.filter((d) => d.type === ENamedSetType.NAMEDSET && d.creator === me)}};
   const publicNamedSets = {...namedSets, ...{value: namedSets.value?.filter((d) => d.type === ENamedSetType.NAMEDSET && d.creator !== me)}};
   const filterValue = (value: INamedSet[], tab: string) => value?.filter((entry) => entry.subTypeValue === tab);
-  const onNamedSetsChanged = () => setDirtyNamedSets((d) => !d);
 
   const onOpenNamedSet = (event: React.MouseEvent<HTMLElement>, {namedSet, species}: {namedSet: INamedSet, species: string}) => {
     event.preventDefault();
@@ -57,6 +56,9 @@ export default function DatasetCard({name, icon, tabs, startViewId, dataSource}:
     const defaultSessionValues = {
       [Species.SPECIES_SESSION_KEY]: species
     };
+
+    // store the selected species/tab as it is necessary in the rankings
+    UserSession.getInstance().store(Species.SPECIES_SESSION_KEY, species);
 
     app.startNewSession(startViewId, {namedSet}, defaultSessionValues);
   };
@@ -67,16 +69,29 @@ export default function DatasetCard({name, icon, tabs, startViewId, dataSource}:
     const defaultSessionValues = {
       [Species.SPECIES_SESSION_KEY]: species
     };
+    // store the selected species
+    UserSession.getInstance().store(Species.SPECIES_SESSION_KEY, species);
 
     app.startNewSession(startViewId, searchResult, defaultSessionValues);
+  };
+
+  const onSaveAsNamedSet = (items: IdTextPair[], subtype: {key: string, value: string}) => {
+    StoreUtils.editDialog(null, I18nextManager.getInstance().i18n.t(`tdp:core.editDialog.listOfEntities.default`), async (name, description, isPublic) => {
+      const idStrings = items?.map((i) => i.id);
+      const idType = IDTypeManager.getInstance().resolveIdType(dataSource.idType);
+      const ids = await idType.map(idStrings);
+
+      await RestStorageUtils.saveNamedSet(name, idType, ids, subtype, description, isPublic);
+      setDirtyNamedSets((d) => !d);
+    });
   };
 
   const id = React.useMemo(() => UniqueIdManager.getInstance().uniqueId(), []);
   const activeTabIndex = 0;
 
   return (
-    <>
-      <h4 className="text-start mb-3"><i className={'me-2 ordino-icon-2 ' + icon}></i>{name}</h4>
+    <div className={`ordino-dataset ${cssClass || ''}`}>
+      <h4 className="text-left mb-3"><i className={'mr-2 ordino-icon-2 ' + icon}></i>{name}</h4>
       <div className="card shadow-sm">
         <div className="card-body p-3">
           <ul className="nav nav-pills session-tab">
@@ -97,7 +112,8 @@ export default function DatasetCard({name, icon, tabs, startViewId, dataSource}:
                   <DatasetSearchBox
                     placeholder={`Add ${name}`}
                     dataSource={dataSource}
-                    onNamedSetsChanged={onNamedSetsChanged}
+                    params={{species: tab.id}}
+                    onSaveAsNamedSet={(items: IdTextPair[]) => onSaveAsNamedSet(items, {key: Species.SPECIES_SESSION_KEY, value: tab.id})}
                     onOpen={(event, searchResult: Partial<IACommonListOptions>) => {onOpenSearchResult(event, {searchResult, species: tab.id});}} />
                   <div className="row mt-4">
                     <NamedSetList
@@ -124,6 +140,6 @@ export default function DatasetCard({name, icon, tabs, startViewId, dataSource}:
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 }
