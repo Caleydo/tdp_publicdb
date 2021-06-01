@@ -62,11 +62,11 @@ export class WelcomeTour {
                 }
             },
             {
-                selector: '.modal.show .form-group > .select2',
+                selector: '.modal.show .col > .select2',
                 html: `Here we select <i>'Strand'</i> &hellip;`,
                 placement: 'centered',
                 preAction: () => TourUtils.waitFor('.modal.show').then(() => TourUtils.wait(250)),
-                postAction: () => TourUtils.setValueAndTrigger('.form-group > select', 'strand', 'change')
+                postAction: () => TourUtils.setValueAndTrigger('.col > select', 'strand', 'change')
             },
             {
                 selector: '.modal.show .modal-footer button[type=submit]',
@@ -93,7 +93,7 @@ export class WelcomeTour {
                 }
             },
             {
-                selector: '.modal.show .form-group > .select3',
+                selector: '.modal.show .col > .select3',
                 placement: 'centered',
                 preAction: () => TourUtils.waitFor('.modal.show').then(() => TourUtils.wait(250)),
                 html: `We select the cell lines <i>'HCC-827'</i> and <i>'BT-20'</i>.`,
@@ -102,11 +102,11 @@ export class WelcomeTour {
                 }
             },
             {
-                selector: '.modal.show .form-group > .select2',
+                selector: '.modal.show .col > .select2',
                 placement: 'centered',
                 html: `As data type, we choose <i>'Relative Copy Number'</i>`,
                 postAction: () => {
-                    TourUtils.setValueAndTrigger('.mb-3 > select', 'copy_number-relativecopynumber', 'change');
+                    TourUtils.setValueAndTrigger('.col > select', 'copy_number-relativecopynumber', 'change');
                 }
             },
             {
