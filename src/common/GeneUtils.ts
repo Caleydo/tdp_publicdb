@@ -195,12 +195,13 @@ export class GeneUtils {
  */
   static validateGeneric = (dataSource: IDataSourceConfig, query: string[]) => {
     switch (dataSource.idType) {
-        case Categories.GENE_IDTYPE:
-            return GeneUtils.validateGene(query);
-            break;
-        // TODO: add other cases when needed
-        default:
-            return GeneUtils.validate(dataSource, query);
+      case Categories.GENE_IDTYPE:
+        return GeneUtils.validateGene(query);
+
+      // TODO: add other cases when needed
+
+      default:
+          return GeneUtils.validate(dataSource, query);
     }
-}
+  }
 }
