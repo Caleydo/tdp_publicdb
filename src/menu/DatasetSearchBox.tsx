@@ -7,7 +7,6 @@ import Highlighter from 'react-highlight-words';
 import {I18nextManager, IDTypeManager} from 'phovea_core';
 import {GeneUtils, IDataSourceConfig} from '../common';
 import {IACommonListOptions} from 'tdp_gene';
-import {merge} from 'lodash';
 
 interface IDatasetSearchBoxProps {
     placeholder: string;
@@ -22,7 +21,6 @@ export function DatasetSearchBox({placeholder, dataSource, onOpen, onNamedSetsCh
 
     const loadOptions = async (query: string, _, {page}: {page: number}) => {
         const {db, base, dbViewSuffix, entityName} = dataSource;
-
         return RestBaseUtils.getTDPLookup(db, base + dbViewSuffix, {
             column: entityName,
             species: SpeciesUtils.getSelectedSpecies(),
@@ -82,15 +80,12 @@ export function DatasetSearchBox({placeholder, dataSource, onOpen, onNamedSetsCh
 
     const onPaste = async (event: React.ClipboardEvent) => {
         const pastedData = event.clipboardData.getData('text')?.toLocaleLowerCase();
-
         const defaultTokenSeparator = /[\s\n\r;,]+/gm;
-        const splitData = Select3Utils.splitEscaped(pastedData, defaultTokenSeparator, false);
-        const items = await GeneUtils.validateGeneric(dataSource, splitData);
-        setItems((previous) => {
-            const newItems = merge(previous, items);
-            return newItems;
-        });
+        const splitData = Select3Utils.splitEscaped(pastedData, defaultTokenSeparator, false).map((d) => d.trim());
+        const newItems = await GeneUtils.validateGeneric(dataSource, splitData);
+        setItems(newItems);
     };
+
 
     return (
         <div className="row">
@@ -106,10 +101,10 @@ export function DatasetSearchBox({placeholder, dataSource, onOpen, onNamedSetsCh
                     onChange={setItems}
                     onInputChange={setInputValue}
                     formatOptionLabel={formatOptionLabel}
+                    hideSelectedOptions
                     getOptionLabel={(option) => option.text}
                     getOptionValue={(option) => option.id}
                     captureMenuScroll={false}
-                    isOptionSelected={(option) => option.id === '1'}
                     additional={{
                         page: 1
                     }}

@@ -6,7 +6,6 @@ import { AsyncPaginate } from 'react-select-async-paginate';
 import Highlighter from 'react-highlight-words';
 import { I18nextManager, IDTypeManager } from 'phovea_core';
 import { GeneUtils } from '../common';
-import { merge } from 'lodash';
 export function DatasetSearchBox({ placeholder, dataSource, onOpen, onNamedSetsChanged }) {
     const [items, setItems] = React.useState([]);
     const [inputValue, setInputValue] = React.useState('');
@@ -61,16 +60,13 @@ export function DatasetSearchBox({ placeholder, dataSource, onOpen, onNamedSetsC
         var _a;
         const pastedData = (_a = event.clipboardData.getData('text')) === null || _a === void 0 ? void 0 : _a.toLocaleLowerCase();
         const defaultTokenSeparator = /[\s\n\r;,]+/gm;
-        const splitData = Select3Utils.splitEscaped(pastedData, defaultTokenSeparator, false);
-        const items = await GeneUtils.validateGeneric(dataSource, splitData);
-        setItems((previous) => {
-            const newItems = merge(previous, items);
-            return newItems;
-        });
+        const splitData = Select3Utils.splitEscaped(pastedData, defaultTokenSeparator, false).map((d) => d.trim());
+        const newItems = await GeneUtils.validateGeneric(dataSource, splitData);
+        setItems(newItems);
     };
     return (React.createElement("div", { className: "row" },
         React.createElement("div", { className: "col" },
-            React.createElement(AsyncPaginate, { onPaste: onPaste, placeholder: placeholder, noOptionsMessage: () => 'No results found', isMulti: true, loadOptions: loadOptions, inputValue: inputValue, value: items, onChange: setItems, onInputChange: setInputValue, formatOptionLabel: formatOptionLabel, getOptionLabel: (option) => option.text, getOptionValue: (option) => option.id, captureMenuScroll: false, isOptionSelected: (option) => option.id === '1', additional: {
+            React.createElement(AsyncPaginate, { onPaste: onPaste, placeholder: placeholder, noOptionsMessage: () => 'No results found', isMulti: true, loadOptions: loadOptions, inputValue: inputValue, value: items, onChange: setItems, onInputChange: setInputValue, formatOptionLabel: formatOptionLabel, hideSelectedOptions: true, getOptionLabel: (option) => option.text, getOptionValue: (option) => option.id, captureMenuScroll: false, additional: {
                     page: 1
                 }, components: { Input }, styles: {
                     multiValue: (styles, { data }) => ({
