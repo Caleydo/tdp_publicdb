@@ -4,7 +4,7 @@ import { NamedSetList, useAsync, OrdinoContext } from 'ordino';
 import { UserSession, UniqueIdManager, I18nextManager, IDTypeManager } from 'phovea_core';
 import { DatasetSearchBox } from './DatasetSearchBox';
 import { Species, SpeciesUtils } from 'tdp_gene';
-export default function DatasetCard({ name, icon, tabs, startViewId, dataSource, cssClass }) {
+export default function DatasetCard({ name, icon, tabs, startViewId, dataSource, cssClass, tokenSeparators }) {
     var _a, _b;
     const { app } = React.useContext(OrdinoContext);
     const [dirtyNamedSets, setDirtyNamedSets] = React.useState(false);
@@ -87,8 +87,9 @@ export default function DatasetCard({ name, icon, tabs, startViewId, dataSource,
                             tab.name)));
                 })),
                 React.createElement("div", { className: "tab-content" }, tabs.map((tab, index) => {
+                    const separators = tokenSeparators ? { tokenSeparators } : null;
                     return (React.createElement("div", { key: tab.id, className: `tab-pane fade mt-4 ${(index === activeTabIndex) ? 'show active' : ''}`, role: "tabpanel", id: `dataset-panel-${tab.id}-${id}`, "aria-labelledby": `dataset-tab-${tab.id}-${id}` },
-                        React.createElement(DatasetSearchBox, { placeholder: `Add ${name}`, dataSource: dataSource, params: { species: tab.id }, onSaveAsNamedSet: (items) => onSaveAsNamedSet(items, { key: Species.SPECIES_SESSION_KEY, value: tab.id }), onOpen: (event, searchResult) => { onOpenSearchResult(event, { searchResult, species: tab.id }); } }),
+                        React.createElement(DatasetSearchBox, Object.assign({ placeholder: `Add ${name}`, dataSource: dataSource, params: { species: tab.id }, onSaveAsNamedSet: (items) => onSaveAsNamedSet(items, { key: Species.SPECIES_SESSION_KEY, value: tab.id }), onOpen: (event, searchResult) => { onOpenSearchResult(event, { searchResult, species: tab.id }); } }, separators)),
                         React.createElement("div", { className: "row mt-4" },
                             React.createElement(NamedSetList, { headerIcon: "fas fa-database", headerText: "Predefined Sets", onOpen: (event, namedSet) => { onOpenNamedSet(event, { namedSet, species: tab.id }); }, status: predefinedNamedSets.status, value: filterValue(predefinedNamedSets.value, tab.id) }),
                             React.createElement(NamedSetList, { headerIcon: "fas fa-user", headerText: "My Sets", onOpen: (event, namedSet) => { onOpenNamedSet(event, { namedSet, species: tab.id }); }, status: myNamedSets.status, value: filterValue(myNamedSets.value, tab.id) }),

@@ -31,6 +31,7 @@ export default function (registry) {
         startViewId: 'bioinfodb_tissue_start',
         idType: 'Tissue',
         dataSource: tissue,
+        tokenSeparators: /[\r\n;,]+/mg,
         description: 'Tissue Panels',
         tabs: [
             { id: 'human', name: 'Human', icon: 'fas fa-male' },
@@ -44,6 +45,7 @@ export default function (registry) {
         startViewId: 'celllinedb_cellline',
         idType: 'Cellline',
         dataSource: cellline,
+        tokenSeparators: /[\r\n;,]+/mg,
         description: 'Cell Line Panels',
         tabs: [
             { id: 'human', name: 'Human', icon: 'fas fa-male' },

@@ -4,9 +4,11 @@ import { components } from 'react-select';
 import { AsyncPaginate } from 'react-select-async-paginate';
 import Highlighter from 'react-highlight-words';
 import { GeneUtils } from '../common';
-export function DatasetSearchBox({ placeholder, dataSource, onOpen, onSaveAsNamedSet, params = {} }) {
+export function DatasetSearchBox({ placeholder, dataSource, onOpen, onSaveAsNamedSet, params = {}, tokenSeparators = /[\s\n\r;,]+/gm }) {
+    var _a;
     const [items, setItems] = React.useState([]);
     const [inputValue, setInputValue] = React.useState('');
+    console.log(placeholder, tokenSeparators);
     const loadOptions = async (query, _, { page }) => {
         const { db, base, dbViewSuffix, entityName } = dataSource;
         return RestBaseUtils.getTDPLookup(db, base + dbViewSuffix, {
@@ -34,7 +36,7 @@ export function DatasetSearchBox({ placeholder, dataSource, onOpen, onSaveAsName
     };
     const searchResults = {
         search: {
-            ids: items === null || items === void 0 ? void 0 : items.map((i) => i.id),
+            ids: (_a = items === null || items === void 0 ? void 0 : items.filter((i) => !i.invalid)) === null || _a === void 0 ? void 0 : _a.map((i) => i.id),
             type: dataSource.tableName
         }
     };
@@ -44,10 +46,12 @@ export function DatasetSearchBox({ placeholder, dataSource, onOpen, onSaveAsName
     const onPaste = async (event) => {
         var _a;
         const pastedData = (_a = event.clipboardData.getData('text')) === null || _a === void 0 ? void 0 : _a.toLocaleLowerCase();
-        const defaultTokenSeparator = /[\s\n\r;,]+/gm;
-        const splitData = Select3Utils.splitEscaped(pastedData, defaultTokenSeparator, false).map((d) => d.trim());
-        const newItems = await GeneUtils.validateGeneric(dataSource, splitData);
-        setItems(newItems);
+        const splitData = Select3Utils.splitEscaped(pastedData, tokenSeparators, false).map((d) => d.trim());
+        const validData = await GeneUtils.validateGeneric(dataSource, splitData);
+        const invalidData = splitData
+            .filter((s) => !validData.length || validData.some((o) => o.id.toLocaleLowerCase() !== s && o.text.toLocaleLowerCase() !== s))
+            .map((s) => ({ id: s, text: s, invalid: true }));
+        setItems([...validData, ...invalidData]);
     };
     return (React.createElement("div", { className: "row ordino-dataset-searchbox" },
         React.createElement("div", { className: "col" },
@@ -61,6 +65,7 @@ export function DatasetSearchBox({ placeholder, dataSource, onOpen, onSaveAsName
                     }),
                     multiValueLabel: (styles, { data }) => ({
                         ...styles,
+                        textDecoration: data.invalid ? 'line-through' : 'none',
                         color: data.color,
                         backgroundColor: 'white',
                         order: 2,
@@ -69,7 +74,7 @@ export function DatasetSearchBox({ placeholder, dataSource, onOpen, onSaveAsName
                     }),
                     multiValueRemove: (styles, { data }) => ({
                         ...styles,
-                        color: '#999',
+                        color: data.invalid ? 'red' : '#999',
                         backgroundColor: 'white',
                         order: 1,
                         ':hover': {
@@ -99,7 +104,7 @@ export function DatasetSearchBox({ placeholder, dataSource, onOpen, onSaveAsName
                     })
                 } })),
         React.createElement("button", { className: "mr-2 pt-1 pb-1 btn btn-secondary", disabled: !(items === null || items === void 0 ? void 0 : items.length), onClick: (event) => onOpen(event, searchResults) }, "Open"),
-        React.createElement("button", { className: "mr-2 pt-1 pb-1 btn btn-outline-secondary", disabled: !(items === null || items === void 0 ? void 0 : items.length), onClick: () => onSaveAsNamedSet(items) }, "Save as set")));
+        React.createElement("button", { className: "mr-2 pt-1 pb-1 btn btn-outline-secondary", disabled: !(items === null || items === void 0 ? void 0 : items.length), onClick: () => onSaveAsNamedSet(items === null || items === void 0 ? void 0 : items.filter((i) => !i.invalid)) }, "Save as set")));
 }
 // tslint:disable-next-line: variable-name
 const Input = (props) => {

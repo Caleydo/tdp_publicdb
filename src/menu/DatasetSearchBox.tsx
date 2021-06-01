@@ -6,6 +6,11 @@ import Highlighter from 'react-highlight-words';
 import {GeneUtils, IDataSourceConfig} from '../common';
 import {IACommonListOptions} from 'tdp_gene';
 
+interface IDatasetSearchOption {
+    id: any;
+    text: string;
+    invalid?: boolean;
+}
 
 interface IDatasetSearchBoxParams {
     [key: string]: any;
@@ -20,12 +25,13 @@ interface IDatasetSearchBoxProps {
      * Extra parameters when querying the options of the searchbox,
      */
     params?: IDatasetSearchBoxParams;
+    tokenSeparators?: RegExp;
 }
 
-export function DatasetSearchBox({placeholder, dataSource, onOpen, onSaveAsNamedSet, params = {}}: IDatasetSearchBoxProps) {
-    const [items, setItems] = React.useState<IdTextPair[]>([]);
+export function DatasetSearchBox({placeholder, dataSource, onOpen, onSaveAsNamedSet, params = {}, tokenSeparators = /[\s\n\r;,]+/gm}: IDatasetSearchBoxProps) {
+    const [items, setItems] = React.useState<IDatasetSearchOption[]>([]);
     const [inputValue, setInputValue] = React.useState('');
-
+    console.log(placeholder, tokenSeparators)
     const loadOptions = async (query: string, _, {page}: {page: number}) => {
         const {db, base, dbViewSuffix, entityName} = dataSource;
         return RestBaseUtils.getTDPLookup(db, base + dbViewSuffix, {
@@ -41,7 +47,7 @@ export function DatasetSearchBox({placeholder, dataSource, onOpen, onSaveAsNamed
         }));
     };
 
-    const formatOptionLabel = (option: IdTextPair, ctx: FormatOptionLabelMeta<IdTextPair, true>) => {
+    const formatOptionLabel = (option: IDatasetSearchOption, ctx: FormatOptionLabelMeta<IDatasetSearchOption, true>) => {
         // do not highlight selected elements
         if (ctx.selectValue?.some((o) => o.id === option.id)) {
             return option.text;
@@ -61,7 +67,7 @@ export function DatasetSearchBox({placeholder, dataSource, onOpen, onSaveAsNamed
 
     const searchResults = {
         search: {
-            ids: items?.map((i) => i.id),
+            ids: items?.filter((i) => !i.invalid)?.map((i) => i.id),
             type: dataSource.tableName
         }
     };
@@ -72,10 +78,13 @@ export function DatasetSearchBox({placeholder, dataSource, onOpen, onSaveAsNamed
 
     const onPaste = async (event: React.ClipboardEvent) => {
         const pastedData = event.clipboardData.getData('text')?.toLocaleLowerCase();
-        const defaultTokenSeparator = /[\s\n\r;,]+/gm;
-        const splitData = Select3Utils.splitEscaped(pastedData, defaultTokenSeparator, false).map((d) => d.trim());
-        const newItems = await GeneUtils.validateGeneric(dataSource, splitData);
-        setItems(newItems);
+        const splitData = Select3Utils.splitEscaped(pastedData, tokenSeparators, false).map((d) => d.trim());
+        const validData = await GeneUtils.validateGeneric(dataSource, splitData);
+
+        const invalidData = splitData
+            .filter((s) => !validData.length || validData.some((o) => o.id.toLocaleLowerCase() !== s && o.text.toLocaleLowerCase() !== s))
+            .map((s) => ({id: s, text: s, invalid: true}));
+        setItems([...validData, ...invalidData]);
     };
 
     return (
@@ -109,6 +118,7 @@ export function DatasetSearchBox({placeholder, dataSource, onOpen, onSaveAsNamed
                         }),
                         multiValueLabel: (styles, {data}) => ({
                             ...styles,
+                            textDecoration: data.invalid ? 'line-through' : 'none',
                             color: data.color,
                             backgroundColor: 'white',
                             order: 2,
@@ -117,7 +127,7 @@ export function DatasetSearchBox({placeholder, dataSource, onOpen, onSaveAsNamed
                         }),
                         multiValueRemove: (styles, {data}) => ({
                             ...styles,
-                            color: '#999',
+                            color: data.invalid ? 'red' : '#999',
                             backgroundColor: 'white',
                             order: 1,
                             ':hover': {
@@ -150,7 +160,7 @@ export function DatasetSearchBox({placeholder, dataSource, onOpen, onSaveAsNamed
                 />
             </div>
             <button className="mr-2 pt-1 pb-1 btn btn-secondary" disabled={!items?.length} onClick={(event) => onOpen(event, searchResults)}>Open</button>
-            <button className="mr-2 pt-1 pb-1 btn btn-outline-secondary" disabled={!items?.length} onClick={() => onSaveAsNamedSet(items)}>Save as set</button>
+            <button className="mr-2 pt-1 pb-1 btn btn-outline-secondary" disabled={!items?.length} onClick={() => onSaveAsNamedSet(items?.filter((i) => !i.invalid))}>Save as set</button>
         </div>
     );
 }
