@@ -1,19 +1,17 @@
 import React from 'react';
-import { RestBaseUtils, RestStorageUtils, StoreUtils, Select3Utils } from 'tdp_core';
-import { Species, SpeciesUtils } from 'tdp_gene';
+import { RestBaseUtils, Select3Utils } from 'tdp_core';
 import { components } from 'react-select';
 import { AsyncPaginate } from 'react-select-async-paginate';
 import Highlighter from 'react-highlight-words';
-import { I18nextManager, IDTypeManager } from 'phovea_core';
 import { GeneUtils } from '../common';
-export function DatasetSearchBox({ placeholder, dataSource, onOpen, onNamedSetsChanged }) {
+export function DatasetSearchBox({ placeholder, dataSource, onOpen, onSaveAsNamedSet, params = {} }) {
     const [items, setItems] = React.useState([]);
     const [inputValue, setInputValue] = React.useState('');
     const loadOptions = async (query, _, { page }) => {
         const { db, base, dbViewSuffix, entityName } = dataSource;
         return RestBaseUtils.getTDPLookup(db, base + dbViewSuffix, {
             column: entityName,
-            species: SpeciesUtils.getSelectedSpecies(),
+            ...params,
             query
         }).then(({ items, more }) => ({
             options: items,
@@ -40,19 +38,6 @@ export function DatasetSearchBox({ placeholder, dataSource, onOpen, onNamedSetsC
             type: dataSource.tableName
         }
     };
-    // TODO: maybe this should be passed as props from the parent
-    const saveAsNamedSet = () => {
-        StoreUtils.editDialog(null, I18nextManager.getInstance().i18n.t(`tdp:core.editDialog.listOfEntities.default`), async (name, description, isPublic) => {
-            const idStrings = items === null || items === void 0 ? void 0 : items.map((i) => i.id);
-            const idType = IDTypeManager.getInstance().resolveIdType(dataSource.idType);
-            const ids = await idType.map(idStrings);
-            const response = await RestStorageUtils.saveNamedSet(name, idType, ids, {
-                key: Species.SPECIES_SESSION_KEY,
-                value: SpeciesUtils.getSelectedSpecies()
-            }, description, isPublic);
-            onNamedSetsChanged();
-        });
-    };
     React.useEffect(() => {
         setInputValue('');
     }, [items]);
@@ -64,7 +49,7 @@ export function DatasetSearchBox({ placeholder, dataSource, onOpen, onNamedSetsC
         const newItems = await GeneUtils.validateGeneric(dataSource, splitData);
         setItems(newItems);
     };
-    return (React.createElement("div", { className: "row" },
+    return (React.createElement("div", { className: "row ordino-dataset-searchbox" },
         React.createElement("div", { className: "col" },
             React.createElement(AsyncPaginate, { onPaste: onPaste, placeholder: placeholder, noOptionsMessage: () => 'No results found', isMulti: true, loadOptions: loadOptions, inputValue: inputValue, value: items, onChange: setItems, onInputChange: setInputValue, formatOptionLabel: formatOptionLabel, hideSelectedOptions: true, getOptionLabel: (option) => option.text, getOptionValue: (option) => option.id, captureMenuScroll: false, additional: {
                     page: 1
@@ -114,7 +99,7 @@ export function DatasetSearchBox({ placeholder, dataSource, onOpen, onNamedSetsC
                     })
                 } })),
         React.createElement("button", { className: "mr-2 pt-1 pb-1 btn btn-secondary", disabled: !(items === null || items === void 0 ? void 0 : items.length), onClick: (event) => onOpen(event, searchResults) }, "Open"),
-        React.createElement("button", { className: "mr-2 pt-1 pb-1 btn btn-outline-secondary", disabled: !(items === null || items === void 0 ? void 0 : items.length), onClick: saveAsNamedSet }, "Save as set")));
+        React.createElement("button", { className: "mr-2 pt-1 pb-1 btn btn-outline-secondary", disabled: !(items === null || items === void 0 ? void 0 : items.length), onClick: () => onSaveAsNamedSet(items) }, "Save as set")));
 }
 // tslint:disable-next-line: variable-name
 const Input = (props) => {
