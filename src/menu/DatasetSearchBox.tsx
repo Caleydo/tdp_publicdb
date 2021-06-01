@@ -31,7 +31,6 @@ interface IDatasetSearchBoxProps {
 export function DatasetSearchBox({placeholder, dataSource, onOpen, onSaveAsNamedSet, params = {}, tokenSeparators = /[\s\n\r;,]+/gm}: IDatasetSearchBoxProps) {
     const [items, setItems] = React.useState<IDatasetSearchOption[]>([]);
     const [inputValue, setInputValue] = React.useState('');
-    console.log(placeholder, tokenSeparators)
     const loadOptions = async (query: string, _, {page}: {page: number}) => {
         const {db, base, dbViewSuffix, entityName} = dataSource;
         return RestBaseUtils.getTDPLookup(db, base + dbViewSuffix, {

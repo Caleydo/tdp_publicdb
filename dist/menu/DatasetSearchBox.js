@@ -8,7 +8,6 @@ export function DatasetSearchBox({ placeholder, dataSource, onOpen, onSaveAsName
     var _a;
     const [items, setItems] = React.useState([]);
     const [inputValue, setInputValue] = React.useState('');
-    console.log(placeholder, tokenSeparators);
     const loadOptions = async (query, _, { page }) => {
         const { db, base, dbViewSuffix, entityName } = dataSource;
         return RestBaseUtils.getTDPLookup(db, base + dbViewSuffix, {
