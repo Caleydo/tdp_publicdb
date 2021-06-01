@@ -64,12 +64,6 @@ export function DatasetSearchBox({placeholder, dataSource, onOpen, onSaveAsNamed
         );
     };
 
-    const searchResults = {
-        search: {
-            ids: items?.filter((i) => !i.invalid)?.map((i) => i.id),
-            type: dataSource.tableName
-        }
-    };
 
     React.useEffect(() => {
         setInputValue('');
@@ -87,6 +81,14 @@ export function DatasetSearchBox({placeholder, dataSource, onOpen, onSaveAsNamed
     };
 
     const validItems = items?.filter((i) => !i.invalid);
+
+    const searchResults = {
+        search: {
+            ids: validItems.map((i) => i.id),
+            type: dataSource.tableName
+        }
+    };
+
     return (
         <div className="row ordino-dataset-searchbox">
             <div className="col">

@@ -5,7 +5,6 @@ import { AsyncPaginate } from 'react-select-async-paginate';
 import Highlighter from 'react-highlight-words';
 import { GeneUtils } from '../common';
 export function DatasetSearchBox({ placeholder, dataSource, onOpen, onSaveAsNamedSet, params = {}, tokenSeparators = /[\s\n\r;,]+/gm }) {
-    var _a;
     const [items, setItems] = React.useState([]);
     const [inputValue, setInputValue] = React.useState('');
     const loadOptions = async (query, _, { page }) => {
@@ -33,12 +32,6 @@ export function DatasetSearchBox({ placeholder, dataSource, onOpen, onSaveAsName
             option.text !== option.id &&
                 React.createElement("span", { className: "small text-muted ml-1" }, option.id)));
     };
-    const searchResults = {
-        search: {
-            ids: (_a = items === null || items === void 0 ? void 0 : items.filter((i) => !i.invalid)) === null || _a === void 0 ? void 0 : _a.map((i) => i.id),
-            type: dataSource.tableName
-        }
-    };
     React.useEffect(() => {
         setInputValue('');
     }, [items]);
@@ -53,6 +46,12 @@ export function DatasetSearchBox({ placeholder, dataSource, onOpen, onSaveAsName
         setItems([...validData, ...invalidData]);
     };
     const validItems = items === null || items === void 0 ? void 0 : items.filter((i) => !i.invalid);
+    const searchResults = {
+        search: {
+            ids: validItems.map((i) => i.id),
+            type: dataSource.tableName
+        }
+    };
     return (React.createElement("div", { className: "row ordino-dataset-searchbox" },
         React.createElement("div", { className: "col" },
             React.createElement(AsyncPaginate, { onPaste: onPaste, placeholder: placeholder, noOptionsMessage: () => 'No results found', isMulti: true, loadOptions: loadOptions, inputValue: inputValue, value: items, onChange: setItems, onInputChange: setInputValue, formatOptionLabel: formatOptionLabel, hideSelectedOptions: true, getOptionLabel: (option) => option.text, getOptionValue: (option) => option.id, captureMenuScroll: false, additional: {
