@@ -86,6 +86,7 @@ export function DatasetSearchBox({placeholder, dataSource, onOpen, onSaveAsNamed
         setItems([...validData, ...invalidData]);
     };
 
+    const validItems = items?.filter((i) => !i.invalid);
     return (
         <div className="row ordino-dataset-searchbox">
             <div className="col">
@@ -158,8 +159,8 @@ export function DatasetSearchBox({placeholder, dataSource, onOpen, onSaveAsNamed
                     }}
                 />
             </div>
-            <button className="mr-2 pt-1 pb-1 btn btn-secondary" disabled={!items?.length} onClick={(event) => onOpen(event, searchResults)}>Open</button>
-            <button className="mr-2 pt-1 pb-1 btn btn-outline-secondary" disabled={!items?.length} onClick={() => onSaveAsNamedSet(items?.filter((i) => !i.invalid))}>Save as set</button>
+            <button className="mr-2 pt-1 pb-1 btn btn-secondary" disabled={!validItems?.length} onClick={(event) => onOpen(event, searchResults)}>Open</button>
+            <button className="mr-2 pt-1 pb-1 btn btn-outline-secondary" disabled={!validItems?.length} onClick={() => onSaveAsNamedSet(validItems)}>Save as set</button>
         </div>
     );
 }

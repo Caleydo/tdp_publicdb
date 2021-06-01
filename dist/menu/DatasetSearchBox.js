@@ -52,6 +52,7 @@ export function DatasetSearchBox({ placeholder, dataSource, onOpen, onSaveAsName
             .map((s) => ({ id: s, text: s, invalid: true }));
         setItems([...validData, ...invalidData]);
     };
+    const validItems = items === null || items === void 0 ? void 0 : items.filter((i) => !i.invalid);
     return (React.createElement("div", { className: "row ordino-dataset-searchbox" },
         React.createElement("div", { className: "col" },
             React.createElement(AsyncPaginate, { onPaste: onPaste, placeholder: placeholder, noOptionsMessage: () => 'No results found', isMulti: true, loadOptions: loadOptions, inputValue: inputValue, value: items, onChange: setItems, onInputChange: setInputValue, formatOptionLabel: formatOptionLabel, hideSelectedOptions: true, getOptionLabel: (option) => option.text, getOptionValue: (option) => option.id, captureMenuScroll: false, additional: {
@@ -102,8 +103,8 @@ export function DatasetSearchBox({ placeholder, dataSource, onOpen, onSaveAsName
                         }
                     })
                 } })),
-        React.createElement("button", { className: "mr-2 pt-1 pb-1 btn btn-secondary", disabled: !(items === null || items === void 0 ? void 0 : items.length), onClick: (event) => onOpen(event, searchResults) }, "Open"),
-        React.createElement("button", { className: "mr-2 pt-1 pb-1 btn btn-outline-secondary", disabled: !(items === null || items === void 0 ? void 0 : items.length), onClick: () => onSaveAsNamedSet(items === null || items === void 0 ? void 0 : items.filter((i) => !i.invalid)) }, "Save as set")));
+        React.createElement("button", { className: "mr-2 pt-1 pb-1 btn btn-secondary", disabled: !(validItems === null || validItems === void 0 ? void 0 : validItems.length), onClick: (event) => onOpen(event, searchResults) }, "Open"),
+        React.createElement("button", { className: "mr-2 pt-1 pb-1 btn btn-outline-secondary", disabled: !(validItems === null || validItems === void 0 ? void 0 : validItems.length), onClick: () => onSaveAsNamedSet(validItems) }, "Save as set")));
 }
 // tslint:disable-next-line: variable-name
 const Input = (props) => {
