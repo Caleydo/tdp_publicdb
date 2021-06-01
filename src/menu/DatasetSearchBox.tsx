@@ -78,7 +78,6 @@ export function DatasetSearchBox({placeholder, dataSource, onOpen, onSaveAsNamed
         setItems(newItems);
     };
 
-
     return (
         <div className="row ordino-dataset-searchbox">
             <div className="col">
