@@ -64,7 +64,7 @@ export function DatasetSearchBox({placeholder, dataSource, onOpen, onSaveAsNamed
 
     return (
         <div className="row ordino-dataset-searchbox">
-            <div className="col">
+           <div className="col-sm-10">
                 <AsyncPaginate
                     placeholder={placeholder}
                     noOptionsMessage={() => 'No results found'}
@@ -81,8 +81,10 @@ export function DatasetSearchBox({placeholder, dataSource, onOpen, onSaveAsNamed
                     }}
                 />
             </div>
-            <button className="mr-2 pt-1 pb-1 btn btn-secondary" disabled={!items?.length} onClick={(event) => onOpen(event, searchResults)}>Open</button>
-            <button className="mr-2 pt-1 pb-1 btn btn-outline-secondary" disabled={!items?.length} onClick={() => onSaveAsNamedSet(items)}>Save as set</button>
+            <div className="col-sm-2">
+                <button className="mr-2 pt-1 pb-1 btn btn-secondary" disabled={!items?.length} onClick={(event) => onOpen(event, searchResults)}>Open</button>
+                <button className="mr-2 pt-1 pb-1 btn btn-outline-secondary" disabled={!items?.length} onClick={() => onSaveAsNamedSet(items)}>Save as set</button>
+            </div>
         </div>
     );
 }
