@@ -75,8 +75,8 @@ export default function DatasetCard({ name, icon, tabs, startViewId, dataSource,
     const id = React.useMemo(() => UniqueIdManager.getInstance().uniqueId(), []);
     const activeTabIndex = 0;
     return (React.createElement("div", { className: `ordino-dataset ${cssClass || ''}` },
-        React.createElement("h4", { className: "text-left mb-3" },
-            React.createElement("i", { className: 'mr-2 ordino-icon-2 ' + icon }),
+        React.createElement("h4", { className: "text-start mb-3" },
+            React.createElement("i", { className: 'me-2 ordino-icon-2 ' + icon }),
             name),
         React.createElement("div", { className: "card shadow-sm" },
             React.createElement("div", { className: "card-body p-3" },

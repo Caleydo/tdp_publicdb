@@ -91,7 +91,7 @@ export default function DatasetCard({name, icon, tabs, startViewId, dataSource, 
 
   return (
     <div className={`ordino-dataset ${cssClass || ''}`}>
-      <h4 className="text-left mb-3"><i className={'mr-2 ordino-icon-2 ' + icon}></i>{name}</h4>
+      <h4 className="text-start mb-3"><i className={'me-2 ordino-icon-2 ' + icon}></i>{name}</h4>
       <div className="card shadow-sm">
         <div className="card-body p-3">
           <ul className="nav nav-pills session-tab">

@@ -37,7 +37,7 @@ export function DatasetSearchBox({ placeholder, dataSource, onOpen, onSaveAsName
                     page: 1
                 } })),
         React.createElement("div", { className: "col-sm-2" },
-            React.createElement("button", { className: "mr-2 pt-1 pb-1 btn btn-secondary", disabled: !(items === null || items === void 0 ? void 0 : items.length), onClick: (event) => onOpen(event, searchResults) }, "Open"),
-            React.createElement("button", { className: "mr-2 pt-1 pb-1 btn btn-outline-secondary", disabled: !(items === null || items === void 0 ? void 0 : items.length), onClick: () => onSaveAsNamedSet(items) }, "Save as set"))));
+            React.createElement("button", { className: "me-2 pt-1 pb-1 btn btn-secondary", disabled: !(items === null || items === void 0 ? void 0 : items.length), onClick: (event) => onOpen(event, searchResults) }, "Open"),
+            React.createElement("button", { className: "me-2 pt-1 pb-1 btn btn-outline-secondary", disabled: !(items === null || items === void 0 ? void 0 : items.length), onClick: () => onSaveAsNamedSet(items) }, "Save as set"))));
 }
 //# sourceMappingURL=DatasetSearchBox.js.map
