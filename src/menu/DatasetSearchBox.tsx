@@ -71,7 +71,7 @@ export function DatasetSearchBox({placeholder, dataSource, onOpen, onSaveAsNamed
 
     const onPaste = async (event: React.ClipboardEvent) => {
         const pastedData = event.clipboardData.getData('text')?.toLocaleLowerCase();
-        const splitData = Select3Utils.splitEscaped(pastedData, tokenSeparators, false).map((d) => d.trim());
+        const splitData = Select3Utils.splitEscaped(pastedData, tokenSeparators, false).map((d) => d.trim()).filter((d) => d !== '');
         const validData = await GeneUtils.validateGeneric(dataSource, splitData);
 
         const invalidData = splitData
@@ -167,8 +167,7 @@ export function DatasetSearchBox({placeholder, dataSource, onOpen, onSaveAsNamed
     );
 }
 
-// tslint:disable-next-line: variable-name
-const Input = (props: any) => {
+function Input(props: any) {
     const {onPaste} = props.selectProps;
-    return <components.Input onPaste={onPaste} {...props} />;
+    return (<components.Input onPaste={onPaste} {...props} />);
 };

@@ -38,7 +38,7 @@ export function DatasetSearchBox({ placeholder, dataSource, onOpen, onSaveAsName
     const onPaste = async (event) => {
         var _a;
         const pastedData = (_a = event.clipboardData.getData('text')) === null || _a === void 0 ? void 0 : _a.toLocaleLowerCase();
-        const splitData = Select3Utils.splitEscaped(pastedData, tokenSeparators, false).map((d) => d.trim());
+        const splitData = Select3Utils.splitEscaped(pastedData, tokenSeparators, false).map((d) => d.trim()).filter((d) => d !== '');
         const validData = await GeneUtils.validateGeneric(dataSource, splitData);
         const invalidData = splitData
             .filter((s) => !validData.length || validData.every((o) => o.id.toLocaleLowerCase() !== s.toLocaleLowerCase() && o.text.toLocaleLowerCase() !== s.toLocaleLowerCase()))
@@ -105,9 +105,9 @@ export function DatasetSearchBox({ placeholder, dataSource, onOpen, onSaveAsName
         React.createElement("button", { className: "mr-2 pt-1 pb-1 btn btn-secondary", disabled: !(validItems === null || validItems === void 0 ? void 0 : validItems.length), onClick: (event) => onOpen(event, searchResults) }, "Open"),
         React.createElement("button", { className: "mr-2 pt-1 pb-1 btn btn-outline-secondary", disabled: !(validItems === null || validItems === void 0 ? void 0 : validItems.length), onClick: () => onSaveAsNamedSet(validItems) }, "Save as set")));
 }
-// tslint:disable-next-line: variable-name
-const Input = (props) => {
+function Input(props) {
     const { onPaste } = props.selectProps;
-    return React.createElement(components.Input, Object.assign({ onPaste: onPaste }, props));
-};
+    return (React.createElement(components.Input, Object.assign({ onPaste: onPaste }, props)));
+}
+;
 //# sourceMappingURL=DatasetSearchBox.js.map
