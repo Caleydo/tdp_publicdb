@@ -18,6 +18,7 @@ export default function (registry) {
         startViewId: 'celllinedb_start',
         idType: 'Ensembl',
         dataSource: gene,
+        tokenSeparators: /[\s;,]+/gm,
         description: 'Gene Sets',
         tabs: [
             { id: 'human', name: 'Human', icon: 'fas fa-male' },
@@ -31,6 +32,7 @@ export default function (registry) {
         startViewId: 'bioinfodb_tissue_start',
         idType: 'Tissue',
         dataSource: tissue,
+        tokenSeparators: /[\r\n;,]+/gm,
         description: 'Tissue Panels',
         tabs: [
             { id: 'human', name: 'Human', icon: 'fas fa-male' },
@@ -44,6 +46,7 @@ export default function (registry) {
         startViewId: 'celllinedb_cellline',
         idType: 'Cellline',
         dataSource: cellline,
+        tokenSeparators: /[\r\n;,]+/gm,
         description: 'Cell Line Panels',
         tabs: [
             { id: 'human', name: 'Human', icon: 'fas fa-male' },
