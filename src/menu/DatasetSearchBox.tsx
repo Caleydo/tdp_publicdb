@@ -75,7 +75,7 @@ export function DatasetSearchBox({placeholder, dataSource, onOpen, onSaveAsNamed
         const validData = await GeneUtils.validateGeneric(dataSource, splitData);
 
         const invalidData = splitData
-            .filter((s) => !validData.length || validData.some((o) => o.id.toLocaleLowerCase() !== s && o.text.toLocaleLowerCase() !== s))
+            .filter((s) => !validData.length || validData.every((o) => o.id.toLocaleLowerCase() !== s.toLocaleLowerCase() && o.text.toLocaleLowerCase() !== s.toLocaleLowerCase()))
             .map((s) => ({id: s, text: s, invalid: true}));
         setItems([...validData, ...invalidData]);
     };
