@@ -187,18 +187,18 @@ export class GeneUtils {
     return item.id;
   }
 
-/**
- * Chooses which validation function to use depending on the dataSource provided.
- * @param dataSource
- * @param query
- * @returns {Promise<Readonly<IdTextPair>[]>} Return the validated entity as id-text pairs.
- */
-  static validateGeneric = (dataSource: IDataSourceConfig, query: string[]) => {
+  /**
+   * Chooses which validation function to use depending on the dataSource provided.
+   * @param dataSource
+   * @param query
+   * @returns {Promise<Readonly<IdTextPair>[]>} Return the validated entity as id-text pairs.
+   */
+  static validateGeneric(dataSource: IDataSourceConfig, query: string[]): Promise<Readonly<IdTextPair>[]> {
     switch (dataSource.idType) {
       case Categories.GENE_IDTYPE:
         return GeneUtils.validateGene(query);
 
-      // TODO: add other cases when needed
+      // add other cases when needed
 
       default:
           return GeneUtils.validate(dataSource, query);
