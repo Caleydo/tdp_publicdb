@@ -109,5 +109,4 @@ function Input(props) {
     const { onPaste } = props.selectProps;
     return (React.createElement(components.Input, Object.assign({ onPaste: onPaste }, props)));
 }
-;
 //# sourceMappingURL=DatasetSearchBox.js.map

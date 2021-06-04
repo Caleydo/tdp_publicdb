@@ -170,4 +170,4 @@ export function DatasetSearchBox({placeholder, dataSource, onOpen, onSaveAsNamed
 function Input(props: any) {
     const {onPaste} = props.selectProps;
     return (<components.Input onPaste={onPaste} {...props} />);
-};
+}
