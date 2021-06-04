@@ -28,7 +28,7 @@ interface IDatasetSearchBoxProps {
     tokenSeparators?: RegExp;
 }
 
-export function DatasetSearchBox({placeholder, dataSource, onOpen, onSaveAsNamedSet, params = {}, tokenSeparators = /[\s\n\r;,]+/gm}: IDatasetSearchBoxProps) {
+export function DatasetSearchBox({placeholder, dataSource, onOpen, onSaveAsNamedSet, params = {}, tokenSeparators = /[\s;,]+/gm}: IDatasetSearchBoxProps) {
     const [items, setItems] = React.useState<IDatasetSearchOption[]>([]);
     const [inputValue, setInputValue] = React.useState('');
     const loadOptions = async (query: string, _, {page}: {page: number}) => {

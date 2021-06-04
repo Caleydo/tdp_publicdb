@@ -4,7 +4,7 @@ import { components } from 'react-select';
 import { AsyncPaginate } from 'react-select-async-paginate';
 import Highlighter from 'react-highlight-words';
 import { GeneUtils } from '../common';
-export function DatasetSearchBox({ placeholder, dataSource, onOpen, onSaveAsNamedSet, params = {}, tokenSeparators = /[\s\n\r;,]+/gm }) {
+export function DatasetSearchBox({ placeholder, dataSource, onOpen, onSaveAsNamedSet, params = {}, tokenSeparators = /[\s;,]+/gm }) {
     const [items, setItems] = React.useState([]);
     const [inputValue, setInputValue] = React.useState('');
     const loadOptions = async (query, _, { page }) => {
