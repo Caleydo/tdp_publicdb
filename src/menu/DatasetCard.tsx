@@ -132,7 +132,7 @@ export default function DatasetCard({name, icon, tabs, startViewId, dataSource, 
                       value={filterValue(myNamedSets.value, tab.id)} />
                     <NamedSetList
                       headerIcon="fas fa-users"
-                      headerText="Public Sets"
+                      headerText="Other Sets"
                       onOpen={(event, namedSet: INamedSet) => {onOpenNamedSet(event, {namedSet, species: tab.id});}}
                       status={publicNamedSets.status}
                       value={filterValue(publicNamedSets.value, tab.id)} />
