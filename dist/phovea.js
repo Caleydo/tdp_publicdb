@@ -25,20 +25,6 @@ export default function (registry) {
             { id: 'mouse', name: 'Mouse', icon: 'fas fa-fw mouse-icon' }
         ]
     });
-    registry.push(EP_ORDINO_STARTMENU_DATASET_SECTION, 'bioinfodb_tissue_start', () => import('./menu/DatasetCard'), {
-        name: 'Tissues',
-        icon: 'fas fa-database',
-        cssClass: 'tissue-dataset',
-        startViewId: 'bioinfodb_tissue_start',
-        idType: 'Tissue',
-        dataSource: tissue,
-        tokenSeparators: /[\r\n;,]+/gm,
-        description: 'Tissue Panels',
-        tabs: [
-            { id: 'human', name: 'Human', icon: 'fas fa-male' },
-            { id: 'mouse', name: 'Mouse', icon: 'fas fa-fw mouse-icon' }
-        ]
-    });
     registry.push(EP_ORDINO_STARTMENU_DATASET_SECTION, 'celllinedb_cellline_start', () => import('./menu/DatasetCard'), {
         name: 'Cell Lines',
         icon: 'fas fa-database',
@@ -48,6 +34,20 @@ export default function (registry) {
         dataSource: cellline,
         tokenSeparators: /[\r\n;,]+/gm,
         description: 'Cell Line Panels',
+        tabs: [
+            { id: 'human', name: 'Human', icon: 'fas fa-male' },
+            { id: 'mouse', name: 'Mouse', icon: 'fas fa-fw mouse-icon' }
+        ]
+    });
+    registry.push(EP_ORDINO_STARTMENU_DATASET_SECTION, 'bioinfodb_tissue_start', () => import('./menu/DatasetCard'), {
+        name: 'Tissues',
+        icon: 'fas fa-database',
+        cssClass: 'tissue-dataset',
+        startViewId: 'bioinfodb_tissue_start',
+        idType: 'Tissue',
+        dataSource: tissue,
+        tokenSeparators: /[\r\n;,]+/gm,
+        description: 'Tissue Panels',
         tabs: [
             { id: 'human', name: 'Human', icon: 'fas fa-male' },
             { id: 'mouse', name: 'Mouse', icon: 'fas fa-fw mouse-icon' }
