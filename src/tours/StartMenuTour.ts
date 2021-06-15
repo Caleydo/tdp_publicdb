@@ -76,7 +76,7 @@ export class StartMenuTour {
         <ul>
           <li><i>Predefined Sets</i> - These are already defined sets that are of general interest, including the set of all entities (e.g., the lists of all cell lines and all genes in our database).</li>
           <li><i>My Sets</i> - You can also define your own subsets of interesting/relevant genes, cell lines, etc. These will be listed here.</li>
-          <li><i>Public Sets</i> - Entity subsets that other users created and shared with you show up in this list.</li>
+          <li><i>Other Sets</i> - Entity subsets that other users created and shared with you show up in this list.</li>
         </ul>`,
         placement: 'centered',
         preAction: TourUtils.waitForSelector,
