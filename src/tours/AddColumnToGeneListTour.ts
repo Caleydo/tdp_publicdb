@@ -26,6 +26,14 @@ export class AddColumnToGeneListTour {
           if (datasetTab.classList.contains('active')) {
             return;
           }
+          datasetTab.querySelector('a').classList.add('hover');
+        },
+        postAction: () => {
+          const datasetTab = document.querySelector('ul[data-header="mainMenu"] > li:nth-child(1)') as HTMLElement;
+          if (datasetTab.classList.contains('active')) {
+            return;
+          }
+          datasetTab.querySelector('a').classList.remove('hover');
           datasetTab.querySelector('a').click();
         }
       },
