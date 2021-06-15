@@ -15,7 +15,7 @@ export declare class AggregatedScore extends AAggregatedScore implements IScore<
     constructor(parameter: IAggregatedScoreParam, dataSource: IDataSourceConfig, oppositeDataSource: IDataSourceConfig);
     protected getViewPrefix(): string;
     static createAggregationFrequencyScore(data: any, pluginDesc: IPluginDesc): IScore<number>;
-    static initializeAggregationFrequencyScore(data: any, pluginDesc: IPluginDesc, aggregatedScoreFactory: (data: any, primary: IDataSourceConfig, opposite: IDataSourceConfig) => AAggregatedScore, frequencyScoreFactory: (data: any, primary: IDataSourceConfig, opposite: IDataSourceConfig, countOnly: boolean) => AFrequencyScore): AFrequencyScore | AAggregatedScore;
+    static initializeAggregationFrequencyScore(data: any, pluginDesc: IPluginDesc, aggregatedScoreFactory: (data: any, primary: IDataSourceConfig, opposite: IDataSourceConfig) => AAggregatedScore, frequencyScoreFactory: (data: any, primary: IDataSourceConfig, opposite: IDataSourceConfig, countOnly: boolean) => AFrequencyScore): AAggregatedScore | AFrequencyScore;
 }
 export declare class AggregatedDepletionScore extends AAggregatedScore implements IScore<number> {
     constructor(parameter: IAggregatedScoreParam, dataSource: IDataSourceConfig, oppositeDataSource: IDataSourceConfig);

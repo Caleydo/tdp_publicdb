@@ -105,6 +105,6 @@
   },
   "optionalDependencies": {
     "dTiles": "github:datavisyn/dTiles#develop",
-    "ordino": "github:Caleydo/ordino#welcome-page"
+    "ordino": "github:Caleydo/ordino#vstoiber/bootstrap_v5"
   }
 }

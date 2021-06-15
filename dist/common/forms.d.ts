@@ -1,7 +1,6 @@
 /**
  * Created by sam on 06.03.2017.
  */
-/// <reference types="react" />
 import { FormElementType } from 'tdp_core';
 import { IDataSourceConfig } from './config';
 import { GeneUtils } from './GeneUtils';
@@ -151,7 +150,7 @@ export declare const FORM_GENE_FILTER: {
             return: string;
             optionsData: () => Promise<{
                 name: string;
-                value: import("react").ReactText;
+                value: string | number;
             }[]>;
             options: {
                 placeholder: string;
