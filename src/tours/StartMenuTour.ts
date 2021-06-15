@@ -20,7 +20,13 @@ export class StartMenuTour {
         selector: 'ul[data-header="mainMenu"]',
         html: `<p>The start menu allows you to select the dataset you want to analyze, allows you to save and load analysis sessions, and gives you access to the help tours.</p>
         <p>The menu consists of three tabs.</p>`,
-        placement: 'centered'
+        placement: 'centered',
+        preAction: () => {
+          document.querySelectorAll('ul[data-header="mainMenu"] > li > a').forEach((link) => link.classList.add('hover'));
+        },
+        postAction: () => {
+          document.querySelectorAll('ul[data-header="mainMenu"] > li > a').forEach((link) => link.classList.remove('hover'));
+        }
       },
 
       {
@@ -76,7 +82,7 @@ export class StartMenuTour {
         <ul>
           <li><i>Predefined Sets</i> - These are already defined sets that are of general interest, including the set of all entities (e.g., the lists of all cell lines and all genes in our database).</li>
           <li><i>My Sets</i> - You can also define your own subsets of interesting/relevant genes, cell lines, etc. These will be listed here.</li>
-          <li><i>Other Sets</i> - Entity subsets that other users created and shared with you show up in this list.</li>
+          <li><i>Public Sets</i> - Entity subsets that other users created and shared with you show up in this list.</li>
         </ul>`,
         placement: 'centered',
         preAction: TourUtils.waitForSelector,
