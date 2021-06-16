@@ -46,7 +46,7 @@ export default function (registry) {
   });
 
   registry.push(EP_ORDINO_STARTMENU_DATASET_SECTION, 'bioinfodb_tissue_start', () => import('./menu/DatasetCard'), <IPublicDbStartMenuDatasetSectionDesc>{
-    name: 'Tissues',
+    name: 'Tissue Samples',
     icon: 'fas fa-database',
     cssClass: 'tissue-dataset',
     startViewId: 'bioinfodb_tissue_start',
