@@ -92,7 +92,6 @@ export class StartMenuTour {
                     const datasetTab = document.querySelector('ul[data-header="mainMenu"] > li:nth-child(2)');
                     if (!datasetTab.classList.contains('active')) {
                         return datasetTab.querySelector('a').click();
-                        ;
                     }
                 }
             },

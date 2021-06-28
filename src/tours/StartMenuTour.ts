@@ -105,7 +105,7 @@ export class StartMenuTour {
         preAction: () => {
           const datasetTab = document.querySelector('ul[data-header="mainMenu"] > li:nth-child(2)') as HTMLElement;
           if (!datasetTab.classList.contains('active')) {
-            return datasetTab.querySelector('a').click();;
+            return datasetTab.querySelector('a').click();
           }
         }
       },
