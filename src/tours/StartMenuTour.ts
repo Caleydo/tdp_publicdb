@@ -44,32 +44,31 @@ export class StartMenuTour {
       },
 
       {
-        selector: '#ordino_dataset_tab > .ordino-scrollspy-container .genes-dataset > .card',
-        html: `<p>You can select a set of genes, &hellip;</p>`,
-        placement: 'centered',
-        preAction: TourUtils.waitForSelector,
-        postAction: () => TourUtils.click('#ordino_dataset_tab > .ordino-scrollspy-nav > a:nth-child(2)'),
-      },
-
-      {
         selector: '#ordino_dataset_tab > .ordino-scrollspy-container .cellline-dataset > .card',
-        html: `<p>&hellip; cell lines, &hellip;</p>`,
+        html: `<p>You can select cell lines, &hellip;</p>`,
         placement: 'centered',
         preAction: () => TourUtils.waitFor('#ordino_dataset_tab > .ordino-scrollspy-container .cellline-dataset > .card').then(() => TourUtils.wait(400)),
-        postAction: () => TourUtils.click('#ordino_dataset_tab > .ordino-scrollspy-nav > a:nth-child(3)'),
+        postAction: () => TourUtils.click('#ordino_dataset_tab > .ordino-scrollspy-nav > a:nth-child(2)'),
         pageBreak: 'manual'
       },
 
       {
         selector: '#ordino_dataset_tab > .ordino-scrollspy-container .tissue-dataset > .card',
-        html: `<p>&hellip; or tissue samples to analyze.</p>`,
+        html: `<p>&hellip; tissue samples, &hellip;</p>`,
         placement: 'centered',
         preAction: () => TourUtils.waitFor('#ordino_dataset_tab > .ordino-scrollspy-container .tissue-dataset > .card').then(() => TourUtils.wait(400)),
-
+        postAction: () => TourUtils.click('#ordino_dataset_tab > .ordino-scrollspy-nav > a:nth-child(3)'),
       },
 
       {
-        selector: '#ordino_dataset_tab > .ordino-scrollspy-container .tissue-dataset > .card .ordino-dataset-searchbox > div:first-child',
+        selector: '#ordino_dataset_tab > .ordino-scrollspy-container .genes-dataset > .card',
+        html: `<p>&hellip; or a set of genes to analyze.</p>`,
+        placement: 'centered',
+        preAction: TourUtils.waitForSelector,
+      },
+
+      {
+        selector: '#ordino_dataset_tab > .ordino-scrollspy-container .genes-dataset > .card .ordino-dataset-searchbox > div:first-child',
         html: `<p>For each of the three entity types you can either start with a manually defined set by adding ids
         (gene symbols, cell line names, or tissue sample ids) into the search field, or &hellip;</p>`,
         placement: 'centered',
@@ -77,7 +76,7 @@ export class StartMenuTour {
       },
 
       {
-        selector: '.tissue-dataset .tab-content .tab-pane .row:nth-child(2)',
+        selector: '.genes-dataset .tab-content .tab-pane .row:nth-child(2)',
         html: `<p>&hellip;  you can select an already defined set. There are three list: </p>
         <ul>
           <li><i>Predefined Sets</i> - These are already defined sets that are of general interest, including the set of all entities (e.g., the lists of all cell lines and all genes in our database).</li>
@@ -105,10 +104,9 @@ export class StartMenuTour {
         placement: 'centered',
         preAction: () => {
           const datasetTab = document.querySelector('ul[data-header="mainMenu"] > li:nth-child(2)') as HTMLElement;
-          if (datasetTab.classList.contains('active')) {
-            return;
+          if (!datasetTab.classList.contains('active')) {
+            return datasetTab.querySelector('a').click();
           }
-          datasetTab.querySelector('a').click();
         }
       },
 
@@ -154,10 +152,10 @@ export class StartMenuTour {
         placement: 'centered',
         preAction: () => {
           const datasetTab = document.querySelector('ul[data-header="mainMenu"] > li:nth-child(3)') as HTMLElement;
-          if (datasetTab.classList.contains('active')) {
-            return;
+          if (!datasetTab.classList.contains('active')) {
+            datasetTab.querySelector('a').click();
           }
-          datasetTab.querySelector('a').click();
+          return TourUtils.waitFor('.ordino-dataset.genes-dataset').then(() => TourUtils.click('#ordino_dataset_tab > .ordino-scrollspy-nav > a:nth-child(3)'));
         }
       },
 
@@ -178,7 +176,7 @@ export class StartMenuTour {
         placement: 'centered',
         preAction: async () => {
           await TourUtils.waitFor('#ordino_dataset_tab .genes-dataset > .card');
-          TourUtils.click('#ordino_dataset_tab > .ordino-scrollspy-nav > a:first-child');
+          TourUtils.click('#ordino_dataset_tab > .ordino-scrollspy-nav > a:nth-child(3)');
           await TourUtils.wait(700);
         },
         postAction: () => TourUtils.click('.ordino-dataset.genes-dataset session-tab > li:first-child')

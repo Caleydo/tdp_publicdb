@@ -15,21 +15,6 @@ export default function (registry) {
   // generator-phovea:begin
 
   /// #if include('ordino')
-  registry.push(EP_ORDINO_STARTMENU_DATASET_SECTION, 'celllinedb_genes_start', () => import('./menu/DatasetCard'), <IPublicDbStartMenuDatasetSectionDesc>{
-    name: 'Genes',
-    icon: 'fas fa-database',
-    cssClass: 'genes-dataset',
-    startViewId: 'celllinedb_start',
-    idType: 'Ensembl',
-    dataSource: gene,
-    tokenSeparators: /[\s;,]+/gm,
-    description: 'Gene Sets',
-    tabs: [
-      {id: 'human', name: 'Human', icon: 'fas fa-male'},
-      {id: 'mouse', name: 'Mouse', icon: 'fas fa-fw mouse-icon'}
-    ]
-  });
-
   registry.push(EP_ORDINO_STARTMENU_DATASET_SECTION, 'celllinedb_cellline_start', () => import('./menu/DatasetCard'), <IPublicDbStartMenuDatasetSectionDesc>{
     name: 'Cell Lines',
     icon: 'fas fa-database',
@@ -60,6 +45,20 @@ export default function (registry) {
     ]
   });
 
+  registry.push(EP_ORDINO_STARTMENU_DATASET_SECTION, 'celllinedb_genes_start', () => import('./menu/DatasetCard'), <IPublicDbStartMenuDatasetSectionDesc>{
+    name: 'Genes',
+    icon: 'fas fa-database',
+    cssClass: 'genes-dataset',
+    startViewId: 'celllinedb_start',
+    idType: 'Ensembl',
+    dataSource: gene,
+    tokenSeparators: /[\s;,]+/gm,
+    description: 'Gene Sets',
+    tabs: [
+      {id: 'human', name: 'Human', icon: 'fas fa-male'},
+      {id: 'mouse', name: 'Mouse', icon: 'fas fa-fw mouse-icon'}
+    ]
+  });
   /// #endif
 
   //gene views
