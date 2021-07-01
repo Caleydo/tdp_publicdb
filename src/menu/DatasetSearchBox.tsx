@@ -36,12 +36,14 @@ export function DatasetSearchBox({placeholder, dataSource, onOpen, onSaveAsNamed
         return RestBaseUtils.getTDPLookup(db, base + dbViewSuffix, {
             column: entityName,
             ...params,
-            query
+            query,
+            page,
+            limit: 10
         }).then(({items, more}) => ({
             options: items,
             hasMore: more,
             additional: {
-                page: page + 1,
+                page: page + 1
             }
         }));
     };
@@ -108,7 +110,7 @@ export function DatasetSearchBox({placeholder, dataSource, onOpen, onSaveAsNamed
                     getOptionValue={(option) => option.id}
                     captureMenuScroll={false}
                     additional={{
-                        page: 1
+                        page: 0 // page starts from index 0
                     }}
                     components={{Input}}
                     styles={{
