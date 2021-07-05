@@ -179,7 +179,7 @@ export class StartMenuTour {
           TourUtils.click('#ordino_dataset_tab > .ordino-scrollspy-nav > a:nth-child(3)');
           await TourUtils.wait(700);
         },
-        postAction: () => TourUtils.click('.ordino-dataset.genes-dataset session-tab > li:first-child')
+        postAction: () => TourUtils.click('.ordino-dataset.genes-dataset .session-tab > li:first-child')
       },
 
       {
