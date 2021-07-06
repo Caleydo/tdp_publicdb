@@ -30,18 +30,18 @@ export class AddColumnToGeneListTour {
         },
         postAction: () => {
           const datasetTab = document.querySelector('ul[data-header="mainMenu"] > li:nth-child(1)') as HTMLElement;
-          if (datasetTab.classList.contains('active')) {
-            return;
+          if (!datasetTab.classList.contains('active')) {
+            datasetTab.querySelector('a').classList.remove('hover');
+            datasetTab.querySelector('a').click();
           }
-          datasetTab.querySelector('a').classList.remove('hover');
-          datasetTab.querySelector('a').click();
+          return TourUtils.waitFor('.ordino-dataset.genes-dataset').then(() => TourUtils.click('#ordino_dataset_tab > .ordino-scrollspy-nav > a:nth-child(3)'));
         }
       },
       {
         selector: '#ordino_dataset_tab > .ordino-scrollspy-container .genes-dataset > .card',
         html: `<p>In the datasets tab, we scroll to the <i>'Genes'</i> section &hellip;</p>`,
         placement: 'centered',
-        preAction: TourUtils.waitForSelector,
+        preAction: () => TourUtils.waitFor('#ordino_dataset_tab > .ordino-scrollspy-container .genes-dataset > .card').then(() => TourUtils.wait(600)),
         postAction: () => TourUtils.click('#ordino_dataset_tab > .ordino-scrollspy-nav > a:nth-child(2)'),
       },
       {
