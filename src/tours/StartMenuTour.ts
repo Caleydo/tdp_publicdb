@@ -49,7 +49,7 @@ export class StartMenuTour {
         placement: 'centered',
         preAction: async () => {
           TourUtils.click('#ordino_dataset_tab > .ordino-scrollspy-nav > a:nth-child(1)');
-          await TourUtils.wait(400);
+          await TourUtils.wait(600);
           await TourUtils.waitFor('#ordino_dataset_tab > .ordino-scrollspy-container .cellline-dataset > .card');
         },
         postAction: () => TourUtils.click('#ordino_dataset_tab > .ordino-scrollspy-nav > a:nth-child(2)'),
