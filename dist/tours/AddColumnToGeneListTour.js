@@ -38,7 +38,7 @@ export class AddColumnToGeneListTour {
                 selector: '#ordino_dataset_tab > .ordino-scrollspy-container .genes-dataset > .card',
                 html: `<p>In the datasets tab, we scroll to the <i>'Genes'</i> section &hellip;</p>`,
                 placement: 'centered',
-                preAction: () => TourUtils.waitFor('#ordino_dataset_tab > .ordino-scrollspy-container .genes-dataset > .card').then(() => TourUtils.wait(400)),
+                preAction: () => TourUtils.waitFor('#ordino_dataset_tab > .ordino-scrollspy-container .genes-dataset > .card').then(() => TourUtils.wait(600)),
                 postAction: () => TourUtils.click('#ordino_dataset_tab > .ordino-scrollspy-nav > a:nth-child(2)'),
             },
             {

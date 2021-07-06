@@ -40,7 +40,11 @@ export class StartMenuTour {
                 selector: '#ordino_dataset_tab > .ordino-scrollspy-container .cellline-dataset > .card',
                 html: `<p>You can select cell lines, &hellip;</p>`,
                 placement: 'centered',
-                preAction: () => TourUtils.waitFor('#ordino_dataset_tab > .ordino-scrollspy-container .cellline-dataset > .card').then(() => TourUtils.wait(400)),
+                preAction: async () => {
+                    TourUtils.click('#ordino_dataset_tab > .ordino-scrollspy-nav > a:nth-child(1)');
+                    await TourUtils.wait(400);
+                    await TourUtils.waitFor('#ordino_dataset_tab > .ordino-scrollspy-container .cellline-dataset > .card');
+                },
                 postAction: () => TourUtils.click('#ordino_dataset_tab > .ordino-scrollspy-nav > a:nth-child(2)'),
                 pageBreak: 'manual'
             },
@@ -48,14 +52,14 @@ export class StartMenuTour {
                 selector: '#ordino_dataset_tab > .ordino-scrollspy-container .tissue-dataset > .card',
                 html: `<p>&hellip; tissue samples, &hellip;</p>`,
                 placement: 'centered',
-                preAction: () => TourUtils.waitFor('#ordino_dataset_tab > .ordino-scrollspy-container .tissue-dataset > .card').then(() => TourUtils.wait(400)),
+                preAction: () => TourUtils.waitFor('#ordino_dataset_tab > .ordino-scrollspy-container .tissue-dataset > .card').then(() => TourUtils.wait(600)),
                 postAction: () => TourUtils.click('#ordino_dataset_tab > .ordino-scrollspy-nav > a:nth-child(3)'),
             },
             {
                 selector: '#ordino_dataset_tab > .ordino-scrollspy-container .genes-dataset > .card',
                 html: `<p>&hellip; or a set of genes to analyze.</p>`,
                 placement: 'centered',
-                preAction: TourUtils.waitForSelector,
+                preAction: () => TourUtils.waitFor('#ordino_dataset_tab > .ordino-scrollspy-container .genes-dataset > .card').then(() => TourUtils.wait(600)),
             },
             {
                 selector: '#ordino_dataset_tab > .ordino-scrollspy-container .genes-dataset > .card .ordino-dataset-searchbox > div:first-child',

@@ -39,7 +39,7 @@ export class WelcomeTour {
         selector: '.ordino-dataset.genes-dataset > .card',
         html: `<p>You can choose between the three entity types <i>'Cell Lines'</i>, <i>'Tissue Samples'</i>, and <i>'Genes'</i>.</p> <p>In this example we will work with a list of genes</p>`,
         placement: 'centered',
-        preAction: () => TourUtils.waitFor('#ordino_dataset_tab > .ordino-scrollspy-container .genes-dataset > .card').then(() => TourUtils.wait(400)),
+        preAction: () => TourUtils.waitFor('#ordino_dataset_tab > .ordino-scrollspy-container .genes-dataset > .card').then(() => TourUtils.wait(600)),
         postAction: () => TourUtils.click('.ordino-dataset.genes-dataset .session-tab > li:first-child')
       },
       {
