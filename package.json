@@ -101,10 +101,10 @@
     "react-select": "^4.1.0",
     "react-select-async-paginate": "^0.5.3",
     "react-virtualized": "^9.22.3",
-    "tdp_gene": "9.0.0-alpha.0"
+    "tdp_gene": "9.0.0-alpha.0",
+    "ordino": "10.0.0-alpha.0"
   },
   "optionalDependencies": {
-    "dTiles": "9.0.0-alpha.0",
-    "ordino": "10.0.0-alpha.0"
+    "dTiles": "9.0.0-alpha.0"
   }
 }
