@@ -1,7 +1,7 @@
 {
   "name": "tdp_publicdb",
   "description": "",
-  "version": "10.0.0-alpha.0",
+  "version": "9.0.1-SNAPSHOT",
   "author": {
     "name": "The Caleydo Team",
     "email": "contact@caleydo.org",
@@ -101,10 +101,10 @@
     "react-select": "^4.1.0",
     "react-select-async-paginate": "^0.5.3",
     "react-virtualized": "^9.22.3",
-    "tdp_gene": "9.0.0-alpha.0",
-    "ordino": "github:Caleydo/ordino#semver:10.0.0-alpha.0"
+    "tdp_gene": "github:Caleydo/tdp_gene#bootstrap-v4",
+    "ordino": "github:Caleydo/ordino#welcome-page"
   },
   "optionalDependencies": {
-    "dTiles": "9.0.0-alpha.0"
+    "dTiles": "github:datavisyn/dTiles#develop"
   }
 }
