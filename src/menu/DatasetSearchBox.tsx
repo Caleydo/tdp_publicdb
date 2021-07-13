@@ -61,7 +61,7 @@ export function DatasetSearchBox({placeholder, dataSource, onOpen, onSaveAsNamed
                     textToHighlight={option.text}
                 />
                 {option.text !== option.id &&
-                    <span className="small text-muted ml-1">{option.id}</span>}
+                    <span className="small text-muted ms-1">{option.id}</span>}
             </>
         );
     };

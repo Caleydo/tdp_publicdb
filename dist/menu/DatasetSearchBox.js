@@ -32,7 +32,7 @@ export function DatasetSearchBox({ placeholder, dataSource, onOpen, onSaveAsName
         return (React.createElement(React.Fragment, null,
             React.createElement(Highlighter, { searchWords: [ctx.inputValue], autoEscape: true, textToHighlight: option.text }),
             option.text !== option.id &&
-                React.createElement("span", { className: "small text-muted ml-1" }, option.id)));
+                React.createElement("span", { className: "small text-muted ms-1" }, option.id)));
     };
     React.useEffect(() => {
         setInputValue('');
