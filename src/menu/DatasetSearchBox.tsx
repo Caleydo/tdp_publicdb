@@ -163,8 +163,10 @@ export function DatasetSearchBox({placeholder, dataSource, onOpen, onSaveAsNamed
                     }}
                 />
             </div>
-            <button className="me-2 pt-1 pb-1 btn btn-secondary" disabled={!validItems?.length} onClick={(event) => onOpen(event, searchResults)}>Open</button>
-            <button className="me-2 pt-1 pb-1 btn btn-outline-secondary" disabled={!validItems?.length} onClick={() => onSaveAsNamedSet(validItems)}>Save as set</button>
+            <div className="col-sm-2">
+                <button className="me-2 pt-1 pb-1 btn btn-secondary" disabled={!validItems?.length} onClick={(event) => onOpen(event, searchResults)}>Open</button>
+                <button className="me-2 pt-1 pb-1 btn btn-outline-secondary" disabled={!validItems?.length} onClick={() => onSaveAsNamedSet(validItems)}>Save as set</button>
+            </div>
         </div>
     );
 }
