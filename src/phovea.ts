@@ -15,34 +15,6 @@ export default function (registry) {
   // generator-phovea:begin
 
   /// #if include('ordino')
-  registry.push(EP_ORDINO_STARTMENU_DATASET_SECTION, 'celllinedb_genes_start', () => import('./menu/DatasetCard'), <IPublicDbStartMenuDatasetSectionDesc>{
-    name: 'Genes',
-    icon: 'fas fa-database',
-    cssClass: 'genes-dataset',
-    startViewId: 'celllinedb_start',
-    idType: 'Ensembl',
-    dataSource: gene,
-    description: 'Gene Sets',
-    tabs: [
-      {id: 'human', name: 'Human', icon: 'fas fa-male'},
-      {id: 'mouse', name: 'Mouse', icon: 'fas fa-fw mouse-icon'}
-    ]
-  });
-
-  registry.push(EP_ORDINO_STARTMENU_DATASET_SECTION, 'bioinfodb_tissue_start', () => import('./menu/DatasetCard'), <IPublicDbStartMenuDatasetSectionDesc>{
-    name: 'Tissues',
-    icon: 'fas fa-database',
-    cssClass: 'tissue-dataset',
-    startViewId: 'bioinfodb_tissue_start',
-    idType: 'Tissue',
-    dataSource: tissue,
-    description: 'Tissue Panels',
-    tabs: [
-      {id: 'human', name: 'Human', icon: 'fas fa-male'},
-      {id: 'mouse', name: 'Mouse', icon: 'fas fa-fw mouse-icon'}
-    ]
-  });
-
   registry.push(EP_ORDINO_STARTMENU_DATASET_SECTION, 'celllinedb_cellline_start', () => import('./menu/DatasetCard'), <IPublicDbStartMenuDatasetSectionDesc>{
     name: 'Cell Lines',
     icon: 'fas fa-database',
@@ -50,7 +22,38 @@ export default function (registry) {
     startViewId: 'celllinedb_cellline',
     idType: 'Cellline',
     dataSource: cellline,
+    tokenSeparators: /[\r\n;,]+/gm,
     description: 'Cell Line Panels',
+    tabs: [
+      {id: 'human', name: 'Human', icon: 'fas fa-male'},
+      {id: 'mouse', name: 'Mouse', icon: 'fas fa-fw mouse-icon'}
+    ]
+  });
+
+  registry.push(EP_ORDINO_STARTMENU_DATASET_SECTION, 'bioinfodb_tissue_start', () => import('./menu/DatasetCard'), <IPublicDbStartMenuDatasetSectionDesc>{
+    name: 'Tissue Samples',
+    icon: 'fas fa-database',
+    cssClass: 'tissue-dataset',
+    startViewId: 'bioinfodb_tissue_start',
+    idType: 'Tissue',
+    dataSource: tissue,
+    tokenSeparators: /[\r\n;,]+/gm,
+    description: 'Tissue Panels',
+    tabs: [
+      {id: 'human', name: 'Human', icon: 'fas fa-male'},
+      {id: 'mouse', name: 'Mouse', icon: 'fas fa-fw mouse-icon'}
+    ]
+  });
+
+  registry.push(EP_ORDINO_STARTMENU_DATASET_SECTION, 'celllinedb_genes_start', () => import('./menu/DatasetCard'), <IPublicDbStartMenuDatasetSectionDesc>{
+    name: 'Genes',
+    icon: 'fas fa-database',
+    cssClass: 'genes-dataset',
+    startViewId: 'celllinedb_start',
+    idType: 'Ensembl',
+    dataSource: gene,
+    tokenSeparators: /[\s;,]+/gm,
+    description: 'Gene Sets',
     tabs: [
       {id: 'human', name: 'Human', icon: 'fas fa-male'},
       {id: 'mouse', name: 'Mouse', icon: 'fas fa-fw mouse-icon'}

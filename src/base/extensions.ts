@@ -34,5 +34,10 @@ export interface IPublicDbStartMenuDatasetSectionDesc extends IStartMenuDatasetS
   /**
    * Optional CSS class to add to the section
    */
-   cssClass?: string;
+  cssClass?: string;
+
+  /**
+   * Optional token separators. Used to split the text pasted on the `DatasetSearchBox`
+   */
+  tokenSeparators?: RegExp;
 }

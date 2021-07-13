@@ -6,7 +6,7 @@ import {DatasetSearchBox} from './DatasetSearchBox';
 import {Species, SpeciesUtils, IACommonListOptions} from 'tdp_gene';
 import {IPublicDbStartMenuDatasetSectionDesc} from '../base/extensions';
 
-export default function DatasetCard({name, icon, tabs, startViewId, dataSource, cssClass}: IPublicDbStartMenuDatasetSectionDesc) {
+export default function DatasetCard({name, icon, tabs, startViewId, dataSource, cssClass, tokenSeparators}: IPublicDbStartMenuDatasetSectionDesc) {
   const {app} = React.useContext(OrdinoContext);
   const [dirtyNamedSets, setDirtyNamedSets] = React.useState(false);
 
@@ -107,6 +107,7 @@ export default function DatasetCard({name, icon, tabs, startViewId, dataSource, 
           </ul>
           <div className="tab-content">
             {tabs.map((tab, index) => {
+              const separators = tokenSeparators ? {tokenSeparators} : null;
               return (
                 <div key={tab.id} className={`tab-pane fade mt-4 ${(index === activeTabIndex) ? 'show active' : ''}`} role="tabpanel" id={`dataset-panel-${tab.id}-${id}`} aria-labelledby={`dataset-tab-${tab.id}-${id}`}>
                   <DatasetSearchBox
@@ -114,7 +115,9 @@ export default function DatasetCard({name, icon, tabs, startViewId, dataSource, 
                     dataSource={dataSource}
                     params={{species: tab.id}}
                     onSaveAsNamedSet={(items: IdTextPair[]) => onSaveAsNamedSet(items, {key: Species.SPECIES_SESSION_KEY, value: tab.id})}
-                    onOpen={(event, searchResult: Partial<IACommonListOptions>) => {onOpenSearchResult(event, {searchResult, species: tab.id});}} />
+                    onOpen={(event, searchResult: Partial<IACommonListOptions>) => {onOpenSearchResult(event, {searchResult, species: tab.id});}}
+                    {...separators}
+                  />
                   <div className="row mt-4">
                     <NamedSetList
                       headerIcon="fas fa-database"
@@ -129,7 +132,7 @@ export default function DatasetCard({name, icon, tabs, startViewId, dataSource, 
                       value={filterValue(myNamedSets.value, tab.id)} />
                     <NamedSetList
                       headerIcon="fas fa-users"
-                      headerText="Public Sets"
+                      headerText="Other Sets"
                       onOpen={(event, namedSet: INamedSet) => {onOpenNamedSet(event, {namedSet, species: tab.id});}}
                       status={publicNamedSets.status}
                       value={filterValue(publicNamedSets.value, tab.id)} />
