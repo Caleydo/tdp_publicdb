@@ -17,19 +17,26 @@ export class WelcomeTour {
                 placement: 'centered',
                 preAction: () => {
                     const datasetTab = document.querySelector('ul[data-header="mainMenu"] > li:nth-child(1)');
-                    if (datasetTab.classList.contains('active')) {
-                        return;
+                    if (!datasetTab.classList.contains('active')) {
+                        datasetTab.querySelector('a').classList.add('hover');
                     }
-                    datasetTab.querySelector('a').click();
+                },
+                postAction: () => {
+                    const datasetTab = document.querySelector('ul[data-header="mainMenu"] > li:nth-child(1)');
+                    if (!datasetTab.classList.contains('active')) {
+                        datasetTab.querySelector('a').classList.remove('hover');
+                        datasetTab.querySelector('a').click();
+                    }
+                    return TourUtils.waitFor('.ordino-dataset.genes-dataset').then(() => TourUtils.click('#ordino_dataset_tab > .ordino-scrollspy-nav > a:nth-child(3)'));
                 },
                 pageBreak: 'manual'
             },
             {
                 selector: '.ordino-dataset.genes-dataset > .card',
-                html: `<p>You can choose between the three entity types <i>'Cell Lines'</i>, <i>'Genes'</i>, and <i>'Tissues'</i>.</p> <p>In this example we will work with a list of genes</p>`,
+                html: `<p>You can choose between the three entity types <i>'Cell Lines'</i>, <i>'Tissue Samples'</i>, and <i>'Genes'</i>.</p> <p>In this example we will work with a list of genes</p>`,
                 placement: 'centered',
-                preAction: TourUtils.waitForSelector,
-                postAction: () => TourUtils.click('.ordino-dataset.genes-dataset session-tab > li:first-child')
+                preAction: () => TourUtils.waitFor('#ordino_dataset_tab > .ordino-scrollspy-container .genes-dataset > .card').then(() => TourUtils.wait(600)),
+                postAction: () => TourUtils.click('.ordino-dataset.genes-dataset .session-tab > li:first-child')
             },
             {
                 selector: '.ordino-dataset.genes-dataset .dataset-entry',
@@ -44,7 +51,7 @@ export class WelcomeTour {
                 selector: '.le.le-multi.lineup-engine',
                 placement: 'centered',
                 html: `The information is presented in a tabular format. Additionally to the gene ID, a set of columns containing some basic information is shown by default.`,
-                preAction: () => TourUtils.waitFor('.le.le-multi.lineup-engine', Infinity).then(() => TourUtils.wait(500))
+                preAction: () => TourUtils.waitFor('.le.le-multi.lineup-engine', Infinity).then(() => TourUtils.wait(600))
             },
             {
                 selector: '.lu-side-panel-wrapper button.fa-plus',
