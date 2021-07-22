@@ -66,7 +66,7 @@ tissue = Entity('tissue',
                 columns=['tissuename', 'species', 'tumortype', 'organ', 'gender', 'tumortype_adjacent', 'vendorname',
                          'race', 'ethnicity', 'age', 'days_to_last_followup', 'days_to_death', 'vital_status', 'height',
                          'weight', 'bmi','microsatellite_stability_class', 'microsatellite_stability_score',
-                         'hla_a_allele1', 'hla_a_allele2', 'mutational_fraction'
+                         'hla_a_allele1', 'hla_a_allele2', 'mutational_fraction', 'treatment'
                          ],
                 panel_table='tissue.tdp_panelassignment',
                 panel_name='panel',
