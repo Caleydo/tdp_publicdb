@@ -259,17 +259,6 @@ export default function (registry) {
     });
     /// #endif
 
-    /// #if include('dTiles')
-    registry.push('dTilesSearchProvider', 'gene', function () {
-      return import('./providers/SearchProvider').then((s) => s.GeneSearchProvider);
-    }, {
-      factory: 'createGene',
-      idType: 'Ensembl',
-      name: 'Genes'
-    });
-    /// #endif
-  }
-
 
   registry.push('tdpView', 'celllinedb_cellline', function () {
     return import('./views/CelllineList');
@@ -414,17 +403,6 @@ export default function (registry) {
       description: 'Shows all information from the database',
       topics: [plain, 'information']
     });
-
-
-    /// #if include('dTiles')
-    registry.push('dTilesSearchProvider', idType.toLowerCase(), function () {
-      return import('./providers/SearchProvider').then((s) => s.GeneSearchProvider);
-    }, {
-      factory: 'create' + idType,
-      idType,
-      name: label
-    });
-    /// #endif
 
 
     registry.push('idTypeDetector', plain + 'IDTypeDetector', function () {
@@ -748,45 +726,6 @@ export default function (registry) {
       'primaryType': idType
     });
   });
-
-
-  /// #if include('ordino')
-  registry.push('tdpTour', 'ordinoWelcomeTour', function () {return import('./tours').then((t) => t.WelcomeTour);}, {
-    factory: 'createTour',
-    name: 'Ordino Welcome Tour',
-    description: 'Learn the basic features of Ordino in a short welcome tour.',
-    preview() {
-      return import('./assets/previews/expression.jpg'); // TODO update preview image
-    },
-    multiPage: true,
-    level: 'beginner',
-    canJumpAround: false
-  });
-
-  registry.push('tdpTour', 'ordinoStartMenuTour', function () {return import('./tours').then((t) => t.StartMenuTour);}, {
-    factory: 'createTour',
-    name: 'Overview of Start Menu',
-    description: 'This tour provides an overview of the Ordino start menu.',
-    preview() {
-      return import('./assets/previews/expression.jpg'); // TODO update preview image
-    },
-    multiPage: true,
-    level: 'beginner',
-    canJumpAround: false
-  });
-
-  registry.push('tdpTour', 'ordinoAddColumnToGeneListTour', function () {return import('./tours').then((t) => t.AddColumnToGeneListTour);}, {
-    factory: 'createTour',
-    name: 'Adding Data Columns',
-    description: 'Learn how to add data columns to rankings in Ordino.',
-    preview() {
-      return import('./assets/previews/expression.jpg'); // TODO update preview image
-    },
-    multiPage: true,
-    level: 'beginner',
-    canJumpAround: false
-  });
-  /// #endif
 
   registry.push(EP_PHOVEA_CORE_LOCALE, 'tdpPublicDBLocaleEN', function () {
     return import('./locales/en/tdp.json').then(PluginRegistry.getInstance().asResource);
