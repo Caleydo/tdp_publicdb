@@ -258,7 +258,7 @@ export default function (registry) {
       idType: 'Ensembl'
     });
     /// #endif
-
+  }
 
   registry.push('tdpView', 'celllinedb_cellline', function () {
     return import('./views/CelllineList');
