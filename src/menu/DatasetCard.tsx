@@ -91,15 +91,15 @@ export default function DatasetCard({name, icon, tabs, startViewId, dataSource, 
 
   return (
     <div className={`ordino-dataset ${cssClass || ''}`}>
-      <h4 className="text-left mb-3"><i className={'mr-2 ordino-icon-2 ' + icon}></i>{name}</h4>
+      <h4 className="text-start mb-3"><i className={'me-2 ordino-icon-2 ' + icon}></i>{name}</h4>
       <div className="card shadow-sm">
         <div className="card-body p-3">
           <ul className="nav nav-pills session-tab">
             {tabs.map((tab, index) => {
               return (
                 <li key={tab.id} className="nav-item" role="presentation">
-                  <a className={`nav-link ${(index === activeTabIndex) ? 'active' : ''}`} id={`dataset-tab-${tab.id}-${id}`} data-toggle="tab" href={`#dataset-panel-${tab.id}-${id}`} role="tab" aria-controls={`dataset-panel-${tab.id}-${id}`} aria-selected={(index === activeTabIndex)}>
-                    <i className={'mr-2 ' + tab.icon}></i>{tab.name}
+                  <a className={`nav-link ${(index === activeTabIndex) ? 'active' : ''}`} id={`dataset-tab-${tab.id}-${id}`} data-bs-toggle="tab" href={`#dataset-panel-${tab.id}-${id}`} role="tab" aria-controls={`dataset-panel-${tab.id}-${id}`} aria-selected={(index === activeTabIndex)}>
+                    <i className={'me-2 ' + tab.icon}></i>{tab.name}
                   </a>
                 </li>
               );

@@ -32,7 +32,7 @@ export function DatasetSearchBox({ placeholder, dataSource, onOpen, onSaveAsName
         return (React.createElement(React.Fragment, null,
             React.createElement(Highlighter, { searchWords: [ctx.inputValue], autoEscape: true, textToHighlight: option.text }),
             option.text !== option.id &&
-                React.createElement("span", { className: "small text-muted ml-1" }, option.id)));
+                React.createElement("span", { className: "small text-muted ms-1" }, option.id)));
     };
     React.useEffect(() => {
         setInputValue('');
@@ -55,7 +55,7 @@ export function DatasetSearchBox({ placeholder, dataSource, onOpen, onSaveAsName
         }
     };
     return (React.createElement("div", { className: "row ordino-dataset-searchbox" },
-        React.createElement("div", { className: "col" },
+        React.createElement("div", { className: "col-sm-10" },
             React.createElement(AsyncPaginate, { onPaste: onPaste, placeholder: placeholder, noOptionsMessage: () => 'No results found', isMulti: true, loadOptions: loadOptions, inputValue: inputValue, value: items, onChange: setItems, onInputChange: setInputValue, formatOptionLabel: formatOptionLabel, hideSelectedOptions: true, getOptionLabel: (option) => option.text, getOptionValue: (option) => option.id, captureMenuScroll: false, additional: {
                     page: 0 // page starts from index 0
                 }, components: { Input }, styles: {
@@ -104,8 +104,9 @@ export function DatasetSearchBox({ placeholder, dataSource, onOpen, onSaveAsName
                         }
                     })
                 } })),
-        React.createElement("button", { className: "mr-2 pt-1 pb-1 btn btn-secondary", disabled: !(validItems === null || validItems === void 0 ? void 0 : validItems.length), onClick: (event) => onOpen(event, searchResults) }, "Open"),
-        React.createElement("button", { className: "mr-2 pt-1 pb-1 btn btn-outline-secondary", disabled: !(validItems === null || validItems === void 0 ? void 0 : validItems.length), onClick: () => onSaveAsNamedSet(validItems) }, "Save as set")));
+        React.createElement("div", { className: "col-sm-2" },
+            React.createElement("button", { className: "me-2 pt-1 pb-1 btn btn-secondary", disabled: !(validItems === null || validItems === void 0 ? void 0 : validItems.length), onClick: (event) => onOpen(event, searchResults) }, "Open"),
+            React.createElement("button", { className: "me-2 pt-1 pb-1 btn btn-outline-secondary", disabled: !(validItems === null || validItems === void 0 ? void 0 : validItems.length), onClick: () => onSaveAsNamedSet(validItems) }, "Save as set"))));
 }
 function Input(props) {
     const { onPaste } = props.selectProps;

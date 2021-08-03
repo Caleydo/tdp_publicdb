@@ -61,7 +61,7 @@ export function DatasetSearchBox({placeholder, dataSource, onOpen, onSaveAsNamed
                     textToHighlight={option.text}
                 />
                 {option.text !== option.id &&
-                    <span className="small text-muted ml-1">{option.id}</span>}
+                    <span className="small text-muted ms-1">{option.id}</span>}
             </>
         );
     };
@@ -93,7 +93,7 @@ export function DatasetSearchBox({placeholder, dataSource, onOpen, onSaveAsNamed
 
     return (
         <div className="row ordino-dataset-searchbox">
-            <div className="col">
+           <div className="col-sm-10">
                 <AsyncPaginate
                     onPaste={onPaste}
                     placeholder={placeholder}
@@ -163,8 +163,10 @@ export function DatasetSearchBox({placeholder, dataSource, onOpen, onSaveAsNamed
                     }}
                 />
             </div>
-            <button className="mr-2 pt-1 pb-1 btn btn-secondary" disabled={!validItems?.length} onClick={(event) => onOpen(event, searchResults)}>Open</button>
-            <button className="mr-2 pt-1 pb-1 btn btn-outline-secondary" disabled={!validItems?.length} onClick={() => onSaveAsNamedSet(validItems)}>Save as set</button>
+            <div className="col-sm-2">
+                <button className="me-2 pt-1 pb-1 btn btn-secondary" disabled={!validItems?.length} onClick={(event) => onOpen(event, searchResults)}>Open</button>
+                <button className="me-2 pt-1 pb-1 btn btn-outline-secondary" disabled={!validItems?.length} onClick={() => onSaveAsNamedSet(validItems)}>Save as set</button>
+            </div>
         </div>
     );
 }
