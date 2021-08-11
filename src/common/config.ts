@@ -61,10 +61,11 @@ export const cellline: IDataSourceConfig = {
   schema: 'cellline',
   tableName: 'cellline',
   entityName: 'celllinename',
+  dbViewSuffix: `_items`,
   base: 'cellline',
   columns: (find: (column: string) => IServerColumn) => {
     return [
-      ColumnDescUtils.stringCol('id', {label: 'Name', width: 120}),
+      ColumnDescUtils.stringCol('id', {label: 'Name'}),
       //categoricalCol('species', desc.columns.species.categories, 'Species', true),
       ColumnDescUtils.categoricalCol('tumortype', find('tumortype').categories, {label: 'Tumor Type'}),
       ColumnDescUtils.categoricalCol('organ', find('organ').categories, {label: 'Organ'}),
@@ -96,10 +97,11 @@ export const tissue: IDataSourceConfig = {
   schema: 'tissue',
   tableName: 'tissue',
   entityName: 'tissuename',
+  dbViewSuffix: `_items`,
   base: 'tissue',
   columns: (find: (column: string) => IServerColumn) => {
     return [
-      ColumnDescUtils.stringCol('id', {label: 'Name', width: 120}),
+      ColumnDescUtils.stringCol('id', {label: 'Name'}),
       //categoricalCol('species', desc.columns.species.categories, 'Species', true),
       ColumnDescUtils.categoricalCol('tumortype', find('tumortype').categories, {label: 'Tumor Type'}),
       ColumnDescUtils.categoricalCol('organ', find('organ').categories, {label: 'Organ'}),
@@ -165,12 +167,13 @@ export const gene: IDataSourceConfig = {
   schema: 'public',
   tableName: 'gene',
   entityName: 'ensg',
+  dbViewSuffix: `_gene_items`,
   base: 'gene',
   columns: (find: (column: string) => IServerColumn) => {
     const maxRegion = Math.max(find('seqregionstart').max, find('seqregionend').max);
     return [
-      ColumnDescUtils.stringCol('symbol', {label: 'Symbol', width: 100}),
-      ColumnDescUtils.stringCol('id', {label: 'Ensembl', width: 120}),
+      ColumnDescUtils.stringCol('symbol', {label: 'Symbol', width: 120}),
+      ColumnDescUtils.stringCol('id', {label: 'Ensembl'}),
       ColumnDescUtils.stringCol('name', {label: 'Name'}),
       ColumnDescUtils.categoricalCol('chromosome', toChromosomes(find('chromosome').categories), {label: 'Chromosome'}),
       ColumnDescUtils.categoricalCol('biotype', find('biotype').categories, {label: 'Biotype'}),

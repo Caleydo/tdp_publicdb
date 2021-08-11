@@ -3,45 +3,55 @@
  * Copyright (c) The Caleydo Team. All rights reserved.
  * Licensed under the new BSD license, available at http://caleydo.org/license
  **************************************************************************** */
+import { EP_ORDINO_STARTMENU_DATASET_SECTION } from 'ordino';
 import { EP_PHOVEA_CORE_LOCALE, PluginRegistry } from 'phovea_core';
+import { gene, cellline, tissue } from './common/config';
 //register all extensions in the registry following the given pattern
 export default function (registry) {
     //registry.push('extension-type', 'extension-id', function() { return import('./src/extension_impl'); }, {});
     // generator-phovea:begin
     /// #if include('ordino')
-    registry.push('ordinoStartMenuSubSection', 'celllinedb_genes_start', function () {
-        return import('./menu/GeneSubSection');
-    }, {
-        factory: 'new GeneSubSection',
-        name: 'Genes',
-        viewId: 'celllinedb_start',
-        idType: 'Ensembl',
-        selection: 'none',
-        description: 'Gene Sets',
-        cssClass: 'gene-entry-point'
-    });
-    registry.push('ordinoStartMenuSubSection', 'bioinfodb_tissue_start', function () {
-        return import('./menu/SampleSubSection');
-    }, {
-        factory: 'new SampleSubSection',
-        name: 'Tissues',
-        viewId: 'bioinfodb_tissue_start',
-        idType: 'Tissue',
-        selection: 'none',
-        sampleType: 'Tissue',
-        description: 'Tissue Panels',
-        cssClass: 'tissue-entry-point'
-    });
-    registry.push('ordinoStartMenuSubSection', 'celllinedb_cellline_start', function () {
-        return import('./menu/SampleSubSection');
-    }, {
-        factory: 'new SampleSubSection',
+    registry.push(EP_ORDINO_STARTMENU_DATASET_SECTION, 'celllinedb_cellline_start', () => import('./menu/DatasetCard'), {
         name: 'Cell Lines',
-        viewId: 'celllinedb_cellline',
+        icon: 'fas fa-database',
+        cssClass: 'cellline-dataset',
+        startViewId: 'celllinedb_cellline',
         idType: 'Cellline',
-        selection: 'none',
+        dataSource: cellline,
+        tokenSeparators: /[\r\n;,]+/gm,
         description: 'Cell Line Panels',
-        cssClass: 'cellline-entry-point'
+        tabs: [
+            { id: 'human', name: 'Human', icon: 'fas fa-male' },
+            { id: 'mouse', name: 'Mouse', icon: 'fas fa-fw mouse-icon' }
+        ]
+    });
+    registry.push(EP_ORDINO_STARTMENU_DATASET_SECTION, 'bioinfodb_tissue_start', () => import('./menu/DatasetCard'), {
+        name: 'Tissue Samples',
+        icon: 'fas fa-database',
+        cssClass: 'tissue-dataset',
+        startViewId: 'bioinfodb_tissue_start',
+        idType: 'Tissue',
+        dataSource: tissue,
+        tokenSeparators: /[\r\n;,]+/gm,
+        description: 'Tissue Panels',
+        tabs: [
+            { id: 'human', name: 'Human', icon: 'fas fa-male' },
+            { id: 'mouse', name: 'Mouse', icon: 'fas fa-fw mouse-icon' }
+        ]
+    });
+    registry.push(EP_ORDINO_STARTMENU_DATASET_SECTION, 'celllinedb_genes_start', () => import('./menu/DatasetCard'), {
+        name: 'Genes',
+        icon: 'fas fa-database',
+        cssClass: 'genes-dataset',
+        startViewId: 'celllinedb_start',
+        idType: 'Ensembl',
+        dataSource: gene,
+        tokenSeparators: /[\s;,]+/gm,
+        description: 'Gene Sets',
+        tabs: [
+            { id: 'human', name: 'Human', icon: 'fas fa-male' },
+            { id: 'mouse', name: 'Mouse', icon: 'fas fa-fw mouse-icon' }
+        ]
     });
     /// #endif
     //gene views
@@ -686,6 +696,10 @@ export default function (registry) {
     registry.push('tdpTour', 'ordinoWelcomeTour', function () { return import('./tours').then((t) => t.WelcomeTour); }, {
         factory: 'createTour',
         name: 'Ordino Welcome Tour',
+        description: 'Learn the basic features of Ordino in a short welcome tour.',
+        preview() {
+            return import('./assets/previews/expression.jpg'); // TODO update preview image
+        },
         multiPage: true,
         level: 'beginner',
         canJumpAround: false
@@ -693,6 +707,10 @@ export default function (registry) {
     registry.push('tdpTour', 'ordinoStartMenuTour', function () { return import('./tours').then((t) => t.StartMenuTour); }, {
         factory: 'createTour',
         name: 'Overview of Start Menu',
+        description: 'This tour provides an overview of the Ordino start menu.',
+        preview() {
+            return import('./assets/previews/expression.jpg'); // TODO update preview image
+        },
         multiPage: true,
         level: 'beginner',
         canJumpAround: false
@@ -700,6 +718,10 @@ export default function (registry) {
     registry.push('tdpTour', 'ordinoAddColumnToGeneListTour', function () { return import('./tours').then((t) => t.AddColumnToGeneListTour); }, {
         factory: 'createTour',
         name: 'Adding Data Columns',
+        description: 'Learn how to add data columns to rankings in Ordino.',
+        preview() {
+            return import('./assets/previews/expression.jpg'); // TODO update preview image
+        },
         multiPage: true,
         level: 'beginner',
         canJumpAround: false

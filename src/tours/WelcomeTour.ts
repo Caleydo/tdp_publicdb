@@ -15,29 +15,39 @@ export class WelcomeTour {
         </p>`,
       },
       {
-        selector: '.homeButton > a',
-        html: `To start an analysis, click on the <i>'Home'</i> button. Subsequently, you can define the list of entities you want to work with`,
+        selector: 'ul[data-header="mainMenu"] > li:first-child > a',
+        html: `To start an analysis, click on the <i>'Datasets'</i> tab. Subsequently, you can define the list of entities you want to work with`,
         placement: 'centered',
         preAction: () => {
-          if (document.querySelector('.startMenu.open')) {
-            TourUtils.click('.startMenu .closeButton');
+          const datasetTab = document.querySelector('ul[data-header="mainMenu"] > li:nth-child(1)') as HTMLElement;
+          if (!datasetTab.classList.contains('active')) {
+            datasetTab.querySelector('a').classList.add('hover');
           }
+
         },
-        postAction: TourUtils.clickSelector
+        postAction: () => {
+          const datasetTab = document.querySelector('ul[data-header="mainMenu"] > li:nth-child(1)') as HTMLElement;
+          if (!datasetTab.classList.contains('active')) {
+            datasetTab.querySelector('a').classList.remove('hover');
+            datasetTab.querySelector('a').click();
+          }
+          return TourUtils.waitFor('.ordino-dataset.genes-dataset').then(() => TourUtils.click('#ordino_dataset_tab > .ordino-scrollspy-nav > a:nth-child(3)'));
+        },
+        pageBreak: 'manual'
       },
       {
-        selector: '.startMenu.open .speciesSelector .nav-tabs',
-        html: `<p>You can choose between the three entity types <i>'Cell Lines'</i>, <i>'Genes'</i>, and <i>'Tissues'</i>.</p> <p>In this example we will work with a list of genes</p>`,
+        selector: '.ordino-dataset.genes-dataset > .card',
+        html: `<p>You can choose between the three entity types <i>'Cell Lines'</i>, <i>'Tissue Samples'</i>, and <i>'Genes'</i>.</p> <p>In this example we will work with a list of genes</p>`,
         placement: 'centered',
-        preAction: TourUtils.waitForSelector,
-        postAction: () => TourUtils.click('#entityType_gene-entry-point')
+        preAction: () => TourUtils.waitFor('#ordino_dataset_tab > .ordino-scrollspy-container .genes-dataset > .card').then(() => TourUtils.wait(600)),
+        postAction: () => TourUtils.click('.ordino-dataset.genes-dataset .session-tab > li:first-child')
       },
       {
-        selector: '#entity_gene-entry-point .predefined-named-sets',
+        selector: '.ordino-dataset.genes-dataset .dataset-entry',
         html: `Of the available predefined gene sets, we open a list of known cancer genes, called <i>'Cancer Gene Census'</i>`,
         placement: 'centered',
         postAction: () => {
-          return TourUtils.waitFor('#entity_gene-entry-point .predefined-named-sets a[title^="Name: Cancer Gene Census"]').then(TourUtils.click);
+          return TourUtils.waitFor('.ordino-dataset.genes-dataset .dataset-entry button[title^="Name: Cancer Gene Census"]').then(TourUtils.click);
         },
         pageBreak: 'manual'
       },
@@ -45,7 +55,7 @@ export class WelcomeTour {
         selector: '.le.le-multi.lineup-engine',
         placement: 'centered',
         html: `The information is presented in a tabular format. Additionally to the gene ID, a set of columns containing some basic information is shown by default.`,
-        preAction: () => TourUtils.waitFor('.le.le-multi.lineup-engine', Infinity).then(() => TourUtils.wait(500))
+        preAction: () => TourUtils.waitFor('.le.le-multi.lineup-engine', Infinity).then(() => TourUtils.wait(600))
       },
       {
         selector: '.lu-side-panel-wrapper button.fa-plus',
@@ -63,14 +73,14 @@ export class WelcomeTour {
         }
       },
       {
-        selector: '.modal.in .form-group > .select2',
+        selector: '.modal.show .col > .select2',
         html: `Here we select <i>'Strand'</i> &hellip;`,
         placement: 'centered',
-        preAction: () => TourUtils.waitFor('.modal.in').then(() => TourUtils.wait(250)),
-        postAction: () => TourUtils.setValueAndTrigger('.form-group > select', 'strand', 'change')
+        preAction: () => TourUtils.waitFor('.modal.show').then(() => TourUtils.wait(250)),
+        postAction: () => TourUtils.setValueAndTrigger('.col > select', 'strand', 'change')
       },
       {
-        selector: '.modal.in .modal-footer button[type=submit]',
+        selector: '.modal.show .modal-footer button[type=submit]',
         html: `&hellip; and click <i>'Add'</i>`,
         placement: 'centered',
         postAction: TourUtils.clickSelector
@@ -94,24 +104,24 @@ export class WelcomeTour {
         }
       },
       {
-        selector: '.modal.in .form-group > .select3',
+        selector: '.modal.show .col > .select3',
         placement: 'centered',
-        preAction: () => TourUtils.waitFor('.modal.in').then(() => TourUtils.wait(250)),
+        preAction: () => TourUtils.waitFor('.modal.show').then(() => TourUtils.wait(250)),
         html: `We select the cell lines <i>'HCC-827'</i> and <i>'BT-20'</i>.`,
         postAction: () => {
-          TourUtils.setValueAndTrigger('.modal.in .select3 input.select2-search__field', 'HCC-827;BT-20;', 'input');
+          TourUtils.setValueAndTrigger('.modal.show .select3 input.select2-search__field', 'HCC-827;BT-20;', 'input');
         }
       },
       {
-        selector: '.modal.in .form-group > .select2',
+        selector: '.modal.show .col > .select2',
         placement: 'centered',
         html: `As data type, we choose <i>'Relative Copy Number'</i>`,
         postAction: () => {
-          TourUtils.setValueAndTrigger('.form-group > select', 'copy_number-relativecopynumber', 'change');
+          TourUtils.setValueAndTrigger('.col > select', 'copy_number-relativecopynumber', 'change');
         }
       },
       {
-        selector: '.modal.in .modal-footer button[type=submit]',
+        selector: '.modal.show .modal-footer button[type=submit]',
         html: `Finally, click <i>'Add'</i>`,
         placement: 'centered',
         postAction: TourUtils.clickSelector

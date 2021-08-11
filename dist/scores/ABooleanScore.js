@@ -22,7 +22,7 @@ export class ABooleanScore {
      */
     createDesc() {
         const label = this.label;
-        return ColumnDescUtils.booleanCol(this.columnName, { label, width: 50 });
+        return ColumnDescUtils.booleanCol(this.columnName, { label, width: 60 });
     }
     /**
      * computes the actual scores and returns a Promise of IScoreRow rows
