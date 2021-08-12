@@ -60,7 +60,7 @@ export class GeneSignatureScore implements IScore<number> {
    */
   createDesc() {
     const label = this.options.description;
-    return ColumnDescUtils.numberCol('_gene_signature', -5, 5, {label, width: 100});
+    return ColumnDescUtils.numberCol('_gene_signature', -5, 5, {label});
   }
 
   /**
