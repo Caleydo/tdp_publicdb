@@ -38,7 +38,7 @@ export class StartMenuTour {
           if (!datasetTab.classList.contains('active')) {
             datasetTab.querySelector('a').click();
           }
-          const selector = '#ordino_dataset_tab > .ordino-scrollspy-nav > a:nth-child(1)'
+          const selector = '#ordino_dataset_tab > .ordino-scrollspy-nav > a:nth-child(1)';
           await TourUtils.waitFor(selector);
           TourUtils.click(selector);
           await TourUtils.wait(600); // wait until the page scrolls to top
@@ -115,7 +115,7 @@ export class StartMenuTour {
 
           // scroll to top
           const selector = '#ordino_sessions_tab > .ordino-scrollspy-nav > a:nth-child(1)';
-          TourUtils.waitFor(selector)
+          TourUtils.waitFor(selector);
           TourUtils.click(selector);
           await TourUtils.wait(600); // wait until the page scrolls to top
         }
