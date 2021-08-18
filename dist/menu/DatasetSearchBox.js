@@ -55,7 +55,7 @@ export function DatasetSearchBox({ placeholder, dataSource, onOpen, onSaveAsName
         }
     };
     return (React.createElement("div", { className: "row ordino-dataset-searchbox" },
-        React.createElement("div", { className: "col-sm-10" },
+        React.createElement("div", { className: "col col-xs-7 col-md-8 col-xxl-10" },
             React.createElement(AsyncPaginate, { onPaste: onPaste, placeholder: placeholder, noOptionsMessage: () => 'No results found', isMulti: true, loadOptions: loadOptions, inputValue: inputValue, value: items, onChange: setItems, onInputChange: setInputValue, formatOptionLabel: formatOptionLabel, hideSelectedOptions: true, getOptionLabel: (option) => option.text, getOptionValue: (option) => option.id, captureMenuScroll: false, additional: {
                     page: 0 // page starts from index 0
                 }, components: { Input }, styles: {
@@ -104,7 +104,7 @@ export function DatasetSearchBox({ placeholder, dataSource, onOpen, onSaveAsName
                         }
                     })
                 } })),
-        React.createElement("div", { className: "col-sm-2" },
+        React.createElement("div", { className: "col d-flex" },
             React.createElement("button", { className: "me-2 pt-1 pb-1 btn btn-secondary", disabled: !(validItems === null || validItems === void 0 ? void 0 : validItems.length), onClick: (event) => onOpen(event, searchResults) }, "Open"),
             React.createElement("button", { className: "me-2 pt-1 pb-1 btn btn-outline-secondary", disabled: !(validItems === null || validItems === void 0 ? void 0 : validItems.length), onClick: () => onSaveAsNamedSet(validItems) }, "Save as set"))));
 }
