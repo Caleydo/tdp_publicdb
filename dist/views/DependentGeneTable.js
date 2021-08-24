@@ -2,7 +2,7 @@
  * Created by Marc Streit on 28.07.2016.
  */
 import { ARankingView, AdapterUtils } from 'tdp_core';
-import { SpeciesUtils } from 'tdp_gene';
+import { SpeciesUtils, Species } from 'tdp_gene';
 import { gene, expression, copyNumber, mutation, chooseDataSource } from '../common/config';
 import { ParameterFormIds, FORM_GENE_FILTER } from '../common/forms';
 import { FormElementType } from 'tdp_core';
@@ -16,6 +16,10 @@ export class DependentGeneTable extends ARankingView {
             additionalScoreParameter: gene,
             itemName: gene.name,
             itemIDType: gene.idType,
+            subType: {
+                key: Species.SPECIES_SESSION_KEY,
+                value: SpeciesUtils.getSelectedSpecies()
+            },
             enableAddingColumnGrouping: true
         }, Object.assign(options, { enableSidePanel: 'collapsed' })));
         this.dataType = dataType;

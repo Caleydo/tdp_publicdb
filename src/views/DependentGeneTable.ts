@@ -4,7 +4,7 @@
 
 import {ARankingView, AdapterUtils, IARankingViewOptions} from 'tdp_core';
 import {IScoreRow} from 'tdp_core';
-import {SpeciesUtils} from 'tdp_gene';
+import {SpeciesUtils, Species} from 'tdp_gene';
 import {
   gene,
   expression,
@@ -29,6 +29,10 @@ export class DependentGeneTable extends ARankingView {
       additionalScoreParameter: gene,
       itemName: gene.name,
       itemIDType: gene.idType,
+      subType: {
+        key: Species.SPECIES_SESSION_KEY,
+        value: SpeciesUtils.getSelectedSpecies()
+      },
       enableAddingColumnGrouping: true
     }, Object.assign(options, { enableSidePanel: 'collapsed' })));
 
