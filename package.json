@@ -101,9 +101,9 @@
     "react-select": "^4.1.0",
     "react-select-async-paginate": "^0.5.3",
     "react-virtualized": "^9.22.3",
-    "tdp_gene": "github:Caleydo/tdp_gene#develop"
+    "tdp_gene": "github:Caleydo/tdp_gene#vstoiber/BS_5_1"
   },
   "optionalDependencies": {
-    "ordino": "github:Caleydo/ordino#develop"
+    "ordino": "github:Caleydo/ordino#vstoiber/BS_5_1"
   }
 }
