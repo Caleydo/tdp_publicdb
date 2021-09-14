@@ -2,7 +2,7 @@
  * Created by sam on 16.02.2017.
  */
 
-import {FormElementType, IFormSelectDesc} from 'tdp_core';
+import {FormElementType, IFormElementDesc} from 'tdp_core';
 import {ACoExpression, ICoExprDataFormatRow, IGeneOption} from 'tdp_gene';
 import {SpeciesUtils} from 'tdp_gene';
 import {expression, IDataSourceConfig, IDataSubtypeConfig} from '../common/config';
@@ -16,7 +16,7 @@ import {LineupUtils} from 'tdp_core';
 
 export class CoExpression extends ACoExpression {
 
-  protected getParameterFormDescs(): IFormSelectDesc[] {
+  protected getParameterFormDescs(): IFormElementDesc[] {
     const base = super.getParameterFormDescs();
     base.splice(1, 0, FORM_DATA_SOURCE);
     base.push({

@@ -1,10 +1,10 @@
 /**
  * Created by sam on 16.02.2017.
  */
-import { IFormSelectDesc } from 'tdp_core';
+import { IFormElementDesc } from 'tdp_core';
 import { AOncoPrint, IDataFormatRow, ISample } from 'tdp_gene';
 export declare class OncoPrint extends AOncoPrint {
-    protected getParameterFormDescs(): IFormSelectDesc[];
+    protected getParameterFormDescs(): IFormElementDesc[];
     private get dataSource();
     protected loadSampleList(): Promise<ISample[]>;
     protected getSampleIdType(): import("phovea_core").IDType;
