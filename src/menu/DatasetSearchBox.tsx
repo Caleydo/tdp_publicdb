@@ -26,9 +26,11 @@ interface IDatasetSearchBoxProps {
      */
     params?: IDatasetSearchBoxParams;
     tokenSeparators?: RegExp;
+    testId?: string;
 }
 
-export function DatasetSearchBox({placeholder, dataSource, onOpen, onSaveAsNamedSet, params = {}, tokenSeparators = /[\s;,]+/gm}: IDatasetSearchBoxProps) {
+export function DatasetSearchBox({placeholder, dataSource, onOpen, onSaveAsNamedSet, params = {}, tokenSeparators = /[\s;,]+/gm, testId: parentTestId}: IDatasetSearchBoxProps) {
+    const testId = `${parentTestId}-searchbox`;
     const [items, setItems] = React.useState<IDatasetSearchOption[]>([]);
     const [inputValue, setInputValue] = React.useState('');
     const loadOptions = async (query: string, _, {page}: {page: number}) => {
@@ -162,8 +164,8 @@ export function DatasetSearchBox({placeholder, dataSource, onOpen, onSaveAsNamed
                         })
                     }}
                 />
-                <button className="btn btn-secondary" disabled={!validItems?.length} onClick={(event) => onOpen(event, searchResults)}>Open</button>
-                <button className="btn btn-outline-secondary" disabled={!validItems?.length} onClick={() => onSaveAsNamedSet(validItems)}>Save as set</button>
+                <button className="btn btn-secondary" disabled={!validItems?.length} onClick={(event) => onOpen(event, searchResults)} data-testid={`${testId}-open-button`}>Open</button>
+                <button className="btn btn-outline-secondary" disabled={!validItems?.length} onClick={() => onSaveAsNamedSet(validItems)} data-testid={`${testId}-save-button`}>Save as set</button>
         </div>
     );
 }

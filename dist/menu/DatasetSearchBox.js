@@ -4,7 +4,8 @@ import { components } from 'react-select';
 import { AsyncPaginate } from 'react-select-async-paginate';
 import Highlighter from 'react-highlight-words';
 import { GeneUtils } from '../common';
-export function DatasetSearchBox({ placeholder, dataSource, onOpen, onSaveAsNamedSet, params = {}, tokenSeparators = /[\s;,]+/gm }) {
+export function DatasetSearchBox({ placeholder, dataSource, onOpen, onSaveAsNamedSet, params = {}, tokenSeparators = /[\s;,]+/gm, testId: parentTestId }) {
+    const testId = `${parentTestId}-searchbox`;
     const [items, setItems] = React.useState([]);
     const [inputValue, setInputValue] = React.useState('');
     const loadOptions = async (query, _, { page }) => {
@@ -103,8 +104,8 @@ export function DatasetSearchBox({ placeholder, dataSource, onOpen, onSaveAsName
                     }
                 })
             } }),
-        React.createElement("button", { className: "btn btn-secondary", disabled: !(validItems === null || validItems === void 0 ? void 0 : validItems.length), onClick: (event) => onOpen(event, searchResults) }, "Open"),
-        React.createElement("button", { className: "btn btn-outline-secondary", disabled: !(validItems === null || validItems === void 0 ? void 0 : validItems.length), onClick: () => onSaveAsNamedSet(validItems) }, "Save as set")));
+        React.createElement("button", { className: "btn btn-secondary", disabled: !(validItems === null || validItems === void 0 ? void 0 : validItems.length), onClick: (event) => onOpen(event, searchResults), "data-testid": `${testId}-open-button` }, "Open"),
+        React.createElement("button", { className: "btn btn-outline-secondary", disabled: !(validItems === null || validItems === void 0 ? void 0 : validItems.length), onClick: () => onSaveAsNamedSet(validItems), "data-testid": `${testId}-save-button` }, "Save as set")));
 }
 function Input(props) {
     const { onPaste } = props.selectProps;

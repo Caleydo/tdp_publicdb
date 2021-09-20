@@ -7,6 +7,7 @@ import {Species, SpeciesUtils, IACommonListOptions} from 'tdp_gene';
 import {IPublicDbStartMenuDatasetSectionDesc} from '../base/extensions';
 
 export default function DatasetCard({name, icon, tabs, startViewId, dataSource, cssClass, tokenSeparators}: IPublicDbStartMenuDatasetSectionDesc) {
+  const testId = `datasetstab-${cssClass}`;
   const {app} = React.useContext(OrdinoContext);
   const [dirtyNamedSets, setDirtyNamedSets] = React.useState(false);
 
@@ -98,7 +99,7 @@ export default function DatasetCard({name, icon, tabs, startViewId, dataSource, 
             {tabs.map((tab, index) => {
               return (
                 <li key={tab.id} className="nav-item" role="presentation">
-                  <a className={`nav-link ${(index === activeTabIndex) ? 'active' : ''}`} id={`dataset-tab-${tab.id}-${id}`} data-bs-toggle="tab" href={`#dataset-panel-${tab.id}-${id}`} role="tab" aria-controls={`dataset-panel-${tab.id}-${id}`} aria-selected={(index === activeTabIndex)}>
+                  <a className={`nav-link ${(index === activeTabIndex) ? 'active' : ''}`} id={`dataset-tab-${tab.id}-${id}`} data-bs-toggle="tab" href={`#dataset-panel-${tab.id}-${id}`} role="tab" aria-controls={`dataset-panel-${tab.id}-${id}`} aria-selected={(index === activeTabIndex)} data-testid={`${testId}-${tab.id}-link`}>
                     <i className={'me-2 ' + tab.icon}></i>{tab.name}
                   </a>
                 </li>
@@ -117,6 +118,7 @@ export default function DatasetCard({name, icon, tabs, startViewId, dataSource, 
                     onSaveAsNamedSet={(items: IdTextPair[]) => onSaveAsNamedSet(items, {key: Species.SPECIES_SESSION_KEY, value: tab.id})}
                     onOpen={(event, searchResult: Partial<IACommonListOptions>) => {onOpenSearchResult(event, {searchResult, species: tab.id});}}
                     {...separators}
+                    testId={`${testId}-${tab.id}`}
                   />
                   <div className="row mt-4">
                     <NamedSetList
@@ -124,18 +126,21 @@ export default function DatasetCard({name, icon, tabs, startViewId, dataSource, 
                       headerText="Predefined Sets"
                       onOpen={(event, namedSet: INamedSet) => {onOpenNamedSet(event, {namedSet, species: tab.id});}}
                       status={predefinedNamedSets.status}
-                      value={filterValue(predefinedNamedSets.value, tab.id)} />
+                      value={filterValue(predefinedNamedSets.value, tab.id)}
+                      testId={`${testId}-${tab.id}-predefined`} />
                     <NamedSetList
                       headerIcon="fas fa-user"
                       headerText="My Sets" onOpen={(event, namedSet: INamedSet) => {onOpenNamedSet(event, {namedSet, species: tab.id});}}
                       status={myNamedSets.status}
-                      value={filterValue(myNamedSets.value, tab.id)} />
+                      value={filterValue(myNamedSets.value, tab.id)}
+                      testId={`${testId}-${tab.id}-my`} />
                     <NamedSetList
                       headerIcon="fas fa-users"
                       headerText="Other Sets"
                       onOpen={(event, namedSet: INamedSet) => {onOpenNamedSet(event, {namedSet, species: tab.id});}}
                       status={publicNamedSets.status}
-                      value={filterValue(publicNamedSets.value, tab.id)} />
+                      value={filterValue(publicNamedSets.value, tab.id)}
+                      testId={`${testId}-${tab.id}-other`} />
                   </div>
                 </div>
               );

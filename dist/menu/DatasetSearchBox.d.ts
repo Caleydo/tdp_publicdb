@@ -15,6 +15,7 @@ interface IDatasetSearchBoxProps {
      */
     params?: IDatasetSearchBoxParams;
     tokenSeparators?: RegExp;
+    testId?: string;
 }
-export declare function DatasetSearchBox({ placeholder, dataSource, onOpen, onSaveAsNamedSet, params, tokenSeparators }: IDatasetSearchBoxProps): JSX.Element;
+export declare function DatasetSearchBox({ placeholder, dataSource, onOpen, onSaveAsNamedSet, params, tokenSeparators, testId: parentTestId }: IDatasetSearchBoxProps): JSX.Element;
 export {};
