@@ -31,6 +31,9 @@ export class DependentSampleTable extends ARankingView {
         key: Species.SPECIES_SESSION_KEY,
         value: SpeciesUtils.getSelectedSpecies()
       },
+      panelAddColumnBtnOptions: {
+        btnClass: 'btn-primary'
+      }
     }, Object.assign(options, { enableSidePanel: 'collapsed' })));
   }
 
