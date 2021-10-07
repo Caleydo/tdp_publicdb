@@ -3,20 +3,18 @@
  */
 
 
-import {IFormSelectDesc} from 'tdp_core';
+import {IFormElementDesc, RestBaseUtils, IParams, LineupUtils} from 'tdp_core';
 import {AOncoPrint, IDataFormatRow, ISample} from 'tdp_gene';
 import {SpeciesUtils} from 'tdp_gene';
 import {ParameterFormIds, FORM_TISSUE_OR_CELLLINE_FILTER, FORM_DATA_SOURCE} from '../common/forms';
 import {ViewUtils} from './ViewUtils';
 import {IDataSourceConfig} from '../common/config';
 import {IDTypeManager} from 'phovea_core';
-import {RestBaseUtils, IParams} from 'tdp_core';
-import {LineupUtils} from 'tdp_core';
 
 export class OncoPrint extends AOncoPrint {
 
 
-  protected getParameterFormDescs(): IFormSelectDesc[] {
+  protected getParameterFormDescs(): IFormElementDesc[] {
     return [
       FORM_DATA_SOURCE,
       FORM_TISSUE_OR_CELLLINE_FILTER

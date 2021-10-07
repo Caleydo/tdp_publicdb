@@ -30,7 +30,7 @@ export abstract class ABooleanScore implements IScore<number> {
    */
   createDesc() {
     const label = this.label;
-    return ColumnDescUtils.booleanCol(this.columnName, {label, width: 50});
+    return ColumnDescUtils.booleanCol(this.columnName, {label, width: 60});
   }
 
   /**

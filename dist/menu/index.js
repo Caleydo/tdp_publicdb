@@ -1,3 +1,2 @@
-export * from './GeneSubSection';
-export * from './SampleSubSection';
+export * from './DatasetCard';
 //# sourceMappingURL=index.js.map
