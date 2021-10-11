@@ -451,7 +451,6 @@ export const FORM_CELLLINE_FILTER = generateFilter(cellline);
 export const FORM_TISSUE_OR_CELLLINE_FILTER = {
     type: FormElementType.MAP,
     label: `Filter:`,
-    // @ts-ignore
     testid: `parameter-form_${FormElementType.MAP}`,
     id: 'filter',
     useSession: true,

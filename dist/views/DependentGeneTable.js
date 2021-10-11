@@ -27,9 +27,6 @@ export class DependentGeneTable extends ARankingView {
     }
     getParameterFormDescs() {
         const parentTestId = `${this.context.desc.id}_parameter`;
-        console.log('context', this.context.desc.id);
-        console.log('dataType', this.dataType.testid);
-        console.log('dataSub', this.dataSubType.id);
         return super.getParameterFormDescs().concat([
             {
                 type: FormElementType.SELECT,
