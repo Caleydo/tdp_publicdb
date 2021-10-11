@@ -46,7 +46,7 @@ export class AnnotationColumn extends ABooleanScore implements IScore<number> {
    * @returns {Promise<IAnnotationColumnParam>} a promise for the parameter
    */
   static async createAnnotationColumn(pluginDesc: IPluginDesc) {
-    const dialog = new FormDialog(I18nextManager.getInstance().i18n.t('tdp:publicdb.addAnnotation'), I18nextManager.getInstance().i18n.t('tdp:publicdb.add'));
+    const dialog = new FormDialog(I18nextManager.getInstance().i18n.t('tdp:publicdb.addAnnotation'), I18nextManager.getInstance().i18n.t('tdp:publicdb.add'), `form-dialog-${pluginDesc.id}`);
 
     const dataSource = chooseDataSource(pluginDesc);
 

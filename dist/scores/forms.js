@@ -10,6 +10,7 @@ const COMMON_AGGREGATED_SCORE_FORM_ELEMENTS = [
         type: FormElementType.SELECT,
         label: 'Aggregation',
         id: ParameterFormIds.AGGREGATION,
+        testid: `parameter-form_${ParameterFormIds.AGGREGATION}`,
         dependsOn: [ParameterFormIds.DATA_HIERARCHICAL_SUBTYPE],
         required: true,
         options: {
@@ -32,6 +33,7 @@ const COMMON_AGGREGATED_SCORE_FORM_ELEMENTS = [
         type: FormElementType.SELECT,
         label: 'Comparison Operator',
         id: ParameterFormIds.COMPARISON_OPERATOR,
+        testid: `parameter-form_${ParameterFormIds.COMPARISON_OPERATOR}`,
         dependsOn: [ParameterFormIds.DATA_HIERARCHICAL_SUBTYPE, ParameterFormIds.AGGREGATION],
         required: true,
         showIf: (dependantValues) => {
@@ -51,6 +53,7 @@ const COMMON_AGGREGATED_SCORE_FORM_ELEMENTS = [
         type: FormElementType.INPUT_TEXT,
         label: 'Comparison Value',
         id: ParameterFormIds.COMPARISON_VALUE,
+        testid: `parameter-form_${ParameterFormIds.COMPARISON_VALUE}`,
         required: true,
         dependsOn: [ParameterFormIds.DATA_HIERARCHICAL_SUBTYPE, ParameterFormIds.AGGREGATION],
         showIf: (dependantValues) => {
@@ -75,6 +78,7 @@ export const FORM_AGGREGATED_SCORE = [
         type: FormElementType.SELECT2_MULTIPLE,
         label: 'Copy Number Class is',
         id: ParameterFormIds.COMPARISON_CN,
+        testid: `parameter-form_${ParameterFormIds.COMPARISON_CN}`,
         attributes: {
             style: 'width:100%'
         },
@@ -104,13 +108,16 @@ const FORM_COMPUTE_BASE = {
     useSession: true
 };
 export const FORCE_COMPUTE_ALL_GENES = Object.assign({
-    label: 'Compute only for selected subset of genes and not for all'
+    label: 'Compute only for selected subset of genes and not for all',
+    testid: 'parameter_form_compute_all_genes',
 }, FORM_COMPUTE_BASE);
 export const FORCE_COMPUTE_ALL_TISSUE = Object.assign({
-    label: 'Compute only for selected subset of tissues and not for all'
+    label: 'Compute only for selected subset of tissues and not for all',
+    testid: 'parameter_form_compute_all_tissue',
 }, FORM_COMPUTE_BASE);
 export const FORCE_COMPUTE_ALL_CELLLINE = Object.assign({
-    label: 'Compute only for selected subset of cell lines and not for all'
+    label: 'Compute only for selected subset of cell lines and not for all',
+    testid: 'parameter_form_compute_all_cellline',
 }, FORM_COMPUTE_BASE);
 export const FORM_SINGLE_SCORE = [
     FORM_DATA_HIERARCHICAL_SUBTYPE

@@ -40,11 +40,16 @@ export class DependentGeneTable extends ARankingView {
   }
 
   protected getParameterFormDescs() {
+    const parentTestId = `${this.context.desc.id}_parameter`;
+    console.log('context', this.context.desc.id);
+    console.log('dataType', this.dataType.testid);
+    console.log('dataSub', this.dataSubType.id);
     return super.getParameterFormDescs().concat([
       {
         type: FormElementType.SELECT,
         label: 'Data Subtype',
         id: ParameterFormIds.DATA_SUBTYPE,
+        testid: `parameter-form_${ParameterFormIds.DATA_SUBTYPE}`,
         options: {
           optionsData: this.dataType.dataSubtypes.map((ds) => {
             return {name: ds.name, value: ds.id, data: ds};
@@ -52,7 +57,7 @@ export class DependentGeneTable extends ARankingView {
         },
         useSession: true
       },
-      FORM_GENE_FILTER
+      Object.assign(FORM_GENE_FILTER, {testid: parentTestId})
     ]);
   }
 

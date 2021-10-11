@@ -88,7 +88,7 @@ export class GeneSignatureScore implements IScore<number> {
    * @returns {Promise<ISignatureColumnParam>} a promise for the parameter.
    */
   static async createGeneSignatureDialog(pluginDesc: IPluginDesc) {
-    const dialog = new FormDialog(I18nextManager.getInstance().i18n.t('tdp:publicdb.addGeneSignature'), I18nextManager.getInstance().i18n.t('tdp:publicdb.add'));
+    const dialog = new FormDialog(I18nextManager.getInstance().i18n.t('tdp:publicdb.addGeneSignature'), I18nextManager.getInstance().i18n.t('tdp:publicdb.add'), `form-dialog-${pluginDesc.id}`);
     const data = await AppContext.getInstance().getAPIJSON(`/tdp/db/publicdb/gene_signature`);
     const optionsData = data.map((item: IGeneSignature) => ({text: `${item.id} (${item.description})`, id: item.id}));
 

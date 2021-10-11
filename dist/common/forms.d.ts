@@ -44,6 +44,7 @@ export declare const FORM_GENE_NAME: {
     type: FormElementType;
     label: string;
     id: string;
+    testid: string;
     attributes: {
         style: string;
     };
@@ -61,6 +62,7 @@ export declare const FORM_DRUG_NAME: {
     type: FormElementType;
     label: string;
     id: string;
+    testid: string;
     attributes: {
         style: string;
     };
@@ -78,6 +80,7 @@ export declare const FORM_TISSUE_NAME: {
     type: FormElementType;
     label: string;
     id: string;
+    testid: string;
     attributes: {
         style: string;
     };
@@ -100,6 +103,7 @@ export declare const FORM_CELLLINE_NAME: {
     type: FormElementType;
     label: string;
     id: string;
+    testid: string;
     attributes: {
         style: string;
     };
@@ -122,6 +126,7 @@ export declare const FORM_GENE_FILTER: {
     type: FormElementType;
     label: string;
     id: string;
+    testid: string;
     useSession: boolean;
     options: {
         sessionKeySuffix: string;
@@ -138,6 +143,7 @@ export declare const FORM_GENE_FILTER: {
             options: {
                 placeholder: string;
             };
+            testid?: undefined;
             search?: undefined;
             validate?: undefined;
             format?: undefined;
@@ -154,6 +160,7 @@ export declare const FORM_GENE_FILTER: {
             options: {
                 placeholder: string;
             };
+            testid?: undefined;
             search?: undefined;
             validate?: undefined;
             format?: undefined;
@@ -167,6 +174,7 @@ export declare const FORM_GENE_FILTER: {
                 placeholder: string;
             };
             return?: undefined;
+            testid?: undefined;
             search?: undefined;
             validate?: undefined;
             format?: undefined;
@@ -174,6 +182,7 @@ export declare const FORM_GENE_FILTER: {
             name: string;
             value: string;
             type: FormElementType;
+            testid: string;
             multiple: boolean;
             search: typeof GeneUtils.searchGene;
             validate: typeof GeneUtils.validateGene;
@@ -191,6 +200,7 @@ export declare const FORM_TISSUE_FILTER: {
     type: FormElementType;
     label: string;
     id: string;
+    testid: string;
     useSession: boolean;
     options: {
         sessionKeySuffix: string;
@@ -204,6 +214,7 @@ export declare const FORM_CELLLINE_FILTER: {
     type: FormElementType;
     label: string;
     id: string;
+    testid: string;
     useSession: boolean;
     options: {
         sessionKeySuffix: string;
@@ -219,6 +230,7 @@ export declare const FORM_DATA_HIERARCHICAL_SUBTYPE: {
     type: FormElementType;
     label: string;
     id: string;
+    testid: string;
     attributes: {
         style: string;
     };
@@ -230,6 +242,7 @@ export declare const FORM_DATA_HIERARCHICAL_SUBTYPE: {
             children: {
                 id: string;
                 text: string;
+                testid: string;
             }[];
         }[];
     };
@@ -239,6 +252,7 @@ export declare const FORM_DATA_HIERARCHICAL_SUBTYPE_AGGREGATED_SELECTION: {
     type: FormElementType;
     label: string;
     id: string;
+    testid: string;
     attributes: {
         style: string;
     };
@@ -250,6 +264,7 @@ export declare const FORM_DATA_HIERARCHICAL_SUBTYPE_AGGREGATED_SELECTION: {
             children: {
                 id: string;
                 text: string;
+                testid: string;
             }[];
         }[];
     };
@@ -259,6 +274,7 @@ export declare const FORM_DATA_HIERARCHICAL_SUBTYPE_DEPLETION: {
     type: FormElementType;
     label: string;
     id: string;
+    testid: string;
     attributes: {
         style: string;
     };
@@ -276,6 +292,7 @@ export declare const FORM_DATA_HIERARCHICAL_SUBTYPE_AGGREGATED_SELECTION_DEPLETI
     type: FormElementType;
     label: string;
     id: string;
+    testid: string;
     attributes: {
         style: string;
     };
@@ -293,6 +310,7 @@ export declare const FORM_DATA_HIERARCHICAL_SUBTYPE_DRUG: {
     type: FormElementType;
     label: string;
     id: string;
+    testid: string;
     attributes: {
         style: string;
     };
@@ -310,6 +328,7 @@ export declare const DRUG_SCREEN_SCORE_FORM_ELEMENT: {
     type: FormElementType;
     label: string;
     id: string;
+    testid: string;
     attributes: {
         style: string;
     };

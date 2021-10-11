@@ -218,6 +218,7 @@ export interface IDataTypeConfig {
   tableName: string;
   query: string;
   dataSubtypes: IDataSubtypeConfig[];
+  testid?: string;
 }
 
 /**
@@ -235,6 +236,7 @@ export interface IDataSubtypeConfig {
   id: string;
   name: string;
   type: string;
+  testid?: string;
   useForAggregation: string;
 
   //type: 'cat';
@@ -248,6 +250,7 @@ export interface IDataSubtypeConfig {
 
 export const expression: IDataTypeConfig = {
   id: 'expression',
+  testid: 'expression',
   name: 'Expression',
   tableName: 'expression',
   query: 'expression_score',

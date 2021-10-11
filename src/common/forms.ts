@@ -68,6 +68,7 @@ export const FORM_GENE_NAME = {
   type: FormElementType.SELECT3,
   label: 'Gene Symbol',
   id: ParameterFormIds.GENE_SYMBOL,
+  testid: `parameter-form_${ParameterFormIds.GENE_SYMBOL}`,
   attributes: {
     style: 'width:100%'
   },
@@ -86,6 +87,7 @@ export const FORM_DRUG_NAME = {
   type: FormElementType.SELECT3,
   label: 'Drug Name',
   id: ParameterFormIds.DRUG_NAME,
+  testid: `parameter-form_${ParameterFormIds.DRUG_NAME}`,
   attributes: {
     style: 'width:100%'
   },
@@ -105,6 +107,7 @@ function generateNameLookup(d: IDataSourceConfig, field: string) {
     type: FormElementType.SELECT3,
     label: d.name,
     id: field,
+    testid: `parameter-form_${field}`,
     attributes: {
       style: 'width:100%'
     },
@@ -131,6 +134,7 @@ export const FORM_GENE_FILTER = {
   type: FormElementType.MAP,
   label: `Filter:`,
   id: 'filter',
+  testid: `parameter-form_filter`,
   useSession: true,
   options: {
     sessionKeySuffix: `-${SpeciesUtils.getSelectedSpecies()}-gene`,
@@ -198,6 +202,7 @@ export const FORM_GENE_FILTER = {
       name: 'Gene Symbol',
       value: 'ensg',
       type: FormElementType.SELECT3,
+      testid: `parameter-form_${ParameterFormIds.GENE_SYMBOL}`,
       multiple: true,
       search: GeneUtils.searchGene,
       validate: GeneUtils.validateGene,
@@ -362,6 +367,7 @@ function generateFilter(d: IDataSourceConfig) {
     type: FormElementType.MAP,
     label: `Filter:`,
     id: 'filter',
+    testid: `parameter-form_${FormElementType.MAP}`,
     useSession: true,
     options: {
       sessionKeySuffix: `-${SpeciesUtils.getSelectedSpecies()}-${d.base}`,
@@ -431,6 +437,7 @@ function generateFilter(d: IDataSourceConfig) {
         name: d.name,
         value: d.entityName,
         type: FormElementType.SELECT3,
+        testid: `parameter-form_${d.name}`,
         multiple: true,
         search: (query, page, pageSize) => GeneUtils.search(d, query, page, pageSize),
         validate: (query) => GeneUtils.validate(d, query),
@@ -447,6 +454,7 @@ export const FORM_DATA_SOURCE: IFormSelectDesc = {
   type: FormElementType.SELECT,
   label: 'Data Source',
   id: ParameterFormIds.DATA_SOURCE,
+  testid: `parameter-form_${ParameterFormIds.DATA_SOURCE}`,
   required: true,
   options: {
     optionsData: dataSources.map((ds) => {
@@ -461,6 +469,7 @@ export const FORM_CELLLINE_FILTER = generateFilter(cellline);
 export const FORM_TISSUE_OR_CELLLINE_FILTER: IFormMapDesc = {
   type: FormElementType.MAP,
   label: `Filter:`,
+  testid: `parameter-form_${FormElementType.MAP}`,
   id: 'filter',
   useSession: true,
   dependsOn: [ParameterFormIds.DATA_SOURCE],
@@ -495,6 +504,7 @@ export const FORM_COLOR_CODING: IFormSelectDesc = {
   type: FormElementType.SELECT,
   label: 'Color Coding',
   id: ParameterFormIds.COLOR_CODING,
+  testid: `parameter-form_${ParameterFormIds.COLOR_CODING}`,
   dependsOn: [ParameterFormIds.DATA_SOURCE],
   options: {
     optionsData: (depends) => {
@@ -534,6 +544,7 @@ export const FORM_DATA_HIERARCHICAL_SUBTYPE = {
   type: FormElementType.SELECT2_MULTIPLE,
   label: 'Data Type',
   id: ParameterFormIds.DATA_HIERARCHICAL_SUBTYPE,
+  testid: `parameter-form_${ParameterFormIds.DATA_HIERARCHICAL_SUBTYPE}`,
   attributes: {
     style: 'width:100%'
   },
@@ -545,7 +556,8 @@ export const FORM_DATA_HIERARCHICAL_SUBTYPE = {
         text: ds.name,
         children: ds.dataSubtypes.map((dss) => ({
           id: `${ds.id}-${dss.id}`,
-          text: dss.name
+          text: dss.name,
+          testid: dss.testid
         }))
       };
     })
@@ -557,6 +569,7 @@ export const FORM_DATA_HIERARCHICAL_SUBTYPE_AGGREGATED_SELECTION = {
   type: FormElementType.SELECT2,
   label: 'Data Type',
   id: ParameterFormIds.DATA_HIERARCHICAL_SUBTYPE,
+  testid: `parameter-form_${ParameterFormIds.DATA_HIERARCHICAL_SUBTYPE}`,
   attributes: {
     style: 'width:100%'
   },
@@ -569,7 +582,8 @@ export const FORM_DATA_HIERARCHICAL_SUBTYPE_AGGREGATED_SELECTION = {
         //string types can't be aggregated
         children: ds.dataSubtypes.filter((d) => d.type !== dataSubtypes.string).map((dss) => ({
           id: `${ds.id}-${dss.id}`,
-          text: dss.name
+          text: dss.name,
+          testid: `parameter-form_${ParameterFormIds.DATA_HIERARCHICAL_SUBTYPE}-option-${ds.id}-${dss.id}`
         }))
       };
     })
@@ -582,6 +596,7 @@ export const FORM_DATA_HIERARCHICAL_SUBTYPE_DEPLETION = {
   type: FormElementType.SELECT2_MULTIPLE,
   label: 'Data Type',
   id: ParameterFormIds.DATA_HIERARCHICAL_SUBTYPE,
+  testid: `parameter-form_${ParameterFormIds.DATA_HIERARCHICAL_SUBTYPE}`,
   attributes: {
     style: 'width:100%'
   },
@@ -600,6 +615,7 @@ export const FORM_DATA_HIERARCHICAL_SUBTYPE_AGGREGATED_SELECTION_DEPLETION = {
   type: FormElementType.SELECT2,
   label: 'Data Type',
   id: ParameterFormIds.DATA_HIERARCHICAL_SUBTYPE,
+  testid: `parameter-form_${ParameterFormIds.DATA_HIERARCHICAL_SUBTYPE}`,
   attributes: {
     style: 'width:100%'
   },
@@ -618,6 +634,7 @@ export const FORM_DATA_HIERARCHICAL_SUBTYPE_DRUG = {
   type: FormElementType.SELECT2_MULTIPLE,
   label: 'Data Type',
   id: ParameterFormIds.DATA_HIERARCHICAL_SUBTYPE,
+  testid: `parameter-form_${ParameterFormIds.DATA_HIERARCHICAL_SUBTYPE}`,
   attributes: {
     style: 'width:100%'
   },
@@ -636,6 +653,7 @@ export const DRUG_SCREEN_SCORE_FORM_ELEMENT = {
   type: FormElementType.SELECT3,
   label: 'Drug Screen',
   id: ParameterFormIds.SCREEN_TYPE,
+  testid: `parameter-form_${ParameterFormIds.SCREEN_TYPE}`,
   attributes: {
     style: 'width:100%'
   },

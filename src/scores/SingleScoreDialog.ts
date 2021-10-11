@@ -26,7 +26,7 @@ export class SingleScoreDialog {
 
   static createScoreDialog(pluginDesc: IPluginDesc, extra: any, formDesc: IFormElementDesc[], countHint?: number) {
     const {primary, opposite} = ScoreUtils.selectDataSources(pluginDesc);
-    const dialog = new FormDialog(I18nextManager.getInstance().i18n.t('tdp:publicdb.addSingle'), I18nextManager.getInstance().i18n.t('tdp:publicdb.add'));
+    const dialog = new FormDialog(I18nextManager.getInstance().i18n.t('tdp:publicdb.addSingle'), I18nextManager.getInstance().i18n.t('tdp:publicdb.add'), `form-dialog-${pluginDesc.id}`);
     switch(opposite) {
       case gene:
         formDesc.unshift(enableMultiple(FORM_GENE_NAME));

@@ -3,6 +3,7 @@ export declare const FORM_AGGREGATED_SCORE: ({
     type: FormElementType;
     label: string;
     id: string;
+    testid: string;
     attributes: {
         style: string;
     };
@@ -14,6 +15,7 @@ export declare const FORM_AGGREGATED_SCORE: ({
             children: {
                 id: string;
                 text: string;
+                testid: string;
             }[];
         }[];
     };
@@ -22,6 +24,7 @@ export declare const FORM_AGGREGATED_SCORE: ({
     type: FormElementType;
     label: string;
     id: string;
+    testid: string;
     dependsOn: string[];
     required: boolean;
     options: {
@@ -39,6 +42,7 @@ export declare const FORM_AGGREGATED_SCORE: ({
     type: FormElementType;
     label: string;
     id: string;
+    testid: string;
     dependsOn: string[];
     required: boolean;
     showIf: (dependantValues: any) => boolean;
@@ -56,6 +60,7 @@ export declare const FORM_AGGREGATED_SCORE: ({
     type: FormElementType;
     label: string;
     id: string;
+    testid: string;
     required: boolean;
     dependsOn: string[];
     showIf: (dependantValues: any) => boolean;
@@ -69,6 +74,7 @@ export declare const FORM_AGGREGATED_SCORE: ({
     type: FormElementType;
     label: string;
     id: string;
+    testid: string;
     attributes: {
         style: string;
     };
@@ -85,6 +91,7 @@ export declare const FORM_AGGREGATED_SCORE: ({
 })[];
 export declare const FORCE_COMPUTE_ALL_GENES: {
     label: string;
+    testid: string;
 } & {
     type: FormElementType;
     id: string;
@@ -96,6 +103,7 @@ export declare const FORCE_COMPUTE_ALL_GENES: {
 };
 export declare const FORCE_COMPUTE_ALL_TISSUE: {
     label: string;
+    testid: string;
 } & {
     type: FormElementType;
     id: string;
@@ -107,6 +115,7 @@ export declare const FORCE_COMPUTE_ALL_TISSUE: {
 };
 export declare const FORCE_COMPUTE_ALL_CELLLINE: {
     label: string;
+    testid: string;
 } & {
     type: FormElementType;
     id: string;
@@ -120,6 +129,7 @@ export declare const FORM_SINGLE_SCORE: {
     type: FormElementType;
     label: string;
     id: string;
+    testid: string;
     attributes: {
         style: string;
     };
@@ -131,6 +141,7 @@ export declare const FORM_SINGLE_SCORE: {
             children: {
                 id: string;
                 text: string;
+                testid: string;
             }[];
         }[];
     };
@@ -140,6 +151,7 @@ export declare const FORM_AGGREGATED_SCORE_DEPLETION: ({
     type: FormElementType;
     label: string;
     id: string;
+    testid: string;
     attributes: {
         style: string;
     };
@@ -156,6 +168,7 @@ export declare const FORM_AGGREGATED_SCORE_DEPLETION: ({
     type: FormElementType;
     label: string;
     id: string;
+    testid: string;
     dependsOn: string[];
     required: boolean;
     options: {
@@ -173,6 +186,7 @@ export declare const FORM_AGGREGATED_SCORE_DEPLETION: ({
     type: FormElementType;
     label: string;
     id: string;
+    testid: string;
     dependsOn: string[];
     required: boolean;
     showIf: (dependantValues: any) => boolean;
@@ -190,6 +204,7 @@ export declare const FORM_AGGREGATED_SCORE_DEPLETION: ({
     type: FormElementType;
     label: string;
     id: string;
+    testid: string;
     required: boolean;
     dependsOn: string[];
     showIf: (dependantValues: any) => boolean;
@@ -204,6 +219,7 @@ export declare const FORM_SINGLE_SCORE_DEPLETION: {
     type: FormElementType;
     label: string;
     id: string;
+    testid: string;
     attributes: {
         style: string;
     };
@@ -221,6 +237,7 @@ export declare const FORM_SINGLE_SCORE_DRUG: ({
     type: FormElementType;
     label: string;
     id: string;
+    testid: string;
     attributes: {
         style: string;
     };
@@ -237,6 +254,7 @@ export declare const FORM_SINGLE_SCORE_DRUG: ({
     type: FormElementType;
     label: string;
     id: string;
+    testid: string;
     attributes: {
         style: string;
     };

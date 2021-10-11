@@ -51,6 +51,7 @@ export interface IDataTypeConfig {
     tableName: string;
     query: string;
     dataSubtypes: IDataSubtypeConfig[];
+    testid?: string;
 }
 /**
  * list of possible types
@@ -65,6 +66,7 @@ export interface IDataSubtypeConfig {
     id: string;
     name: string;
     type: string;
+    testid?: string;
     useForAggregation: string;
     categories?: {
         label: string;

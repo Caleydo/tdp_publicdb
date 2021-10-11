@@ -169,6 +169,7 @@ export const dataSubtypes = {
 };
 export const expression = {
     id: 'expression',
+    testid: 'expression',
     name: 'Expression',
     tableName: 'expression',
     query: 'expression_score',
