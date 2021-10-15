@@ -33,7 +33,10 @@ export class DependentGeneTable extends ARankingView {
         key: Species.SPECIES_SESSION_KEY,
         value: SpeciesUtils.getSelectedSpecies()
       },
-      enableAddingColumnGrouping: true
+      enableAddingColumnGrouping: true,
+      panelAddColumnBtnOptions: {
+        btnClass: 'btn-primary'
+      }
     }, Object.assign(options, { enableSidePanel: 'collapsed' })));
 
     this.dataSource = chooseDataSource(context.desc);

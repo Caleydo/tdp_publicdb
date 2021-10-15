@@ -1,12 +1,12 @@
 /**
  * Created by Samuel Gratzl on 29.01.2016.
  */
-import { ISelection, IViewContext } from 'tdp_core';
+import { IARankingViewOptions, ISelection, IViewContext } from 'tdp_core';
 import { ARankingView, IAdditionalColumnDesc } from 'tdp_core';
 import { LocalDataProvider } from 'lineupjs';
 export declare class SimilarityView extends ARankingView {
     private loader;
-    constructor(context: IViewContext, selection: ISelection, parent: HTMLElement);
+    constructor(context: IViewContext, selection: ISelection, parent: HTMLElement, options?: Partial<IARankingViewOptions>);
     protected getParameterFormDescs(): import("tdp_core").IFormElementDesc[];
     get itemIDType(): import("phovea_core").IDType;
     private updateOptionsData;
