@@ -5,7 +5,7 @@ import { ParameterFormIds, FORM_DATA_HIERARCHICAL_SUBTYPE } from '../common/form
 import { ARankingView } from 'tdp_core';
 import { RestBaseUtils } from 'tdp_core';
 import { ViewUtils } from './ViewUtils';
-import { IDTypeManager } from 'phovea_core';
+import { IDTypeManager } from 'tdp_core';
 import { LineupUtils, AdapterUtils } from 'tdp_core';
 export class ACombinedDependentTable extends ARankingView {
     constructor(context, selection, parent, dataType, options = {}) {

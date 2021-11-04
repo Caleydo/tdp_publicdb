@@ -1,7 +1,7 @@
 /**
  * Created by Samuel Gratzl on 27.04.2016.
  */
-import { IPluginDesc } from 'phovea_core';
+import { IPluginDesc } from 'tdp_core';
 import { IDataSubtypeConfig, IDataSourceConfig } from '../common/config';
 import { IFormMultiMap } from 'tdp_core';
 export declare class ScoreUtils {

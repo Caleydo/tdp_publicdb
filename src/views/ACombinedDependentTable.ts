@@ -11,7 +11,7 @@ import {RestBaseUtils, IParams, IServerColumn} from 'tdp_core';
 import {IAdditionalColumnDesc} from 'tdp_core';
 import {ViewUtils} from './ViewUtils';
 import {IScoreRow} from 'tdp_core';
-import {IDTypeManager} from 'phovea_core';
+import {IDTypeManager} from 'tdp_core';
 import {LineupUtils, AdapterUtils} from 'tdp_core';
 
 

@@ -5,10 +5,10 @@
 import {IFormSelectDesc, IFormElementDesc} from 'tdp_core';
 import {AExpressionVsCopyNumber, ICopyNumberDataFormatRow} from 'tdp_gene';
 import {SpeciesUtils} from 'tdp_gene';
-import {Range} from 'phovea_core';
+import {Range} from 'tdp_core';
 import {expression, copyNumber, IDataSourceConfig} from '../common/config';
 import {ParameterFormIds, FORM_TISSUE_OR_CELLLINE_FILTER, FORM_DATA_SOURCE, FORM_COLOR_CODING} from '../common/forms';
-import {IDTypeManager} from 'phovea_core';
+import {IDTypeManager} from 'tdp_core';
 import {ViewUtils} from './ViewUtils';
 import {RestBaseUtils, IParams} from 'tdp_core';
 import {LineupUtils} from 'tdp_core';
