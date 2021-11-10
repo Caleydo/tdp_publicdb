@@ -4,7 +4,7 @@
 
 import {ARankingView, AdapterUtils, IARankingViewOptions} from 'tdp_core';
 import {IScoreRow} from 'tdp_core';
-import {SpeciesUtils} from 'tdp_gene';
+import {SpeciesUtils, Species} from 'tdp_gene';
 import {
   expression,
   copyNumber,
@@ -26,7 +26,14 @@ export class DependentSampleTable extends ARankingView {
     super(context, selection, parent, Object.assign({
       additionalScoreParameter: () => this.dataSource,
       itemName: () => this.dataSource.name,
-      enableAddingColumnGrouping: true
+      enableAddingColumnGrouping: true,
+      subType: {
+        key: Species.SPECIES_SESSION_KEY,
+        value: SpeciesUtils.getSelectedSpecies()
+      },
+      panelAddColumnBtnOptions: {
+        btnClass: 'btn-primary'
+      }
     }, Object.assign(options, { enableSidePanel: 'collapsed' })));
   }
 

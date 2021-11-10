@@ -2,7 +2,7 @@
  * Created by Marc Streit on 26.07.2016.
  */
 import { ARankingView, AdapterUtils } from 'tdp_core';
-import { SpeciesUtils } from 'tdp_gene';
+import { SpeciesUtils, Species } from 'tdp_gene';
 import { expression, copyNumber, mutation } from '../common/config';
 import { ParameterFormIds, FORM_DATA_SOURCE, FORM_TISSUE_OR_CELLLINE_FILTER } from '../common/forms';
 import { FormElementType } from 'tdp_core';
@@ -15,7 +15,14 @@ export class DependentSampleTable extends ARankingView {
         super(context, selection, parent, Object.assign({
             additionalScoreParameter: () => this.dataSource,
             itemName: () => this.dataSource.name,
-            enableAddingColumnGrouping: true
+            enableAddingColumnGrouping: true,
+            subType: {
+                key: Species.SPECIES_SESSION_KEY,
+                value: SpeciesUtils.getSelectedSpecies()
+            },
+            panelAddColumnBtnOptions: {
+                btnClass: 'btn-primary'
+            }
         }, Object.assign(options, { enableSidePanel: 'collapsed' })));
         this.dataType = dataType;
     }
