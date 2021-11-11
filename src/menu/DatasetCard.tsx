@@ -1,6 +1,6 @@
 import React from 'react';
-import {INamedSet, ENamedSetType, RestBaseUtils, RestStorageUtils, StoreUtils, IdTextPair} from 'tdp_core';
-import {NamedSetList, useAsync, OrdinoContext} from 'ordino';
+import {INamedSet, ENamedSetType, RestBaseUtils, RestStorageUtils, StoreUtils, IdTextPair, useAsync} from 'tdp_core';
+import {NamedSetList, OrdinoContext} from 'ordino';
 import {UserSession, UniqueIdManager, I18nextManager, IDTypeManager} from 'phovea_core';
 import {DatasetSearchBox} from './DatasetSearchBox';
 import {Species, SpeciesUtils, IACommonListOptions} from 'tdp_gene';
@@ -43,9 +43,9 @@ export default function DatasetCard({name, icon, tabs, startViewId, dataSource, 
     return () => RestStorageUtils.listNamedSets(dataSource.idType);
   }, [dataSource.idType, dirtyNamedSets]);
 
-  const predefinedNamedSets = useAsync(loadPredefinedSet);
+  const predefinedNamedSets = useAsync(loadPredefinedSet, []);
   const me = UserSession.getInstance().currentUserNameOrAnonymous();
-  const namedSets = useAsync(loadNamedSets);
+  const namedSets = useAsync(loadNamedSets, []);
   const myNamedSets = {...namedSets, ...{value: namedSets.value?.filter((d) => d.type === ENamedSetType.NAMEDSET && d.creator === me)}};
   const publicNamedSets = {...namedSets, ...{value: namedSets.value?.filter((d) => d.type === ENamedSetType.NAMEDSET && d.creator !== me)}};
   const filterValue = (value: INamedSet[], tab: string) => value?.filter((entry) => entry.subTypeValue === tab);
