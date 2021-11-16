@@ -1,2 +1,3 @@
 psycopg2==2.8.6
 -e git+https://github.com/datavisyn/tdp_core.git@develop#egg=tdp_core
+-e git+https://github.com/phovea/phovea_server.git@develop#egg=phovea_server
