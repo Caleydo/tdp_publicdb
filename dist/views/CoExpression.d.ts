@@ -1,11 +1,11 @@
 /**
  * Created by sam on 16.02.2017.
  */
-import { IFormSelectDesc } from 'tdp_core';
+import { IFormElementDesc } from 'tdp_core';
 import { ACoExpression, ICoExprDataFormatRow, IGeneOption } from 'tdp_gene';
 import { Range } from 'tdp_core';
 export declare class CoExpression extends ACoExpression {
-    protected getParameterFormDescs(): IFormSelectDesc[];
+    protected getParameterFormDescs(): IFormElementDesc[];
     private get dataSource();
     private get dataSubType();
     loadGeneList(ensgs: string[]): Promise<{

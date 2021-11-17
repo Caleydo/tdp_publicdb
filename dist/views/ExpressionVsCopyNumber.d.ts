@@ -1,11 +1,11 @@
 /**
  * Created by sam on 16.02.2017.
  */
-import { IFormSelectDesc } from 'tdp_core';
+import { IFormElementDesc } from 'tdp_core';
 import { AExpressionVsCopyNumber, ICopyNumberDataFormatRow } from 'tdp_gene';
 import { Range } from 'tdp_core';
 export declare class ExpressionVsCopyNumber extends AExpressionVsCopyNumber {
-    protected getParameterFormDescs(): IFormSelectDesc[];
+    protected getParameterFormDescs(): IFormElementDesc[];
     private get dataSource();
     loadFirstName(ensg: string): Promise<string>;
     loadData(ensg: string): Promise<ICopyNumberDataFormatRow[]>;
