@@ -5,13 +5,13 @@
 import {gene, tissue, cellline, MAX_FILTER_SCORE_ROWS_BEFORE_ALL, splitTypes, drug} from '../common/config';
 import {IFormElementDesc, FormElementType} from 'tdp_core';
 import {ParameterFormIds, FORM_GENE_NAME, FORM_TISSUE_NAME, FORM_CELLLINE_NAME, FORM_DRUG_NAME} from '../common/forms';
-import {I18nextManager, IPluginDesc} from 'phovea_core';
+import {I18nextManager, IPluginDesc} from 'tdp_core';
 import {
   FORCE_COMPUTE_ALL_CELLLINE, FORCE_COMPUTE_ALL_GENES, FORCE_COMPUTE_ALL_TISSUE,
   FORM_SINGLE_SCORE, FORM_SINGLE_SCORE_DEPLETION, FORM_SINGLE_SCORE_DRUG
 } from './forms';
 import {ScoreUtils} from './ScoreUtils';
-import {BaseUtils} from 'phovea_core';
+import {BaseUtils} from 'tdp_core';
 import {FormDialog} from 'tdp_core';
 import {IForm} from 'tdp_core';
 

@@ -6,7 +6,7 @@ import { IScore } from 'tdp_core';
 import { ICommonScoreParam } from './AScore';
 import { IParams } from 'tdp_core';
 import { AAggregatedScore } from './AAggregatedScore';
-import { IPluginDesc } from 'phovea_core';
+import { IPluginDesc } from 'tdp_core';
 import { AFrequencyScore } from './AFrequencyScore';
 interface IAggregatedScoreParam extends ICommonScoreParam {
     aggregation: string;
