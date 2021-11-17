@@ -2,7 +2,7 @@
  * Created by sam on 16.02.2017.
  */
 
-import {IFormSelectDesc} from 'tdp_core';
+import {IFormSelectDesc, IFormElementDesc} from 'tdp_core';
 import {AExpressionVsCopyNumber, ICopyNumberDataFormatRow} from 'tdp_gene';
 import {SpeciesUtils} from 'tdp_gene';
 import {Range} from 'tdp_core';
@@ -15,7 +15,7 @@ import {LineupUtils} from 'tdp_core';
 
 export class ExpressionVsCopyNumber extends AExpressionVsCopyNumber {
 
-  protected getParameterFormDescs(): IFormSelectDesc[] {
+  protected getParameterFormDescs(): IFormElementDesc[] {
     const base = super.getParameterFormDescs();
     base.unshift(FORM_DATA_SOURCE);
     base.push(FORM_COLOR_CODING);

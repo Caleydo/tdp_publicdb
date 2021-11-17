@@ -4,7 +4,7 @@
 
 import {SpeciesUtils} from 'tdp_gene';
 import {FormSubtype} from 'tdp_gene';
-import {FormElementType, IFormElement, IFormSelectOption} from 'tdp_core';
+import {FormElementType, IFormElement, IFormSelectOption, IFormSelectDesc, IFormMapDesc} from 'tdp_core';
 import {ValueCache} from 'tdp_core';
 import {gene, IDataSourceConfig, tissue, cellline, dataSources, dataTypes, dataSubtypes, depletion, drugScreen} from './config';
 import {RestStorageUtils} from 'tdp_core';
@@ -443,7 +443,7 @@ function generateFilter(d: IDataSourceConfig) {
   };
 }
 
-export const FORM_DATA_SOURCE = {
+export const FORM_DATA_SOURCE: IFormSelectDesc = {
   type: FormElementType.SELECT,
   label: 'Data Source',
   id: ParameterFormIds.DATA_SOURCE,
@@ -458,7 +458,7 @@ export const FORM_DATA_SOURCE = {
 
 export const FORM_TISSUE_FILTER = generateFilter(tissue);
 export const FORM_CELLLINE_FILTER = generateFilter(cellline);
-export const FORM_TISSUE_OR_CELLLINE_FILTER = {
+export const FORM_TISSUE_OR_CELLLINE_FILTER: IFormMapDesc = {
   type: FormElementType.MAP,
   label: `Filter:`,
   id: 'filter',
@@ -491,7 +491,7 @@ export const FORM_TISSUE_OR_CELLLINE_FILTER = {
   }
 };
 
-export const FORM_COLOR_CODING = {
+export const FORM_COLOR_CODING: IFormSelectDesc = {
   type: FormElementType.SELECT,
   label: 'Color Coding',
   id: ParameterFormIds.COLOR_CODING,
