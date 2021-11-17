@@ -2,8 +2,8 @@
  * Created by sam on 06.03.2017.
  */
 
-import {RangeLike} from 'phovea_core';
-import {IDTypeManager, IDType} from 'phovea_core';
+import {RangeLike} from 'tdp_core';
+import {IDTypeManager, IDType} from 'tdp_core';
 import {SpeciesUtils} from 'tdp_gene';
 import {IDataSourceConfig, MAX_FILTER_SCORE_ROWS_BEFORE_ALL} from '../common/config';
 import {FieldUtils} from 'tdp_gene';

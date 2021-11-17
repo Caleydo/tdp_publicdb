@@ -6,7 +6,7 @@ import { dataSubtypes, MAX_FILTER_SCORE_ROWS_BEFORE_ALL } from '../common/config
 import { ScoreUtils } from './ScoreUtils';
 import { AScore } from './AScore';
 import { FieldUtils } from 'tdp_gene';
-import { IDTypeManager } from 'phovea_core';
+import { IDTypeManager } from 'tdp_core';
 import { RestBaseUtils } from 'tdp_core';
 import { LineupUtils } from 'tdp_core';
 export class AAggregatedScore extends AScore {

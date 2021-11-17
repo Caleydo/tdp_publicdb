@@ -1,5 +1,5 @@
 import {IScore, IScoreRow} from 'tdp_core';
-import {IDTypeManager} from 'phovea_core';
+import {IDTypeManager} from 'tdp_core';
 import {ColumnDescUtils} from 'tdp_core';
 import {RestBaseUtils} from 'tdp_core';
 import {IDataSourceConfig} from '../common/config';
