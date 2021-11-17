@@ -92,9 +92,9 @@ export function DatasetSearchBox({placeholder, dataSource, onOpen, onSaveAsNamed
     };
 
     return (
-        <div className="row ordino-dataset-searchbox">
-           <div className="col-sm-10">
+        <div className="hstack gap-3 ordino-dataset-searchbox">
                 <AsyncPaginate
+                    className="flex-fill"
                     onPaste={onPaste}
                     placeholder={placeholder}
                     noOptionsMessage={() => 'No results found'}
@@ -162,11 +162,8 @@ export function DatasetSearchBox({placeholder, dataSource, onOpen, onSaveAsNamed
                         })
                     }}
                 />
-            </div>
-            <div className="col-sm-2">
-                <button className="me-2 pt-1 pb-1 btn btn-secondary" disabled={!validItems?.length} onClick={(event) => onOpen(event, searchResults)}>Open</button>
-                <button className="me-2 pt-1 pb-1 btn btn-outline-secondary" disabled={!validItems?.length} onClick={() => onSaveAsNamedSet(validItems)}>Save as set</button>
-            </div>
+                <button className="btn btn-secondary" disabled={!validItems?.length} onClick={(event) => onOpen(event, searchResults)}>Open</button>
+                <button className="btn btn-outline-secondary" disabled={!validItems?.length} onClick={() => onSaveAsNamedSet(validItems)}>Save as set</button>
         </div>
     );
 }

@@ -33,12 +33,15 @@ export class StartMenuTour {
         selector: 'ul[data-header="mainMenu"] > li:first-child > a',
         html: `In the first tab, you can start a new analysis by selecting a dataset.`,
         placement: 'centered',
-        preAction: () => {
+        preAction: async () => {
           const datasetTab = document.querySelector('ul[data-header="mainMenu"] > li:nth-child(1)') as HTMLElement;
-          if (datasetTab.classList.contains('active')) {
-            return;
+          if (!datasetTab.classList.contains('active')) {
+            datasetTab.querySelector('a').click();
           }
-          datasetTab.querySelector('a').click();
+          const selector = '#ordino_dataset_tab > .ordino-scrollspy-nav > a:nth-child(1)';
+          await TourUtils.waitFor(selector);
+          TourUtils.click(selector);
+          await TourUtils.wait(600); // wait until the page scrolls to top
         },
         pageBreak: 'manual'
       },
@@ -48,8 +51,6 @@ export class StartMenuTour {
         html: `<p>You can select cell lines, &hellip;</p>`,
         placement: 'centered',
         preAction: async () => {
-          TourUtils.click('#ordino_dataset_tab > .ordino-scrollspy-nav > a:nth-child(1)');
-          await TourUtils.wait(600);
           await TourUtils.waitFor('#ordino_dataset_tab > .ordino-scrollspy-container .cellline-dataset > .card');
         },
         postAction: () => TourUtils.click('#ordino_dataset_tab > .ordino-scrollspy-nav > a:nth-child(2)'),
@@ -106,11 +107,17 @@ export class StartMenuTour {
         selector: 'ul[data-header="mainMenu"] > li:nth-child(2) > a',
         html: `<p>The second tab allows you to manage your analysis sessions.</p>`,
         placement: 'centered',
-        preAction: () => {
+        preAction: async () => {
           const datasetTab = document.querySelector('ul[data-header="mainMenu"] > li:nth-child(2)') as HTMLElement;
           if (!datasetTab.classList.contains('active')) {
-            return datasetTab.querySelector('a').click();
+            datasetTab.querySelector('a').click();
           }
+
+          // scroll to top
+          const selector = '#ordino_sessions_tab > .ordino-scrollspy-nav > a:nth-child(1)';
+          TourUtils.waitFor(selector);
+          TourUtils.click(selector);
+          await TourUtils.wait(600); // wait until the page scrolls to top
         }
       },
 

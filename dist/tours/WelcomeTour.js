@@ -54,7 +54,7 @@ export class WelcomeTour {
                 preAction: () => TourUtils.waitFor('.le.le-multi.lineup-engine', Infinity).then(() => TourUtils.wait(600))
             },
             {
-                selector: '.lu-side-panel-wrapper button.fa-plus',
+                selector: '.lu-side-panel-wrapper .lu-adder > button',
                 html: `Additional columns can be added using the plus sign.`,
                 placement: 'centered',
                 postAction: TourUtils.clickSelector
@@ -92,7 +92,7 @@ export class WelcomeTour {
                 placement: 'centered',
                 html: `Now, we want to add two columns containing the copy number information of two specific cell lines. To do so, we open the <i>'Cell Line Score'</i> dialog`,
                 preAction: () => {
-                    TourUtils.click('.lu-side-panel-wrapper button.fa-plus');
+                    TourUtils.click('.lu-side-panel-wrapper .lu-adder > button');
                 },
                 postAction: () => {
                     TourUtils.click('.lu-search .lu-search-group .lu-search-item');

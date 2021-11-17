@@ -3,7 +3,7 @@
  */
 
 import {tsv} from 'd3';
-import {ISelection, IViewContext} from 'tdp_core';
+import {IARankingViewOptions, ISelection, IViewContext} from 'tdp_core';
 import {ARankingView, IAdditionalColumnDesc, ColumnDescUtils} from 'tdp_core';
 import {LocalDataProvider} from 'lineupjs';
 import {FormElementType, IFormSelectElement} from 'tdp_core';
@@ -18,8 +18,12 @@ const SELECT_ID = 'genehopper_selection';
 export class SimilarityView extends ARankingView {
   private loader: Promise<any> = null;
 
-  constructor(context:IViewContext, selection: ISelection, parent:HTMLElement) {
-    super(context, selection, parent);
+  constructor(context:IViewContext, selection: ISelection, parent:HTMLElement, options: Partial<IARankingViewOptions> = {}) {
+    super(context, selection, parent, Object.assign(options, {
+      panelAddColumnBtnOptions: {
+        btnClass: 'btn-primary'
+      }
+    }));
     this.node.classList.add('genehopper_similarity');
   }
 

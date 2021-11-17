@@ -1,8 +1,7 @@
 /**
  * Created by sam on 06.03.2017.
  */
-import { FormElementType } from 'tdp_core';
-import { IDataSourceConfig } from './config';
+import { FormElementType, IFormSelectDesc, IFormMapDesc } from 'tdp_core';
 import { GeneUtils } from './GeneUtils';
 /**
  * List of ids for parameter form elements
@@ -187,20 +186,7 @@ export declare const FORM_GENE_FILTER: {
         })[];
     };
 };
-export declare const FORM_DATA_SOURCE: {
-    type: FormElementType;
-    label: string;
-    id: string;
-    required: boolean;
-    options: {
-        optionsData: {
-            name: string;
-            value: string;
-            data: IDataSourceConfig;
-        }[];
-    };
-    useSession: boolean;
-};
+export declare const FORM_DATA_SOURCE: IFormSelectDesc;
 export declare const FORM_TISSUE_FILTER: {
     type: FormElementType;
     label: string;
@@ -227,28 +213,8 @@ export declare const FORM_CELLLINE_FILTER: {
         entries: any[];
     };
 };
-export declare const FORM_TISSUE_OR_CELLLINE_FILTER: {
-    type: FormElementType;
-    label: string;
-    id: string;
-    useSession: boolean;
-    dependsOn: string[];
-    options: any;
-};
-export declare const FORM_COLOR_CODING: {
-    type: FormElementType;
-    label: string;
-    id: string;
-    dependsOn: string[];
-    options: {
-        optionsData: (depends: any) => {
-            name: string;
-            value: string;
-            data: any;
-        }[];
-    };
-    useSession: boolean;
-};
+export declare const FORM_TISSUE_OR_CELLLINE_FILTER: IFormMapDesc;
+export declare const FORM_COLOR_CODING: IFormSelectDesc;
 export declare const FORM_DATA_HIERARCHICAL_SUBTYPE: {
     type: FormElementType;
     label: string;

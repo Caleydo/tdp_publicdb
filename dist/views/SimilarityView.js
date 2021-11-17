@@ -10,8 +10,12 @@ import { RestBaseUtils } from 'tdp_core';
 import { createSelectionDesc, createStackDesc } from 'lineupjs';
 const SELECT_ID = 'genehopper_selection';
 export class SimilarityView extends ARankingView {
-    constructor(context, selection, parent) {
-        super(context, selection, parent);
+    constructor(context, selection, parent, options = {}) {
+        super(context, selection, parent, Object.assign(options, {
+            panelAddColumnBtnOptions: {
+                btnClass: 'btn-primary'
+            }
+        }));
         this.loader = null;
         this.node.classList.add('genehopper_similarity');
     }
