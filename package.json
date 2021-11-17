@@ -101,10 +101,10 @@
     "react-select": "^4.1.0",
     "react-select-async-paginate": "^0.5.3",
     "react-virtualized": "^9.22.3",
-    "tdp_gene": "github:Caleydo/tdp_gene#visyn"
+    "tdp_gene": "github:Caleydo/tdp_gene#develop"
   },
   "optionalDependencies": {
-    "dTiles": "github:datavisyn/dTiles#visyn",
-    "ordino": "github:Caleydo/ordino#visyn"
+    "dTiles": "github:datavisyn/dTiles#develop",
+    "ordino": "github:Caleydo/ordino#develop"
   }
 }
