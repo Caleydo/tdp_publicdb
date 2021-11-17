@@ -2,7 +2,7 @@
  * Created by Samuel Gratzl on 27.04.2016.
  */
 
-import {IPluginDesc} from 'phovea_core';
+import {IPluginDesc} from 'tdp_core';
 import {IDataSubtypeConfig, dataSubtypes, cellline, tissue, gene, drug, IDataSourceConfig} from '../common/config';
 import {FORM_GENE_FILTER, FORM_TISSUE_FILTER, FORM_CELLLINE_FILTER} from '../common/forms';
 import {LineupUtils} from 'tdp_core';

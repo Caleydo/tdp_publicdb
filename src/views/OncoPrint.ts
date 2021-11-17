@@ -9,7 +9,7 @@ import {SpeciesUtils} from 'tdp_gene';
 import {ParameterFormIds, FORM_TISSUE_OR_CELLLINE_FILTER, FORM_DATA_SOURCE} from '../common/forms';
 import {ViewUtils} from './ViewUtils';
 import {IDataSourceConfig} from '../common/config';
-import {IDTypeManager} from 'phovea_core';
+import {IDTypeManager} from 'tdp_core';
 import {RestBaseUtils, IParams} from 'tdp_core';
 import {LineupUtils} from 'tdp_core';
 

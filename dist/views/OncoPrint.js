@@ -5,7 +5,7 @@ import { AOncoPrint } from 'tdp_gene';
 import { SpeciesUtils } from 'tdp_gene';
 import { ParameterFormIds, FORM_TISSUE_OR_CELLLINE_FILTER, FORM_DATA_SOURCE } from '../common/forms';
 import { ViewUtils } from './ViewUtils';
-import { IDTypeManager } from 'phovea_core';
+import { IDTypeManager } from 'tdp_core';
 import { RestBaseUtils } from 'tdp_core';
 import { LineupUtils } from 'tdp_core';
 export class OncoPrint extends AOncoPrint {

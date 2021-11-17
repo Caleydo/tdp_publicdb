@@ -8,7 +8,7 @@ import {ARankingView, IAdditionalColumnDesc, ColumnDescUtils} from 'tdp_core';
 import {LocalDataProvider} from 'lineupjs';
 import {FormElementType, IFormSelectElement} from 'tdp_core';
 import {SpeciesUtils} from 'tdp_gene';
-import {IDTypeManager} from 'phovea_core';
+import {IDTypeManager} from 'tdp_core';
 import {RestBaseUtils} from 'tdp_core';
 import {createSelectionDesc, createStackDesc, StackColumn} from 'lineupjs';
 

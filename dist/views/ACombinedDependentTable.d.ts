@@ -9,7 +9,7 @@ export declare abstract class ACombinedDependentTable extends ARankingView {
     protected dataSource: IDataSourceConfig;
     constructor(context: IViewContext, selection: ISelection, parent: HTMLElement, dataType: IDataTypeConfig[], options?: {});
     protected abstract get oppositeDataSource(): IDataSourceConfig;
-    get itemIDType(): import("phovea_core").IDType;
+    get itemIDType(): import("tdp_core").IDType;
     protected getParameterFormDescs(): import("tdp_core").IFormElementDesc[];
     private get subTypes();
     protected createSelectionAdapter(): import("tdp_core").ISelectionAdapter;
