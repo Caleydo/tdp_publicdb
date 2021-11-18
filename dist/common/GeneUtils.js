@@ -104,8 +104,9 @@ export class GeneUtils {
         if (mode === 'result') {
             //highlight match
             return `${item.id.replace(currentSearchQuery, Select3Utils.highlightMatch)}<br>
-      <span class="drug-moa">MoA: ${item.data.moa ? item.data.moa.replace(currentSearchQuery, Select3Utils.highlightMatch) : item.data.moa}</span><br>
-      <span class="drug-target">Target: ${item.data.target ? item.data.target.replace(currentSearchQuery, Select3Utils.highlightMatch) : item.data.target}</span>`;
+      <span class="option-muted"> ${item.data.scientificname ? item.data.scientificname.replace(currentSearchQuery, Select3Utils.highlightMatch) : item.data.scientificname}</span><br>
+      <span class="option-muted">MoA: ${item.data.moa ? item.data.moa.replace(currentSearchQuery, Select3Utils.highlightMatch) : item.data.moa}</span><br>
+      <span class="option-muted">Target: ${item.data.target ? item.data.target.replace(currentSearchQuery, Select3Utils.highlightMatch) : item.data.target}</span>`;
         }
         return item.id;
     }

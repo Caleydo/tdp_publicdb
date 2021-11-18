@@ -7,6 +7,7 @@ import {ICommonDBConfig} from 'tdp_gene';
 interface IDrugData extends IdTextPair {
   target?: string;
   moa?: string;
+  scientificname?: string
 }
 
 // Gene
@@ -20,7 +21,7 @@ export class GeneUtils {
    * @param {number} pageSize Server-side pagination page size
    * @returns {Promise<{more: boolean; items: Readonly<IdTextPair>[]}>} Select3 conformant data structure.
    */
-  static searchGene(query: string, page: number, pageSize: number): Promise<{ more: boolean, items: Readonly<IdTextPair>[] }> {
+  static searchGene(query: string, page: number, pageSize: number): Promise<{more: boolean, items: Readonly<IdTextPair>[]}> {
     return RestBaseUtils.getTDPLookup(gene.db, `${gene.base}_gene_items`, {
       column: 'symbol',
       species: SpeciesUtils.getSelectedSpecies(),
@@ -63,7 +64,7 @@ export class GeneUtils {
 
   // Cellline and Tissue Select3 options methods
 
-  static search(config: IDataSourceConfig | ICommonDBConfig, query: string, page: number, pageSize: number): Promise<{ more: boolean, items: Readonly<IdTextPair>[] }> {
+  static search(config: IDataSourceConfig | ICommonDBConfig, query: string, page: number, pageSize: number): Promise<{more: boolean, items: Readonly<IdTextPair>[]}> {
     return RestBaseUtils.getTDPLookup(config.db, `${config.base}_items`, {
       column: config.entityName,
       species: SpeciesUtils.getSelectedSpecies(),
@@ -120,8 +121,9 @@ export class GeneUtils {
     if (mode === 'result') {
       //highlight match
       return `${item.id.replace(currentSearchQuery!, Select3Utils.highlightMatch)}<br>
-      <span class="drug-moa">MoA: ${item.data.moa ? item.data.moa.replace(currentSearchQuery!, Select3Utils.highlightMatch) : item.data.moa}</span><br>
-      <span class="drug-target">Target: ${item.data.target ? item.data.target.replace(currentSearchQuery!, Select3Utils.highlightMatch) : item.data.target}</span>`;
+      <span class="option-muted"> ${item.data.scientificname ? item.data.scientificname.replace(currentSearchQuery!, Select3Utils.highlightMatch) : item.data.scientificname}</span><br>
+      <span class="option-muted">MoA: ${item.data.moa ? item.data.moa.replace(currentSearchQuery!, Select3Utils.highlightMatch) : item.data.moa}</span><br>
+      <span class="option-muted">Target: ${item.data.target ? item.data.target.replace(currentSearchQuery!, Select3Utils.highlightMatch) : item.data.target}</span>`;
     }
     return item.id;
   }
@@ -148,7 +150,7 @@ export class GeneUtils {
    * @returns {Promise<{more: boolean; items: Readonly<IdTextPair>[]}>} Select3 conformant data structure.
    */
   static searchDrugScreen(query: string, page: number, pageSize: number): Promise<{more: boolean, items: Readonly<IdTextPair>[]}> {
-    const rows= RestBaseUtils.getTDPLookup(drug.db, `drug_screen_items`, {
+    const rows = RestBaseUtils.getTDPLookup(drug.db, `drug_screen_items`, {
       column: 'campaign',
       query,
       page,
@@ -201,7 +203,7 @@ export class GeneUtils {
       // add other cases when needed
 
       default:
-          return GeneUtils.validate(dataSource, query);
+        return GeneUtils.validate(dataSource, query);
     }
   }
 }
