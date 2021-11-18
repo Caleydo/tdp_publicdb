@@ -5,5 +5,10 @@
         "addAggregated": "Add Aggregated Score Column",
         "addGeneSignature": "Add Gene Signature Score Column",
         "add": "Add"
+    },
+    "core": {
+        "editDialog": {
+            "dialog2": "However, if you want to save the entire analysis session and not only the list of entities, please use the Current Analysis Session button at the top."
+        }
     }
 }
