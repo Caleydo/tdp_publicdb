@@ -7,7 +7,7 @@ import {ICommonDBConfig} from 'tdp_gene';
 interface IDrugData extends IdTextPair {
   target?: string;
   moa?: string;
-  scientificname?: string
+  scientificname?: string;
 }
 
 // Gene
