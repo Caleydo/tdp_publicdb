@@ -7,7 +7,7 @@ import { expression, copyNumber, mutation } from '../common/config';
 import { ParameterFormIds, FORM_DATA_SOURCE, FORM_TISSUE_OR_CELLLINE_FILTER } from '../common/forms';
 import { FormElementType } from 'tdp_core';
 import { RestBaseUtils } from 'tdp_core';
-import { IDTypeManager } from 'phovea_core';
+import { IDTypeManager } from 'tdp_core';
 import { ViewUtils } from './ViewUtils';
 import { LineupUtils } from 'tdp_core';
 export class DependentSampleTable extends ARankingView {

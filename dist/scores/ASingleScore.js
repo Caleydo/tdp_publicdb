@@ -1,7 +1,7 @@
 /**
  * Created by sam on 06.03.2017.
  */
-import { IDTypeManager } from 'phovea_core';
+import { IDTypeManager } from 'tdp_core';
 import { SpeciesUtils } from 'tdp_gene';
 import { MAX_FILTER_SCORE_ROWS_BEFORE_ALL } from '../common/config';
 import { FieldUtils } from 'tdp_gene';

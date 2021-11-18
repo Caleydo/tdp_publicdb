@@ -1,7 +1,7 @@
 import { IScore } from 'tdp_core';
 import { ABooleanScore, IBooleanScoreParams } from './ABooleanScore';
 import { IDataSourceConfig } from '../common/config';
-import { IPluginDesc } from 'phovea_core';
+import { IPluginDesc } from 'tdp_core';
 /**
  * interface describing the parameter needed for MyScore
  */

@@ -4,7 +4,7 @@
  * Licensed under the new BSD license, available at http://caleydo.org/license
  **************************************************************************** */
 import { EP_ORDINO_STARTMENU_DATASET_SECTION } from 'ordino';
-import { EP_PHOVEA_CORE_LOCALE, PluginRegistry } from 'phovea_core';
+import { EP_PHOVEA_CORE_LOCALE, PluginRegistry } from 'tdp_core';
 import { gene, cellline, tissue } from './common/config';
 //register all extensions in the registry following the given pattern
 export default function (registry) {
