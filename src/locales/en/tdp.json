@@ -8,7 +8,7 @@
   },
   "core": {
     "editDialog": {
-      "dialog2":"However, if you want to save the entire analysis session and not only the list of entities, please use the Current Analysis Session button at the top."
+      "dialog2":"However, if you want to save the entire analysis session and not only the list of entities, please use the <i>Current Analysis Session</i> button at the top."
     }
   }
 }
