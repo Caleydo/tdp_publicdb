@@ -1,7 +1,7 @@
 import React from 'react';
 import { ENamedSetType, RestBaseUtils, RestStorageUtils, StoreUtils } from 'tdp_core';
-import { NamedSetList, useAsync, OrdinoContext } from 'ordino';
-import { UserSession, UniqueIdManager, I18nextManager, IDTypeManager } from 'tdp_core';
+import { NamedSetList, OrdinoContext } from 'ordino';
+import { UserSession, UniqueIdManager, I18nextManager, IDTypeManager, useAsync } from 'tdp_core';
 import { DatasetSearchBox } from './DatasetSearchBox';
 import { Species, SpeciesUtils } from 'tdp_gene';
 export default function DatasetCard({ name, icon, tabs, startViewId, dataSource, cssClass, tokenSeparators }) {
@@ -39,9 +39,9 @@ export default function DatasetCard({ name, icon, tabs, startViewId, dataSource,
     const loadNamedSets = React.useMemo(() => {
         return () => RestStorageUtils.listNamedSets(dataSource.idType);
     }, [dataSource.idType, dirtyNamedSets]);
-    const predefinedNamedSets = useAsync(loadPredefinedSet);
+    const predefinedNamedSets = useAsync(loadPredefinedSet, []);
     const me = UserSession.getInstance().currentUserNameOrAnonymous();
-    const namedSets = useAsync(loadNamedSets);
+    const namedSets = useAsync(loadNamedSets, []);
     const myNamedSets = { ...namedSets, ...{ value: (_a = namedSets.value) === null || _a === void 0 ? void 0 : _a.filter((d) => d.type === ENamedSetType.NAMEDSET && d.creator === me) } };
     const publicNamedSets = { ...namedSets, ...{ value: (_b = namedSets.value) === null || _b === void 0 ? void 0 : _b.filter((d) => d.type === ENamedSetType.NAMEDSET && d.creator !== me) } };
     const filterValue = (value, tab) => value === null || value === void 0 ? void 0 : value.filter((entry) => entry.subTypeValue === tab);
