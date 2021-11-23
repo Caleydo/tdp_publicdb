@@ -1,2 +1,2 @@
 psycopg2==2.8.6
--e git+https://github.com/datavisyn/tdp_core.git@fengertsberger/add-data-testid-for-cypress#egg=tdp_core
+-e git+https://github.com/datavisyn/tdp_core.git@vstoiber/add-data-testid-for-cypress#egg=tdp_core
