@@ -7,7 +7,7 @@ import { SpeciesUtils } from 'tdp_gene';
 import { expression } from '../common/config';
 import { ParameterFormIds, FORM_TISSUE_OR_CELLLINE_FILTER, FORM_DATA_SOURCE, FORM_COLOR_CODING } from '../common/forms';
 import { ViewUtils } from './ViewUtils';
-import { IDTypeManager } from 'phovea_core';
+import { IDTypeManager } from 'tdp_core';
 import { RestBaseUtils } from 'tdp_core';
 import { LineupUtils } from 'tdp_core';
 export class CoExpression extends ACoExpression {

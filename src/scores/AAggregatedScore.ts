@@ -2,7 +2,7 @@
  * Created by sam on 06.03.2017.
  */
 
-import {RangeLike} from 'phovea_core';
+import {RangeLike} from 'tdp_core';
 import {SpeciesUtils} from 'tdp_gene';
 import {IDataSourceConfig, dataSubtypes, MAX_FILTER_SCORE_ROWS_BEFORE_ALL} from '../common/config';
 import {IScore, IScoreRow} from 'tdp_core';
@@ -10,10 +10,10 @@ import {ScoreUtils} from './ScoreUtils';
 import {AScore, ICommonScoreParam} from './AScore';
 import {FieldUtils} from 'tdp_gene';
 import {INamedSet} from 'tdp_core';
-import {IDTypeManager} from 'phovea_core';
+import {IDTypeManager} from 'tdp_core';
 import {RestBaseUtils, IParams} from 'tdp_core';
 import {LineupUtils} from 'tdp_core';
-import {IDType} from 'phovea_core';
+import {IDType} from 'tdp_core';
 
 
 

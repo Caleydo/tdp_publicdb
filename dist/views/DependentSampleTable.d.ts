@@ -9,7 +9,7 @@ export declare class DependentSampleTable extends ARankingView {
     private readonly dataType;
     constructor(context: IViewContext, selection: ISelection, parent: HTMLElement, dataType: IDataTypeConfig, options?: Partial<IARankingViewOptions>);
     protected getParameterFormDescs(): import("tdp_core").IFormElementDesc[];
-    get itemIDType(): import("phovea_core").IDType;
+    get itemIDType(): import("tdp_core").IDType;
     private get dataSource();
     private get dataSubType();
     protected parameterChanged(name: string): void;

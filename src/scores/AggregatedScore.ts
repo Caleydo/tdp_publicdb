@@ -7,7 +7,7 @@ import {IScore} from 'tdp_core';
 import {ICommonScoreParam} from './AScore';
 import {IParams} from 'tdp_core';
 import {AAggregatedScore} from './AAggregatedScore';
-import {IPluginDesc} from 'phovea_core';
+import {IPluginDesc} from 'tdp_core';
 import { ScoreUtils } from './ScoreUtils';
 import {ParameterFormIds} from '../common/forms';
 import { FrequencyScore, FrequencyDepletionScore } from './FrequencyScore';

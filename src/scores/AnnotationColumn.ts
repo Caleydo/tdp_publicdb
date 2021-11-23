@@ -3,8 +3,8 @@ import {FormDialog} from 'tdp_core';
 import {ABooleanScore, IBooleanScoreParams} from './ABooleanScore';
 import {IDataSourceConfig} from '../common/config';
 import {FormElementType} from 'tdp_core';
-import {AppContext, I18nextManager} from 'phovea_core';
-import {IPluginDesc} from 'phovea_core';
+import {AppContext, I18nextManager} from 'tdp_core';
+import {IPluginDesc} from 'tdp_core';
 import {ScoreUtils} from './ScoreUtils';
 import {chooseDataSource} from '../common/config';
 

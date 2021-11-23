@@ -4,7 +4,7 @@
 
 import {IDataSourceConfig} from '../common/config';
 import {IScore} from 'tdp_core';
-import {IPluginDesc} from 'phovea_core';
+import {IPluginDesc} from 'tdp_core';
 import {ScoreUtils} from './ScoreUtils';
 import {ASingleScore} from './ASingleScore';
 import {IParams} from 'tdp_core';
