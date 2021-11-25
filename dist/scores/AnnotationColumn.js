@@ -1,7 +1,7 @@
 import { FormDialog } from 'tdp_core';
 import { ABooleanScore } from './ABooleanScore';
 import { FormElementType } from 'tdp_core';
-import { AppContext, I18nextManager } from 'phovea_core';
+import { AppContext, I18nextManager } from 'tdp_core';
 import { ScoreUtils } from './ScoreUtils';
 import { chooseDataSource } from '../common/config';
 /**

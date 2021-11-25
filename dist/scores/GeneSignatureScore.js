@@ -2,7 +2,7 @@ import { ColumnDescUtils, RestBaseUtils } from 'tdp_core';
 import { FormDialog } from 'tdp_core';
 import { MAX_FILTER_SCORE_ROWS_BEFORE_ALL } from '../common/config';
 import { FormElementType } from 'tdp_core';
-import { AppContext, IDTypeManager, I18nextManager } from 'phovea_core';
+import { AppContext, IDTypeManager, I18nextManager } from 'tdp_core';
 import { ScoreUtils } from './ScoreUtils';
 import { SpeciesUtils, FieldUtils } from 'tdp_gene';
 /**
