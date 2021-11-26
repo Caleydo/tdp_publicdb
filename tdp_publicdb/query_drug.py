@@ -17,7 +17,7 @@ def create_drug(views, drug):
 
     views[drug.prefix + '_drug_items'] = DBViewBuilder('helper').idtype(drug.idtype).query("""
           SELECT {g.id} as id, {g.id} as text, scientificname, moa, target
-          FROM {g.table} WHERE (LOWER(drugid) LIKE :query OR LOWER(moa) LIKE :query OR LOWER(target) LIKE :query)
+          FROM {g.table} WHERE (LOWER(drugid) LIKE :query OR LOWER(moa) LIKE :query OR LOWER(target) LIKE :query OR LOWER(scientificname) LIKE :query)
           ORDER BY drugid ASC""".format(g=drug)) \
         .call(limit_offset) \
         .assign_ids() \
