@@ -6,6 +6,7 @@ import { DatasetSearchBox } from './DatasetSearchBox';
 import { Species, SpeciesUtils } from 'tdp_gene';
 export default function DatasetCard({ name, icon, tabs, startViewId, dataSource, cssClass, tokenSeparators }) {
     var _a, _b;
+    const testId = `datasetcard-${cssClass}`;
     const { app } = React.useContext(OrdinoContext);
     const [dirtyNamedSets, setDirtyNamedSets] = React.useState(false);
     const loadPredefinedSet = React.useMemo(() => {
@@ -74,7 +75,7 @@ export default function DatasetCard({ name, icon, tabs, startViewId, dataSource,
     };
     const id = React.useMemo(() => UniqueIdManager.getInstance().uniqueId(), []);
     const activeTabIndex = 0;
-    return (React.createElement("div", { className: `ordino-dataset ${cssClass || ''}` },
+    return (React.createElement("div", { className: `ordino-dataset ${cssClass || ''}`, "data-testid": testId },
         React.createElement("h4", { className: "text-start mb-3" },
             React.createElement("i", { className: 'me-2 ordino-icon-2 ' + icon }),
             name),
@@ -82,13 +83,13 @@ export default function DatasetCard({ name, icon, tabs, startViewId, dataSource,
             React.createElement("div", { className: "card-body p-3" },
                 React.createElement("ul", { className: "nav nav-pills session-tab" }, tabs.map((tab, index) => {
                     return (React.createElement("li", { key: tab.id, className: "nav-item", role: "presentation" },
-                        React.createElement("a", { className: `nav-link ${(index === activeTabIndex) ? 'active' : ''}`, id: `dataset-tab-${tab.id}-${id}`, "data-bs-toggle": "tab", href: `#dataset-panel-${tab.id}-${id}`, role: "tab", "aria-controls": `dataset-panel-${tab.id}-${id}`, "aria-selected": (index === activeTabIndex) },
+                        React.createElement("a", { className: `nav-link ${(index === activeTabIndex) ? 'active' : ''}`, "data-testid": `${tab.id}-link`, id: `dataset-tab-${tab.id}-${id}`, "data-bs-toggle": "tab", href: `#dataset-panel-${tab.id}-${id}`, role: "tab", "aria-controls": `dataset-panel-${tab.id}-${id}`, "aria-selected": (index === activeTabIndex) },
                             React.createElement("i", { className: 'me-2 ' + tab.icon }),
                             tab.name)));
                 })),
                 React.createElement("div", { className: "tab-content" }, tabs.map((tab, index) => {
                     const separators = tokenSeparators ? { tokenSeparators } : null;
-                    return (React.createElement("div", { key: tab.id, className: `tab-pane fade mt-4 ${(index === activeTabIndex) ? 'show active' : ''}`, role: "tabpanel", id: `dataset-panel-${tab.id}-${id}`, "aria-labelledby": `dataset-tab-${tab.id}-${id}` },
+                    return (React.createElement("div", { key: tab.id, className: `tab-pane fade mt-4 ${(index === activeTabIndex) ? 'show active' : ''}`, "data-testid": `${tab.id}-tab`, role: "tabpanel", id: `dataset-panel-${tab.id}-${id}`, "aria-labelledby": `dataset-tab-${tab.id}-${id}` },
                         React.createElement(DatasetSearchBox, Object.assign({ placeholder: `Add ${name}`, dataSource: dataSource, params: { species: tab.id }, onSaveAsNamedSet: (items) => onSaveAsNamedSet(items, { key: Species.SPECIES_SESSION_KEY, value: tab.id }), onOpen: (event, searchResult) => { onOpenSearchResult(event, { searchResult, species: tab.id }); } }, separators)),
                         React.createElement("div", { className: "row mt-4" },
                             React.createElement(NamedSetList, { headerIcon: "fas fa-database", headerText: "Predefined Sets", onOpen: (event, namedSet) => { onOpenNamedSet(event, { namedSet, species: tab.id }); }, status: predefinedNamedSets.status, value: filterValue(predefinedNamedSets.value, tab.id) }),

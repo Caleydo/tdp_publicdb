@@ -103,8 +103,8 @@ export function DatasetSearchBox({ placeholder, dataSource, onOpen, onSaveAsName
                     }
                 })
             } }),
-        React.createElement("button", { className: "btn btn-secondary", disabled: !(validItems === null || validItems === void 0 ? void 0 : validItems.length), onClick: (event) => onOpen(event, searchResults) }, "Open"),
-        React.createElement("button", { className: "btn btn-outline-secondary", disabled: !(validItems === null || validItems === void 0 ? void 0 : validItems.length), onClick: () => onSaveAsNamedSet(validItems) }, "Save as set")));
+        React.createElement("button", { className: "btn btn-secondary", "data-testid": "open-button", disabled: !(validItems === null || validItems === void 0 ? void 0 : validItems.length), onClick: (event) => onOpen(event, searchResults) }, "Open"),
+        React.createElement("button", { className: "btn btn-outline-secondary", "data-testid": "save-button", disabled: !(validItems === null || validItems === void 0 ? void 0 : validItems.length), onClick: () => onSaveAsNamedSet(validItems) }, "Save as set")));
 }
 function Input(props) {
     const { onPaste } = props.selectProps;
