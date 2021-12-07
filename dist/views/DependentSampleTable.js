@@ -25,6 +25,7 @@ export class DependentSampleTable extends ARankingView {
             }
         }, Object.assign(options, { enableSidePanel: 'collapsed' })));
         this.dataType = dataType;
+        ViewUtils.showMaximumSelectionWarning(this.selection, this.context.desc);
     }
     getParameterFormDescs() {
         return super.getParameterFormDescs().concat([
@@ -62,8 +63,13 @@ export class DependentSampleTable extends ARankingView {
     createSelectionAdapter() {
         return AdapterUtils.single({
             createDesc: (_id, id) => ViewUtils.loadFirstName(id).then((label) => ViewUtils.subTypeDesc(this.dataSubType, _id, label)),
-            loadData: (_id, id) => this.loadSelectionColumnData(id)
+            loadData: (_id, id) => this.loadSelectionColumnData(id),
+            selectionLimit: this.context.desc.selectionLimit
         });
+    }
+    selectionChanged() {
+        ViewUtils.showMaximumSelectionWarning(this.selection, this.context.desc);
+        super.selectionChanged();
     }
     getColumnDescs(columns) {
         return this.dataSource.columns((c) => columns.find((d) => d.column === c));

@@ -1,6 +1,7 @@
 /**
  * Created by sam on 16.02.2017.
  */
+import { ISelection, IViewPluginDesc } from 'tdp_core';
 import { IScoreRow } from 'tdp_core';
 import { IDataSubtypeConfig } from '../common/config';
 export declare class ViewUtils {
@@ -12,4 +13,5 @@ export declare class ViewUtils {
     }[]>;
     static postProcessScore(subType: IDataSubtypeConfig): (rows: IScoreRow<any>[]) => any[];
     static subTypeDesc(dataSubType: IDataSubtypeConfig, id: number, label: string, col?: string): import("tdp_core").IAdditionalColumnDesc;
+    static showMaximumSelectionWarning(selection: ISelection, desc: IViewPluginDesc): void;
 }

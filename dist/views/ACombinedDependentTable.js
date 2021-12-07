@@ -19,7 +19,12 @@ export class ACombinedDependentTable extends ARankingView {
             }
         }));
         this.dataType = dataType;
+        ViewUtils.showMaximumSelectionWarning(this.selection, this.context.desc);
         this.dataType = dataType;
+    }
+    selectionChanged() {
+        ViewUtils.showMaximumSelectionWarning(this.selection, this.context.desc);
+        super.selectionChanged();
     }
     get itemIDType() {
         return IDTypeManager.getInstance().resolveIdType(this.oppositeDataSource.idType);
@@ -53,7 +58,8 @@ export class ACombinedDependentTable extends ARankingView {
                     return this.loadSelectionColumnData(ids[0], [desc])[0]; // send single desc and pick immediately
                 });
             },
-            getSelectedSubTypes: () => this.subTypes.map((d) => d.id)
+            getSelectedSubTypes: () => this.subTypes.map((d) => d.id),
+            selectionLimit: this.context.desc.selectionLimit
         });
     }
     parameterChanged(name) {

@@ -8,6 +8,7 @@ export declare abstract class ACombinedDependentTable extends ARankingView {
     protected readonly dataType: IDataTypeConfig[];
     protected dataSource: IDataSourceConfig;
     constructor(context: IViewContext, selection: ISelection, parent: HTMLElement, dataType: IDataTypeConfig[], options?: {});
+    protected selectionChanged(): void;
     protected abstract get oppositeDataSource(): IDataSourceConfig;
     get itemIDType(): import("tdp_core").IDType;
     protected getParameterFormDescs(): import("tdp_core").IFormElementDesc[];
