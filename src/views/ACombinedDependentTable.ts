@@ -29,13 +29,13 @@ export abstract class ACombinedDependentTable extends ARankingView {
         btnClass: 'btn-primary'
       }
     }));
-    ViewUtils.showMaximumSelectionWarning(this.selection, this.context.desc)
+    ViewUtils.showMaximumSelectionWarning(this.selection, this.context.desc);
     this.dataType = dataType;
   }
 
   protected selectionChanged() {
-    ViewUtils.showMaximumSelectionWarning(this.selection, this.context.desc)
-    super.selectionChanged()
+    ViewUtils.showMaximumSelectionWarning(this.selection, this.context.desc);
+    super.selectionChanged();
   }
 
   protected abstract get oppositeDataSource(): IDataSourceConfig;

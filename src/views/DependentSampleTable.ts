@@ -35,7 +35,7 @@ export class DependentSampleTable extends ARankingView {
         btnClass: 'btn-primary'
       }
     }, Object.assign(options, {enableSidePanel: 'collapsed'})));
-    ViewUtils.showMaximumSelectionWarning(this.selection, this.context.desc)
+    ViewUtils.showMaximumSelectionWarning(this.selection, this.context.desc);
   }
 
   protected getParameterFormDescs() {
@@ -86,8 +86,8 @@ export class DependentSampleTable extends ARankingView {
   }
 
   protected selectionChanged() {
-    ViewUtils.showMaximumSelectionWarning(this.selection, this.context.desc)
-    super.selectionChanged()
+    ViewUtils.showMaximumSelectionWarning(this.selection, this.context.desc);
+    super.selectionChanged();
   }
 
   protected getColumnDescs(columns: IServerColumn[]) {

@@ -57,7 +57,7 @@ export class ViewUtils {
     if (selectionLimit && selection.range.size().reduce((a, b) => a + b, 0) > selectionLimit) {
       NotificationHandler.pushNotification('warning',
         `<b>${name}</b>: Supported incoming selections limit reached. Showing data for the first <b>${selectionLimit}</b> items.`,
-        NotificationHandler.DEFAULT_SUCCESS_AUTO_HIDE)
+        NotificationHandler.DEFAULT_SUCCESS_AUTO_HIDE);
     }
 
 
