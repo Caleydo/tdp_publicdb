@@ -54,7 +54,7 @@ export function DatasetSearchBox({ placeholder, dataSource, onOpen, onSaveAsName
             type: dataSource.tableName
         }
     };
-    return (React.createElement("div", { className: "hstack gap-3 ordino-dataset-searchbox" },
+    return (React.createElement("div", { className: "hstack gap-3 ordino-dataset-searchbox", "data-testid": "ordino-dataset-searchbox" },
         React.createElement(AsyncPaginate, { className: "flex-fill", onPaste: onPaste, placeholder: placeholder, noOptionsMessage: () => 'No results found', isMulti: true, loadOptions: loadOptions, inputValue: inputValue, value: items, onChange: setItems, onInputChange: setInputValue, formatOptionLabel: formatOptionLabel, hideSelectedOptions: true, getOptionLabel: (option) => option.text, getOptionValue: (option) => option.id, captureMenuScroll: false, additional: {
                 page: 0 // page starts from index 0
             }, components: { Input }, styles: {
@@ -108,6 +108,8 @@ export function DatasetSearchBox({ placeholder, dataSource, onOpen, onSaveAsName
 }
 function Input(props) {
     const { onPaste } = props.selectProps;
-    return (React.createElement(components.Input, Object.assign({ onPaste: onPaste }, props)));
+    const modifiedProps = Object.assign({ 'data-testid': 'async-paginate-input-component' }, props);
+    delete modifiedProps.popoverType; // remove the "illegal" prop from the copy
+    return (React.createElement(components.Input, Object.assign({ onPaste: onPaste }, modifiedProps)));
 }
 //# sourceMappingURL=DatasetSearchBox.js.map

@@ -92,7 +92,7 @@ export function DatasetSearchBox({placeholder, dataSource, onOpen, onSaveAsNamed
     };
 
     return (
-        <div className="hstack gap-3 ordino-dataset-searchbox">
+        <div className="hstack gap-3 ordino-dataset-searchbox" data-testid="ordino-dataset-searchbox">
                 <AsyncPaginate
                     className="flex-fill"
                     onPaste={onPaste}
@@ -170,5 +170,7 @@ export function DatasetSearchBox({placeholder, dataSource, onOpen, onSaveAsNamed
 
 function Input(props: any) {
     const {onPaste} = props.selectProps;
-    return (<components.Input onPaste={onPaste} {...props} />);
+    const modifiedProps = Object.assign({'data-testid': 'async-paginate-input-component'}, props);
+    delete modifiedProps.popoverType;  // remove the "illegal" prop from the copy
+    return (<components.Input onPaste={onPaste} { ...modifiedProps } />);
 }
