@@ -57,7 +57,13 @@ export function DatasetSearchBox({ placeholder, dataSource, onOpen, onSaveAsName
     return (React.createElement("div", { className: "hstack gap-3 ordino-dataset-searchbox", "data-testid": "ordino-dataset-searchbox" },
         React.createElement(AsyncPaginate, { className: "flex-fill", onPaste: onPaste, placeholder: placeholder, noOptionsMessage: () => 'No results found', isMulti: true, loadOptions: loadOptions, inputValue: inputValue, value: items, onChange: setItems, onInputChange: setInputValue, formatOptionLabel: formatOptionLabel, hideSelectedOptions: true, getOptionLabel: (option) => option.text, getOptionValue: (option) => option.id, captureMenuScroll: false, additional: {
                 page: 0 // page starts from index 0
-            }, components: { Input }, styles: {
+            }, components: {
+                Input,
+                Option: addDataTestId(Option, "async-paginate-option"),
+                MultiValueRemove: addDataTestId(MultiValueRemove, "async-paginate-multiselect-remove"),
+                ClearIndicator: addDataTestId(ClearIndicator, "async-paginate-clearindicator"),
+                DropdownIndicator: addDataTestId(DropdownIndicator, "async-paginate-dropdownindicator")
+            }, styles: {
                 multiValue: (styles, { data }) => ({
                     ...styles,
                     border: `1px solid #CCC`,
@@ -106,10 +112,16 @@ export function DatasetSearchBox({ placeholder, dataSource, onOpen, onSaveAsName
         React.createElement("button", { className: "btn btn-secondary", "data-testid": "open-button", disabled: !(validItems === null || validItems === void 0 ? void 0 : validItems.length), onClick: (event) => onOpen(event, searchResults) }, "Open"),
         React.createElement("button", { className: "btn btn-outline-secondary", "data-testid": "save-button", disabled: !(validItems === null || validItems === void 0 ? void 0 : validItems.length), onClick: () => onSaveAsNamedSet(validItems) }, "Save as set")));
 }
+// functions to add data-testid attribute to react-select components
+const addDataTestId = (Component, dataTestId) => (props => (React.createElement(Component, Object.assign({}, props, { innerProps: Object.assign({}, props.innerProps, { 'data-testid': `${dataTestId}${props.data ? "-" + props.data.id : ""}` }) }))));
 function Input(props) {
     const { onPaste } = props.selectProps;
-    const modifiedProps = Object.assign({ 'data-testid': 'async-paginate-input-component' }, props);
+    const modifiedProps = Object.assign({ 'data-testid': 'async-paginate-input' }, props);
     delete modifiedProps.popoverType; // remove the "illegal" prop from the copy
     return (React.createElement(components.Input, Object.assign({ onPaste: onPaste }, modifiedProps)));
 }
+const ClearIndicator = props => (components.ClearIndicator && (React.createElement(components.ClearIndicator, Object.assign({}, props))));
+const DropdownIndicator = props => (components.DropdownIndicator && (React.createElement(components.DropdownIndicator, Object.assign({}, props))));
+const Option = props => (components.Option && (React.createElement(components.Option, Object.assign({}, props))));
+const MultiValueRemove = props => (components.MultiValueRemove && (React.createElement(components.MultiValueRemove, Object.assign({}, props))));
 //# sourceMappingURL=DatasetSearchBox.js.map

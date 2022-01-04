@@ -93,84 +93,130 @@ export function DatasetSearchBox({placeholder, dataSource, onOpen, onSaveAsNamed
 
     return (
         <div className="hstack gap-3 ordino-dataset-searchbox" data-testid="ordino-dataset-searchbox">
-                <AsyncPaginate
-                    className="flex-fill"
-                    onPaste={onPaste}
-                    placeholder={placeholder}
-                    noOptionsMessage={() => 'No results found'}
-                    isMulti={true}
-                    loadOptions={loadOptions}
-                    inputValue={inputValue}
-                    value={items}
-                    onChange={setItems}
-                    onInputChange={setInputValue}
-                    formatOptionLabel={formatOptionLabel}
-                    hideSelectedOptions
-                    getOptionLabel={(option) => option.text}
-                    getOptionValue={(option) => option.id}
-                    captureMenuScroll={false}
-                    additional={{
-                        page: 0 // page starts from index 0
-                    }}
-                    components={{Input}}
-                    styles={{
+            <AsyncPaginate
+                className="flex-fill"
+                onPaste={onPaste}
+                placeholder={placeholder}
+                noOptionsMessage={() => 'No results found'}
+                isMulti={true}
+                loadOptions={loadOptions}
+                inputValue={inputValue}
+                value={items}
+                onChange={setItems}
+                onInputChange={setInputValue}
+                formatOptionLabel={formatOptionLabel}
+                hideSelectedOptions
+                getOptionLabel={(option) => option.text}
+                getOptionValue={(option) => option.id}
+                captureMenuScroll={false}
+                additional={{
+                    page: 0 // page starts from index 0
+                }}
+                components={{
+                    Input,
+                    Option: addDataTestId(Option, "async-paginate-option"),
+                    MultiValueRemove: addDataTestId(MultiValueRemove, "async-paginate-multiselect-remove"),
+                    ClearIndicator: addDataTestId(ClearIndicator, "async-paginate-clearindicator"),
+                    DropdownIndicator: addDataTestId(DropdownIndicator, "async-paginate-dropdownindicator")
+                }}
+                styles={{
 
-                        multiValue: (styles, {data}) => ({
-                            ...styles,
-                            border: `1px solid #CCC`,
-                            borderRadius: '3px'
-                        }),
-                        multiValueLabel: (styles, {data}) => ({
-                            ...styles,
-                            textDecoration: data.invalid ? 'line-through' : 'none',
-                            color: data.color,
-                            backgroundColor: 'white',
-                            order: 2,
-                            paddingLeft: '0',
-                            paddingRight: '6px'
-                        }),
-                        multiValueRemove: (styles, {data}) => ({
-                            ...styles,
-                            color: data.invalid ? 'red' : '#999',
-                            backgroundColor: 'white',
-                            order: 1,
-                            ':hover': {
-                                color: '#333',
-                                cursor: 'pointer'
-                            },
-                        }),
+                    multiValue: (styles, {data}) => ({
+                        ...styles,
+                        border: `1px solid #CCC`,
+                        borderRadius: '3px'
+                    }),
+                    multiValueLabel: (styles, {data}) => ({
+                        ...styles,
+                        textDecoration: data.invalid ? 'line-through' : 'none',
+                        color: data.color,
+                        backgroundColor: 'white',
+                        order: 2,
+                        paddingLeft: '0',
+                        paddingRight: '6px'
+                    }),
+                    multiValueRemove: (styles, {data}) => ({
+                        ...styles,
+                        color: data.invalid ? 'red' : '#999',
+                        backgroundColor: 'white',
+                        order: 1,
+                        ':hover': {
+                            color: '#333',
+                            cursor: 'pointer'
+                        },
+                    }),
 
-                        placeholder: (provided) => ({
-                            ...provided,
-                            // disable placeholder mouse events
-                            pointerEvents: 'none',
-                            userSelect: 'none',
-                        }),
-                        input: (css) => ({
-                            ...css,
-                            //expand the Input Component div
-                            flex: '1 1 auto',
-                            // expand the Input Component child div
-                            '> div': {
-                                width: '100%'
-                            },
-                            // expand the Input Component input
-                            input: {
-                                width: '100% !important',
-                                textAlign: 'left'
-                            }
-                        })
-                    }}
-                />
-                <button className="btn btn-secondary" data-testid="open-button" disabled={!validItems?.length} onClick={(event) => onOpen(event, searchResults)}>Open</button>
-                <button className="btn btn-outline-secondary" data-testid="save-button" disabled={!validItems?.length} onClick={() => onSaveAsNamedSet(validItems)}>Save as set</button>
+                    placeholder: (provided) => ({
+                        ...provided,
+                        // disable placeholder mouse events
+                        pointerEvents: 'none',
+                        userSelect: 'none',
+                    }),
+                    input: (css) => ({
+                        ...css,
+                        //expand the Input Component div
+                        flex: '1 1 auto',
+                        // expand the Input Component child div
+                        '> div': {
+                            width: '100%'
+                        },
+                        // expand the Input Component input
+                        input: {
+                            width: '100% !important',
+                            textAlign: 'left'
+                        }
+                    })
+                }}
+            />
+            <button className="btn btn-secondary" data-testid="open-button" disabled={!validItems?.length} onClick={(event) => onOpen(event, searchResults)}>Open</button>
+            <button className="btn btn-outline-secondary" data-testid="save-button" disabled={!validItems?.length} onClick={() => onSaveAsNamedSet(validItems)}>Save as set</button>
         </div>
     );
 }
 
+// functions to add data-testid attribute to react-select components
+const addDataTestId = (Component, dataTestId) => (
+    props => (
+        <Component
+            {...props}
+            innerProps={Object.assign({}, props.innerProps, {'data-testid': `${dataTestId}${props.data ? "-" + props.data.id : ""}`})}
+        />
+    )
+);
+
 function Input(props: any) {
     const {onPaste} = props.selectProps;
-    const modifiedProps = Object.assign({'data-testid': 'async-paginate-input-component'}, props);
+    const modifiedProps = Object.assign({'data-testid': 'async-paginate-input'}, props);
     delete modifiedProps.popoverType;  // remove the "illegal" prop from the copy
-    return (<components.Input onPaste={onPaste} { ...modifiedProps } />);
+    return (<components.Input onPaste={onPaste} {...modifiedProps} />);
 }
+
+const ClearIndicator = props => (
+    components.ClearIndicator && (
+        <components.ClearIndicator {...props}>
+        </components.ClearIndicator>
+    )
+);
+
+const DropdownIndicator = props => (
+    components.DropdownIndicator && (
+        <components.DropdownIndicator {...props}>
+        </components.DropdownIndicator>
+    )
+);
+
+const Option = props => (
+    components.Option && (
+        <components.Option {...props}>
+        </components.Option>
+    )
+);
+
+const MultiValueRemove = props => (
+    components.MultiValueRemove && (
+        <components.MultiValueRemove {...props}>
+        </components.MultiValueRemove>
+    )
+);
+
+
