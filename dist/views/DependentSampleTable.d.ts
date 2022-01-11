@@ -15,6 +15,7 @@ export declare class DependentSampleTable extends ARankingView {
     protected parameterChanged(name: string): void;
     protected loadColumnDesc(): Promise<Readonly<import("tdp_core").IDatabaseViewDesc>>;
     protected createSelectionAdapter(): import("tdp_core").ISelectionAdapter;
+    protected selectionChanged(): void;
     protected getColumnDescs(columns: IServerColumn[]): import("tdp_core").IAdditionalColumnDesc[];
     protected loadRows(): Promise<import("tdp_core").IRow[]>;
     private loadSelectionColumnData;

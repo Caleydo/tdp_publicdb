@@ -37,8 +37,8 @@ export class DependentGeneTable extends ARankingView {
       panelAddColumnBtnOptions: {
         btnClass: 'btn-primary'
       }
-    }, Object.assign(options, { enableSidePanel: 'collapsed' })));
-
+    }, Object.assign(options, {enableSidePanel: 'collapsed'})));
+    ViewUtils.showMaximumSelectionWarning(this.selection, this.context.desc)
     this.dataSource = chooseDataSource(context.desc);
   }
 
@@ -59,6 +59,11 @@ export class DependentGeneTable extends ARankingView {
     ]);
   }
 
+  protected selectionChanged() {
+    ViewUtils.showMaximumSelectionWarning(this.selection, this.context.desc)
+    super.selectionChanged()
+  }
+
   protected parameterChanged(name: string) {
     return this.rebuild();
   }
@@ -76,7 +81,8 @@ export class DependentGeneTable extends ARankingView {
       loadData: async (_id: number, id: string) => {
         const ids = await ResolveUtils.resolveIds(this.selection.idtype, [_id], this.dataSource.idType);
         return this.loadSelectionColumnData(ids[0]);
-      }
+      },
+      selectionLimit: this.context.desc.selectionLimit
     });
   }
 

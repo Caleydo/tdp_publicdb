@@ -3,7 +3,7 @@
  */
 
 import {SpeciesUtils} from 'tdp_gene';
-import {RestBaseUtils} from 'tdp_core';
+import {ISelection, IViewPluginDesc, NotificationHandler, RestBaseUtils} from 'tdp_core';
 import {IScoreRow} from 'tdp_core';
 import {IDataSubtypeConfig} from '../common/config';
 import {FieldUtils} from 'tdp_gene';
@@ -50,5 +50,16 @@ export class ViewUtils {
       return ColumnDescUtils.categoricalCol(col, dataSubType.categories, {label});
     }
     return ColumnDescUtils.numberCol(col, dataSubType.domain[0], dataSubType.domain[1], {label});
+  }
+
+  static showMaximumSelectionWarning(selection: ISelection, desc: IViewPluginDesc) {
+    const {name, selectionLimit} = desc;
+    if (selectionLimit && selection.range.size().reduce((a, b) => a + b, 0) > selectionLimit) {
+      NotificationHandler.pushNotification('warning',
+        `<b>${name}</b>: Supported incoming selections limit reached. Showing data for the first <b>${selectionLimit}</b> items.`,
+        NotificationHandler.DEFAULT_SUCCESS_AUTO_HIDE);
+    }
+
+
   }
 }

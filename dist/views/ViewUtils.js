@@ -2,7 +2,7 @@
  * Created by sam on 16.02.2017.
  */
 import { SpeciesUtils } from 'tdp_gene';
-import { RestBaseUtils } from 'tdp_core';
+import { NotificationHandler, RestBaseUtils } from 'tdp_core';
 import { FieldUtils } from 'tdp_gene';
 import { ColumnDescUtils } from 'tdp_core';
 export class ViewUtils {
@@ -42,6 +42,12 @@ export class ViewUtils {
             return ColumnDescUtils.categoricalCol(col, dataSubType.categories, { label });
         }
         return ColumnDescUtils.numberCol(col, dataSubType.domain[0], dataSubType.domain[1], { label });
+    }
+    static showMaximumSelectionWarning(selection, desc) {
+        const { name, selectionLimit } = desc;
+        if (selectionLimit && selection.range.size().reduce((a, b) => a + b, 0) > selectionLimit) {
+            NotificationHandler.pushNotification('warning', `<b>${name}</b>: Supported incoming selections limit reached. Showing data for the first <b>${selectionLimit}</b> items.`, NotificationHandler.DEFAULT_SUCCESS_AUTO_HIDE);
+        }
     }
 }
 //# sourceMappingURL=ViewUtils.js.map

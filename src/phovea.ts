@@ -79,6 +79,7 @@ export default function (registry) {
       factory: 'createExpressionDependentSampleTable',
       idtype: 'Ensembl',
       selection: 'some',
+      selectionLimit: 20,
       preview() {
         return import('./assets/previews/expression.jpg');
       },
@@ -97,6 +98,7 @@ export default function (registry) {
       factory: 'createCopyNumberDependentSampleTable',
       idtype: 'Ensembl',
       selection: 'some',
+      selectionLimit: 20,
       preview() {
         return import('./assets/previews/copy_number.jpg');
       },
@@ -115,6 +117,7 @@ export default function (registry) {
       factory: 'createMutationDependentSampleTable',
       idtype: 'Ensembl',
       selection: 'some',
+      selectionLimit: 20,
       preview() {
         return import('./assets/previews/mutation.jpg');
       },
@@ -216,6 +219,7 @@ export default function (registry) {
       name: 'Combined View',
       idtype: 'Ensembl',
       selection: 'some',
+      selectionLimit: 20,
       preview() {
         return import('./assets/previews/combined_view.jpg');
       },
@@ -327,6 +331,7 @@ export default function (registry) {
       idtype: idType,
       sampleType: idType,
       selection: 'some',
+      selectionLimit: 20,
       preview() {
         return import('./assets/previews/expression.jpg');
       },
@@ -346,6 +351,7 @@ export default function (registry) {
       idtype: idType,
       sampleType: idType,
       selection: 'some',
+      selectionLimit: 20,
       preview() {
         return import('./assets/previews/copy_number.jpg');
       },
@@ -365,6 +371,7 @@ export default function (registry) {
       idtype: idType,
       sampleType: idType,
       selection: 'some',
+      selectionLimit: 20,
       preview() {
         return import('./assets/previews/mutation.jpg');
       },
@@ -383,6 +390,7 @@ export default function (registry) {
       name: 'Combined View',
       idtype: idType,
       selection: 'some',
+      selectionLimit: 20,
       preview() {
         return import('./assets/previews/combined_view.jpg');
       },

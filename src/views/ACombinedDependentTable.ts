@@ -1,4 +1,4 @@
-import {IViewContext, ISelection, ResolveUtils} from 'tdp_core';
+import {IViewContext, ISelection, ResolveUtils, NotificationHandler, IViewDesc, IViewPluginDesc} from 'tdp_core';
 import {SpeciesUtils} from 'tdp_gene';
 import {
   IDataTypeConfig,
@@ -20,7 +20,7 @@ export abstract class ACombinedDependentTable extends ARankingView {
   protected dataSource: IDataSourceConfig;
 
   constructor(context: IViewContext, selection: ISelection, parent: HTMLElement, protected readonly dataType: IDataTypeConfig[], options = {}) {
-    super(context, selection, parent, Object.assign(options,{
+    super(context, selection, parent, Object.assign(options, {
       additionalScoreParameter: () => this.oppositeDataSource,
       itemName: () => this.oppositeDataSource.name,
       enableSidePanel: <'collapsed'>'collapsed',
@@ -29,8 +29,13 @@ export abstract class ACombinedDependentTable extends ARankingView {
         btnClass: 'btn-primary'
       }
     }));
-
+    ViewUtils.showMaximumSelectionWarning(this.selection, this.context.desc);
     this.dataType = dataType;
+  }
+
+  protected selectionChanged() {
+    ViewUtils.showMaximumSelectionWarning(this.selection, this.context.desc);
+    super.selectionChanged();
   }
 
   protected abstract get oppositeDataSource(): IDataSourceConfig;
@@ -55,7 +60,7 @@ export abstract class ACombinedDependentTable extends ARankingView {
   }
 
   private get subTypes() {
-    const value: { id: string, text: string }[] = this.getParameter(ParameterFormIds.DATA_HIERARCHICAL_SUBTYPE);
+    const value: {id: string, text: string}[] = this.getParameter(ParameterFormIds.DATA_HIERARCHICAL_SUBTYPE);
     return value.map(({id, text}) => {
       const {dataType, dataSubType} = splitTypes(id);
       return {label: text, id, dataType, dataSubType};
@@ -74,7 +79,8 @@ export abstract class ACombinedDependentTable extends ARankingView {
           return this.loadSelectionColumnData(ids[0], [desc])[0]; // send single desc and pick immediately
         });
       },
-      getSelectedSubTypes: () => this.subTypes.map((d) => d.id)
+      getSelectedSubTypes: () => this.subTypes.map((d) => d.id),
+      selectionLimit: this.context.desc.selectionLimit
     });
   }
 
@@ -98,7 +104,7 @@ export abstract class ACombinedDependentTable extends ARankingView {
     return RestBaseUtils.getTDPFilteredRows(this.dataSource.db, this.oppositeDataSource.tableName, {}, filter);
   }
 
-  protected getSelectionColumnLabel(name: string): Promise<string>|string {
+  protected getSelectionColumnLabel(name: string): Promise<string> | string {
     return name;
   }
 
