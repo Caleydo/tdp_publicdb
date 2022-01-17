@@ -77,7 +77,7 @@ export class AggregateScoreDialog {
             return false; // already showing the alert with the same size -> user confirmed it
         }
         alert.dataset.size = String(columns);
-        alert.innerHTML = `Note that this query might take very long.s
+        alert.innerHTML = `Note that this query might take very long.
     Loading ${columns} values per row for ${countHint > 0 ? countHint : 'e.g. 1000'} rows results in ${columns * (countHint > 0 ? countHint : 1000)} values that need to be transferred from the database.
     Confirm that you want to run this query by pressing the button.`;
         return true;
