@@ -4,6 +4,19 @@ import { components } from 'react-select';
 import { AsyncPaginate } from 'react-select-async-paginate';
 import Highlighter from 'react-highlight-words';
 import { GeneUtils } from '../common';
+// functions to add data-testid attribute to react-select components
+/* tslint:disable-next-line:variable-name */
+const addDataTestId = (Component, dataTestId) => ((props) => (React.createElement(Component, Object.assign({}, props, { innerProps: Object.assign({}, props.innerProps, { 'data-testid': `${dataTestId}${props.data ? '-' + props.data.id : ''}` }) }))));
+function Input(props) {
+    const { onPaste } = props.selectProps;
+    const modifiedProps = Object.assign({ 'data-testid': 'async-paginate-input' }, props);
+    delete modifiedProps.popoverType; // remove the "illegal" prop from the copy
+    return (React.createElement(components.Input, Object.assign({ onPaste: onPaste }, modifiedProps)));
+}
+const clearIndicator = (props) => (components.ClearIndicator && (React.createElement(components.ClearIndicator, Object.assign({}, props))));
+const dropdownIndicator = (props) => (components.DropdownIndicator && (React.createElement(components.DropdownIndicator, Object.assign({}, props))));
+const option = (props) => (components.Option && (React.createElement(components.Option, Object.assign({}, props))));
+const multiValueRemove = (props) => (components.MultiValueRemove && (React.createElement(components.MultiValueRemove, Object.assign({}, props))));
 export function DatasetSearchBox({ placeholder, dataSource, onOpen, onSaveAsNamedSet, params = {}, tokenSeparators = /[\s;,]+/gm }) {
     const [items, setItems] = React.useState([]);
     const [inputValue, setInputValue] = React.useState('');
@@ -59,10 +72,10 @@ export function DatasetSearchBox({ placeholder, dataSource, onOpen, onSaveAsName
                 page: 0 // page starts from index 0
             }, components: {
                 Input,
-                Option: addDataTestId(Option, "async-paginate-option"),
-                MultiValueRemove: addDataTestId(MultiValueRemove, "async-paginate-multiselect-remove"),
-                ClearIndicator: addDataTestId(ClearIndicator, "async-paginate-clearindicator"),
-                DropdownIndicator: addDataTestId(DropdownIndicator, "async-paginate-dropdownindicator")
+                Option: addDataTestId(Option, 'async-paginate-option'),
+                MultiValueRemove: addDataTestId(multiValueRemove, 'async-paginate-multiselect-remove'),
+                ClearIndicator: addDataTestId(clearIndicator, 'async-paginate-clearindicator'),
+                DropdownIndicator: addDataTestId(dropdownIndicator, 'async-paginate-dropdownindicator')
             }, styles: {
                 multiValue: (styles, { data }) => ({
                     ...styles,
@@ -112,16 +125,4 @@ export function DatasetSearchBox({ placeholder, dataSource, onOpen, onSaveAsName
         React.createElement("button", { className: "btn btn-secondary", "data-testid": "open-button", disabled: !(validItems === null || validItems === void 0 ? void 0 : validItems.length), onClick: (event) => onOpen(event, searchResults) }, "Open"),
         React.createElement("button", { className: "btn btn-outline-secondary", "data-testid": "save-button", disabled: !(validItems === null || validItems === void 0 ? void 0 : validItems.length), onClick: () => onSaveAsNamedSet(validItems) }, "Save as set")));
 }
-// functions to add data-testid attribute to react-select components
-const addDataTestId = (Component, dataTestId) => (props => (React.createElement(Component, Object.assign({}, props, { innerProps: Object.assign({}, props.innerProps, { 'data-testid': `${dataTestId}${props.data ? "-" + props.data.id : ""}` }) }))));
-function Input(props) {
-    const { onPaste } = props.selectProps;
-    const modifiedProps = Object.assign({ 'data-testid': 'async-paginate-input' }, props);
-    delete modifiedProps.popoverType; // remove the "illegal" prop from the copy
-    return (React.createElement(components.Input, Object.assign({ onPaste: onPaste }, modifiedProps)));
-}
-const ClearIndicator = props => (components.ClearIndicator && (React.createElement(components.ClearIndicator, Object.assign({}, props))));
-const DropdownIndicator = props => (components.DropdownIndicator && (React.createElement(components.DropdownIndicator, Object.assign({}, props))));
-const Option = props => (components.Option && (React.createElement(components.Option, Object.assign({}, props))));
-const MultiValueRemove = props => (components.MultiValueRemove && (React.createElement(components.MultiValueRemove, Object.assign({}, props))));
 //# sourceMappingURL=DatasetSearchBox.js.map

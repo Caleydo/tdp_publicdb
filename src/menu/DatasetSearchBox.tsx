@@ -28,6 +28,53 @@ interface IDatasetSearchBoxProps {
     tokenSeparators?: RegExp;
 }
 
+// functions to add data-testid attribute to react-select components
+/* tslint:disable-next-line:variable-name */
+const addDataTestId = (Component, dataTestId) => (
+    (props) => (
+        <Component
+            {...props}
+            innerProps={Object.assign({}, props.innerProps, {'data-testid': `${dataTestId}${props.data ? '-' + props.data.id : ''}`})}
+        />
+    )
+);
+
+function Input(props: any) {
+    const {onPaste} = props.selectProps;
+    const modifiedProps = Object.assign({'data-testid': 'async-paginate-input'}, props);
+    delete modifiedProps.popoverType;  // remove the "illegal" prop from the copy
+    return (<components.Input onPaste={onPaste} {...modifiedProps} />);
+}
+
+const clearIndicator = (props) => (
+    components.ClearIndicator && (
+        <components.ClearIndicator {...props}>
+        </components.ClearIndicator>
+    )
+);
+
+const dropdownIndicator = (props) => (
+    components.DropdownIndicator && (
+        <components.DropdownIndicator {...props}>
+        </components.DropdownIndicator>
+    )
+);
+
+const option = (props) => (
+    components.Option && (
+        <components.Option {...props}>
+        </components.Option>
+    )
+);
+
+const multiValueRemove = (props) => (
+    components.MultiValueRemove && (
+        <components.MultiValueRemove {...props}>
+        </components.MultiValueRemove>
+    )
+);
+
+
 export function DatasetSearchBox({placeholder, dataSource, onOpen, onSaveAsNamedSet, params = {}, tokenSeparators = /[\s;,]+/gm}: IDatasetSearchBoxProps) {
     const [items, setItems] = React.useState<IDatasetSearchOption[]>([]);
     const [inputValue, setInputValue] = React.useState('');
@@ -114,10 +161,10 @@ export function DatasetSearchBox({placeholder, dataSource, onOpen, onSaveAsNamed
                 }}
                 components={{
                     Input,
-                    Option: addDataTestId(Option, "async-paginate-option"),
-                    MultiValueRemove: addDataTestId(MultiValueRemove, "async-paginate-multiselect-remove"),
-                    ClearIndicator: addDataTestId(ClearIndicator, "async-paginate-clearindicator"),
-                    DropdownIndicator: addDataTestId(DropdownIndicator, "async-paginate-dropdownindicator")
+                    Option: addDataTestId(Option, 'async-paginate-option'),
+                    MultiValueRemove: addDataTestId(multiValueRemove, 'async-paginate-multiselect-remove'),
+                    ClearIndicator: addDataTestId(clearIndicator, 'async-paginate-clearindicator'),
+                    DropdownIndicator: addDataTestId(dropdownIndicator, 'async-paginate-dropdownindicator')
                 }}
                 styles={{
 
@@ -173,50 +220,3 @@ export function DatasetSearchBox({placeholder, dataSource, onOpen, onSaveAsNamed
         </div>
     );
 }
-
-// functions to add data-testid attribute to react-select components
-const addDataTestId = (Component, dataTestId) => (
-    props => (
-        <Component
-            {...props}
-            innerProps={Object.assign({}, props.innerProps, {'data-testid': `${dataTestId}${props.data ? "-" + props.data.id : ""}`})}
-        />
-    )
-);
-
-function Input(props: any) {
-    const {onPaste} = props.selectProps;
-    const modifiedProps = Object.assign({'data-testid': 'async-paginate-input'}, props);
-    delete modifiedProps.popoverType;  // remove the "illegal" prop from the copy
-    return (<components.Input onPaste={onPaste} {...modifiedProps} />);
-}
-
-const ClearIndicator = props => (
-    components.ClearIndicator && (
-        <components.ClearIndicator {...props}>
-        </components.ClearIndicator>
-    )
-);
-
-const DropdownIndicator = props => (
-    components.DropdownIndicator && (
-        <components.DropdownIndicator {...props}>
-        </components.DropdownIndicator>
-    )
-);
-
-const Option = props => (
-    components.Option && (
-        <components.Option {...props}>
-        </components.Option>
-    )
-);
-
-const MultiValueRemove = props => (
-    components.MultiValueRemove && (
-        <components.MultiValueRemove {...props}>
-        </components.MultiValueRemove>
-    )
-);
-
-
