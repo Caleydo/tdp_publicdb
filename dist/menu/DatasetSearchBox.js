@@ -72,7 +72,7 @@ export function DatasetSearchBox({ placeholder, dataSource, onOpen, onSaveAsName
                 page: 0 // page starts from index 0
             }, components: {
                 Input,
-                Option: addDataTestId(Option, 'async-paginate-option'),
+                Option: addDataTestId(option, 'async-paginate-option'),
                 MultiValueRemove: addDataTestId(multiValueRemove, 'async-paginate-multiselect-remove'),
                 ClearIndicator: addDataTestId(clearIndicator, 'async-paginate-clearindicator'),
                 DropdownIndicator: addDataTestId(dropdownIndicator, 'async-paginate-dropdownindicator')
