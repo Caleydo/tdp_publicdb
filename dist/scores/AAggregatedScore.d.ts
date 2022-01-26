@@ -1,7 +1,3 @@
-/**
- * Created by sam on 06.03.2017.
- */
-import { RangeLike } from 'tdp_core';
 import { IDataSourceConfig } from '../common/config';
 import { IScore } from 'tdp_core';
 import { AScore, ICommonScoreParam } from './AScore';
@@ -18,7 +14,7 @@ export declare abstract class AAggregatedScore extends AScore implements IScore<
     constructor(parameter: IAggregatedScoreParam, dataSource: IDataSourceConfig, oppositeDataSource: IDataSourceConfig);
     get idType(): IDType;
     createDesc(): any;
-    compute(ids: RangeLike, idtype: IDType, namedSet?: INamedSet): Promise<any[]>;
+    compute(ids: string[], idtype: IDType, namedSet?: INamedSet): Promise<any[]>;
     protected abstract getViewPrefix(): string;
     protected createFilter(): IParams;
 }

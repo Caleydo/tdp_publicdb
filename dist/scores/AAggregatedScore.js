@@ -1,6 +1,3 @@
-/**
- * Created by sam on 06.03.2017.
- */
 import { SpeciesUtils } from 'tdp_gene';
 import { dataSubtypes, MAX_FILTER_SCORE_ROWS_BEFORE_ALL } from '../common/config';
 import { ScoreUtils } from './ScoreUtils';

@@ -1,6 +1,3 @@
-/**
- * Created by sam on 16.02.2017.
- */
 import { AExpressionVsCopyNumber } from 'tdp_gene';
 import { SpeciesUtils } from 'tdp_gene';
 import { expression, copyNumber } from '../common/config';

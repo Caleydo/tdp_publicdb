@@ -2,7 +2,7 @@
  * Created by Stefan Luger on 06.12.17
  */
 
-import {ResolveUtils} from 'tdp_core';
+import {IDTypeManager} from 'tdp_core';
 import {ProxyView} from 'tdp_core';
 import {IFormSelectOption} from 'tdp_core';
 
@@ -13,7 +13,7 @@ import {IFormSelectOption} from 'tdp_core';
 export class CosmicProxyView extends ProxyView {
 
   protected async getSelectionSelectData(names: string[]): Promise<IFormSelectOption[]> {
-    const cosmics = await ResolveUtils.resolveIds(this.selection.idtype, this.selection.range,'Cosmic');
+    const cosmics = await IDTypeManager.getInstance().mapNameToFirstName(this.selection.idtype, this.selection.selectionIds, 'Cosmic');
 
     return Promise.resolve(cosmics.map((cosmicId: string, index: number) => ({
       value: cosmicId,

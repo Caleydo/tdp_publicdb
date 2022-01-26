@@ -11,5 +11,5 @@ export declare class ViewUtils {
         _id: number;
     }[]>;
     static postProcessScore(subType: IDataSubtypeConfig): (rows: IScoreRow<any>[]) => any[];
-    static subTypeDesc(dataSubType: IDataSubtypeConfig, id: number, label: string, col?: string): import("tdp_core").IAdditionalColumnDesc;
+    static subTypeDesc(dataSubType: IDataSubtypeConfig, id: string, label: string, col?: string): import("tdp_core").IAdditionalColumnDesc;
 }

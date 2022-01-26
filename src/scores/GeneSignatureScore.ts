@@ -2,7 +2,7 @@ import {IScore, ColumnDescUtils, IScoreRow, RestBaseUtils, INamedSet} from 'tdp_
 import {FormDialog} from 'tdp_core';
 import {IDataSourceConfig, MAX_FILTER_SCORE_ROWS_BEFORE_ALL} from '../common/config';
 import {FormElementType} from 'tdp_core';
-import {AppContext, IDTypeManager, RangeLike, IDType, I18nextManager} from 'tdp_core';
+import {AppContext, IDTypeManager, IDType, I18nextManager} from 'tdp_core';
 import {IPluginDesc} from 'tdp_core';
 import {ScoreUtils} from './ScoreUtils';
 import {SpeciesUtils, FieldUtils} from 'tdp_gene';
@@ -67,7 +67,7 @@ export class GeneSignatureScore implements IScore<number> {
    * Computes the actual scores and returns a Promise of IScoreRow rows.
    * @returns {Promise<IScoreRow<number>[]>}
    */
-  async compute(ids: RangeLike, idtype: IDType, namedSet?: INamedSet): Promise<IScoreRow<number>[]> {
+  async compute(ids: string[], idtype: IDType, namedSet?: INamedSet): Promise<IScoreRow<number>[]> {
     const params = {
       signature: this.params.signature,
       species: SpeciesUtils.getSelectedSpecies()

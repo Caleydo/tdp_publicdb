@@ -2,7 +2,7 @@
  * Created by Marc Streit on 28.07.2016.
  */
 
-import {ARankingView, AdapterUtils, IARankingViewOptions} from 'tdp_core';
+import {ARankingView, AdapterUtils, IARankingViewOptions, IDTypeManager} from 'tdp_core';
 import {IScoreRow} from 'tdp_core';
 import {SpeciesUtils, Species} from 'tdp_gene';
 import {
@@ -16,7 +16,7 @@ import {
 } from '../common/config';
 import {ParameterFormIds, FORM_GENE_FILTER} from '../common/forms';
 import {FormElementType} from 'tdp_core';
-import {ISelection, IViewContext, ResolveUtils} from 'tdp_core';
+import {ISelection, IViewContext} from 'tdp_core';
 import {RestBaseUtils, IServerColumn} from 'tdp_core';
 import {ViewUtils} from './ViewUtils';
 import {LineupUtils} from 'tdp_core';
@@ -69,12 +69,12 @@ export class DependentGeneTable extends ARankingView {
 
   protected createSelectionAdapter() {
     return AdapterUtils.single({
-      createDesc: async (_id: number, id: string) => {
-        const ids = await ResolveUtils.resolveIds(this.selection.idtype, [_id], this.dataSource.idType);
-        return ViewUtils.subTypeDesc(this.dataSubType, _id, ids[0]);
+      createDesc: async (id: string) => {
+        const ids = await IDTypeManager.getInstance().mapNameToFirstName(this.selection.idtype, [id], this.dataSource.idType);
+        return ViewUtils.subTypeDesc(this.dataSubType, id, ids[0]);
       },
-      loadData: async (_id: number, id: string) => {
-        const ids = await ResolveUtils.resolveIds(this.selection.idtype, [_id], this.dataSource.idType);
+      loadData: async (id: string) => {
+        const ids = await IDTypeManager.getInstance().mapNameToFirstName(this.selection.idtype, [id], this.dataSource.idType);
         return this.loadSelectionColumnData(ids[0]);
       }
     });

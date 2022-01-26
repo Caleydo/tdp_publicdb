@@ -1,7 +1,3 @@
-/**
- * Created by sam on 06.03.2017.
- */
-import { RangeLike } from 'tdp_core';
 import { IDType } from 'tdp_core';
 import { IDataSourceConfig } from '../common/config';
 import { IScore } from 'tdp_core';
@@ -29,7 +25,7 @@ export declare abstract class ASingleScore extends AScore implements IScore<any>
     get idType(): IDType;
     createDesc(): any;
     protected createFilter(): IParams;
-    compute(ids: RangeLike, idtype: IDType, namedSet?: INamedSet): Promise<any[]>;
+    compute(ids: string[], idtype: IDType, namedSet?: INamedSet): Promise<any[]>;
     protected abstract getViewPrefix(): string;
 }
 export {};

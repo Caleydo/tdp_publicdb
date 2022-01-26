@@ -10,7 +10,7 @@ export declare class DependentGeneTable extends ARankingView {
     private readonly dataSource;
     constructor(context: IViewContext, selection: ISelection, parent: HTMLElement, dataType: IDataTypeConfig, options?: Partial<IARankingViewOptions>);
     protected getParameterFormDescs(): import("tdp_core").IFormElementDesc[];
-    protected parameterChanged(name: string): void;
+    protected parameterChanged(name: string): Promise<unknown>;
     protected loadColumnDesc(): Promise<Readonly<import("tdp_core").IDatabaseViewDesc>>;
     protected createSelectionAdapter(): import("tdp_core").ISelectionAdapter;
     protected getColumnDescs(columns: IServerColumn[]): import("tdp_core").IAdditionalColumnDesc[];

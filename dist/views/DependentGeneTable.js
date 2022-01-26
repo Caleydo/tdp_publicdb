@@ -1,12 +1,11 @@
 /**
  * Created by Marc Streit on 28.07.2016.
  */
-import { ARankingView, AdapterUtils } from 'tdp_core';
+import { ARankingView, AdapterUtils, IDTypeManager } from 'tdp_core';
 import { SpeciesUtils, Species } from 'tdp_gene';
 import { gene, expression, copyNumber, mutation, chooseDataSource } from '../common/config';
 import { ParameterFormIds, FORM_GENE_FILTER } from '../common/forms';
 import { FormElementType } from 'tdp_core';
-import { ResolveUtils } from 'tdp_core';
 import { RestBaseUtils } from 'tdp_core';
 import { ViewUtils } from './ViewUtils';
 import { LineupUtils } from 'tdp_core';
@@ -52,12 +51,12 @@ export class DependentGeneTable extends ARankingView {
     }
     createSelectionAdapter() {
         return AdapterUtils.single({
-            createDesc: async (_id, id) => {
-                const ids = await ResolveUtils.resolveIds(this.selection.idtype, [_id], this.dataSource.idType);
-                return ViewUtils.subTypeDesc(this.dataSubType, _id, ids[0]);
+            createDesc: async (id) => {
+                const ids = await IDTypeManager.getInstance().mapNameToFirstName(this.selection.idtype, [id], this.dataSource.idType);
+                return ViewUtils.subTypeDesc(this.dataSubType, id, ids[0]);
             },
-            loadData: async (_id, id) => {
-                const ids = await ResolveUtils.resolveIds(this.selection.idtype, [_id], this.dataSource.idType);
+            loadData: async (id) => {
+                const ids = await IDTypeManager.getInstance().mapNameToFirstName(this.selection.idtype, [id], this.dataSource.idType);
                 return this.loadSelectionColumnData(ids[0]);
             }
         });

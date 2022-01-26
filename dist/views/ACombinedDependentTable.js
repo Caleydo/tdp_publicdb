@@ -1,4 +1,3 @@
-import { ResolveUtils } from 'tdp_core';
 import { SpeciesUtils } from 'tdp_gene';
 import { splitTypes } from '../common/config';
 import { ParameterFormIds, FORM_DATA_HIERARCHICAL_SUBTYPE } from '../common/forms';
@@ -43,13 +42,13 @@ export class ACombinedDependentTable extends ARankingView {
     }
     createSelectionAdapter() {
         return AdapterUtils.multi({
-            createDescs: async (_id, id) => {
-                const ids = await ResolveUtils.resolveIds(this.selection.idtype, [_id], this.dataSource.idType);
-                return this.getSelectionColumnDesc(_id, ids[0]);
+            createDescs: async (id) => {
+                const ids = await IDTypeManager.getInstance().mapNameToFirstName(this.selection.idtype, [id], this.dataSource.idType);
+                return this.getSelectionColumnDesc(id, ids[0]);
             },
-            loadData: (_id, id, descs) => {
+            loadData: (id, descs) => {
                 return descs.map(async (desc) => {
-                    const ids = await ResolveUtils.resolveIds(this.selection.idtype, [_id], this.dataSource.idType);
+                    const ids = await IDTypeManager.getInstance().mapNameToFirstName(this.selection.idtype, [id], this.dataSource.idType);
                     return this.loadSelectionColumnData(ids[0], [desc])[0]; // send single desc and pick immediately
                 });
             },

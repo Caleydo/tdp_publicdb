@@ -1,8 +1,3 @@
-/**
- * Created by sam on 06.03.2017.
- */
-
-import {RangeLike} from 'tdp_core';
 import {IDType} from 'tdp_core';
 import {SpeciesUtils} from 'tdp_gene';
 import {IDataSourceConfig, dataSubtypes, mutation, MAX_FILTER_SCORE_ROWS_BEFORE_ALL} from '../common/config';
@@ -46,7 +41,7 @@ export abstract class AFrequencyScore extends AScore implements IScore<number> {
     return ScoreUtils.createDesc(dataSubtypes.number, `${subtype.name}${compare} ${this.countOnly ? 'Count' : 'Frequency'}`, subtype, desc);
   }
 
-  async compute(ids: RangeLike, idtype: IDType, namedSet?: INamedSet): Promise<any[]> {
+  async compute(ids: string[], idtype: IDType, namedSet?: INamedSet): Promise<any[]> {
     const isMutation = this.dataType === mutation;
     const isCopyNumberClass = this.dataSubType.id === 'copynumberclass';
     const param: any = {

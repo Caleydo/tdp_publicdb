@@ -1,8 +1,3 @@
-/**
- * Created by sam on 06.03.2017.
- */
-
-import {RangeLike} from 'tdp_core';
 import {IDTypeManager, IDType} from 'tdp_core';
 import {SpeciesUtils} from 'tdp_gene';
 import {IDataSourceConfig, MAX_FILTER_SCORE_ROWS_BEFORE_ALL} from '../common/config';
@@ -44,7 +39,7 @@ export abstract class ASingleScore extends AScore implements IScore<any> {
     return {};
   }
 
-  async compute(ids:RangeLike, idtype:IDType, namedSet?: INamedSet):Promise<any[]> {
+  async compute(ids: string[], idtype:IDType, namedSet?: INamedSet):Promise<any[]> {
     const param: any = {
       table: this.dataType.tableName,
       attribute: this.dataSubType.id,

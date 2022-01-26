@@ -1,7 +1,4 @@
-/**
- * Created by Samuel Gratzl on 27.04.2016.
- */
-import { ResolveUtils } from 'tdp_core';
+import { IDTypeManager } from 'tdp_core';
 import { AInstantView } from 'tdp_core';
 import { SpeciesUtils } from 'tdp_gene';
 import { gene } from '../common/config';
@@ -13,7 +10,7 @@ export class GeneInstantView extends AInstantView {
         this.build();
     }
     async loadData() {
-        const ids = await ResolveUtils.resolveIds(this.selection.idtype, this.selection.range, gene.idType);
+        const ids = await IDTypeManager.getInstance().mapNameToFirstName(this.selection.idtype, this.selection.selectionIds, gene.idType);
         return RestBaseUtils.getTDPFilteredRows(gene.db, `${gene.base}_all_columns`, {
             species: SpeciesUtils.getSelectedSpecies()
         }, { [gene.entityName]: ids });

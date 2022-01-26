@@ -12,7 +12,7 @@ export declare class DependentSampleTable extends ARankingView {
     get itemIDType(): import("tdp_core").IDType;
     private get dataSource();
     private get dataSubType();
-    protected parameterChanged(name: string): void;
+    protected parameterChanged(name: string): Promise<unknown>;
     protected loadColumnDesc(): Promise<Readonly<import("tdp_core").IDatabaseViewDesc>>;
     protected createSelectionAdapter(): import("tdp_core").ISelectionAdapter;
     protected getColumnDescs(columns: IServerColumn[]): import("tdp_core").IAdditionalColumnDesc[];

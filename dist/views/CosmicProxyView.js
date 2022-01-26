@@ -1,7 +1,7 @@
 /*
  * Created by Stefan Luger on 06.12.17
  */
-import { ResolveUtils } from 'tdp_core';
+import { IDTypeManager } from 'tdp_core';
 import { ProxyView } from 'tdp_core';
 /**
  * Proxy view for the idType Cosmic which fetches the original cell line data based on the mapping from Cell line to
@@ -9,7 +9,7 @@ import { ProxyView } from 'tdp_core';
  */
 export class CosmicProxyView extends ProxyView {
     async getSelectionSelectData(names) {
-        const cosmics = await ResolveUtils.resolveIds(this.selection.idtype, this.selection.range, 'Cosmic');
+        const cosmics = await IDTypeManager.getInstance().mapNameToFirstName(this.selection.idtype, this.selection.selectionIds, 'Cosmic');
         return Promise.resolve(cosmics.map((cosmicId, index) => ({
             value: cosmicId,
             name: `${names[index]} (${cosmicId || 'N/A'})`,

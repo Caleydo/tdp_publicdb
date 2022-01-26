@@ -1,7 +1,7 @@
 /**
  * Created by Samuel Gratzl on 27.04.2016.
  */
-import { ResolveUtils } from 'tdp_core';
+import { IDTypeManager } from 'tdp_core';
 import { AD3View } from 'tdp_core';
 import { SpeciesUtils } from 'tdp_gene';
 import { cellline, tissue, gene } from '../common/config';
@@ -28,7 +28,7 @@ export class AInfoTable extends AD3View {
         this.update();
     }
     async fetchInformation() {
-        const ids = await ResolveUtils.resolveIds(this.selection.idtype, this.selection.range, this.dataSource.idType);
+        const ids = await IDTypeManager.getInstance().mapNameToFirstName(this.selection.idtype, this.selection.selectionIds, this.dataSource.idType);
         const results = await RestBaseUtils.getTDPFilteredRows(this.dataSource.db, `${this.dataSource.base}_all_columns`, {
             species: SpeciesUtils.getSelectedSpecies()
         }, { [this.dataSource.entityName]: ids });

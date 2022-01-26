@@ -1,7 +1,3 @@
-/**
- * Created by sam on 06.03.2017.
- */
-import { RangeLike } from 'tdp_core';
 import { IDType } from 'tdp_core';
 import { IDataSourceConfig } from '../common/config';
 import { IScore } from 'tdp_core';
@@ -24,7 +20,7 @@ export declare abstract class AFrequencyScore extends AScore implements IScore<n
     constructor(parameter: IFrequencyScoreParam, dataSource: IDataSourceConfig, oppositeDataSource: IDataSourceConfig, countOnly: boolean);
     get idType(): IDType;
     createDesc(): any;
-    compute(ids: RangeLike, idtype: IDType, namedSet?: INamedSet): Promise<any[]>;
+    compute(ids: string[], idtype: IDType, namedSet?: INamedSet): Promise<any[]>;
     protected createFilter(): IParams;
     protected abstract getViewPrefix(): string;
 }

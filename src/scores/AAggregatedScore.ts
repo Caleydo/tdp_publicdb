@@ -1,8 +1,3 @@
-/**
- * Created by sam on 06.03.2017.
- */
-
-import {RangeLike} from 'tdp_core';
 import {SpeciesUtils} from 'tdp_gene';
 import {IDataSourceConfig, dataSubtypes, MAX_FILTER_SCORE_ROWS_BEFORE_ALL} from '../common/config';
 import {IScore, IScoreRow} from 'tdp_core';
@@ -41,7 +36,7 @@ export abstract class AAggregatedScore extends AScore implements IScore<number> 
     return ScoreUtils.createDesc(dataSubtypes.number, `${this.parameter.aggregation} ${this.dataSubType.name}`, this.dataSubType, desc);
   }
 
-  async compute(ids: RangeLike, idtype: IDType, namedSet?: INamedSet): Promise<any[]> {
+  async compute(ids: string[], idtype: IDType, namedSet?: INamedSet): Promise<any[]> {
     const param = {
       table: this.dataType.tableName,
       // by convention for the aggregation to do its magic, it has to be called `data_subtype`
