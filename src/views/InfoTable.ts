@@ -40,7 +40,7 @@ export abstract class AInfoTable extends AD3View {
   }
 
   private async fetchInformation() {
-    const ids = await IDTypeManager.getInstance().mapNameToFirstName(this.selection.idtype, this.selection.selectionIds, this.dataSource.idType);
+    const ids = await IDTypeManager.getInstance().mapNameToFirstName(this.selection.idtype, this.selection.ids, this.dataSource.idType);
     const results = await RestBaseUtils.getTDPFilteredRows(this.dataSource.db, `${this.dataSource.base}_all_columns`, {
       species: SpeciesUtils.getSelectedSpecies()
     }, {[this.dataSource.entityName] : ids});

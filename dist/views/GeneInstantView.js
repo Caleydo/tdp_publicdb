@@ -10,7 +10,7 @@ export class GeneInstantView extends AInstantView {
         this.build();
     }
     async loadData() {
-        const ids = await IDTypeManager.getInstance().mapNameToFirstName(this.selection.idtype, this.selection.selectionIds, gene.idType);
+        const ids = await IDTypeManager.getInstance().mapNameToFirstName(this.selection.idtype, this.selection.ids, gene.idType);
         return RestBaseUtils.getTDPFilteredRows(gene.db, `${gene.base}_all_columns`, {
             species: SpeciesUtils.getSelectedSpecies()
         }, { [gene.entityName]: ids });

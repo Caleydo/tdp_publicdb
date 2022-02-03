@@ -13,7 +13,7 @@ import {IFormSelectOption} from 'tdp_core';
 export class CosmicProxyView extends ProxyView {
 
   protected async getSelectionSelectData(names: string[]): Promise<IFormSelectOption[]> {
-    const cosmics = await IDTypeManager.getInstance().mapNameToFirstName(this.selection.idtype, this.selection.selectionIds, 'Cosmic');
+    const cosmics = await IDTypeManager.getInstance().mapNameToFirstName(this.selection.idtype, this.selection.ids, 'Cosmic');
 
     return Promise.resolve(cosmics.map((cosmicId: string, index: number) => ({
       value: cosmicId,

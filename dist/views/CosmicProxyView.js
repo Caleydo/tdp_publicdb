@@ -9,7 +9,7 @@ import { ProxyView } from 'tdp_core';
  */
 export class CosmicProxyView extends ProxyView {
     async getSelectionSelectData(names) {
-        const cosmics = await IDTypeManager.getInstance().mapNameToFirstName(this.selection.idtype, this.selection.selectionIds, 'Cosmic');
+        const cosmics = await IDTypeManager.getInstance().mapNameToFirstName(this.selection.idtype, this.selection.ids, 'Cosmic');
         return Promise.resolve(cosmics.map((cosmicId, index) => ({
             value: cosmicId,
             name: `${names[index]} (${cosmicId || 'N/A'})`,
