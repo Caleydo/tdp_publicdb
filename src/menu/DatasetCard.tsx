@@ -11,32 +11,40 @@ export default function DatasetCard({name, icon, tabs, startViewId, dataSource, 
   const [dirtyNamedSets, setDirtyNamedSets] = React.useState(false);
 
   const loadPredefinedSet = React.useMemo<() => Promise<INamedSet[]>>(() => {
-    return () => RestBaseUtils.getTDPData(dataSource.db, `${dataSource.base}_panel`)
-      .then((panels: {id: string, description: string, species: string}[]) => {
-        return [{
-          name: 'All',
-          type: ENamedSetType.CUSTOM,
-          subTypeKey: Species.SPECIES_SESSION_KEY,
-          subTypeFromSession: true,
-          subTypeValue: SpeciesUtils.getSelectedSpecies(),
-          description: '',
-          idType: '',
-          ids: '',
-          creator: ''
-        }, ...panels
-          .map(function panel2NamedSet({id, description, species}): INamedSet {
-            return {
-              type: ENamedSetType.PANEL,
-              id,
-              name: id,
-              description,
-              subTypeKey: Species.SPECIES_SESSION_KEY,
-              subTypeFromSession: false,
-              subTypeValue: species,
-              idType: ''
-            };
-          })];
-      });
+    return async () => {
+      const panels: {id: string, description: string, species: string}[] = await RestBaseUtils.getTDPData(dataSource.db, `${dataSource.base}_panel`);
+      const uniqueSpecies = [...new Set(panels.map(({species}) => species))];
+
+      return [
+        // first add an `All` named set for each species ...
+        ...uniqueSpecies.map((species) => {
+          return {
+            name: I18nextManager.getInstance().i18n.t(`tdp:datasetCard.predefinedSet.all.name`),
+            type: ENamedSetType.CUSTOM,
+            subTypeKey: Species.SPECIES_SESSION_KEY,
+            subTypeFromSession: true,
+            subTypeValue: species,
+            description: I18nextManager.getInstance().i18n.t(`tdp:datasetCard.predefinedSet.all.description`, {species}),
+            idType: '',
+            ids: '',
+            creator: ''
+          } as INamedSet;
+        }),
+        // ... then add all the predefined sets loaded from the backend
+        ...panels.map(({id, description, species}): INamedSet => {
+          return {
+            type: ENamedSetType.PANEL,
+            id,
+            name: id,
+            description,
+            subTypeKey: Species.SPECIES_SESSION_KEY,
+            subTypeFromSession: false,
+            subTypeValue: species,
+            idType: ''
+          };
+        })
+      ];
+    }
   }, [dataSource.idType]);
 
   const loadNamedSets = React.useMemo<() => Promise<INamedSet[]>>(() => {
