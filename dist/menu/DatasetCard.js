@@ -13,6 +13,7 @@ export default function DatasetCard({ name, icon, tabs, startViewId, dataSource,
             const panels = await RestBaseUtils.getTDPData(dataSource.db, `${dataSource.base}_panel`);
             const uniqueSpecies = [...new Set(panels.map(({ species }) => species))];
             return [
+                // first add an `All` named set for each species ...
                 ...uniqueSpecies.map((species) => {
                     return {
                         name: I18nextManager.getInstance().i18n.t(`tdp:datasetCard.predefinedSet.all.name`),
@@ -26,6 +27,7 @@ export default function DatasetCard({ name, icon, tabs, startViewId, dataSource,
                         creator: ''
                     };
                 }),
+                // ... then add all the predefined sets loaded from the backend
                 ...panels.map(({ id, description, species }) => {
                     return {
                         type: ENamedSetType.PANEL,

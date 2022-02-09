@@ -44,7 +44,7 @@ export default function DatasetCard({name, icon, tabs, startViewId, dataSource, 
           };
         })
       ];
-    }
+    };
   }, [dataSource.idType]);
 
   const loadNamedSets = React.useMemo<() => Promise<INamedSet[]>>(() => {
