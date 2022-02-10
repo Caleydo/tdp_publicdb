@@ -3,26 +3,32 @@ import { ENamedSetType, RestBaseUtils, RestStorageUtils, StoreUtils } from 'tdp_
 import { NamedSetList, OrdinoContext } from 'ordino';
 import { UserSession, UniqueIdManager, I18nextManager, IDTypeManager, useAsync } from 'tdp_core';
 import { DatasetSearchBox } from './DatasetSearchBox';
-import { Species, SpeciesUtils } from 'tdp_gene';
+import { Species } from 'tdp_gene';
 export default function DatasetCard({ name, icon, tabs, startViewId, dataSource, cssClass, tokenSeparators }) {
     var _a, _b;
     const { app } = React.useContext(OrdinoContext);
     const [dirtyNamedSets, setDirtyNamedSets] = React.useState(false);
     const loadPredefinedSet = React.useMemo(() => {
-        return () => RestBaseUtils.getTDPData(dataSource.db, `${dataSource.base}_panel`)
-            .then((panels) => {
-            return [{
-                    name: 'All',
-                    type: ENamedSetType.CUSTOM,
-                    subTypeKey: Species.SPECIES_SESSION_KEY,
-                    subTypeFromSession: true,
-                    subTypeValue: SpeciesUtils.getSelectedSpecies(),
-                    description: '',
-                    idType: '',
-                    ids: '',
-                    creator: ''
-                }, ...panels
-                    .map(function panel2NamedSet({ id, description, species }) {
+        return async () => {
+            const panels = await RestBaseUtils.getTDPData(dataSource.db, `${dataSource.base}_panel`);
+            const uniqueSpecies = [...new Set(panels.map(({ species }) => species))];
+            return [
+                // first add an `All` named set for each species ...
+                ...uniqueSpecies.map((species) => {
+                    return {
+                        name: I18nextManager.getInstance().i18n.t(`tdp:datasetCard.predefinedSet.all.name`),
+                        type: ENamedSetType.CUSTOM,
+                        subTypeKey: Species.SPECIES_SESSION_KEY,
+                        subTypeFromSession: true,
+                        subTypeValue: species,
+                        description: I18nextManager.getInstance().i18n.t(`tdp:datasetCard.predefinedSet.all.description`, { species }),
+                        idType: '',
+                        ids: '',
+                        creator: ''
+                    };
+                }),
+                // ... then add all the predefined sets loaded from the backend
+                ...panels.map(({ id, description, species }) => {
                     return {
                         type: ENamedSetType.PANEL,
                         id,
@@ -33,8 +39,9 @@ export default function DatasetCard({ name, icon, tabs, startViewId, dataSource,
                         subTypeValue: species,
                         idType: ''
                     };
-                })];
-        });
+                })
+            ];
+        };
     }, [dataSource.idType]);
     const loadNamedSets = React.useMemo(() => {
         return () => RestStorageUtils.listNamedSets(dataSource.idType);
