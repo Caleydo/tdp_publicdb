@@ -119,9 +119,11 @@ export class GeneUtils {
    */
   static formatDrug(item: ISelect3Item<IDrugData>, node: HTMLElement, mode: 'result' | 'selection', currentSearchQuery?: RegExp) {
     if (mode === 'result') {
+      // show scientific name if is different from the drug id
+      const showScientificName = item.id.toLocaleLowerCase() !== item.data.scientificname.toLocaleLowerCase();
       //highlight match
       return `${item.id.replace(currentSearchQuery!, Select3Utils.highlightMatch)}<br>
-      <span class="option-muted"> ${item.data.scientificname ? item.data.scientificname.replace(currentSearchQuery!, Select3Utils.highlightMatch) : item.data.scientificname}</span><br>
+      ${showScientificName ? `<span class="option-muted"> ${item.data.scientificname ? item.data.scientificname.replace(currentSearchQuery!, Select3Utils.highlightMatch) : item.data.scientificname}</span><br>` : ''}
       <span class="option-muted">MoA: ${item.data.moa ? item.data.moa.replace(currentSearchQuery!, Select3Utils.highlightMatch) : item.data.moa}</span><br>
       <span class="option-muted">Target: ${item.data.target ? item.data.target.replace(currentSearchQuery!, Select3Utils.highlightMatch) : item.data.target}</span>`;
     }
