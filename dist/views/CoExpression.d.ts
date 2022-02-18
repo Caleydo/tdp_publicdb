@@ -1,9 +1,8 @@
 /**
  * Created by sam on 16.02.2017.
  */
-import { IFormElementDesc } from 'tdp_core';
+import { IFormElementDesc, Range } from 'tdp_core';
 import { ACoExpression, ICoExprDataFormatRow, IGeneOption } from 'tdp_gene';
-import { Range } from 'tdp_core';
 export declare class CoExpression extends ACoExpression {
     protected getParameterFormDescs(): IFormElementDesc[];
     private get dataSource();
@@ -20,3 +19,4 @@ export declare class CoExpression extends ACoExpression {
     protected select(range: Range): void;
     protected getNoDataErrorMessage(refGene: IGeneOption): string;
 }
+//# sourceMappingURL=CoExpression.d.ts.map

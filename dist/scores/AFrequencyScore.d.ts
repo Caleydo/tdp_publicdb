@@ -1,13 +1,9 @@
 /**
  * Created by sam on 06.03.2017.
  */
-import { RangeLike } from 'tdp_core';
-import { IDType } from 'tdp_core';
-import { IDataSourceConfig } from '../common/config';
-import { IScore } from 'tdp_core';
+import { RangeLike, IDType, IScore, INamedSet, IParams } from 'tdp_core';
 import { AScore, ICommonScoreParam } from './AScore';
-import { INamedSet } from 'tdp_core';
-import { IParams } from 'tdp_core';
+import { IDataSourceConfig } from '../common/config';
 interface IFrequencyScoreParam extends ICommonScoreParam {
     comparison_operator: string;
     comparison_value: number;
@@ -29,3 +25,4 @@ export declare abstract class AFrequencyScore extends AScore implements IScore<n
     protected abstract getViewPrefix(): string;
 }
 export {};
+//# sourceMappingURL=AFrequencyScore.d.ts.map

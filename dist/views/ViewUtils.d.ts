@@ -13,3 +13,4 @@ export declare class ViewUtils {
     static postProcessScore(subType: IDataSubtypeConfig): (rows: IScoreRow<any>[]) => any[];
     static subTypeDesc(dataSubType: IDataSubtypeConfig, id: number, label: string, col?: string): import("tdp_core").IAdditionalColumnDesc;
 }
+//# sourceMappingURL=ViewUtils.d.ts.map

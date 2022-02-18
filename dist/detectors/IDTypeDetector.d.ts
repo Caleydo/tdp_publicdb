@@ -8,3 +8,4 @@ export declare class IDTypeDetector {
     };
 }
 export {};
+//# sourceMappingURL=IDTypeDetector.d.ts.map

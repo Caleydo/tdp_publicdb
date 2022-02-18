@@ -18,13 +18,14 @@ export class GeneSymbolProxyView extends ProxyView {
                 return {
                     name: `${d.symbol} (${d.id})`,
                     value: d.symbol,
-                    data: d
+                    data: d,
                 };
             });
         }
         catch (error) {
             console.error(error);
             this.setBusy(false);
+            return undefined;
         }
     }
 }

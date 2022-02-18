@@ -1,7 +1,5 @@
-import { IScore } from 'tdp_core';
+import { IScore, IPluginDesc } from 'tdp_core';
 import { ABooleanScore, IBooleanScoreParams } from './ABooleanScore';
-import { IDataSourceConfig } from '../common/config';
-import { IPluginDesc } from 'tdp_core';
 /**
  * interface describing the parameter needed for MyScore
  */
@@ -12,7 +10,6 @@ export interface IAnnotationColumnParam extends IBooleanScoreParams {
  * score implementation in this case a numeric score is computed
  */
 export declare class AnnotationColumn extends ABooleanScore implements IScore<number> {
-    constructor(params: IAnnotationColumnParam, dataSource: IDataSourceConfig);
     protected get label(): string;
     protected get columnName(): string;
     static createAnnotationColumnScore(data: IAnnotationColumnParam | IAnnotationColumnParam[], pluginDesc: IPluginDesc): AnnotationColumn[];
@@ -22,3 +19,4 @@ export declare class AnnotationColumn extends ABooleanScore implements IScore<nu
      */
     static createAnnotationColumn(pluginDesc: IPluginDesc): Promise<IAnnotationColumnParam[]>;
 }
+//# sourceMappingURL=AnnotationColumn.d.ts.map

@@ -84,8 +84,6 @@ export declare const FORM_AGGREGATED_SCORE: ({
     };
 })[];
 export declare const FORCE_COMPUTE_ALL_GENES: {
-    label: string;
-} & {
     type: FormElementType;
     id: string;
     options: {
@@ -93,10 +91,9 @@ export declare const FORCE_COMPUTE_ALL_GENES: {
         unchecked: number;
     };
     useSession: boolean;
+    label: string;
 };
 export declare const FORCE_COMPUTE_ALL_TISSUE: {
-    label: string;
-} & {
     type: FormElementType;
     id: string;
     options: {
@@ -104,10 +101,9 @@ export declare const FORCE_COMPUTE_ALL_TISSUE: {
         unchecked: number;
     };
     useSession: boolean;
+    label: string;
 };
 export declare const FORCE_COMPUTE_ALL_CELLLINE: {
-    label: string;
-} & {
     type: FormElementType;
     id: string;
     options: {
@@ -115,6 +111,7 @@ export declare const FORCE_COMPUTE_ALL_CELLLINE: {
         unchecked: number;
     };
     useSession: boolean;
+    label: string;
 };
 export declare const FORM_SINGLE_SCORE: {
     type: FormElementType;
@@ -250,3 +247,4 @@ export declare const FORM_SINGLE_SCORE_DRUG: ({
     };
     useSession: boolean;
 })[];
+//# sourceMappingURL=forms.d.ts.map

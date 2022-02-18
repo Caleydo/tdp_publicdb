@@ -2,39 +2,45 @@
  * Created by Marc Streit on 26.07.2016.
  */
 
-import {ARankingView, AdapterUtils, IARankingViewOptions} from 'tdp_core';
-import {IScoreRow} from 'tdp_core';
-import {SpeciesUtils, Species} from 'tdp_gene';
 import {
-  expression,
-  copyNumber,
-  mutation,
-  IDataTypeConfig,
-  IDataSourceConfig, IDataSubtypeConfig
-} from '../common/config';
-import {ParameterFormIds, FORM_DATA_SOURCE, FORM_TISSUE_OR_CELLLINE_FILTER} from '../common/forms';
-import {FormElementType} from 'tdp_core';
-import {ISelection, IViewContext} from 'tdp_core';
-import {RestBaseUtils, IServerColumn} from 'tdp_core';
-import {IDTypeManager} from 'tdp_core';
-import {ViewUtils} from './ViewUtils';
-import {LineupUtils} from 'tdp_core';
+  ARankingView,
+  AdapterUtils,
+  IARankingViewOptions,
+  IScoreRow,
+  FormElementType,
+  ISelection,
+  IViewContext,
+  RestBaseUtils,
+  IServerColumn,
+  IDTypeManager,
+  LineupUtils,
+} from 'tdp_core';
+import { SpeciesUtils, Species } from 'tdp_gene';
+import { ParameterFormIds, FORM_DATA_SOURCE, FORM_TISSUE_OR_CELLLINE_FILTER } from '../common/forms';
+import { ViewUtils } from './ViewUtils';
+import { expression, copyNumber, mutation, IDataTypeConfig, IDataSourceConfig, IDataSubtypeConfig } from '../common/config';
 
 export class DependentSampleTable extends ARankingView {
-
-  constructor(context: IViewContext, selection: ISelection, parent: HTMLElement, private readonly dataType: IDataTypeConfig, options: Partial<IARankingViewOptions> = {}) {
-    super(context, selection, parent, Object.assign({
+  constructor(
+    context: IViewContext,
+    selection: ISelection,
+    parent: HTMLElement,
+    private readonly dataType: IDataTypeConfig,
+    options: Partial<IARankingViewOptions> = {},
+  ) {
+    super(context, selection, parent, {
       additionalScoreParameter: () => this.dataSource,
       itemName: () => this.dataSource.name,
       enableAddingColumnGrouping: true,
       subType: {
         key: Species.SPECIES_SESSION_KEY,
-        value: SpeciesUtils.getSelectedSpecies()
+        value: SpeciesUtils.getSelectedSpecies(),
       },
       panelAddColumnBtnOptions: {
-        btnClass: 'btn-primary'
-      }
-    }, Object.assign(options, { enableSidePanel: 'collapsed' })));
+        btnClass: 'btn-primary',
+      },
+      ...Object.assign(options, { enableSidePanel: 'collapsed' }),
+    });
   }
 
   protected getParameterFormDescs() {
@@ -46,12 +52,12 @@ export class DependentSampleTable extends ARankingView {
         id: ParameterFormIds.DATA_SUBTYPE,
         options: {
           optionsData: this.dataType.dataSubtypes.map((ds) => {
-            return {name: ds.name, value: ds.id, data: ds};
-          })
+            return { name: ds.name, value: ds.id, data: ds };
+          }),
         },
-        useSession: true
+        useSession: true,
       },
-      FORM_TISSUE_OR_CELLLINE_FILTER
+      FORM_TISSUE_OR_CELLLINE_FILTER,
     ]);
   }
 
@@ -72,14 +78,14 @@ export class DependentSampleTable extends ARankingView {
   }
 
   protected loadColumnDesc() {
-    const dataSource = this.dataSource;
+    const { dataSource } = this;
     return RestBaseUtils.getTDPDesc(dataSource.db, dataSource.base);
   }
 
   protected createSelectionAdapter() {
     return AdapterUtils.single({
       createDesc: (_id: number, id: string) => ViewUtils.loadFirstName(id).then((label) => ViewUtils.subTypeDesc(this.dataSubType, _id, label)),
-      loadData: (_id: number, id: string) => this.loadSelectionColumnData(id)
+      loadData: (_id: number, id: string) => this.loadSelectionColumnData(id),
     });
   }
 
@@ -88,20 +94,20 @@ export class DependentSampleTable extends ARankingView {
   }
 
   protected loadRows() {
-    const dataSource = this.dataSource;
+    const { dataSource } = this;
     const filter = LineupUtils.toFilter(this.getParameter('filter'));
     filter.species = SpeciesUtils.getSelectedSpecies();
     return RestBaseUtils.getTDPFilteredRows(dataSource.db, dataSource.base, {}, filter);
   }
 
   private loadSelectionColumnData(name: string): Promise<IScoreRow<any>[]> {
-    const dataSource = this.dataSource;
+    const { dataSource } = this;
     const subType = this.dataSubType;
     const param = {
       table: this.dataType.tableName,
       attribute: subType.id,
       name,
-      species: SpeciesUtils.getSelectedSpecies()
+      species: SpeciesUtils.getSelectedSpecies(),
     };
     const filter = LineupUtils.toFilter(this.getParameter('filter'));
     return RestBaseUtils.getTDPScore(dataSource.db, `${dataSource.base}_gene_single_score`, param, filter).then(ViewUtils.postProcessScore(subType));
@@ -118,5 +124,4 @@ export class DependentSampleTable extends ARankingView {
   static createMutationDependentSampleTable(context: IViewContext, selection: ISelection, parent: HTMLElement, options?) {
     return new DependentSampleTable(context, selection, parent, mutation, options);
   }
-
 }

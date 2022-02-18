@@ -1,0 +1,1 @@
+{"version":3,"file":"IDTypeDetector.d.ts","sourceRoot":"","sources":["../../src/detectors/IDTypeDetector.ts"],"names":[],"mappings":"AAGA,UAAU,sBAAsB;IAC9B,UAAU,EAAE,MAAM,CAAC;CACpB;AACD,qBAAa,cAAc;WACZ,YAAY,CAAC,IAAI,EAAE,GAAG,EAAE,EAAE,QAAQ,EAAE,CAAC,GAAG,EAAE,GAAG,KAAK,MAAM,EAAE,UAAU,EAAE,MAAM,EAAE,OAAO,EAAE,sBAAsB,GAAG,OAAO,CAAC,MAAM,CAAC;IAyB5I,MAAM,CAAC,oBAAoB;;;CAK5B"}
