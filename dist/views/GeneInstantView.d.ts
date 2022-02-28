@@ -7,3 +7,4 @@ export declare class GeneInstantView extends AInstantView {
     private loadData;
     private build;
 }
+//# sourceMappingURL=GeneInstantView.d.ts.map

@@ -9,3 +9,4 @@ export declare class GeneSearchProvider extends SearchProvider {
     static createTissue(): SearchProvider;
     static createGene(): GeneSearchProvider;
 }
+//# sourceMappingURL=SearchProvider.d.ts.map

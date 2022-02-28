@@ -2,28 +2,25 @@
  * Created by sam on 06.03.2017.
  */
 
-import {RangeLike} from 'tdp_core';
-import {IDType} from 'tdp_core';
-import {SpeciesUtils} from 'tdp_gene';
-import {IDataSourceConfig, dataSubtypes, mutation, MAX_FILTER_SCORE_ROWS_BEFORE_ALL} from '../common/config';
-import {IScore} from 'tdp_core';
-import {ScoreUtils} from './ScoreUtils';
-import {AScore, ICommonScoreParam} from './AScore';
-import {FieldUtils} from 'tdp_gene';
-import {INamedSet} from 'tdp_core';
-import {IDTypeManager} from 'tdp_core';
-import {RestBaseUtils, IParams} from 'tdp_core';
-import {LineupUtils} from 'tdp_core';
+import { RangeLike, IDType, IScore, INamedSet, IDTypeManager, RestBaseUtils, IParams, LineupUtils } from 'tdp_core';
+import { SpeciesUtils, FieldUtils } from 'tdp_gene';
+import { ScoreUtils } from './ScoreUtils';
+import { AScore, ICommonScoreParam } from './AScore';
+import { IDataSourceConfig, dataSubtypes, mutation, MAX_FILTER_SCORE_ROWS_BEFORE_ALL } from '../common/config';
 
 interface IFrequencyScoreParam extends ICommonScoreParam {
   comparison_operator: string;
   comparison_value: number;
-  comparison_cn?: { text: string, data: number }[];
+  comparison_cn?: { text: string; data: number }[];
 }
 
 export abstract class AFrequencyScore extends AScore implements IScore<number> {
-
-  constructor(private readonly parameter: IFrequencyScoreParam,private readonly dataSource: IDataSourceConfig, private readonly oppositeDataSource: IDataSourceConfig, private readonly countOnly: boolean) {
+  constructor(
+    private readonly parameter: IFrequencyScoreParam,
+    private readonly dataSource: IDataSourceConfig,
+    private readonly oppositeDataSource: IDataSourceConfig,
+    private readonly countOnly: boolean,
+  ) {
     super(parameter);
   }
 
@@ -42,7 +39,9 @@ export abstract class AFrequencyScore extends AScore implements IScore<number> {
     } else if (!isMutation) {
       compare = ` ${this.parameter.comparison_operator} ${this.parameter.comparison_value}`;
     }
-    const desc = `${ds.name} Filter: ${ScoreUtils.toFilterString(this.parameter.filter, ds)}\nData Type: ${this.dataType.name}\nData Subtype: ${this.dataSubType.name}\nAggregation: ${this.countOnly ? 'Count' : 'Frequency'}${compare}`;
+    const desc = `${ds.name} Filter: ${ScoreUtils.toFilterString(this.parameter.filter, ds)}\nData Type: ${this.dataType.name}\nData Subtype: ${
+      this.dataSubType.name
+    }\nAggregation: ${this.countOnly ? 'Count' : 'Frequency'}${compare}`;
     return ScoreUtils.createDesc(dataSubtypes.number, `${subtype.name}${compare} ${this.countOnly ? 'Count' : 'Frequency'}`, subtype, desc);
   }
 
@@ -53,7 +52,7 @@ export abstract class AFrequencyScore extends AScore implements IScore<number> {
       attribute: this.dataSubType.useForAggregation,
       species: SpeciesUtils.getSelectedSpecies(),
       table: this.dataType.tableName,
-      target: idtype.id
+      target: idtype.id,
     };
     if (!isMutation && !isCopyNumberClass) {
       param.operator = this.parameter.comparison_operator;
@@ -66,8 +65,15 @@ export abstract class AFrequencyScore extends AScore implements IScore<number> {
     FieldUtils.limitScoreRows(param, ids, idtype, this.dataSource.entityName, maxDirectRows, namedSet);
     const filters = Object.assign(LineupUtils.toFilter(this.parameter.filter), this.createFilter());
 
-    const rows: any[] = await RestBaseUtils.getTDPScore(this.dataSource.db, `${this.getViewPrefix()}${this.dataSource.base}_${this.oppositeDataSource.base}_frequency_${isMutation? 'mutation_' : ''}${isCopyNumberClass? 'copynumberclass_' : ''}score`, param, filters);
-    rows.forEach((row) => row.score = this.countOnly ? row.count : row.count / row.total);
+    const rows: any[] = await RestBaseUtils.getTDPScore(
+      this.dataSource.db,
+      `${this.getViewPrefix()}${this.dataSource.base}_${this.oppositeDataSource.base}_frequency_${isMutation ? 'mutation_' : ''}${
+        isCopyNumberClass ? 'copynumberclass_' : ''
+      }score`,
+      param,
+      filters,
+    );
+    rows.forEach((row) => (row.score = this.countOnly ? row.count : row.count / row.total));
     return rows;
   }
 

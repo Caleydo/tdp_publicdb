@@ -1,8 +1,7 @@
 /*
  * Created by Stefan Luger on 06.12.17
  */
-import { ResolveUtils } from 'tdp_core';
-import { ProxyView } from 'tdp_core';
+import { ResolveUtils, ProxyView } from 'tdp_core';
 /**
  * Proxy view for the idType Cosmic which fetches the original cell line data based on the mapping from Cell line to
  * Cosmic.

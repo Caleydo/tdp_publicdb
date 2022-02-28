@@ -1,18 +1,15 @@
 /**
  * Created by sam on 06.03.2017.
  */
-import { gene, tissue, cellline, MAX_FILTER_SCORE_ROWS_BEFORE_ALL, splitTypes, drug } from '../common/config';
-import { FormElementType } from 'tdp_core';
-import { ParameterFormIds, FORM_GENE_NAME, FORM_TISSUE_NAME, FORM_CELLLINE_NAME, FORM_DRUG_NAME } from '../common/forms';
-import { I18nextManager } from 'tdp_core';
-import { FORCE_COMPUTE_ALL_CELLLINE, FORCE_COMPUTE_ALL_GENES, FORCE_COMPUTE_ALL_TISSUE, FORM_SINGLE_SCORE, FORM_SINGLE_SCORE_DEPLETION, FORM_SINGLE_SCORE_DRUG } from './forms';
+import { FormElementType, I18nextManager, BaseUtils, FormDialog } from 'tdp_core';
+import { FORCE_COMPUTE_ALL_CELLLINE, FORCE_COMPUTE_ALL_GENES, FORCE_COMPUTE_ALL_TISSUE, FORM_SINGLE_SCORE, FORM_SINGLE_SCORE_DEPLETION, FORM_SINGLE_SCORE_DRUG, } from './forms';
 import { ScoreUtils } from './ScoreUtils';
-import { BaseUtils } from 'tdp_core';
-import { FormDialog } from 'tdp_core';
+import { ParameterFormIds, FORM_GENE_NAME, FORM_TISSUE_NAME, FORM_CELLLINE_NAME, FORM_DRUG_NAME } from '../common/forms';
+import { gene, tissue, cellline, MAX_FILTER_SCORE_ROWS_BEFORE_ALL, splitTypes, drug } from '../common/config';
 function enableMultiple(desc) {
     return BaseUtils.mixin({}, desc, {
         type: FormElementType.SELECT3_MULTIPLE,
-        useSession: false
+        useSession: false,
     });
 }
 export class SingleScoreDialog {
@@ -35,6 +32,8 @@ export class SingleScoreDialog {
             case drug:
                 formDesc.splice(1, 0, enableMultiple(FORM_DRUG_NAME));
                 formDesc.push(FORCE_COMPUTE_ALL_CELLLINE);
+                break;
+            default:
                 break;
         }
         if (typeof countHint === 'number' && countHint > MAX_FILTER_SCORE_ROWS_BEFORE_ALL) {
@@ -79,6 +78,8 @@ export class SingleScoreDialog {
                 case drug:
                     data.name = data[ParameterFormIds.DRUG_NAME];
                     delete data[ParameterFormIds.DRUG_NAME];
+                    break;
+                default:
                     break;
             }
             return data;

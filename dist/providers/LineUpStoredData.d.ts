@@ -1,5 +1,4 @@
-import { IRow } from 'tdp_core';
-import { IAdditionalColumnDesc } from 'tdp_core';
+import { IRow, IAdditionalColumnDesc } from 'tdp_core';
 export declare class LineUpStoredData {
     /**
      * Load the column description for a given idType
@@ -18,3 +17,4 @@ export declare class LineUpStoredData {
      */
     static loadEnsemblRows(idType: string, ids: string[]): Promise<IRow[]>;
 }
+//# sourceMappingURL=LineUpStoredData.d.ts.map

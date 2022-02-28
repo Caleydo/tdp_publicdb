@@ -1,8 +1,6 @@
-import {IStep} from 'tdp_core';
-import {TourUtils} from 'tdp_core';
+import { IStep, TourUtils } from 'tdp_core';
 
 export class AddColumnToGeneListTour {
-
   static createTour(): IStep[] {
     return [
       {
@@ -35,7 +33,7 @@ export class AddColumnToGeneListTour {
             datasetTab.querySelector('a').click();
           }
           return TourUtils.waitFor('.ordino-dataset.genes-dataset').then(() => TourUtils.click('#ordino_dataset_tab > .ordino-scrollspy-nav > a:nth-child(3)'));
-        }
+        },
       },
       {
         selector: '#ordino_dataset_tab > .ordino-scrollspy-container .genes-dataset > .card',
@@ -51,23 +49,22 @@ export class AddColumnToGeneListTour {
         postAction: () => {
           return TourUtils.waitFor('.ordino-dataset.genes-dataset .dataset-entry button[title^="Name: Cancer Gene Census"]').then(TourUtils.click);
         },
-        pageBreak: 'manual'
+        pageBreak: 'manual',
       },
-
 
       {
         selector: '.le.le-multi.lineup-engine',
         placement: 'centered',
         html: `<p>Consequently, this opens the list of known cancer genes, including some basic information about them.</p>
         <p>Now we can start adding additional data columns to the list.</p>`,
-        preAction: () => TourUtils.waitFor('.le.le-multi.lineup-engine', Infinity).then(() => TourUtils.wait(500))
+        preAction: () => TourUtils.waitFor('.le.le-multi.lineup-engine', Infinity).then(() => TourUtils.wait(500)),
       },
 
       {
         selector: '.lu-side-panel-wrapper .lu-adder > button',
         html: `Additional columns can be added using the plus sign.`,
         placement: 'centered',
-        postAction: TourUtils.clickSelector
+        postAction: TourUtils.clickSelector,
       },
 
       {
@@ -77,7 +74,7 @@ export class AddColumnToGeneListTour {
         <ul><li><i>Annotation</i> columns provide some general information about the entities in your list (e.g., the strand of all genes)</li>
         <li><i>Score</i> columns, on the other hand, include (experimental) data about the entities in your list
         (e.g., the expression of the genes in a selected cell line)</li></ul>`,
-        placement: 'centered'
+        placement: 'centered',
       },
 
       {
@@ -87,7 +84,7 @@ export class AddColumnToGeneListTour {
         postAction: () => {
           TourUtils.click('.lu-search .lu-search-item');
           TourUtils.toggleClass('.lu-adder.once', 'once', false);
-        }
+        },
       },
 
       {
@@ -96,21 +93,21 @@ export class AddColumnToGeneListTour {
         <p>In this example, we select <i>'Strand'</i> &hellip;</p>`,
         placement: 'centered',
         preAction: () => TourUtils.waitFor('.modal.show').then(() => TourUtils.wait(250)),
-        postAction: () => TourUtils.setValueAndTrigger('.col > select', 'strand', 'change')
+        postAction: () => TourUtils.setValueAndTrigger('.col > select', 'strand', 'change'),
       },
 
       {
         selector: '.modal.show .modal-footer button[type=submit]',
         html: `&hellip; and click <i>'Add'</i>`,
         placement: 'centered',
-        postAction: TourUtils.clickSelector
+        postAction: TourUtils.clickSelector,
       },
 
       {
         selector: '.le header section[title=Strand]',
         placement: 'centered',
         html: `The strand information was added as a new column`,
-        preAction: TourUtils.waitForSelector
+        preAction: TourUtils.waitForSelector,
       },
 
       {
@@ -129,7 +126,7 @@ export class AddColumnToGeneListTour {
         preAction: async () => {
           await TourUtils.waitFor('.lu-search .lu-search-group');
           TourUtils.click('.lu-side-panel-wrapper .lu-adder > button');
-        }
+        },
       },
 
       {
@@ -142,7 +139,7 @@ export class AddColumnToGeneListTour {
         postAction: () => {
           TourUtils.click('.lu-search .lu-search-group .lu-search-item');
           TourUtils.toggleClass('.lu-adder.once', 'once', false);
-        }
+        },
       },
 
       {
@@ -152,7 +149,7 @@ export class AddColumnToGeneListTour {
         html: `We select the cell lines <i>'HCC-827'</i> and <i>'BT-20'</i>.`,
         postAction: () => {
           TourUtils.setValueAndTrigger('.modal.show .select3 input.select2-search__field', 'HCC-827;BT-20;', 'input');
-        }
+        },
       },
 
       {
@@ -161,14 +158,14 @@ export class AddColumnToGeneListTour {
         html: `As data type, we choose <i>'Relative Copy Number'</i>`,
         postAction: () => {
           TourUtils.setValueAndTrigger('.col > select', 'copy_number-relativecopynumber', 'change');
-        }
+        },
       },
 
       {
         selector: '.modal.show .modal-footer button[type=submit]',
         html: `Finally, click <i>'Add'</i>`,
         placement: 'centered',
-        postAction: TourUtils.clickSelector
+        postAction: TourUtils.clickSelector,
       },
 
       {
@@ -189,14 +186,14 @@ export class AddColumnToGeneListTour {
         postAction: () => {
           TourUtils.click('.lu-search .lu-search-group .lu-search-item:nth-child(2)');
           TourUtils.toggleClass('.lu-adder.once', 'once', false);
-        }
+        },
       },
 
       {
         selector: '.modal.show .modal-content',
         html: `<p>This opens a dialog where you can specify the settings for the new column.</p>`,
         placement: 'centered',
-        preAction: () => TourUtils.waitFor('.modal.show .modal-content').then(() => TourUtils.wait(250))
+        preAction: () => TourUtils.waitFor('.modal.show .modal-content').then(() => TourUtils.wait(250)),
       },
 
       {
@@ -206,17 +203,24 @@ export class AddColumnToGeneListTour {
         placement: 'centered',
         postAction: () => {
           TourUtils.setValueAndTrigger('.modal-body form > div:nth-child(1) .row:nth-child(1) div:nth-child(1) select', 'tumortype', 'change');
-        }
+        },
       },
 
       {
         selector: '.modal-body form > .col-sm-12:nth-child(1) .row:nth-child(1) .row:nth-child(1) > div:nth-child(2) .select2',
         html: `&hellip; and for the filter value we select <i>'breast carcinoma'</i>.`,
         placement: 'centered',
-        preAction: () => TourUtils.waitFor('.modal-body form > .col-sm-12:nth-child(1) .row:nth-child(1) .row:nth-child(1) > div:nth-child(2) .select2').then(() => TourUtils.wait(250)),
+        preAction: () =>
+          TourUtils.waitFor('.modal-body form > .col-sm-12:nth-child(1) .row:nth-child(1) .row:nth-child(1) > div:nth-child(2) .select2').then(() =>
+            TourUtils.wait(250),
+          ),
         postAction: () => {
-          TourUtils.setValueAndTrigger('.modal-body form > .col-sm-12:nth-child(1) .row:nth-child(1) .row:nth-child(1) > div:nth-child(2) select', 'breast carcinoma', 'change');
-        }
+          TourUtils.setValueAndTrigger(
+            '.modal-body form > .col-sm-12:nth-child(1) .row:nth-child(1) .row:nth-child(1) > div:nth-child(2) select',
+            'breast carcinoma',
+            'change',
+          );
+        },
       },
 
       {
@@ -225,7 +229,7 @@ export class AddColumnToGeneListTour {
         html: `As data type, we choose <i>'Relative Copy Number'</i> &hellip;`,
         postAction: () => {
           TourUtils.setValueAndTrigger('.modal-body form > .col-sm-12:nth-child(2) select', 'copy_number-relativecopynumber', 'change');
-        }
+        },
       },
 
       {
@@ -235,14 +239,14 @@ export class AddColumnToGeneListTour {
         <p>FYI: other types of aggregation are, for instance, <i>'Min'</i>, <i>'Max'</i>, <i>'Median'</i>, <i>'Count'</i>, and <i>'Boxplot'</i>.`,
         postAction: () => {
           TourUtils.setValueAndTrigger('.modal-body form > .col-sm-12:nth-child(3) > select', 'avg', 'change');
-        }
+        },
       },
 
       {
         selector: '.modal.show .modal-footer button[type=submit]',
         html: `Finally, we click <i>'Add'</i>`,
         placement: 'centered',
-        postAction: TourUtils.clickSelector
+        postAction: TourUtils.clickSelector,
       },
 
       {

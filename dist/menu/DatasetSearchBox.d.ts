@@ -1,7 +1,7 @@
 import React from 'react';
 import { IdTextPair } from 'tdp_core';
-import { IDataSourceConfig } from '../common';
 import { IACommonListOptions } from 'tdp_gene';
+import { IDataSourceConfig } from '../common';
 interface IDatasetSearchBoxParams {
     [key: string]: any;
 }
@@ -18,3 +18,4 @@ interface IDatasetSearchBoxProps {
 }
 export declare function DatasetSearchBox({ placeholder, dataSource, onOpen, onSaveAsNamedSet, params, tokenSeparators }: IDatasetSearchBoxProps): JSX.Element;
 export {};
+//# sourceMappingURL=DatasetSearchBox.d.ts.map

@@ -9,3 +9,4 @@ export declare class CombinedDependentSampleTable extends ACombinedDependentTabl
     protected getSelectionColumnLabel(ensg: string): Promise<string>;
     static createCombinedDependentSampleTable(context: IViewContext, selection: ISelection, parent: HTMLElement): CombinedDependentSampleTable;
 }
+//# sourceMappingURL=CombinedDependentSampleTable.d.ts.map

@@ -1,9 +1,8 @@
 /**
  * Created by sam on 16.02.2017.
  */
-import { IFormElementDesc } from 'tdp_core';
+import { IFormElementDesc, Range } from 'tdp_core';
 import { AExpressionVsCopyNumber, ICopyNumberDataFormatRow } from 'tdp_gene';
-import { Range } from 'tdp_core';
 export declare class ExpressionVsCopyNumber extends AExpressionVsCopyNumber {
     protected getParameterFormDescs(): IFormElementDesc[];
     private get dataSource();
@@ -22,3 +21,4 @@ export declare class ExpressionVsCopyNumber extends AExpressionVsCopyNumber {
     get itemIDType(): import("tdp_core").IDType;
     protected select(range: Range): void;
 }
+//# sourceMappingURL=ExpressionVsCopyNumber.d.ts.map

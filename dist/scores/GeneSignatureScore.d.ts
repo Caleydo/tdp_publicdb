@@ -1,7 +1,5 @@
-import { IScore, IScoreRow, INamedSet } from 'tdp_core';
+import { IScore, IScoreRow, INamedSet, RangeLike, IDType, IPluginDesc } from 'tdp_core';
 import { IDataSourceConfig } from '../common/config';
-import { RangeLike, IDType } from 'tdp_core';
-import { IPluginDesc } from 'tdp_core';
 /**
  * Interface describing the parameter needed for a `Gene Signature Score`.
  */
@@ -52,3 +50,4 @@ export declare class GeneSignatureScore implements IScore<number> {
     static createGeneSignatureDialog(pluginDesc: IPluginDesc): Promise<IGeneSignatureData[]>;
 }
 export {};
+//# sourceMappingURL=GeneSignatureScore.d.ts.map

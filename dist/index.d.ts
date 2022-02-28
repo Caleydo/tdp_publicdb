@@ -8,3 +8,4 @@ export * from './providers';
 export * from './menu';
 export * from './scores';
 export * from './views';
+//# sourceMappingURL=index.d.ts.map

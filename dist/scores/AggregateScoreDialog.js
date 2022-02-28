@@ -1,13 +1,11 @@
 /**
  * Created by Samuel Gratzl on 27.04.2016.
  */
-import { I18nextManager } from 'tdp_core';
+import { I18nextManager, FormDialog, FormMap } from 'tdp_core';
 import { ParameterFormIds, FORM_GENE_FILTER, FORM_TISSUE_FILTER, FORM_CELLLINE_FILTER } from '../common/forms';
 import { FORCE_COMPUTE_ALL_CELLLINE, FORCE_COMPUTE_ALL_GENES, FORCE_COMPUTE_ALL_TISSUE, FORM_AGGREGATED_SCORE, FORM_AGGREGATED_SCORE_DEPLETION } from './forms';
 import { gene, tissue, cellline, splitTypes, MAX_FILTER_SCORE_ROWS_BEFORE_ALL } from '../common/config';
 import { ScoreUtils } from './ScoreUtils';
-import { FormDialog } from 'tdp_core';
-import { FormMap } from 'tdp_core';
 export class AggregateScoreDialog {
     static createScoreDialog(pluginDesc, extras, formDesc, countHint) {
         const { primary, opposite } = ScoreUtils.selectDataSources(pluginDesc);
@@ -24,6 +22,8 @@ export class AggregateScoreDialog {
             case cellline:
                 formDesc.unshift(FORM_CELLLINE_FILTER);
                 formDesc.push(FORCE_COMPUTE_ALL_GENES);
+                break;
+            default:
                 break;
         }
         if (typeof countHint === 'number' && countHint > MAX_FILTER_SCORE_ROWS_BEFORE_ALL) {
@@ -65,11 +65,11 @@ export class AggregateScoreDialog {
         }
         // try to find out how many columns we are dealing with
         const columns = parseInt(dialog.querySelector('span.badge').innerText, 10);
-        if (!columns || isNaN(columns)) {
+        if (!columns || Number.isNaN(columns)) {
             return false;
         }
         if (columns <= 8) {
-            return false; //small
+            return false; // small
         }
         // show
         alert.style.display = null;

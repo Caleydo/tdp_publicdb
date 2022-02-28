@@ -1,11 +1,9 @@
 /**
  * Created by sam on 06.03.2017.
  */
+import { IScore, IPluginDesc, IParams } from 'tdp_core';
 import { IDataSourceConfig } from '../common/config';
-import { IScore } from 'tdp_core';
-import { IPluginDesc } from 'tdp_core';
 import { ASingleScore } from './ASingleScore';
-import { IParams } from 'tdp_core';
 interface ISingleScoreParam {
     name: {
         id: string;
@@ -20,12 +18,10 @@ interface ISingleScoreParam {
     maxDirectFilterRows?: number;
 }
 export declare class SingleScore extends ASingleScore implements IScore<any> {
-    constructor(parameter: ISingleScoreParam, dataSource: IDataSourceConfig, oppositeDataSource: IDataSourceConfig);
     protected getViewPrefix(): string;
     static createScore(data: ISingleScoreParam, pluginDesc: IPluginDesc): IScore<number> | IScore<any>[];
 }
 export declare class SingleDepletionScore extends ASingleScore implements IScore<any> {
-    constructor(parameter: ISingleScoreParam, dataSource: IDataSourceConfig, oppositeDataSource: IDataSourceConfig);
     protected getViewPrefix(): string;
     protected createFilter(): IParams;
     static createSingleDepletionScore(data: ISingleScoreParam, pluginDesc: IPluginDesc): IScore<number> | IScore<any>[];
@@ -38,3 +34,4 @@ export declare class SingleDrugScore extends ASingleScore implements IScore<any>
     static createSingleDrugScore(data: ISingleScoreParam, pluginDesc: IPluginDesc): IScore<number> | IScore<any>[];
 }
 export {};
+//# sourceMappingURL=SingleScore.d.ts.map

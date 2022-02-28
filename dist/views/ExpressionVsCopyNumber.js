@@ -1,14 +1,11 @@
 /**
  * Created by sam on 16.02.2017.
  */
-import { AExpressionVsCopyNumber } from 'tdp_gene';
-import { SpeciesUtils } from 'tdp_gene';
+import { IDTypeManager, RestBaseUtils, LineupUtils } from 'tdp_core';
+import { AExpressionVsCopyNumber, SpeciesUtils } from 'tdp_gene';
 import { expression, copyNumber } from '../common/config';
 import { ParameterFormIds, FORM_TISSUE_OR_CELLLINE_FILTER, FORM_DATA_SOURCE, FORM_COLOR_CODING } from '../common/forms';
-import { IDTypeManager } from 'tdp_core';
 import { ViewUtils } from './ViewUtils';
-import { RestBaseUtils } from 'tdp_core';
-import { LineupUtils } from 'tdp_core';
 export class ExpressionVsCopyNumber extends AExpressionVsCopyNumber {
     getParameterFormDescs() {
         const base = super.getParameterFormDescs();
@@ -29,7 +26,7 @@ export class ExpressionVsCopyNumber extends AExpressionVsCopyNumber {
             ensg,
             expression_subtype: this.getParameterData(ParameterFormIds.EXPRESSION_SUBTYPE).id,
             copynumber_subtype: this.getParameterData(ParameterFormIds.COPYNUMBER_SUBTYPE).id,
-            species: SpeciesUtils.getSelectedSpecies()
+            species: SpeciesUtils.getSelectedSpecies(),
         };
         const color = this.getParameterData(ParameterFormIds.COLOR_CODING);
         if (color) {
@@ -53,7 +50,7 @@ export class ExpressionVsCopyNumber extends AExpressionVsCopyNumber {
     select(range) {
         this.setItemSelection({
             idtype: this.itemIDType,
-            range
+            range,
         });
     }
 }

@@ -1,9 +1,6 @@
-import {IStep} from 'tdp_core';
-import {TourUtils} from 'tdp_core';
-
+import { IStep, TourUtils } from 'tdp_core';
 
 export class StartMenuTour {
-
   static createTour(): IStep[] {
     return [
       {
@@ -13,7 +10,7 @@ export class StartMenuTour {
           <i>"Cancel"</i> button at any time to stop the tour and to interact with Ordino.
           Please note that the tour will load a new analysis session and the current
           one will be discarded.
-        </p>`
+        </p>`,
       },
 
       {
@@ -26,7 +23,7 @@ export class StartMenuTour {
         },
         postAction: () => {
           document.querySelectorAll('ul[data-header="mainMenu"] > li > a').forEach((link) => link.classList.remove('hover'));
-        }
+        },
       },
 
       {
@@ -43,7 +40,7 @@ export class StartMenuTour {
           TourUtils.click(selector);
           await TourUtils.wait(600); // wait until the page scrolls to top
         },
-        pageBreak: 'manual'
+        pageBreak: 'manual',
       },
 
       {
@@ -54,7 +51,7 @@ export class StartMenuTour {
           await TourUtils.waitFor('#ordino_dataset_tab > .ordino-scrollspy-container .cellline-dataset > .card');
         },
         postAction: () => TourUtils.click('#ordino_dataset_tab > .ordino-scrollspy-nav > a:nth-child(2)'),
-        pageBreak: 'manual'
+        pageBreak: 'manual',
       },
 
       {
@@ -77,7 +74,7 @@ export class StartMenuTour {
         html: `<p>For each of the three entity types you can either start with a manually defined set by adding ids
         (gene symbols, cell line names, or tissue sample ids) into the search field, or &hellip;</p>`,
         placement: 'centered',
-        pageBreak: 'manual'
+        pageBreak: 'manual',
       },
 
       {
@@ -91,16 +88,16 @@ export class StartMenuTour {
         placement: 'centered',
         preAction: TourUtils.waitForSelector,
         postAction: () => TourUtils.click('#ordino_dataset_tab > .ordino-scrollspy-nav > a:nth-child(4)'),
-        pageBreak: 'manual'
+        pageBreak: 'manual',
       },
-
 
       {
         selector: '#ordino_dataset_tab > .ordino-scrollspy-container div[id^="tdp_uploaded_dataset"] > .card',
         html: `<p>Additionally to loading an existing dataset, you can also upload your own data in a tabular format.</p>`,
         placement: 'centered',
-        preAction: () => TourUtils.waitFor('#ordino_dataset_tab > .ordino-scrollspy-container div[id^="tdp_uploaded_dataset"] > .card').then(() => TourUtils.wait(400)),
-        pageBreak: 'manual'
+        preAction: () =>
+          TourUtils.waitFor('#ordino_dataset_tab > .ordino-scrollspy-container div[id^="tdp_uploaded_dataset"] > .card').then(() => TourUtils.wait(400)),
+        pageBreak: 'manual',
       },
 
       {
@@ -118,7 +115,7 @@ export class StartMenuTour {
           TourUtils.waitFor(selector);
           TourUtils.click(selector);
           await TourUtils.wait(600); // wait until the page scrolls to top
-        }
+        },
       },
 
       {
@@ -127,7 +124,7 @@ export class StartMenuTour {
         preAction: TourUtils.waitForSelector,
         placement: 'centered',
         postAction: () => TourUtils.click('#ordino_sessions_tab > .ordino-scrollspy-nav > a:nth-child(2)'),
-        pageBreak: 'manual'
+        pageBreak: 'manual',
       },
 
       {
@@ -135,26 +132,29 @@ export class StartMenuTour {
         html: `<p>&hellip; and you can load previously saved analysis sessions. This includes your analyses as well as analyses by other users that were shared with you.</p>`,
         placement: 'centered',
         // preAction: (ctx) => TourUtils.waitForSelector.call(ctx).then(() => TourUtils.wait(400)),
-        preAction: () => TourUtils.waitFor('#ordino_sessions_tab > .ordino-scrollspy-container div[id^="targid_persistent_session"] > .card').then(() => TourUtils.wait(400)),
+        preAction: () =>
+          TourUtils.waitFor('#ordino_sessions_tab > .ordino-scrollspy-container div[id^="targid_persistent_session"] > .card').then(() => TourUtils.wait(400)),
         postAction: () => TourUtils.click('#ordino_sessions_tab > .ordino-scrollspy-nav > a:nth-child(3)'),
-        pageBreak: 'manual'
+        pageBreak: 'manual',
       },
 
       {
         selector: '#ordino_sessions_tab > .ordino-scrollspy-container div[id^="targid_temporary_session"] > .card',
         html: `<p>Furthermore, you have access to your 10 most recent analysis sessions, even if they were not saved, and &hellip;</p>`,
         placement: 'centered',
-        preAction: () => TourUtils.waitFor('#ordino_sessions_tab > .ordino-scrollspy-container div[id^="targid_temporary_session"] > .card').then(() => TourUtils.wait(400)),
+        preAction: () =>
+          TourUtils.waitFor('#ordino_sessions_tab > .ordino-scrollspy-container div[id^="targid_temporary_session"] > .card').then(() => TourUtils.wait(400)),
         postAction: () => TourUtils.click('#ordino_sessions_tab > .ordino-scrollspy-nav > a:nth-child(4)'),
-        pageBreak: 'manual'
+        pageBreak: 'manual',
       },
 
       {
         selector: '#ordino_sessions_tab > .ordino-scrollspy-container div[id^="targid_import_session"] > .card',
         html: `<p>&hellip; you can import analysis sessions stored in a text file.</p>`,
         placement: 'centered',
-        preAction: () => TourUtils.waitFor('#ordino_sessions_tab > .ordino-scrollspy-container div[id^="targid_import_session"] > .card').then(() => TourUtils.wait(400)),
-        pageBreak: 'manual'
+        preAction: () =>
+          TourUtils.waitFor('#ordino_sessions_tab > .ordino-scrollspy-container div[id^="targid_import_session"] > .card').then(() => TourUtils.wait(400)),
+        pageBreak: 'manual',
       },
 
       {
@@ -167,7 +167,7 @@ export class StartMenuTour {
             datasetTab.querySelector('a').click();
           }
           return TourUtils.waitFor('.ordino-dataset.genes-dataset').then(() => TourUtils.click('#ordino_dataset_tab > .ordino-scrollspy-nav > a:nth-child(3)'));
-        }
+        },
       },
 
       {
@@ -177,7 +177,7 @@ export class StartMenuTour {
         placement: 'centered',
         postAction: () => {
           TourUtils.click('ul[data-header="mainMenu"] > li:nth-child(1) > a');
-        }
+        },
       },
 
       {
@@ -190,7 +190,7 @@ export class StartMenuTour {
           TourUtils.click('#ordino_dataset_tab > .ordino-scrollspy-nav > a:nth-child(3)');
           await TourUtils.wait(700);
         },
-        postAction: () => TourUtils.click('.ordino-dataset.genes-dataset .session-tab > li:first-child')
+        postAction: () => TourUtils.click('.ordino-dataset.genes-dataset .session-tab > li:first-child'),
       },
 
       {
@@ -201,7 +201,7 @@ export class StartMenuTour {
         postAction: () => {
           return TourUtils.waitFor('.ordino-dataset.genes-dataset .dataset-entry button[title^="Name: Cancer Gene Census"]').then(TourUtils.click);
         },
-        pageBreak: 'manual'
+        pageBreak: 'manual',
       },
 
       {
@@ -209,7 +209,7 @@ export class StartMenuTour {
         placement: 'centered',
         html: `<p>Consequently, this opens the list of known cancer genes, including some basic information about them.</p>
         <p>Afterwards, you can now add additional columns and use other Ordino features to analyze these genes.</p>`,
-        preAction: () => TourUtils.waitFor('.le.le-multi.lineup-engine', Infinity).then(() => TourUtils.wait(500))
+        preAction: () => TourUtils.waitFor('.le.le-multi.lineup-engine', Infinity).then(() => TourUtils.wait(500)),
       },
 
       {
