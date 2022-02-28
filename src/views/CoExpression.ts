@@ -9,7 +9,6 @@ import {expression, IDataSourceConfig, IDataSubtypeConfig} from '../common/confi
 import {ParameterFormIds, FORM_TISSUE_OR_CELLLINE_FILTER, FORM_DATA_SOURCE, FORM_COLOR_CODING} from '../common/forms';
 import {ViewUtils} from './ViewUtils';
 import {IDTypeManager} from 'tdp_core';
-import {Range} from 'tdp_core';
 import {RestBaseUtils, IParams} from 'tdp_core';
 import {LineupUtils} from 'tdp_core';
 
@@ -71,10 +70,10 @@ export class CoExpression extends ACoExpression {
     return IDTypeManager.getInstance().resolveIdType(this.dataSource.idType);
   }
 
-  protected select(range: Range): void {
+  protected select(range: string[]): void {
     this.setItemSelection({
       idtype: this.itemIDType,
-      range
+      ids: range
     });
   }
 

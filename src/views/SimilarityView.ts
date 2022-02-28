@@ -88,10 +88,8 @@ export class SimilarityView extends ARankingView {
     const cols = ['bas', 'brs', 'cll', 'gbp', 'gcc', 'gdi', 'gmf', 'hgs', 'hor', 'ipr', 'pup', 'sin', 'swp', 'tis', 'vap'];
     columns.push(...cols.map((d) => ColumnDescUtils.numberColFromArray(d, rows)));
 
-    const uids = await IDTypeManager.getInstance().resolveIdType(this.idType).map(rows.map((r) => r.ensgid));
 
     rows.forEach((row, i) => {
-      row._id = uids[i];
       row.id = row.ensgid;
     });
     return {

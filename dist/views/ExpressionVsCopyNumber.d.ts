@@ -16,5 +16,5 @@ export declare class ExpressionVsCopyNumber extends AExpressionVsCopyNumber {
         data: import("../common/config").IDataSubtypeConfig;
     }[];
     get itemIDType(): import("tdp_core").IDType;
-    protected select(range: Range): void;
+    protected select(ids: string[]): void;
 }

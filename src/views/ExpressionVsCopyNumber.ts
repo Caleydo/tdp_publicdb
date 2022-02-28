@@ -57,10 +57,10 @@ export class ExpressionVsCopyNumber extends AExpressionVsCopyNumber {
     return IDTypeManager.getInstance().resolveIdType(this.dataSource.idType);
   }
 
-  protected select(range: Range) {
+  protected select(ids: string[]) {
     this.setItemSelection({
       idtype: this.itemIDType,
-      range
+      ids
     });
   }
 }

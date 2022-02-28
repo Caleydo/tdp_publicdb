@@ -3,7 +3,6 @@
  */
 import { IFormElementDesc } from 'tdp_core';
 import { ACoExpression, ICoExprDataFormatRow, IGeneOption } from 'tdp_gene';
-import { Range } from 'tdp_core';
 export declare class CoExpression extends ACoExpression {
     protected getParameterFormDescs(): IFormElementDesc[];
     private get dataSource();
@@ -16,7 +15,7 @@ export declare class CoExpression extends ACoExpression {
     loadData(ensg: string): Promise<ICoExprDataFormatRow[]>;
     loadFirstName(ensg: string): Promise<string>;
     protected getAttributeName(): string;
-    get itemIDType(): import("tdp_core/dist/idtype/IDType").IDType;
-    protected select(range: Range): void;
+    get itemIDType(): import("tdp_core").IDType;
+    protected select(range: string[]): void;
     protected getNoDataErrorMessage(refGene: IGeneOption): string;
 }
