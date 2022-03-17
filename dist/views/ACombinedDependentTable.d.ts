@@ -1,9 +1,5 @@
-import { IViewContext, ISelection } from 'tdp_core';
+import { IViewContext, ISelection, ARankingView, IServerColumn, IAdditionalColumnDesc, IScoreRow } from 'tdp_core';
 import { IDataTypeConfig, IDataSourceConfig } from '../common/config';
-import { ARankingView } from 'tdp_core';
-import { IServerColumn } from 'tdp_core';
-import { IAdditionalColumnDesc } from 'tdp_core';
-import { IScoreRow } from 'tdp_core';
 export declare abstract class ACombinedDependentTable extends ARankingView {
     protected readonly dataType: IDataTypeConfig[];
     protected dataSource: IDataSourceConfig;
@@ -21,3 +17,4 @@ export declare abstract class ACombinedDependentTable extends ARankingView {
     protected getSelectionColumnDesc(_id: string, name: string): Promise<IAdditionalColumnDesc[]>;
     protected loadSelectionColumnData(name: string, descs: IAdditionalColumnDesc[]): Promise<IScoreRow<any>[]>[];
 }
+//# sourceMappingURL=ACombinedDependentTable.d.ts.map

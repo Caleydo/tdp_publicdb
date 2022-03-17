@@ -1,10 +1,6 @@
-import {SearchProvider} from 'tdp_gene';
-import {IResult} from 'tdp_core';
-import {cellline, gene, tissue} from '../common/config';
-import {SpeciesUtils} from 'tdp_gene';
-import {RestBaseUtils} from 'tdp_core';
-
-
+import { SearchProvider, SpeciesUtils } from 'tdp_gene';
+import { IResult, RestBaseUtils } from 'tdp_core';
+import { cellline, gene, tissue } from '../common/config';
 
 export class GeneSearchProvider extends SearchProvider {
   get searchView() {

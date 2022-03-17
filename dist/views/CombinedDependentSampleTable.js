@@ -1,4 +1,4 @@
-import { gene, expression, copyNumber, mutation, } from '../common/config';
+import { gene, expression, copyNumber, mutation } from '../common/config';
 import { ParameterFormIds, FORM_DATA_SOURCE, FORM_TISSUE_OR_CELLLINE_FILTER } from '../common/forms';
 import { ACombinedDependentTable } from './ACombinedDependentTable';
 import { ViewUtils } from './ViewUtils';

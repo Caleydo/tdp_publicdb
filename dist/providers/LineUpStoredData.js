@@ -1,6 +1,6 @@
 import { RestBaseUtils } from 'tdp_core';
-import { gene } from '../common/config';
 import { SpeciesUtils, Species } from 'tdp_gene';
+import { gene } from '../common/config';
 export class LineUpStoredData {
     /**
      * Load the column description for a given idType
@@ -23,7 +23,7 @@ export class LineUpStoredData {
     static async loadEnsemblRows(idType, ids) {
         const filter = {
             [Species.SPECIES_SESSION_KEY]: SpeciesUtils.getSelectedSpecies(),
-            [gene.entityName]: ids
+            [gene.entityName]: ids,
         };
         return RestBaseUtils.getTDPFilteredRows(gene.db, gene.base, {}, filter);
     }

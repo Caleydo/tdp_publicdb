@@ -1,8 +1,7 @@
 /**
  * Created by Samuel Gratzl on 29.01.2016.
  */
-import { IARankingViewOptions, ISelection, IViewContext } from 'tdp_core';
-import { ARankingView, IAdditionalColumnDesc } from 'tdp_core';
+import { IARankingViewOptions, ISelection, IViewContext, ARankingView, IAdditionalColumnDesc } from 'tdp_core';
 import { LocalDataProvider } from 'lineupjs';
 export declare class SimilarityView extends ARankingView {
     private loader;
@@ -23,3 +22,4 @@ export declare class SimilarityView extends ARankingView {
     private updateImpl;
     protected createInitialRanking(provider: LocalDataProvider): void;
 }
+//# sourceMappingURL=SimilarityView.d.ts.map

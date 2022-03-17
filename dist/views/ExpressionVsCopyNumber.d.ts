@@ -18,3 +18,4 @@ export declare class ExpressionVsCopyNumber extends AExpressionVsCopyNumber {
     get itemIDType(): import("tdp_core").IDType;
     protected select(ids: string[]): void;
 }
+//# sourceMappingURL=ExpressionVsCopyNumber.d.ts.map

@@ -1,5 +1,4 @@
-import { ProxyView } from 'tdp_core';
-import { IFormSelectOption } from 'tdp_core';
+import { ProxyView, IFormSelectOption } from 'tdp_core';
 /**
  * Proxy view for the idType Cosmic which fetches the original cell line data based on the mapping from Cell line to
  * Cosmic.
@@ -12,3 +11,4 @@ export declare class CosmicProxyView extends ProxyView {
      */
     protected showErrorMessage(selectedItemId: string): void;
 }
+//# sourceMappingURL=CosmicProxyView.d.ts.map

@@ -1,9 +1,9 @@
-import { IDataSourceConfig } from '../common/config';
-import { IScore } from 'tdp_core';
+/**
+ * Created by sam on 06.03.2017.
+ */
+import { IScore, INamedSet, IParams, IDType } from 'tdp_core';
 import { AScore, ICommonScoreParam } from './AScore';
-import { INamedSet } from 'tdp_core';
-import { IParams } from 'tdp_core';
-import { IDType } from 'tdp_core';
+import { IDataSourceConfig } from '../common/config';
 interface IAggregatedScoreParam extends ICommonScoreParam {
     aggregation: string;
 }
@@ -19,3 +19,4 @@ export declare abstract class AAggregatedScore extends AScore implements IScore<
     protected createFilter(): IParams;
 }
 export {};
+//# sourceMappingURL=AAggregatedScore.d.ts.map

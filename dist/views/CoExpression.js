@@ -1,15 +1,11 @@
 /**
  * Created by sam on 16.02.2017.
  */
-import { FormElementType } from 'tdp_core';
-import { ACoExpression } from 'tdp_gene';
-import { SpeciesUtils } from 'tdp_gene';
-import { expression } from '../common/config';
+import { FormElementType, IDTypeManager, RestBaseUtils, LineupUtils } from 'tdp_core';
+import { ACoExpression, SpeciesUtils } from 'tdp_gene';
 import { ParameterFormIds, FORM_TISSUE_OR_CELLLINE_FILTER, FORM_DATA_SOURCE, FORM_COLOR_CODING } from '../common/forms';
 import { ViewUtils } from './ViewUtils';
-import { IDTypeManager } from 'tdp_core';
-import { RestBaseUtils } from 'tdp_core';
-import { LineupUtils } from 'tdp_core';
+import { expression } from '../common/config';
 export class CoExpression extends ACoExpression {
     getParameterFormDescs() {
         const base = super.getParameterFormDescs();
@@ -21,9 +17,9 @@ export class CoExpression extends ACoExpression {
             options: {
                 optionsData: expression.dataSubtypes.map((ds) => {
                     return { name: ds.name, value: ds.name, data: ds };
-                })
+                }),
             },
-            useSession: false
+            useSession: false,
         }, FORM_COLOR_CODING, FORM_TISSUE_OR_CELLLINE_FILTER);
         return base;
     }
@@ -41,7 +37,7 @@ export class CoExpression extends ACoExpression {
         const param = {
             ensg,
             attribute: this.dataSubType.id,
-            species: SpeciesUtils.getSelectedSpecies()
+            species: SpeciesUtils.getSelectedSpecies(),
         };
         const color = this.getParameterData(ParameterFormIds.COLOR_CODING);
         if (color) {
@@ -61,7 +57,7 @@ export class CoExpression extends ACoExpression {
     select(range) {
         this.setItemSelection({
             idtype: this.itemIDType,
-            ids: range
+            ids: range,
         });
     }
     getNoDataErrorMessage(refGene) {

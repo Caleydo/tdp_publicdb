@@ -1,10 +1,7 @@
-import { ColumnDescUtils, RestBaseUtils } from 'tdp_core';
-import { FormDialog } from 'tdp_core';
-import { MAX_FILTER_SCORE_ROWS_BEFORE_ALL } from '../common/config';
-import { FormElementType } from 'tdp_core';
-import { AppContext, IDTypeManager, I18nextManager } from 'tdp_core';
-import { ScoreUtils } from './ScoreUtils';
+import { ColumnDescUtils, RestBaseUtils, FormDialog, FormElementType, AppContext, IDTypeManager, I18nextManager, } from 'tdp_core';
 import { SpeciesUtils, FieldUtils } from 'tdp_gene';
+import { ScoreUtils } from './ScoreUtils';
+import { MAX_FILTER_SCORE_ROWS_BEFORE_ALL } from '../common/config';
 /**
  * Score implementation
  */
@@ -36,7 +33,7 @@ export class GeneSignatureScore {
     async compute(ids, idtype, namedSet) {
         const params = {
             signature: this.params.signature,
-            species: SpeciesUtils.getSelectedSpecies()
+            species: SpeciesUtils.getSelectedSpecies(),
         };
         FieldUtils.limitScoreRows(params, ids, idtype, this.dataSource.entityName, MAX_FILTER_SCORE_ROWS_BEFORE_ALL, namedSet);
         return RestBaseUtils.getTDPScore(this.dataSource.db, `${this.dataSource.base}_gene_signature_score`, params);
@@ -59,23 +56,23 @@ export class GeneSignatureScore {
             label: 'Signatures',
             id: 'signatures',
             attributes: {
-                style: 'width:100%'
+                style: 'width:100%',
             },
             required: true,
             options: {
-                data: optionsData
-            }
+                data: optionsData,
+            },
         });
         return dialog.showAsPromise((r) => {
             var _a;
             const signatures = (_a = r.getElementValues()) === null || _a === void 0 ? void 0 : _a.signatures.map(({ id }) => {
                 return {
                     params: {
-                        signature: id
+                        signature: id,
                     },
                     options: {
-                        description: (data.find((item) => item.id === id).description)
-                    }
+                        description: data.find((item) => item.id === id).description,
+                    },
                 };
             });
             return signatures;

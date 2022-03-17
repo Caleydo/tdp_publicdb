@@ -1,9 +1,8 @@
 /**
  * Created by Samuel Gratzl on 27.04.2016.
  */
-import { IPluginDesc } from 'tdp_core';
+import { IPluginDesc, IFormMultiMap } from 'tdp_core';
 import { IDataSubtypeConfig, IDataSourceConfig } from '../common/config';
-import { IFormMultiMap } from 'tdp_core';
 export declare class ScoreUtils {
     /**
      * creates a lineup config out of a IDataSubtypeConfig
@@ -22,3 +21,4 @@ export declare class ScoreUtils {
     private static toFilterDesc;
     static toFilterString(filter: IFormMultiMap, ds: IDataSourceConfig): string;
 }
+//# sourceMappingURL=ScoreUtils.d.ts.map

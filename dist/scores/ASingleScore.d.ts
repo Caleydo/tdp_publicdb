@@ -1,9 +1,9 @@
-import { IDType } from 'tdp_core';
-import { IDataSourceConfig } from '../common/config';
-import { IScore } from 'tdp_core';
+/**
+ * Created by sam on 06.03.2017.
+ */
+import { IDType, IScore, INamedSet, IParams } from 'tdp_core';
 import { AScore } from './AScore';
-import { INamedSet } from 'tdp_core';
-import { IParams } from 'tdp_core';
+import { IDataSourceConfig } from '../common/config';
 interface ISingleScoreParam {
     name: {
         id: string;
@@ -29,3 +29,4 @@ export declare abstract class ASingleScore extends AScore implements IScore<any>
     protected abstract getViewPrefix(): string;
 }
 export {};
+//# sourceMappingURL=ASingleScore.d.ts.map

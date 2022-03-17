@@ -2,28 +2,28 @@
  * Created by Samuel Gratzl on 27.04.2016.
  */
 
-import {IViewContext, ISelection, IView, IDTypeManager} from 'tdp_core';
-import {AD3View} from 'tdp_core';
-import {SpeciesUtils} from 'tdp_gene';
-import {IDataSourceConfig, cellline, tissue, gene} from '../common/config';
-import {Primitive, transpose as d3Transpose, Selection} from 'd3';
-import {RestBaseUtils} from 'tdp_core';
+import { IViewContext, ISelection, IView, IDTypeManager } from 'tdp_core';
+import { AD3View } from 'tdp_core';
+import { RestBaseUtils } from 'tdp_core';
+import { SpeciesUtils } from 'tdp_gene';
+import { Primitive, transpose as d3Transpose, Selection } from 'd3';
+import { IDataSourceConfig, cellline, tissue, gene } from '../common/config';
 
 export abstract class AInfoTable extends AD3View {
-
   private readonly $table: Selection<IView>;
+
   private readonly $thead: Selection<IView>;
+
   private readonly $tbody: Selection<IView>;
 
   private data: Primitive[][];
-  private readonly fields: {key: string, order: number}[] = this.getFields();
 
-  constructor(context: IViewContext, selection: ISelection, parent: HTMLElement, private readonly dataSource:IDataSourceConfig) {
+  private readonly fields: { key: string; order: number }[] = this.getFields();
+
+  constructor(context: IViewContext, selection: ISelection, parent: HTMLElement, private readonly dataSource: IDataSourceConfig) {
     super(context, selection, parent);
 
-    this.$table = this.$node
-      .append('table')
-      .classed('table table-striped table-hover table-bordered table-sm', true);
+    this.$table = this.$node.append('table').classed('table table-striped table-hover table-bordered table-sm', true);
     this.$thead = this.$table.append('thead').append('tr');
     this.$tbody = this.$table.append('tbody');
   }
@@ -41,9 +41,14 @@ export abstract class AInfoTable extends AD3View {
 
   private async fetchInformation() {
     const ids = await IDTypeManager.getInstance().mapNameToFirstName(this.selection.idtype, this.selection.ids, this.dataSource.idType);
-    const results = await RestBaseUtils.getTDPFilteredRows(this.dataSource.db, `${this.dataSource.base}_all_columns`, {
-      species: SpeciesUtils.getSelectedSpecies()
-    }, {[this.dataSource.entityName] : ids});
+    const results = await RestBaseUtils.getTDPFilteredRows(
+      this.dataSource.db,
+      `${this.dataSource.base}_all_columns`,
+      {
+        species: SpeciesUtils.getSelectedSpecies(),
+      },
+      { [this.dataSource.entityName]: ids },
+    );
     this.data = this.transformData(results);
   }
 
@@ -53,7 +58,7 @@ export abstract class AInfoTable extends AD3View {
       await this.fetchInformation();
       this.setBusy(false);
       this.updateInfoTable(this.data);
-    } catch(error) {
+    } catch (error) {
       console.error(error);
       this.setBusy(false);
     }
@@ -72,10 +77,10 @@ export abstract class AInfoTable extends AD3View {
     dbResults.forEach((datum) => {
       header.push(datum.id || 'Values');
       Object.keys(datum).forEach((key) => {
-        if(key === 'id' || key === 'tdpid') {
+        if (key === 'id' || key === 'tdpid') {
           return;
         }
-        if(!dataMap.has(key)) {
+        if (!dataMap.has(key)) {
           dataMap.set(key, [datum[key]]);
         } else {
           dataMap.get(key).push(datum[key]);
@@ -85,26 +90,27 @@ export abstract class AInfoTable extends AD3View {
 
     // convert Map to Array and concatenate the first elements (keys) with their values to get a full row
     // and sort the rows according to the defined weights
-    const body = Array
-      .from(dataMap)
+    const body = Array.from(dataMap)
       .map((d) => [d[0], ...d[1]])
       .sort((a, b) => {
         const first = this.fields.find((f) => f.key === a[0]);
         const second = this.fields.find((f) => f.key === b[0]);
 
         // show elements that have no defined order at the bottom by default
-        if(!first && !second) {
+        if (!first && !second) {
           return 0; // both not found --> assume they are equal
-        } else if(!first) {
+        }
+        if (!first) {
           return 1; // order for a not defined --> sort b to lower index
-        } else if(!second) {
+        }
+        if (!second) {
           return -1; // order for b not defined --> sort a to lower index
         }
 
         return first.order - second.order;
       });
 
-    if(transposeTable) {
+    if (transposeTable) {
       return d3Transpose([header, ...body]);
     }
     return [header, ...body];
@@ -135,7 +141,7 @@ export abstract class AInfoTable extends AD3View {
     $th.exit().remove();
   }
 
-  protected abstract getFields(): {key: string, order: number}[];
+  protected abstract getFields(): { key: string; order: number }[];
 }
 
 export class CelllineInfoTable extends AInfoTable {
@@ -147,100 +153,100 @@ export class CelllineInfoTable extends AInfoTable {
     return [
       {
         key: 'celllinename',
-        order: 10
+        order: 10,
       },
       {
         key: 'species',
-        order: 20
+        order: 20,
       },
       {
         key: 'organ',
-        order: 30
+        order: 30,
       },
       {
         key: 'tissue_subtype',
-        order: 40
+        order: 40,
       },
       {
         key: 'metastatic_site',
-        order: 50
+        order: 50,
       },
       {
         key: 'histology_type',
-        order: 60
+        order: 60,
       },
       {
         key: 'morphology',
-        order: 70
+        order: 70,
       },
       {
         key: 'tumortype',
-        order: 80
+        order: 80,
       },
       {
         key: 'growth_type',
-        order: 90
+        order: 90,
       },
       {
         key: 'gender',
-        order: 100
+        order: 100,
       },
       {
         key: 'ploidy',
-        order: 110
+        order: 110,
       },
       {
         key: 'age_at_surgery',
-        order: 120
+        order: 120,
       },
       {
         key: 'stage',
-        order: 130
+        order: 130,
       },
       {
         key: 'grade',
-        order: 140
+        order: 140,
       },
       {
         key: 'atcc_no',
-        order: 150
+        order: 150,
       },
       {
         key: 'dsmz_no',
-        order: 160
+        order: 160,
       },
       {
         key: 'ecacc_no',
-        order: 170
+        order: 170,
       },
       {
         key: 'jcrb_no',
-        order: 180
+        order: 180,
       },
       {
         key: 'iclc_no',
-        order: 190
+        order: 190,
       },
       {
         key: 'riken_no',
-        order: 200
+        order: 200,
       },
       {
         key: 'kclb_no',
-        order: 210
+        order: 210,
       },
       {
         key: 'cosmicid',
-        order: 220
+        order: 220,
       },
       {
         key: 'pubmed',
-        order: 230
+        order: 230,
       },
       {
         key: 'comment',
-        order: 240
-      }
+        order: 240,
+      },
     ];
   }
 }
@@ -254,48 +260,48 @@ export class GeneInfoTable extends AInfoTable {
     return [
       {
         key: 'ensg',
-        order: 10
+        order: 10,
       },
       {
         key: 'symbol',
-        order: 20
+        order: 20,
       },
       {
         key: 'name',
-        order: 30
+        order: 30,
       },
       {
         key: 'biotype',
-        order: 40
+        order: 40,
       },
       {
         key: 'species',
-        order: 50
+        order: 50,
       },
       {
         key: 'chromosome',
-        order: 60
+        order: 60,
       },
       {
         key: 'seqregionstart',
-        order: 70
+        order: 70,
       },
       {
         key: 'seqregionend',
-        order: 80
+        order: 80,
       },
       {
         key: 'strand',
-        order: 90
+        order: 90,
       },
       {
         key: 'cosmic_id_gene',
-        order: 100
+        order: 100,
       },
       {
         key: 'gc_content',
-        order: 110
-      }
+        order: 110,
+      },
     ];
   }
 }
@@ -309,72 +315,72 @@ export class TissueInfoTable extends AInfoTable {
     return [
       {
         key: 'tissuename',
-        order: 10
+        order: 10,
       },
       {
         key: 'vendorname',
-        order: 20
+        order: 20,
       },
       {
         key: 'species',
-        order: 30
+        order: 30,
       },
       {
         key: 'organ',
-        order: 40
+        order: 40,
       },
       {
         key: 'tumortype',
-        order: 50
+        order: 50,
       },
       {
         key: 'patientname',
-        order: 60
+        order: 60,
       },
       {
         key: 'tumortype_adjacent',
-        order: 70
+        order: 70,
       },
       {
         key: 'tissue_subtype',
-        order: 80
+        order: 80,
       },
       {
         key: 'metastatic_site',
-        order: 90
+        order: 90,
       },
       {
         key: 'histology_type',
-        order: 100
+        order: 100,
       },
       {
         key: 'histology_subtype',
-        order: 110
+        order: 110,
       },
       {
         key: 'gender',
-        order: 120
+        order: 120,
       },
       {
         key: 'age_at_surgery',
-        order: 120
+        order: 120,
       },
       {
         key: 'stage',
-        order: 130
+        order: 130,
       },
       {
         key: 'grade',
-        order: 140
+        order: 140,
       },
       {
         key: 'sample_description',
-        order: 150
+        order: 150,
       },
       {
         key: 'comment',
-        order: 160
-      }
+        order: 160,
+      },
     ];
   }
 }

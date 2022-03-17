@@ -1,10 +1,11 @@
-import { IDTypeManager } from 'tdp_core';
-import { SpeciesUtils } from 'tdp_gene';
-import { MAX_FILTER_SCORE_ROWS_BEFORE_ALL } from '../common/config';
-import { FieldUtils } from 'tdp_gene';
+/**
+ * Created by sam on 06.03.2017.
+ */
+import { IDTypeManager, RestBaseUtils } from 'tdp_core';
+import { SpeciesUtils, FieldUtils } from 'tdp_gene';
 import { ScoreUtils } from './ScoreUtils';
 import { AScore } from './AScore';
-import { RestBaseUtils } from 'tdp_core';
+import { MAX_FILTER_SCORE_ROWS_BEFORE_ALL } from '../common/config';
 export class ASingleScore extends AScore {
     constructor(parameter, dataSource, oppositeDataSource) {
         super(parameter);
@@ -17,7 +18,7 @@ export class ASingleScore extends AScore {
     }
     createDesc() {
         return Object.assign(ScoreUtils.createDesc(this.dataSubType.type, `${this.parameter.name.text}: ${this.dataSubType.name}`, this.dataSubType, `${this.oppositeDataSource.name} Name: "${this.parameter.name.text}"\nData Type: ${this.parameter.screen_type || ''} ${this.dataType.name}\nData Subtype: ${this.dataSubType.name}`), {
-            scoreID: `dC${`${this.dataSubType.name} of ${this.parameter.name.text}`.replace(/\s+/, '')}` // column name that is stored in old provenance graphs
+            scoreID: `dC${`${this.dataSubType.name} of ${this.parameter.name.text}`.replace(/\s+/, '')}`,
         });
     }
     createFilter() {
@@ -29,7 +30,7 @@ export class ASingleScore extends AScore {
             attribute: this.dataSubType.id,
             name: this.parameter.name.id,
             species: SpeciesUtils.getSelectedSpecies(),
-            target: idtype.id
+            target: idtype.id,
         };
         const maxDirectRows = typeof this.parameter.maxDirectFilterRows === 'number' ? this.parameter.maxDirectFilterRows : MAX_FILTER_SCORE_ROWS_BEFORE_ALL;
         FieldUtils.limitScoreRows(param, ids, idtype, this.dataSource.entityName, maxDirectRows, namedSet);

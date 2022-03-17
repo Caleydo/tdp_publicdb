@@ -1,21 +1,19 @@
 /**
  * Created by sam on 16.02.2017.
  */
-import { SpeciesUtils } from 'tdp_gene';
-import { RestBaseUtils } from 'tdp_core';
-import { FieldUtils } from 'tdp_gene';
-import { ColumnDescUtils } from 'tdp_core';
+import { SpeciesUtils, FieldUtils } from 'tdp_gene';
+import { RestBaseUtils, ColumnDescUtils } from 'tdp_core';
 export class ViewUtils {
     static loadFirstName(ensg) {
         return RestBaseUtils.getTDPData('publicdb', 'gene_map_ensgs', {
-            ensgs: '\'' + ensg + '\'',
-            species: SpeciesUtils.getSelectedSpecies()
-        }).then((r) => r.length > 0 ? r[0].symbol || r[0].id : ensg);
+            ensgs: `'${ensg}'`,
+            species: SpeciesUtils.getSelectedSpecies(),
+        }).then((r) => (r.length > 0 ? r[0].symbol || r[0].id : ensg));
     }
     static loadGeneList(ensgs) {
         return RestBaseUtils.getTDPData('publicdb', 'gene_map_ensgs', {
-            ensgs: '\'' + ensgs.join('\',\'') + '\'',
-            species: SpeciesUtils.getSelectedSpecies()
+            ensgs: `'${ensgs.join("','")}'`,
+            species: SpeciesUtils.getSelectedSpecies(),
         });
     }
     static postProcessScore(subType) {
@@ -38,7 +36,7 @@ export class ViewUtils {
         if (dataSubType.type === 'boolean' || dataSubType.type === 'string') {
             return ColumnDescUtils.stringCol(col, { label });
         }
-        else if (dataSubType.type === 'cat') {
+        if (dataSubType.type === 'cat') {
             return ColumnDescUtils.categoricalCol(col, dataSubType.categories, { label });
         }
         return ColumnDescUtils.numberCol(col, dataSubType.domain[0], dataSubType.domain[1], { label });

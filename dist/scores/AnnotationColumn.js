@@ -1,16 +1,11 @@
-import { FormDialog } from 'tdp_core';
-import { ABooleanScore } from './ABooleanScore';
-import { FormElementType } from 'tdp_core';
-import { AppContext, I18nextManager } from 'tdp_core';
-import { ScoreUtils } from './ScoreUtils';
+import { FormDialog, FormElementType, AppContext, I18nextManager } from 'tdp_core';
 import { chooseDataSource } from '../common/config';
+import { ABooleanScore } from './ABooleanScore';
+import { ScoreUtils } from './ScoreUtils';
 /**
  * score implementation in this case a numeric score is computed
  */
 export class AnnotationColumn extends ABooleanScore {
-    constructor(params, dataSource) {
-        super(params, dataSource);
-    }
     get label() {
         return `${this.dataSource.name} contained in ${this.params.panel}`;
     }
@@ -36,12 +31,12 @@ export class AnnotationColumn extends ABooleanScore {
             label: 'Named Set',
             id: 'panels',
             attributes: {
-                style: 'width:100%'
+                style: 'width:100%',
             },
             required: true,
             options: {
-                data: optionsData
-            }
+                data: optionsData,
+            },
         });
         return dialog.showAsPromise((r) => {
             var _a;

@@ -19,3 +19,4 @@ export declare class CoExpression extends ACoExpression {
     protected select(range: string[]): void;
     protected getNoDataErrorMessage(refGene: IGeneOption): string;
 }
+//# sourceMappingURL=CoExpression.d.ts.map

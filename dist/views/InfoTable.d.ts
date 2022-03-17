@@ -50,3 +50,4 @@ export declare class TissueInfoTable extends AInfoTable {
         order: number;
     }[];
 }
+//# sourceMappingURL=InfoTable.d.ts.map

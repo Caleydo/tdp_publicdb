@@ -1,5 +1,5 @@
-import { IStartMenuDatasetSectionDesc } from 'ordino';
-import { IDataSourceConfig } from '../common';
+import type { IStartMenuDatasetSectionDesc } from 'ordino';
+import type { IDataSourceConfig } from '../common';
 interface IStartMenuDatasetSectionTab {
     /**
      * Unique id of the tab
@@ -35,3 +35,4 @@ export interface IPublicDbStartMenuDatasetSectionDesc extends IStartMenuDatasetS
     tokenSeparators?: RegExp;
 }
 export {};
+//# sourceMappingURL=extensions.d.ts.map

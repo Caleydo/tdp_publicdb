@@ -15,3 +15,4 @@ export * from './InfoTable';
 export * from './OncoPrint';
 export * from './TissueList';
 export * from './SimilarityView';
+//# sourceMappingURL=index.d.ts.map
