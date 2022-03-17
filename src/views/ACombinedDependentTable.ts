@@ -1,7 +1,7 @@
+import { SpeciesUtils } from 'tdp_gene';
 import {
   IViewContext,
   ISelection,
-  ResolveUtils,
   ARankingView,
   RestBaseUtils,
   IParams,
@@ -12,7 +12,6 @@ import {
   LineupUtils,
   AdapterUtils,
 } from 'tdp_core';
-import { SpeciesUtils } from 'tdp_gene';
 import { ParameterFormIds, FORM_DATA_HIERARCHICAL_SUBTYPE } from '../common/forms';
 import { ViewUtils } from './ViewUtils';
 import { IDataTypeConfig, IDataSourceConfig, splitTypes } from '../common/config';
@@ -67,14 +66,14 @@ export abstract class ACombinedDependentTable extends ARankingView {
 
   protected createSelectionAdapter() {
     return AdapterUtils.multi({
-      createDescs: async (_id: number, id: string) => {
-        const ids = await ResolveUtils.resolveIds(this.selection.idtype, [_id], this.dataSource.idType);
-        return this.getSelectionColumnDesc(_id, ids[0]);
+      createDescs: async (id: string) => {
+        const ids = await IDTypeManager.getInstance().mapNameToFirstName(this.selection.idtype, [id], this.dataSource.idType);
+        return this.getSelectionColumnDesc(id, ids[0]);
       },
-      loadData: (_id: number, id: string, descs: IAdditionalColumnDesc[]): Promise<IScoreRow<any>[]>[] => {
+      loadData: (id: string, descs: IAdditionalColumnDesc[]): Promise<IScoreRow<any>[]>[] => {
         return descs.map(async (desc) => {
           // map descs here to return Promise array
-          const ids = await ResolveUtils.resolveIds(this.selection.idtype, [_id], this.dataSource.idType);
+          const ids = await IDTypeManager.getInstance().mapNameToFirstName(this.selection.idtype, [id], this.dataSource.idType);
           return this.loadSelectionColumnData(ids[0], [desc])[0]; // send single desc and pick immediately
         });
       },
@@ -107,7 +106,7 @@ export abstract class ACombinedDependentTable extends ARankingView {
     return name;
   }
 
-  protected async getSelectionColumnDesc(_id: number, name: string) {
+  protected async getSelectionColumnDesc(_id: string, name: string) {
     return Promise.resolve(this.getSelectionColumnLabel(name)).then((nlabel) =>
       this.subTypes.map(({ label, dataSubType, id }) => {
         const clabel = `${nlabel} (${label})`;

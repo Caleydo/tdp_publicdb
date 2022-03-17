@@ -1,5 +1,5 @@
-import { ResolveUtils, ARankingView, RestBaseUtils, IDTypeManager, LineupUtils, AdapterUtils, } from 'tdp_core';
 import { SpeciesUtils } from 'tdp_gene';
+import { ARankingView, RestBaseUtils, IDTypeManager, LineupUtils, AdapterUtils, } from 'tdp_core';
 import { ParameterFormIds, FORM_DATA_HIERARCHICAL_SUBTYPE } from '../common/forms';
 import { ViewUtils } from './ViewUtils';
 import { splitTypes } from '../common/config';
@@ -40,14 +40,14 @@ export class ACombinedDependentTable extends ARankingView {
     }
     createSelectionAdapter() {
         return AdapterUtils.multi({
-            createDescs: async (_id, id) => {
-                const ids = await ResolveUtils.resolveIds(this.selection.idtype, [_id], this.dataSource.idType);
-                return this.getSelectionColumnDesc(_id, ids[0]);
+            createDescs: async (id) => {
+                const ids = await IDTypeManager.getInstance().mapNameToFirstName(this.selection.idtype, [id], this.dataSource.idType);
+                return this.getSelectionColumnDesc(id, ids[0]);
             },
-            loadData: (_id, id, descs) => {
+            loadData: (id, descs) => {
                 return descs.map(async (desc) => {
                     // map descs here to return Promise array
-                    const ids = await ResolveUtils.resolveIds(this.selection.idtype, [_id], this.dataSource.idType);
+                    const ids = await IDTypeManager.getInstance().mapNameToFirstName(this.selection.idtype, [id], this.dataSource.idType);
                     return this.loadSelectionColumnData(ids[0], [desc])[0]; // send single desc and pick immediately
                 });
             },

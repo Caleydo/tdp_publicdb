@@ -12,7 +12,6 @@ def create_gene(views, gene):
           FROM {g.table} WHERE (LOWER(symbol) LIKE :query OR LOWER(ensg) LIKE :query) AND species = :species
           ORDER BY symbol ASC""".format(g=gene)) \
     .call(limit_offset) \
-    .assign_ids() \
     .arg('query') \
     .arg('species') \
     .build()
@@ -21,7 +20,6 @@ def create_gene(views, gene):
           SELECT {g.id} as id, symbol AS text
           FROM {g.table} WHERE species = :species""".format(g=gene)) \
     .call(inject_where) \
-    .assign_ids() \
     .arg('species') \
     .filter('symbol', '(lower(ensg) {operator} {value} or lower(symbol) {operator} {value})') \
     .build()
@@ -30,7 +28,6 @@ def create_gene(views, gene):
         SELECT {g.id} AS id, symbol
         FROM {g.table} WHERE {g.id} IN ({{ensgs}}) AND species = :species
         ORDER BY symbol ASC""".format(g=gene)) \
-    .assign_ids() \
     .replace('ensgs', re.compile(r'(\'[\w]+\')(,\'[\w]+\')*')) \
     .arg('species') \
     .build()

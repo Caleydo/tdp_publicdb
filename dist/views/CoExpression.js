@@ -57,7 +57,7 @@ export class CoExpression extends ACoExpression {
     select(range) {
         this.setItemSelection({
             idtype: this.itemIDType,
-            range,
+            ids: range,
         });
     }
     getNoDataErrorMessage(refGene) {

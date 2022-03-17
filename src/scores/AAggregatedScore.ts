@@ -2,7 +2,7 @@
  * Created by sam on 06.03.2017.
  */
 
-import { RangeLike, IScore, IScoreRow, INamedSet, IDTypeManager, RestBaseUtils, IParams, LineupUtils, IDType } from 'tdp_core';
+import { IScore, IScoreRow, INamedSet, IDTypeManager, RestBaseUtils, IParams, LineupUtils, IDType } from 'tdp_core';
 import { SpeciesUtils, FieldUtils } from 'tdp_gene';
 import { ScoreUtils } from './ScoreUtils';
 import { AScore, ICommonScoreParam } from './AScore';
@@ -52,7 +52,7 @@ export abstract class AAggregatedScore extends AScore implements IScore<number> 
     return ScoreUtils.createDesc(dataSubtypes.number, `${this.parameter.aggregation} ${this.dataSubType.name}`, this.dataSubType, desc);
   }
 
-  async compute(ids: RangeLike, idtype: IDType, namedSet?: INamedSet): Promise<any[]> {
+  async compute(ids: string[], idtype: IDType, namedSet?: INamedSet): Promise<any[]> {
     const param = {
       table: this.dataType.tableName,
       // by convention for the aggregation to do its magic, it has to be called `data_subtype`

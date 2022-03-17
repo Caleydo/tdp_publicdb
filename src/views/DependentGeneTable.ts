@@ -10,10 +10,10 @@ import {
   FormElementType,
   ISelection,
   IViewContext,
-  ResolveUtils,
   RestBaseUtils,
   IServerColumn,
   LineupUtils,
+  IDTypeManager,
 } from 'tdp_core';
 import { SpeciesUtils, Species } from 'tdp_gene';
 import { ParameterFormIds, FORM_GENE_FILTER } from '../common/forms';
@@ -75,12 +75,12 @@ export class DependentGeneTable extends ARankingView {
 
   protected createSelectionAdapter() {
     return AdapterUtils.single({
-      createDesc: async (_id: number, id: string) => {
-        const ids = await ResolveUtils.resolveIds(this.selection.idtype, [_id], this.dataSource.idType);
-        return ViewUtils.subTypeDesc(this.dataSubType, _id, ids[0]);
+      createDesc: async (id: string) => {
+        const ids = await IDTypeManager.getInstance().mapNameToFirstName(this.selection.idtype, [id], this.dataSource.idType);
+        return ViewUtils.subTypeDesc(this.dataSubType, id, ids[0]);
       },
-      loadData: async (_id: number, id: string) => {
-        const ids = await ResolveUtils.resolveIds(this.selection.idtype, [_id], this.dataSource.idType);
+      loadData: async (id: string) => {
+        const ids = await IDTypeManager.getInstance().mapNameToFirstName(this.selection.idtype, [id], this.dataSource.idType);
         return this.loadSelectionColumnData(ids[0]);
       },
     });

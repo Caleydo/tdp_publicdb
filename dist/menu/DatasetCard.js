@@ -75,8 +75,7 @@ export default function DatasetCard({ name, icon, tabs, startViewId, dataSource,
         StoreUtils.editDialog(null, I18nextManager.getInstance().i18n.t(`tdp:core.editDialog.listOfEntities.default`), async (n, description, isPublic) => {
             const idStrings = items === null || items === void 0 ? void 0 : items.map((i) => i.id);
             const idType = IDTypeManager.getInstance().resolveIdType(dataSource.idType);
-            const ids = await idType.map(idStrings);
-            await RestStorageUtils.saveNamedSet(n, idType, ids, subtype, description, isPublic);
+            await RestStorageUtils.saveNamedSet(name, idType, idStrings, subtype, description, isPublic);
             setDirtyNamedSets((d) => !d);
         });
     };

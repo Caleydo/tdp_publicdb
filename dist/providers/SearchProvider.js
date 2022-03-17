@@ -8,9 +8,6 @@ export class GeneSearchProvider extends SearchProvider {
     get verifyView() {
         return `${this.dataSource.base}_gene_items_verify`;
     }
-    format(item, node, mode, currentSearchQuery) {
-        return item.id && mode === 'result' ? `${item.text || ''} <span class="ensg">${item.id}</span>` : item.text;
-    }
     validate(query) {
         return RestBaseUtils.getTDPData(this.dataSource.db, `${this.verifyView}/filter`, {
             species: SpeciesUtils.getSelectedSpecies(),

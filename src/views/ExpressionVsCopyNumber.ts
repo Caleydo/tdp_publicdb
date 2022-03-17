@@ -1,12 +1,12 @@
-/**
- * Created by sam on 16.02.2017.
- */
-
-import { IFormElementDesc, Range, IDTypeManager, RestBaseUtils, IParams, LineupUtils } from 'tdp_core';
-import { AExpressionVsCopyNumber, ICopyNumberDataFormatRow, SpeciesUtils } from 'tdp_gene';
-import { expression, copyNumber, IDataSourceConfig } from '../common/config';
-import { ParameterFormIds, FORM_TISSUE_OR_CELLLINE_FILTER, FORM_DATA_SOURCE, FORM_COLOR_CODING } from '../common/forms';
+import { IFormElementDesc } from 'tdp_core';
+import { AExpressionVsCopyNumber, ICopyNumberDataFormatRow } from 'tdp_gene';
+import { SpeciesUtils } from 'tdp_gene';
+import { IDTypeManager } from 'tdp_core';
+import { LineupUtils } from 'tdp_core';
+import { RestBaseUtils, IParams } from 'tdp_core';
 import { ViewUtils } from './ViewUtils';
+import { ParameterFormIds, FORM_TISSUE_OR_CELLLINE_FILTER, FORM_DATA_SOURCE, FORM_COLOR_CODING } from '../common/forms';
+import { expression, copyNumber, IDataSourceConfig } from '../common/config';
 
 export class ExpressionVsCopyNumber extends AExpressionVsCopyNumber {
   protected getParameterFormDescs(): IFormElementDesc[] {
@@ -60,10 +60,10 @@ export class ExpressionVsCopyNumber extends AExpressionVsCopyNumber {
     return IDTypeManager.getInstance().resolveIdType(this.dataSource.idType);
   }
 
-  protected select(range: Range) {
+  protected select(ids: string[]) {
     this.setItemSelection({
       idtype: this.itemIDType,
-      range,
+      ids,
     });
   }
 }

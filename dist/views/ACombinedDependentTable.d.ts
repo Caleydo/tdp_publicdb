@@ -14,7 +14,7 @@ export declare abstract class ACombinedDependentTable extends ARankingView {
     protected getColumnDescs(columns: IServerColumn[]): IAdditionalColumnDesc[];
     protected loadRows(): Promise<import("tdp_core").IRow[]>;
     protected getSelectionColumnLabel(name: string): Promise<string> | string;
-    protected getSelectionColumnDesc(_id: number, name: string): Promise<IAdditionalColumnDesc[]>;
+    protected getSelectionColumnDesc(_id: string, name: string): Promise<IAdditionalColumnDesc[]>;
     protected loadSelectionColumnData(name: string, descs: IAdditionalColumnDesc[]): Promise<IScoreRow<any>[]>[];
 }
 //# sourceMappingURL=ACombinedDependentTable.d.ts.map

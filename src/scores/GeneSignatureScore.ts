@@ -8,7 +8,6 @@ import {
   FormElementType,
   AppContext,
   IDTypeManager,
-  RangeLike,
   IDType,
   I18nextManager,
   IPluginDesc,
@@ -74,7 +73,7 @@ export class GeneSignatureScore implements IScore<number> {
    * Computes the actual scores and returns a Promise of IScoreRow rows.
    * @returns {Promise<IScoreRow<number>[]>}
    */
-  async compute(ids: RangeLike, idtype: IDType, namedSet?: INamedSet): Promise<IScoreRow<number>[]> {
+  async compute(ids: string[], idtype: IDType, namedSet?: INamedSet): Promise<IScoreRow<number>[]> {
     const params = {
       signature: this.params.signature,
       species: SpeciesUtils.getSelectedSpecies(),

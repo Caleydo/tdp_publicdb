@@ -38,7 +38,7 @@ export class ViewUtils {
     };
   }
 
-  static subTypeDesc(dataSubType: IDataSubtypeConfig, id: number, label: string, col = `col_${id}`) {
+  static subTypeDesc(dataSubType: IDataSubtypeConfig, id: string, label: string, col = `col_${id}`) {
     if (dataSubType.type === 'boolean' || dataSubType.type === 'string') {
       return ColumnDescUtils.stringCol(col, { label });
     }

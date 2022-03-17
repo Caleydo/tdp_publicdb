@@ -2,7 +2,7 @@
  * Created by sam on 16.02.2017.
  */
 
-import { FormElementType, IFormElementDesc, IDTypeManager, Range, RestBaseUtils, IParams, LineupUtils } from 'tdp_core';
+import { FormElementType, IFormElementDesc, IDTypeManager, RestBaseUtils, IParams, LineupUtils } from 'tdp_core';
 import { ACoExpression, ICoExprDataFormatRow, IGeneOption, SpeciesUtils } from 'tdp_gene';
 import { ParameterFormIds, FORM_TISSUE_OR_CELLLINE_FILTER, FORM_DATA_SOURCE, FORM_COLOR_CODING } from '../common/forms';
 import { ViewUtils } from './ViewUtils';
@@ -73,10 +73,10 @@ export class CoExpression extends ACoExpression {
     return IDTypeManager.getInstance().resolveIdType(this.dataSource.idType);
   }
 
-  protected select(range: Range): void {
+  protected select(range: string[]): void {
     this.setItemSelection({
       idtype: this.itemIDType,
-      range,
+      ids: range,
     });
   }
 

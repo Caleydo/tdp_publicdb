@@ -11,10 +11,6 @@ export class GeneSearchProvider extends SearchProvider {
     return `${this.dataSource.base}_gene_items_verify`;
   }
 
-  format(item: IResult, node: HTMLElement, mode: 'result' | 'selection', currentSearchQuery: string): string {
-    return item.id && mode === 'result' ? `${item.text || ''} <span class="ensg">${item.id}</span>` : item.text;
-  }
-
   validate(query: string[]): Promise<IResult[]> {
     return RestBaseUtils.getTDPData(this.dataSource.db, `${this.verifyView}/filter`, {
       species: SpeciesUtils.getSelectedSpecies(),

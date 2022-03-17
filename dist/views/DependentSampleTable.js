@@ -58,8 +58,8 @@ export class DependentSampleTable extends ARankingView {
     }
     createSelectionAdapter() {
         return AdapterUtils.single({
-            createDesc: (_id, id) => ViewUtils.loadFirstName(id).then((label) => ViewUtils.subTypeDesc(this.dataSubType, _id, label)),
-            loadData: (_id, id) => this.loadSelectionColumnData(id),
+            createDesc: (id) => ViewUtils.loadFirstName(id).then((label) => ViewUtils.subTypeDesc(this.dataSubType, id, label)),
+            loadData: (id) => this.loadSelectionColumnData(id),
         });
     }
     getColumnDescs(columns) {

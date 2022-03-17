@@ -1,7 +1,7 @@
 /**
  * Created by sam on 06.03.2017.
  */
-import { RangeLike, IDType, IScore, INamedSet, IParams } from 'tdp_core';
+import { IDType, IScore, INamedSet, IParams } from 'tdp_core';
 import { AScore, ICommonScoreParam } from './AScore';
 import { IDataSourceConfig } from '../common/config';
 interface IFrequencyScoreParam extends ICommonScoreParam {
@@ -20,7 +20,7 @@ export declare abstract class AFrequencyScore extends AScore implements IScore<n
     constructor(parameter: IFrequencyScoreParam, dataSource: IDataSourceConfig, oppositeDataSource: IDataSourceConfig, countOnly: boolean);
     get idType(): IDType;
     createDesc(): any;
-    compute(ids: RangeLike, idtype: IDType, namedSet?: INamedSet): Promise<any[]>;
+    compute(ids: string[], idtype: IDType, namedSet?: INamedSet): Promise<any[]>;
     protected createFilter(): IParams;
     protected abstract getViewPrefix(): string;
 }

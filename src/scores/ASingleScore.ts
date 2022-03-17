@@ -2,7 +2,7 @@
  * Created by sam on 06.03.2017.
  */
 
-import { RangeLike, IDTypeManager, IDType, IScore, INamedSet, RestBaseUtils, IParams } from 'tdp_core';
+import { IDTypeManager, IDType, IScore, INamedSet, RestBaseUtils, IParams } from 'tdp_core';
 import { SpeciesUtils, FieldUtils } from 'tdp_gene';
 import { ScoreUtils } from './ScoreUtils';
 import { AScore } from './AScore';
@@ -48,7 +48,7 @@ export abstract class ASingleScore extends AScore implements IScore<any> {
     return {};
   }
 
-  async compute(ids: RangeLike, idtype: IDType, namedSet?: INamedSet): Promise<any[]> {
+  async compute(ids: string[], idtype: IDType, namedSet?: INamedSet): Promise<any[]> {
     const param: any = {
       table: this.dataType.tableName,
       attribute: this.dataSubType.id,

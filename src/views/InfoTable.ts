@@ -2,7 +2,9 @@
  * Created by Samuel Gratzl on 27.04.2016.
  */
 
-import { IViewContext, ISelection, IView, ResolveUtils, AD3View, RestBaseUtils } from 'tdp_core';
+import { IViewContext, ISelection, IView, IDTypeManager } from 'tdp_core';
+import { AD3View } from 'tdp_core';
+import { RestBaseUtils } from 'tdp_core';
 import { SpeciesUtils } from 'tdp_gene';
 import { Primitive, transpose as d3Transpose, Selection } from 'd3';
 import { IDataSourceConfig, cellline, tissue, gene } from '../common/config';
@@ -38,7 +40,7 @@ export abstract class AInfoTable extends AD3View {
   }
 
   private async fetchInformation() {
-    const ids = await ResolveUtils.resolveIds(this.selection.idtype, this.selection.range, this.dataSource.idType);
+    const ids = await IDTypeManager.getInstance().mapNameToFirstName(this.selection.idtype, this.selection.ids, this.dataSource.idType);
     const results = await RestBaseUtils.getTDPFilteredRows(
       this.dataSource.db,
       `${this.dataSource.base}_all_columns`,
