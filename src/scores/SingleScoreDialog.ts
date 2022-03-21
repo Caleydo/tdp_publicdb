@@ -14,9 +14,10 @@ import {
 import { ScoreUtils } from './ScoreUtils';
 import { ParameterFormIds, FORM_GENE_NAME, FORM_TISSUE_NAME, FORM_CELLLINE_NAME, FORM_DRUG_NAME } from '../common/forms';
 import { gene, tissue, cellline, MAX_FILTER_SCORE_ROWS_BEFORE_ALL, splitTypes, drug } from '../common/config';
+import { merge } from 'lodash';
 
 function enableMultiple(desc: any): any {
-  return BaseUtils.mixin({}, desc, {
+  return merge({}, desc, {
     type: FormElementType.SELECT3_MULTIPLE,
     useSession: false,
   });

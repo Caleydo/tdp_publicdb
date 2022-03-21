@@ -96,9 +96,9 @@ export default function DatasetCard({ name, icon, tabs, startViewId, dataSource,
                 React.createElement("div", { className: "tab-content" }, tabs.map((tab, index) => {
                     const separators = tokenSeparators ? { tokenSeparators } : null;
                     return (React.createElement("div", { key: tab.id, className: `tab-pane fade mt-4 ${index === activeTabIndex ? 'show active' : ''}`, role: "tabpanel", id: `dataset-panel-${tab.id}-${id}`, "aria-labelledby": `dataset-tab-${tab.id}-${id}` },
-                        React.createElement(DatasetSearchBox, Object.assign({ placeholder: `Add ${name}`, dataSource: dataSource, params: { species: tab.id }, onSaveAsNamedSet: (items) => onSaveAsNamedSet(items, { key: Species.SPECIES_SESSION_KEY, value: tab.id }), onOpen: (event, searchResult) => {
+                        React.createElement(DatasetSearchBox, { placeholder: `Add ${name}`, dataSource: dataSource, params: { species: tab.id }, onSaveAsNamedSet: (items) => onSaveAsNamedSet(items, { key: Species.SPECIES_SESSION_KEY, value: tab.id }), onOpen: (event, searchResult) => {
                                 onOpenSearchResult(event, { searchResult, species: tab.id });
-                            } }, separators)),
+                            }, ...separators }),
                         React.createElement("div", { className: "row mt-4" },
                             React.createElement(NamedSetList, { headerIcon: "fas fa-database", headerText: "Predefined Sets", onOpen: (event, namedSet) => {
                                     onOpenNamedSet(event, { namedSet, species: tab.id });
