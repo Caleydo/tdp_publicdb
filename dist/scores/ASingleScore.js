@@ -18,7 +18,7 @@ export class ASingleScore extends AScore {
     }
     createDesc() {
         return Object.assign(ScoreUtils.createDesc(this.dataSubType.type, `${this.parameter.name.text}: ${this.dataSubType.name}`, this.dataSubType, `${this.oppositeDataSource.name} Name: "${this.parameter.name.text}"\nData Type: ${this.parameter.screen_type || ''} ${this.dataType.name}\nData Subtype: ${this.dataSubType.name}`), {
-            scoreID: `dC${`${this.dataSubType.name} of ${this.parameter.name.text}`.replace(/\s+/, '')}`,
+            scoreID: `dC${`${this.dataSubType.name} of ${this.parameter.name.text}`.replace(/\s+/, '')}`, // column name that is stored in old provenance graphs
         });
     }
     createFilter() {

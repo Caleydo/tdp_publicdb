@@ -6,7 +6,7 @@ import Highlighter from 'react-highlight-words';
 import { GeneUtils } from '../common';
 function Input(props) {
     const { onPaste } = props.selectProps;
-    return React.createElement(components.Input, Object.assign({ onPaste: onPaste }, props));
+    return React.createElement(components.Input, { onPaste: onPaste, ...props });
 }
 export function DatasetSearchBox({ placeholder, dataSource, onOpen, onSaveAsNamedSet, params = {}, tokenSeparators = /[\s;,]+/gm }) {
     const [items, setItems] = React.useState([]);
@@ -62,7 +62,7 @@ export function DatasetSearchBox({ placeholder, dataSource, onOpen, onSaveAsName
     };
     return (React.createElement("div", { className: "hstack gap-3 ordino-dataset-searchbox" },
         React.createElement(AsyncPaginate, { className: "flex-fill", onPaste: onPaste, placeholder: placeholder, noOptionsMessage: () => 'No results found', isMulti: true, loadOptions: loadOptions, inputValue: inputValue, value: items, onChange: setItems, onInputChange: setInputValue, formatOptionLabel: formatOptionLabel, hideSelectedOptions: true, getOptionLabel: (option) => option.text, getOptionValue: (option) => option.id, captureMenuScroll: false, additional: {
-                page: 0,
+                page: 0, // page starts from index 0
             }, components: { Input }, styles: {
                 multiValue: (styles, { data }) => ({
                     ...styles,

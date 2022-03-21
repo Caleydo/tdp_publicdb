@@ -279,6 +279,7 @@ export default function (registry) {
         },
         group: {
             name: 'External Resources',
+            // 'order: 0
         },
         filter: {
             species: 'human',
@@ -529,6 +530,7 @@ export default function (registry) {
         selection: 'multiple',
         group: {
             name: 'External Resources',
+            // 'order: 10
         },
         filter: {
             species: 'human',
@@ -543,6 +545,7 @@ export default function (registry) {
         selection: 'multiple',
         group: {
             name: 'External Resources',
+            // 'order: 30
         },
         filter: {
             species: 'human',
@@ -559,6 +562,7 @@ export default function (registry) {
         selection: 'multiple',
         group: {
             name: 'External Resources',
+            // 'order: 20
         },
         filter: {
             species: 'human',
@@ -579,6 +583,7 @@ export default function (registry) {
         },
         group: {
             name: 'External Resources',
+            // order: 60
         },
         description: 'Show information on your search from PubMed',
     });
