@@ -2,6 +2,7 @@
  * Created by sam on 06.03.2017.
  */
 
+import { merge } from 'lodash';
 import { IFormElementDesc, FormElementType, I18nextManager, IPluginDesc, BaseUtils, FormDialog, IForm } from 'tdp_core';
 import {
   FORCE_COMPUTE_ALL_CELLLINE,
@@ -14,7 +15,6 @@ import {
 import { ScoreUtils } from './ScoreUtils';
 import { ParameterFormIds, FORM_GENE_NAME, FORM_TISSUE_NAME, FORM_CELLLINE_NAME, FORM_DRUG_NAME } from '../common/forms';
 import { gene, tissue, cellline, MAX_FILTER_SCORE_ROWS_BEFORE_ALL, splitTypes, drug } from '../common/config';
-import { merge } from 'lodash';
 
 function enableMultiple(desc: any): any {
   return merge({}, desc, {
