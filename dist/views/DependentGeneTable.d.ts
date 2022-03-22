@@ -1,10 +1,8 @@
 /**
  * Created by Marc Streit on 28.07.2016.
  */
-import { ARankingView, IARankingViewOptions } from 'tdp_core';
+import { ARankingView, IARankingViewOptions, ISelection, IViewContext, IServerColumn } from 'tdp_core';
 import { IDataTypeConfig } from '../common/config';
-import { ISelection, IViewContext } from 'tdp_core';
-import { IServerColumn } from 'tdp_core';
 export declare class DependentGeneTable extends ARankingView {
     private readonly dataType;
     private readonly dataSource;
@@ -21,3 +19,4 @@ export declare class DependentGeneTable extends ARankingView {
     static createCopyNumberDependentGeneTable(context: IViewContext, selection: ISelection, parent: HTMLElement, options?: any): DependentGeneTable;
     static createMutationDependentGeneTable(context: IViewContext, selection: ISelection, parent: HTMLElement, options?: any): DependentGeneTable;
 }
+//# sourceMappingURL=DependentGeneTable.d.ts.map
