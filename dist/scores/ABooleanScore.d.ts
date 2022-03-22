@@ -28,3 +28,4 @@ export declare abstract class ABooleanScore implements IScore<number> {
     protected abstract get label(): string;
     protected abstract get columnName(): string;
 }
+//# sourceMappingURL=ABooleanScore.d.ts.map

@@ -29,14 +29,14 @@ export class WelcomeTour {
                     }
                     return TourUtils.waitFor('.ordino-dataset.genes-dataset').then(() => TourUtils.click('#ordino_dataset_tab > .ordino-scrollspy-nav > a:nth-child(3)'));
                 },
-                pageBreak: 'manual'
+                pageBreak: 'manual',
             },
             {
                 selector: '.ordino-dataset.genes-dataset > .card',
                 html: `<p>You can choose between the three entity types <i>'Cell Lines'</i>, <i>'Tissue Samples'</i>, and <i>'Genes'</i>.</p> <p>In this example we will work with a list of genes</p>`,
                 placement: 'centered',
                 preAction: () => TourUtils.waitFor('#ordino_dataset_tab > .ordino-scrollspy-container .genes-dataset > .card').then(() => TourUtils.wait(600)),
-                postAction: () => TourUtils.click('.ordino-dataset.genes-dataset .session-tab > li:first-child')
+                postAction: () => TourUtils.click('.ordino-dataset.genes-dataset .session-tab > li:first-child'),
             },
             {
                 selector: '.ordino-dataset.genes-dataset .dataset-entry',
@@ -45,19 +45,19 @@ export class WelcomeTour {
                 postAction: () => {
                     return TourUtils.waitFor('.ordino-dataset.genes-dataset .dataset-entry button[title^="Name: Cancer Gene Census"]').then(TourUtils.click);
                 },
-                pageBreak: 'manual'
+                pageBreak: 'manual',
             },
             {
                 selector: '.le.le-multi.lineup-engine',
                 placement: 'centered',
                 html: `The information is presented in a tabular format. Additionally to the gene ID, a set of columns containing some basic information is shown by default.`,
-                preAction: () => TourUtils.waitFor('.le.le-multi.lineup-engine', Infinity).then(() => TourUtils.wait(600))
+                preAction: () => TourUtils.waitFor('.le.le-multi.lineup-engine', Infinity).then(() => TourUtils.wait(600)),
             },
             {
                 selector: '.lu-side-panel-wrapper .lu-adder > button',
                 html: `Additional columns can be added using the plus sign.`,
                 placement: 'centered',
-                postAction: TourUtils.clickSelector
+                postAction: TourUtils.clickSelector,
             },
             {
                 selector: '.lu-search .lu-search-item',
@@ -66,26 +66,26 @@ export class WelcomeTour {
                 postAction: () => {
                     TourUtils.click('.lu-search .lu-search-item');
                     TourUtils.toggleClass('.lu-adder.once', 'once', false);
-                }
+                },
             },
             {
                 selector: '.modal.show .col > .select2',
                 html: `Here we select <i>'Strand'</i> &hellip;`,
                 placement: 'centered',
                 preAction: () => TourUtils.waitFor('.modal.show').then(() => TourUtils.wait(250)),
-                postAction: () => TourUtils.setValueAndTrigger('.col > select', 'strand', 'change')
+                postAction: () => TourUtils.setValueAndTrigger('.col > select', 'strand', 'change'),
             },
             {
                 selector: '.modal.show .modal-footer button[type=submit]',
                 html: `&hellip; and click <i>'Add'</i>`,
                 placement: 'centered',
-                postAction: TourUtils.clickSelector
+                postAction: TourUtils.clickSelector,
             },
             {
                 selector: '.le header section[title=Strand]',
                 placement: 'centered',
                 html: `The strand information was added as a new column`,
-                preAction: TourUtils.waitForSelector
+                preAction: TourUtils.waitForSelector,
             },
             {
                 selector: '.lu-search .lu-search-group .lu-search-item',
@@ -97,7 +97,7 @@ export class WelcomeTour {
                 postAction: () => {
                     TourUtils.click('.lu-search .lu-search-group .lu-search-item');
                     TourUtils.toggleClass('.lu-adder.once', 'once', false);
-                }
+                },
             },
             {
                 selector: '.modal.show .col > .select3',
@@ -106,7 +106,7 @@ export class WelcomeTour {
                 html: `We select the cell lines <i>'HCC-827'</i> and <i>'BT-20'</i>.`,
                 postAction: () => {
                     TourUtils.setValueAndTrigger('.modal.show .select3 input.select2-search__field', 'HCC-827;BT-20;', 'input');
-                }
+                },
             },
             {
                 selector: '.modal.show .col > .select2',
@@ -114,13 +114,13 @@ export class WelcomeTour {
                 html: `As data type, we choose <i>'Relative Copy Number'</i>`,
                 postAction: () => {
                     TourUtils.setValueAndTrigger('.col > select', 'copy_number-relativecopynumber', 'change');
-                }
+                },
             },
             {
                 selector: '.modal.show .modal-footer button[type=submit]',
                 html: `Finally, click <i>'Add'</i>`,
                 placement: 'centered',
-                postAction: TourUtils.clickSelector
+                postAction: TourUtils.clickSelector,
             },
             {
                 selector: ['.le header section[title^=BT], .le header section[title^=HCC]'],
@@ -137,7 +137,7 @@ export class WelcomeTour {
                 selector: '.le header section[title^=HCC] i[title^=Sort]',
                 placement: 'centered',
                 html: `For example, you can use this icon to sort all genes by their copy number in the cell line <i>'HCC-827'</i>`,
-                postAction: TourUtils.clickSelector
+                postAction: TourUtils.clickSelector,
             },
             {
                 selector: '.le-tr[data-index="0"]',
@@ -154,19 +154,19 @@ export class WelcomeTour {
                     }
                     return r;
                 }, Infinity).then(() => TourUtils.wait(500)),
-                postAction: TourUtils.clickSelector
+                postAction: TourUtils.clickSelector,
             },
             {
                 selector: '.viewWrapper .chooser:not(.hidden)',
                 placement: 'centered',
                 html: `Various 'Detail Views', providing additional information, are available.`,
-                preAction: TourUtils.waitForSelector
+                preAction: TourUtils.waitForSelector,
             },
             {
                 selector: '.viewWrapper .chooser button[data-viewid="celllinedb_expression_vs_copynumber"]',
                 placement: 'centered',
                 html: `For instance, clicking on <i>'Expression vs Copy Number'</i> opens a scatter plot showing the relation of the two types of data`,
-                postAction: TourUtils.clickSelector
+                postAction: TourUtils.clickSelector,
             },
             {
                 html: `<p>Thanks for joining this tour demonstrating the basic features of Ordino.</p>

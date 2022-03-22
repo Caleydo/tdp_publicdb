@@ -2,42 +2,48 @@
  * Created by Marc Streit on 28.07.2016.
  */
 
-import {ARankingView, AdapterUtils, IARankingViewOptions} from 'tdp_core';
-import {IScoreRow} from 'tdp_core';
-import {SpeciesUtils, Species} from 'tdp_gene';
 import {
-  gene,
-  expression,
-  copyNumber,
-  mutation,
-  IDataTypeConfig,
-  chooseDataSource,
-  IDataSourceConfig, IDataSubtypeConfig
-} from '../common/config';
-import {ParameterFormIds, FORM_GENE_FILTER} from '../common/forms';
-import {FormElementType} from 'tdp_core';
-import {ISelection, IViewContext, ResolveUtils} from 'tdp_core';
-import {RestBaseUtils, IServerColumn} from 'tdp_core';
-import {ViewUtils} from './ViewUtils';
-import {LineupUtils} from 'tdp_core';
+  ARankingView,
+  AdapterUtils,
+  IARankingViewOptions,
+  IScoreRow,
+  FormElementType,
+  ISelection,
+  IViewContext,
+  RestBaseUtils,
+  IServerColumn,
+  LineupUtils,
+  IDTypeManager,
+} from 'tdp_core';
+import { SpeciesUtils, Species } from 'tdp_gene';
+import { ParameterFormIds, FORM_GENE_FILTER } from '../common/forms';
+import { ViewUtils } from './ViewUtils';
+import { gene, expression, copyNumber, mutation, IDataTypeConfig, chooseDataSource, IDataSourceConfig, IDataSubtypeConfig } from '../common/config';
 
 export class DependentGeneTable extends ARankingView {
   private readonly dataSource: IDataSourceConfig;
 
-  constructor(context: IViewContext, selection: ISelection, parent: HTMLElement, private readonly dataType: IDataTypeConfig, options: Partial<IARankingViewOptions> = {}) {
-    super(context, selection, parent, Object.assign({
+  constructor(
+    context: IViewContext,
+    selection: ISelection,
+    parent: HTMLElement,
+    private readonly dataType: IDataTypeConfig,
+    options: Partial<IARankingViewOptions> = {},
+  ) {
+    super(context, selection, parent, {
       additionalScoreParameter: gene,
       itemName: gene.name,
       itemIDType: gene.idType,
       subType: {
         key: Species.SPECIES_SESSION_KEY,
-        value: SpeciesUtils.getSelectedSpecies()
+        value: SpeciesUtils.getSelectedSpecies(),
       },
       enableAddingColumnGrouping: true,
       panelAddColumnBtnOptions: {
-        btnClass: 'btn-primary'
-      }
-    }, Object.assign(options, { enableSidePanel: 'collapsed' })));
+        btnClass: 'btn-primary',
+      },
+      ...Object.assign(options, { enableSidePanel: 'collapsed' }),
+    });
 
     this.dataSource = chooseDataSource(context.desc);
   }
@@ -50,12 +56,12 @@ export class DependentGeneTable extends ARankingView {
         id: ParameterFormIds.DATA_SUBTYPE,
         options: {
           optionsData: this.dataType.dataSubtypes.map((ds) => {
-            return {name: ds.name, value: ds.id, data: ds};
-          })
+            return { name: ds.name, value: ds.id, data: ds };
+          }),
         },
-        useSession: true
+        useSession: true,
       },
-      FORM_GENE_FILTER
+      FORM_GENE_FILTER,
     ]);
   }
 
@@ -69,14 +75,14 @@ export class DependentGeneTable extends ARankingView {
 
   protected createSelectionAdapter() {
     return AdapterUtils.single({
-      createDesc: async (_id: number, id: string) => {
-        const ids = await ResolveUtils.resolveIds(this.selection.idtype, [_id], this.dataSource.idType);
-        return ViewUtils.subTypeDesc(this.dataSubType, _id, ids[0]);
+      createDesc: async (id: string) => {
+        const ids = await IDTypeManager.getInstance().mapNameToFirstName(this.selection.idtype, [id], this.dataSource.idType);
+        return ViewUtils.subTypeDesc(this.dataSubType, id, ids[0]);
       },
-      loadData: async (_id: number, id: string) => {
-        const ids = await ResolveUtils.resolveIds(this.selection.idtype, [_id], this.dataSource.idType);
+      loadData: async (id: string) => {
+        const ids = await IDTypeManager.getInstance().mapNameToFirstName(this.selection.idtype, [id], this.dataSource.idType);
         return this.loadSelectionColumnData(ids[0]);
-      }
+      },
     });
   }
 
@@ -100,7 +106,7 @@ export class DependentGeneTable extends ARankingView {
       table: this.dataType.tableName,
       attribute: subType.id,
       name,
-      species: SpeciesUtils.getSelectedSpecies()
+      species: SpeciesUtils.getSelectedSpecies(),
     };
     const filter = LineupUtils.toFilter(this.getParameter('filter'));
     return RestBaseUtils.getTDPScore(gene.db, `gene_${this.dataSource.base}_single_score`, param, filter).then(ViewUtils.postProcessScore(subType));

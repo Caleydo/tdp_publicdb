@@ -1,7 +1,6 @@
 import { Categories, SpeciesUtils } from 'tdp_gene';
-import { Select3Utils } from 'tdp_core';
+import { Select3Utils, RestBaseUtils } from 'tdp_core';
 import { gene, drug } from './config';
-import { RestBaseUtils } from 'tdp_core';
 // Gene
 export class GeneUtils {
     /**
@@ -18,7 +17,7 @@ export class GeneUtils {
             species: SpeciesUtils.getSelectedSpecies(),
             query,
             page,
-            limit: pageSize
+            limit: pageSize,
         });
     }
     /**
@@ -45,7 +44,7 @@ export class GeneUtils {
      */
     static formatGene(item, node, mode, currentSearchQuery) {
         if (mode === 'result') {
-            //highlight match
+            // highlight match
             return `${item.text.replace(currentSearchQuery, Select3Utils.highlightMatch)} <span class="ensg">${item.id}</span>`;
         }
         return item.text;
@@ -57,7 +56,7 @@ export class GeneUtils {
             species: SpeciesUtils.getSelectedSpecies(),
             query,
             page,
-            limit: pageSize
+            limit: pageSize,
         });
     }
     static validate(config, query) {
@@ -69,7 +68,7 @@ export class GeneUtils {
     }
     static format(item, node, mode, currentSearchQuery) {
         if (mode === 'result' && currentSearchQuery) {
-            //highlight match
+            // highlight match
             return `${item.text.replace(currentSearchQuery, Select3Utils.highlightMatch)}`;
         }
         return item.text;
@@ -88,7 +87,7 @@ export class GeneUtils {
             species: SpeciesUtils.getSelectedSpecies(),
             query,
             page,
-            limit: pageSize
+            limit: pageSize,
         });
     }
     /**
@@ -102,9 +101,13 @@ export class GeneUtils {
      */
     static formatDrug(item, node, mode, currentSearchQuery) {
         if (mode === 'result') {
-            //highlight match
+            // show scientific name if is different from the drug id
+            const showScientificName = item.id.toLocaleLowerCase() !== item.data.scientificname.toLocaleLowerCase();
+            // highlight match
             return `${item.id.replace(currentSearchQuery, Select3Utils.highlightMatch)}<br>
-      <span class="option-muted"> ${item.data.scientificname ? item.data.scientificname.replace(currentSearchQuery, Select3Utils.highlightMatch) : item.data.scientificname}</span><br>
+      ${showScientificName
+                ? `<span class="option-muted"> ${item.data.scientificname ? item.data.scientificname.replace(currentSearchQuery, Select3Utils.highlightMatch) : item.data.scientificname}</span><br>`
+                : ''}
       <span class="option-muted">MoA: ${item.data.moa ? item.data.moa.replace(currentSearchQuery, Select3Utils.highlightMatch) : item.data.moa}</span><br>
       <span class="option-muted">Target: ${item.data.target ? item.data.target.replace(currentSearchQuery, Select3Utils.highlightMatch) : item.data.target}</span>`;
         }
@@ -135,7 +138,7 @@ export class GeneUtils {
             column: 'campaign',
             query,
             page,
-            limit: pageSize
+            limit: pageSize,
         });
         return rows;
     }
@@ -162,7 +165,7 @@ export class GeneUtils {
      */
     static formatDrugScreen(item, node, mode, currentSearchQuery) {
         if (mode === 'result') {
-            //highlight match
+            // highlight match
             return `${item.id.replace(currentSearchQuery, Select3Utils.highlightMatch)} (${item.text})`;
         }
         return item.id;

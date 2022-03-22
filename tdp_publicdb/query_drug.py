@@ -11,7 +11,6 @@ def create_drug(views, drug):
     ORDER BY {{column}} ASC""".format(table=drug.table, id=drug.id)) \
      .replace('column', drug.columns) \
      .call(limit_offset) \
-     .assign_ids() \
      .arg('query') \
      .build()
 
@@ -20,7 +19,6 @@ def create_drug(views, drug):
           FROM {g.table} WHERE (LOWER(drugid) LIKE :query OR LOWER(moa) LIKE :query OR LOWER(target) LIKE :query OR LOWER(scientificname) LIKE :query)
           ORDER BY drugid ASC""".format(g=drug)) \
         .call(limit_offset) \
-        .assign_ids() \
         .arg('query') \
         .build()
 
@@ -28,7 +26,6 @@ def create_drug(views, drug):
           SELECT {g.id} as id, {g.id} as text, moa, target
           FROM {g.table} """.format(g=drug)) \
         .call(inject_where) \
-        .assign_ids() \
         .filter('drug', '(lower(drugid) {operator} {value} or lower(moa) {operator} {value}) or lower(target) {operator} {value})') \
         .build()
 
@@ -38,7 +35,6 @@ def create_drug_screen_sample(views, cellline, drug_screen):
           SELECT campaign as id, campaigndesc as text
             FROM {d.schema}.tdp_{d.table} d  WHERE (LOWER(campaign) LIKE :query)
           """.format(d=drug_screen)) \
-        .assign_ids() \
         .arg('query') \
         .build()
 
@@ -46,7 +42,6 @@ def create_drug_screen_sample(views, cellline, drug_screen):
           SELECT campaign as id, campaigndesc as text
           FROM {d.schema}.tdp_{d.table}""".format(d=drug_screen)) \
         .call(inject_where) \
-        .assign_ids() \
         .filter('drug_screen', '(lower(campaign) {operator} {value})') \
         .build()
 

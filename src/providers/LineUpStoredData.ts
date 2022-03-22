@@ -1,8 +1,6 @@
-import {RestBaseUtils, IParams, IRow} from 'tdp_core';
-import {gene} from '../common/config';
-import {IAdditionalColumnDesc} from 'tdp_core';
-import {SpeciesUtils, Species} from 'tdp_gene';
-
+import { RestBaseUtils, IParams, IRow, IAdditionalColumnDesc } from 'tdp_core';
+import { SpeciesUtils, Species } from 'tdp_gene';
+import { gene } from '../common/config';
 
 export class LineUpStoredData {
   /**
@@ -12,7 +10,7 @@ export class LineUpStoredData {
    * @returns {Promise<IAdditionalColumnDesc[]>} Returns a promise with a list of column descriptions
    */
   static async loadEnsemblColumnDesc(idType: string): Promise<IAdditionalColumnDesc[]> {
-    const {columns} = await RestBaseUtils.getTDPDesc(gene.db, gene.base);
+    const { columns } = await RestBaseUtils.getTDPDesc(gene.db, gene.base);
     return gene.columns((c) => columns.find((d) => d.column === c));
   }
 
@@ -27,7 +25,7 @@ export class LineUpStoredData {
   static async loadEnsemblRows(idType: string, ids: string[]): Promise<IRow[]> {
     const filter: IParams = {
       [Species.SPECIES_SESSION_KEY]: SpeciesUtils.getSelectedSpecies(),
-      [gene.entityName]: ids
+      [gene.entityName]: ids,
     };
 
     return RestBaseUtils.getTDPFilteredRows(gene.db, gene.base, {}, filter);

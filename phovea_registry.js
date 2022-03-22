@@ -15,8 +15,5 @@ import 'tdp_gene/phovea_registry.js';
 /// #if include('ordino')
 import 'ordino/phovea_registry.js';
 /// #endif
-/// #if include('dTiles')
-import 'dTiles/phovea_registry.js';
-/// #endif
 //self
 PluginRegistry.getInstance().register('tdp_publicdb',reg);

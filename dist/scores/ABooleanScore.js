@@ -1,6 +1,4 @@
-import { IDTypeManager } from 'tdp_core';
-import { ColumnDescUtils } from 'tdp_core';
-import { RestBaseUtils } from 'tdp_core';
+import { IDTypeManager, ColumnDescUtils, RestBaseUtils } from 'tdp_core';
 /**
  * score implementation in this case a numeric score is computed
  */
@@ -21,7 +19,7 @@ export class ABooleanScore {
      * @returns {IAdditionalColumnDesc}
      */
     createDesc() {
-        const label = this.label;
+        const { label } = this;
         return ColumnDescUtils.booleanCol(this.columnName, { label, width: 60 });
     }
     /**

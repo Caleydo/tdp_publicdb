@@ -10,7 +10,6 @@ def create_sample(views, sample, gene, data):
   def _common_vis(builder):
     return builder.call(inject_where) \
       .idtype(sample.idtype) \
-      .assign_ids() \
       .arg('ensg') \
       .filters(sample.columns) \
       .filter('panel', sample.panel, join=sample.panel_join) \
@@ -83,7 +82,6 @@ def create_sample(views, sample, gene, data):
      FROM {s.table} d
      WHERE d.species = :species""".format(s=sample)) \
     .call(inject_where) \
-    .assign_ids() \
     .arg('species') \
     .filters(sample.columns) \
     .filter('panel', sample.panel, join=sample.panel_join) \

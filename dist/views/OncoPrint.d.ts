@@ -11,3 +11,4 @@ export declare class OncoPrint extends AOncoPrint {
     protected loadRows(ensg: string): Promise<IDataFormatRow[]>;
     protected loadFirstName(ensg: string): Promise<string>;
 }
+//# sourceMappingURL=OncoPrint.d.ts.map
