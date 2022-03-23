@@ -5,34 +5,28 @@
 ###############################################################################
 
 
-def phovea(registry):
-  """
-  register extension points
-  :param registry:
-  """
-  # generator-phovea:begin
-  registry.append('tdp-sql-database-definition', 'publicdb', 'tdp_publicdb.sql', dict(configKey='tdp_publicdb'))
-
-  registry.append('tdp_proxy', 'genehopper_similar', '', {
-                  'name': 'Gene Hopper Similar Genes Proxy',
-                  'url': 'http://genehopper.ifis.cs.tu-bs.de/rest/similargenes?q={gene}'})
-
-  from os import path
-  registry.append('tdp-sql-database-migration', 'tdp_publicdb', '', {
-    'scriptLocation': path.join(path.abspath(path.dirname(__file__)), 'migration'),
-    'configKey': 'tdp_publicdb.migration',
-    'dbKey': 'publicdb',
-    'autoUpgrade': False
-  })
-  # generator-phovea:end
-  pass
+from typing import Type
+from pydantic import BaseSettings
+from tdp_core.plugin.model import AVisynPlugin, RegHelper
+from .settings import TDPPublicDBSettings
 
 
-def phovea_config():
-  """
-  :return: file pointer to config file
-  """
-  from os import path
-  here = path.abspath(path.dirname(__file__))
-  config_file = path.join(here, 'config.json')
-  return config_file if path.exists(config_file) else None
+class VisynPlugin(AVisynPlugin):
+    def register(self, registry: RegHelper):
+        registry.append('tdp-sql-database-definition', 'publicdb', 'tdp_publicdb.sql', dict(configKey='tdp_publicdb'))
+
+        registry.append('tdp_proxy', 'genehopper_similar', '', {
+                        'name': 'Gene Hopper Similar Genes Proxy',
+                        'url': 'http://genehopper.ifis.cs.tu-bs.de/rest/similargenes?q={gene}'})
+
+        from os import path
+        registry.append('tdp-sql-database-migration', 'tdp_publicdb', '', {
+          'scriptLocation': path.join(path.abspath(path.dirname(__file__)), 'migration'),
+          'configKey': 'tdp_publicdb.migration',
+          'dbKey': 'publicdb',
+          'autoUpgrade': False
+        })
+
+    @property
+    def setting_class(self) -> Type[BaseSettings]:
+        return TDPPublicDBSettings

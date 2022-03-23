@@ -31,7 +31,7 @@ def packaged(*files):
 
 
 def requirements(file):
-  return [r.strip() for r in read_it(file).strip().split('\n') if not r.startswith('-e git+https://')]
+  return [r.strip() for r in read_it(file).strip().split('\n')]
 
 
 def to_version(v):
@@ -54,8 +54,7 @@ setup(
   zip_safe=False,
 
   entry_points={
-    'phovea.registry': ['{0} = {0}:phovea'.format(pkg['name'])],
-    'phovea.config': ['{0} = {0}:phovea_config'.format(pkg['name'])]
+    'visyn.plugin': ['{0} = {0}:VisynPlugin'.format(pkg['name'])],
   },
 
   # See https://pypi.python.org/pypi?%3Aaction=list_classifiers
