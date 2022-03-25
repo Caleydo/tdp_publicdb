@@ -7,42 +7,26 @@
 from setuptools import setup, find_packages
 from codecs import open
 from os import path
+import json
 
 here = path.abspath(path.dirname(__file__))
 
 
 def read_it(name):
-  with open(path.join(here, name), encoding='utf-8') as f:
-    return f.read()
-
-
-# read package.json information
-with open(path.join(here, 'package.json'), encoding='utf-8') as json_data:
-  import json
-
-  pkg = json.load(json_data)
-
-
-def packaged(*files):
-  r = {}
-  global pkg
-  r[pkg['name']] = list(files)
-  return r
+    with open(path.join(here, name), encoding='utf-8') as f:
+        return f.read()
 
 
 def requirements(file):
-  return [r.strip() for r in read_it(file).strip().split('\n')]
+    return [r.strip() for r in read_it(file).strip().split('\n')]
 
 
-def to_version(v):
-  import datetime
-  now = datetime.datetime.utcnow()
-  return v.replace('SNAPSHOT', now.strftime('%Y%m%d-%H%M%S'))
+pkg = json.loads(read_it('package.json'))
 
 
 setup(
   name=pkg['name'].lower(),
-  version=to_version(pkg['version']),
+  version=pkg['version'].replace('-SNAPSHOT', '.dev0'),
   url=pkg['homepage'],
   description=pkg['description'],
   long_description=read_it('README.md'),
@@ -64,7 +48,7 @@ setup(
     # Pick your license as you wish (should match "license" above)
     'License :: OSI Approved :: ' + ('BSD License' if pkg['license'] == 'BSD-3-Clause' else pkg['license']),
     'Programming Language :: Python',
-    'Programming Language :: Python :: 3.7'
+    'Programming Language :: Python :: 3.10'
   ],
 
   # You can just specify the packages manually here if your project is
@@ -76,12 +60,16 @@ setup(
   # requirements files see:
   # https://packaging.python.org/en/latest/requirements.html
   install_requires=requirements('requirements.txt'),
-  tests_require=requirements('requirements_dev.txt'),
+  extras_require={
+    'develop': requirements('requirements_dev.txt'),
+  },
 
   # If there are data files included in your packages that need to be
   # installed, specify them here.  If using Python 2.6 or less, then these
   # have to be included in MANIFEST.in as well.
-  package_data=packaged('config.json', 'buildInfo.json', 'swagger/*.yml'),
+  package_data={
+    pkg['name']: []
+  },
 
   # Although 'package_data' is the preferred approach, in some case you may
   # need to place data files outside of your packages. See:
