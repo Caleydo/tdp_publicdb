@@ -294,7 +294,7 @@ export const mutation = {
             categories: toLineUpCategories(Categories.mutationCat),
             useForAggregation: 'aa_mutated',
             domain: [null, null],
-            missingValue: Categories.unknownMutationValue
+            missingValue: Categories.unknownMutationValue,
         },
         // just for single score:
         {
