@@ -5,8 +5,8 @@ export class GeneSymbolDetector {
         let validSize = 0;
         for (let i = 0; i < sampleSize; ++i) {
             const v = accessor(data[i]);
-            if (v == null || typeof (v) !== 'string' || v.trim().length === 0) {
-                continue; //skip empty samples
+            if (v == null || typeof v !== 'string' || v.trim().length === 0) {
+                continue; // skip empty samples
             }
             values.push(v);
             ++validSize;
@@ -16,7 +16,7 @@ export class GeneSymbolDetector {
     }
     static human() {
         return {
-            detectIDType: GeneSymbolDetector.detectIDType
+            detectIDType: GeneSymbolDetector.detectIDType,
         };
     }
 }

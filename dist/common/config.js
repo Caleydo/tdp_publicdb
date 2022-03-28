@@ -20,7 +20,7 @@ export const cellline = {
     columns: (find) => {
         return [
             ColumnDescUtils.stringCol('id', { label: 'Name' }),
-            //categoricalCol('species', desc.columns.species.categories, 'Species', true),
+            // categoricalCol('species', desc.columns.species.categories, 'Species', true),
             ColumnDescUtils.categoricalCol('tumortype', find('tumortype').categories, { label: 'Tumor Type' }),
             ColumnDescUtils.categoricalCol('organ', find('organ').categories, { label: 'Organ' }),
             ColumnDescUtils.categoricalCol('gender', find('gender').categories, { label: 'Gender' }),
@@ -29,18 +29,41 @@ export const cellline = {
             ColumnDescUtils.categoricalCol('morphology', find('morphology').categories, { label: 'Morphology', visible: false }),
             ColumnDescUtils.categoricalCol('growth_type', find('growth_type').categories, { label: 'Growth Type', visible: false }),
             ColumnDescUtils.categoricalCol('age_at_surgery', find('age_at_surgery').categories, { label: 'Age at Surgery', visible: false }),
-            ColumnDescUtils.categoricalCol('microsatellite_stability_class', find('microsatellite_stability_class').categories, { label: 'Micro Satellite Instability (MSI) Status', visible: false }),
-            ColumnDescUtils.numberCol('microsatellite_stability_score', 0, find('microsatellite_stability_score').max, { label: 'Micro Satellite Instability (MSI) Score', visible: false }),
-            ColumnDescUtils.categoricalCol('hla_a_allele1', find('hla_a_allele1').categories, { label: 'Human Leukocyte Antigen (HLA) type allele 1', visible: false }),
-            ColumnDescUtils.categoricalCol('hla_a_allele2', find('hla_a_allele2').categories, { label: 'Human Leukocyte Antigen (HLA) type allele 2', visible: false }),
+            ColumnDescUtils.categoricalCol('microsatellite_stability_class', find('microsatellite_stability_class').categories, {
+                label: 'Micro Satellite Instability (MSI) Status',
+                visible: false,
+            }),
+            ColumnDescUtils.numberCol('microsatellite_stability_score', 0, find('microsatellite_stability_score').max, {
+                label: 'Micro Satellite Instability (MSI) Score',
+                visible: false,
+            }),
+            ColumnDescUtils.categoricalCol('hla_a_allele1', find('hla_a_allele1').categories, {
+                label: 'Human Leukocyte Antigen (HLA) type allele 1',
+                visible: false,
+            }),
+            ColumnDescUtils.categoricalCol('hla_a_allele2', find('hla_a_allele2').categories, {
+                label: 'Human Leukocyte Antigen (HLA) type allele 2',
+                visible: false,
+            }),
             ColumnDescUtils.numberCol('mutational_fraction', 0, find('mutational_fraction').max, { label: 'Mutational Burden', visible: false }),
         ];
     },
     columnInfo: {
         string: ['id'],
         number: ['microsatellite_stability_score', 'mutational_fraction'],
-        categorical: ['organ', 'gender', 'tumortype', 'metastatic_site', 'histology_type', 'morphology', 'growth_type', 'microsatellite_stability_class', 'hla_a_allele1', 'hla_a_allele2']
-    }
+        categorical: [
+            'organ',
+            'gender',
+            'tumortype',
+            'metastatic_site',
+            'histology_type',
+            'morphology',
+            'growth_type',
+            'microsatellite_stability_class',
+            'hla_a_allele1',
+            'hla_a_allele2',
+        ],
+    },
 };
 export const tissue = {
     idType: 'Tissue',
@@ -54,7 +77,7 @@ export const tissue = {
     columns: (find) => {
         return [
             ColumnDescUtils.stringCol('id', { label: 'Name' }),
-            //categoricalCol('species', desc.columns.species.categories, 'Species', true),
+            // categoricalCol('species', desc.columns.species.categories, 'Species', true),
             ColumnDescUtils.categoricalCol('tumortype', find('tumortype').categories, { label: 'Tumor Type' }),
             ColumnDescUtils.categoricalCol('organ', find('organ').categories, { label: 'Organ' }),
             ColumnDescUtils.categoricalCol('gender', find('gender').categories, { label: 'Gender' }),
@@ -69,18 +92,41 @@ export const tissue = {
             ColumnDescUtils.numberCol('height', 0, find('height').max, { label: 'Height', visible: false }),
             ColumnDescUtils.numberCol('weight', 0, find('weight').max, { label: 'Weight', visible: false }),
             ColumnDescUtils.numberCol('bmi', 0, find('bmi').max, { label: 'Body Mass Index (BMI)', visible: false }),
-            ColumnDescUtils.categoricalCol('microsatellite_stability_class', find('microsatellite_stability_class').categories, { label: 'Micro Satellite Instability (MSI) Status', visible: false }),
-            ColumnDescUtils.numberCol('microsatellite_stability_score', 0, find('microsatellite_stability_score').max, { label: 'Micro Satellite Instability (MSI) Score', visible: false }),
-            ColumnDescUtils.categoricalCol('hla_a_allele1', find('hla_a_allele1').categories, { label: 'Human Leukocyte Antigen (HLA) type allele 1', visible: false }),
-            ColumnDescUtils.categoricalCol('hla_a_allele2', find('hla_a_allele2').categories, { label: 'Human Leukocyte Antigen (HLA) type allele 2', visible: false }),
+            ColumnDescUtils.categoricalCol('microsatellite_stability_class', find('microsatellite_stability_class').categories, {
+                label: 'Micro Satellite Instability (MSI) Status',
+                visible: false,
+            }),
+            ColumnDescUtils.numberCol('microsatellite_stability_score', 0, find('microsatellite_stability_score').max, {
+                label: 'Micro Satellite Instability (MSI) Score',
+                visible: false,
+            }),
+            ColumnDescUtils.categoricalCol('hla_a_allele1', find('hla_a_allele1').categories, {
+                label: 'Human Leukocyte Antigen (HLA) type allele 1',
+                visible: false,
+            }),
+            ColumnDescUtils.categoricalCol('hla_a_allele2', find('hla_a_allele2').categories, {
+                label: 'Human Leukocyte Antigen (HLA) type allele 2',
+                visible: false,
+            }),
             ColumnDescUtils.numberCol('mutational_fraction', 0, find('mutational_fraction').max, { label: 'Mutational Burden', visible: false }),
         ];
     },
     columnInfo: {
         string: ['id', 'tumortype_adjacent'],
         number: ['age', 'days_to_death', 'days_to_last_followup', 'height', 'weight', 'bmi', 'microsatellite_stability_score', 'mutational_fraction'],
-        categorical: ['organ', 'gender', 'tumortype', 'vendorname', 'race', 'ethnicity', 'vital_status', 'microsatellite_stability_class', 'hla_a_allele1', 'hla_a_allele2']
-    }
+        categorical: [
+            'organ',
+            'gender',
+            'tumortype',
+            'vendorname',
+            'race',
+            'ethnicity',
+            'vital_status',
+            'microsatellite_stability_class',
+            'hla_a_allele1',
+            'hla_a_allele2',
+        ],
+    },
 };
 function toChromosomes(categories) {
     const order = new Map();
@@ -125,7 +171,10 @@ export const gene = {
             ColumnDescUtils.stringCol('name', { label: 'Name' }),
             ColumnDescUtils.categoricalCol('chromosome', toChromosomes(find('chromosome').categories), { label: 'Chromosome' }),
             ColumnDescUtils.categoricalCol('biotype', find('biotype').categories, { label: 'Biotype' }),
-            ColumnDescUtils.categoricalCol('strand', [{ label: 'reverse strand', name: String(-1) }, { label: 'forward strand', name: String(1) }], { label: 'Strand', visible: false }),
+            ColumnDescUtils.categoricalCol('strand', [
+                { label: 'reverse strand', name: String(-1) },
+                { label: 'forward strand', name: String(1) },
+            ], { label: 'Strand', visible: false }),
             ColumnDescUtils.numberCol('seqregionstart', 0, maxRegion, { label: 'Seq Region Start', visible: false, extras: { renderer: 'default' } }),
             ColumnDescUtils.numberCol('seqregionend', 0, maxRegion, { label: 'Seq Region End', visible: false, extras: { renderer: 'default' } }),
         ];
@@ -133,21 +182,19 @@ export const gene = {
     columnInfo: {
         string: ['id', 'symbol', 'name', 'chromosome', 'seqregionstart', 'seqregionend'],
         number: [],
-        categorical: ['biotype', 'strand']
-    }
+        categorical: ['biotype', 'strand'],
+    },
 };
 export const dataSources = [cellline, tissue];
 export function chooseDataSource(desc) {
-    if (typeof (desc) === 'object') {
+    if (typeof desc === 'object') {
         if (desc.sampleType === 'Tissue' || desc.idtype === 'Tissue' || desc.idType === 'Tissue') {
             return tissue;
         }
-        else if (desc.sampleType === 'Cellline' || desc.idtype === 'Cellline' || desc.idType === 'Cellline') {
+        if (desc.sampleType === 'Cellline' || desc.idtype === 'Cellline' || desc.idType === 'Cellline') {
             return cellline;
         }
-        else {
-            return gene;
-        }
+        return gene;
     }
     switch (desc) {
         case cellline.name:
@@ -156,6 +203,8 @@ export function chooseDataSource(desc) {
             return tissue;
         case gene.name:
             return gene;
+        default:
+            return undefined;
     }
 }
 /**
@@ -165,7 +214,7 @@ export const dataSubtypes = {
     number: 'number',
     string: 'string',
     cat: 'cat',
-    boxplot: 'boxplot'
+    boxplot: 'boxplot',
 };
 export const expression = {
     id: 'expression',
@@ -180,7 +229,7 @@ export const expression = {
             domain: [null, null],
             missingValue: NaN,
             constantDomain: true,
-            useForAggregation: 'tpm'
+            useForAggregation: 'tpm',
         },
         {
             id: 'counts',
@@ -189,10 +238,13 @@ export const expression = {
             domain: [null, null],
             missingValue: NaN,
             constantDomain: true,
-            useForAggregation: 'counts'
-        }
-    ]
+            useForAggregation: 'counts',
+        },
+    ],
 };
+function toLineUpCategories(arr) {
+    return arr.map((a) => ({ label: a.name, name: String(a.value), color: a.color }));
+}
 export const copyNumber = {
     id: 'copy_number',
     name: 'Copy Number',
@@ -206,7 +258,7 @@ export const copyNumber = {
             domain: [null, null],
             missingValue: NaN,
             constantDomain: true,
-            useForAggregation: 'relativecopynumber'
+            useForAggregation: 'relativecopynumber',
         },
         {
             id: 'totalabscopynumber',
@@ -215,7 +267,7 @@ export const copyNumber = {
             domain: [null, null],
             missingValue: NaN,
             constantDomain: true,
-            useForAggregation: 'totalabscopynumber'
+            useForAggregation: 'totalabscopynumber',
         },
         {
             id: 'copynumberclass',
@@ -224,8 +276,8 @@ export const copyNumber = {
             categories: toLineUpCategories(Categories.copyNumberCat),
             domain: [0, 100],
             missingValue: Categories.unknownCopyNumberValue,
-            useForAggregation: 'copynumberclass'
-        }
+            useForAggregation: 'copynumberclass',
+        },
     ],
 };
 export const mutation = {
@@ -234,7 +286,7 @@ export const mutation = {
     tableName: 'mutation',
     query: 'alteration_mutation_frequency',
     dataSubtypes: [
-        //it is a cat by default but in the frequency case also a number?
+        // it is a cat by default but in the frequency case also a number?
         {
             id: 'aa_mutated',
             name: 'AA Mutated',
@@ -244,14 +296,14 @@ export const mutation = {
             domain: [null, null],
             missingValue: Categories.unknownMutationValue
         },
-        //just for single score:
+        // just for single score:
         {
             id: 'aamutation',
             name: 'AA Mutation',
             type: dataSubtypes.string,
             useForAggregation: '',
             domain: [null, null],
-            missingValue: NaN
+            missingValue: NaN,
         },
         {
             id: 'dna_mutated',
@@ -260,16 +312,16 @@ export const mutation = {
             categories: toLineUpCategories(Categories.mutationCat),
             useForAggregation: 'dna_mutated',
             domain: [null, null],
-            missingValue: Categories.unknownMutationValue
+            missingValue: Categories.unknownMutationValue,
         },
-        //just for single score:
+        // just for single score:
         {
             id: 'dnamutation',
             name: 'DNA Mutation',
             type: dataSubtypes.string,
             useForAggregation: '',
             domain: [null, null],
-            missingValue: NaN
+            missingValue: NaN,
         },
         {
             id: 'zygosity',
@@ -277,9 +329,9 @@ export const mutation = {
             type: dataSubtypes.number,
             domain: [null, null],
             missingValue: NaN,
-            useForAggregation: 'zygosity'
-        }
-    ]
+            useForAggregation: 'zygosity',
+        },
+    ],
 };
 export const depletion = {
     id: 'depletion',
@@ -294,7 +346,7 @@ export const depletion = {
             domain: [null, null],
             missingValue: NaN,
             constantDomain: false,
-            useForAggregation: 'rsa'
+            useForAggregation: 'rsa',
         },
         {
             id: 'ataris',
@@ -303,7 +355,7 @@ export const depletion = {
             domain: [null, null],
             missingValue: NaN,
             constantDomain: false,
-            useForAggregation: 'ataris'
+            useForAggregation: 'ataris',
         },
         {
             id: 'ceres',
@@ -312,9 +364,9 @@ export const depletion = {
             domain: [null, null],
             missingValue: NaN,
             constantDomain: false,
-            useForAggregation: 'ceres'
-        }
-    ]
+            useForAggregation: 'ceres',
+        },
+    ],
 };
 export const drugScreen = {
     id: 'drug',
@@ -329,7 +381,7 @@ export const drugScreen = {
             domain: [null, null],
             missingValue: NaN,
             constantDomain: false,
-            useForAggregation: 'actarea'
+            useForAggregation: 'actarea',
         },
         {
             id: 'ic50',
@@ -338,7 +390,7 @@ export const drugScreen = {
             domain: [null, null],
             missingValue: NaN,
             constantDomain: false,
-            useForAggregation: 'ic50'
+            useForAggregation: 'ic50',
         },
         {
             id: 'ec50',
@@ -347,9 +399,9 @@ export const drugScreen = {
             domain: [null, null],
             missingValue: NaN,
             constantDomain: false,
-            useForAggregation: 'ec50'
-        }
-    ]
+            useForAggregation: 'ec50',
+        },
+    ],
 };
 export const drug = {
     idType: 'Drug',
@@ -359,20 +411,9 @@ export const drug = {
     tableName: 'tdp_drug',
     entityName: 'drugid',
     base: 'drug',
-    columns: () => []
+    columns: () => [],
 };
 export const dataTypes = [expression, copyNumber, mutation];
-function toLineUpCategories(arr) {
-    return arr.map((a) => ({ label: a.name, name: String(a.value), color: a.color }));
-}
-/**
- * splits strings in the form of "DATA_TYPE-DATA_SUBTYPE" and returns the corresponding DATA_TYPE and DATA_SUBTYPE objects
- */
-export function splitTypes(toSplit) {
-    console.assert(toSplit.includes('-'), 'The splitTypes method requires the string to contain a dash ("-")');
-    const [type, subtype] = toSplit.split('-');
-    return resolveDataTypes(type, subtype);
-}
 export function resolveDataTypes(dataTypeId, dataSubTypeId) {
     let dataType;
     switch (dataTypeId) {
@@ -391,11 +432,21 @@ export function resolveDataTypes(dataTypeId, dataSubTypeId) {
         case drugScreen.id:
             dataType = drugScreen;
             break;
+        default:
+            break;
     }
     const dataSubType = dataType.dataSubtypes.find((element) => element.id === dataSubTypeId);
     return {
         dataType,
-        dataSubType
+        dataSubType,
     };
+}
+/**
+ * splits strings in the form of "DATA_TYPE-DATA_SUBTYPE" and returns the corresponding DATA_TYPE and DATA_SUBTYPE objects
+ */
+export function splitTypes(toSplit) {
+    console.assert(toSplit.includes('-'), 'The splitTypes method requires the string to contain a dash ("-")');
+    const [type, subtype] = toSplit.split('-');
+    return resolveDataTypes(type, subtype);
 }
 //# sourceMappingURL=config.js.map

@@ -84,8 +84,6 @@ export declare const FORM_AGGREGATED_SCORE: ({
     };
 })[];
 export declare const FORCE_COMPUTE_ALL_GENES: {
-    label: string;
-} & {
     type: FormElementType;
     id: string;
     options: {
@@ -93,10 +91,9 @@ export declare const FORCE_COMPUTE_ALL_GENES: {
         unchecked: number;
     };
     useSession: boolean;
+    label: string;
 };
 export declare const FORCE_COMPUTE_ALL_TISSUE: {
-    label: string;
-} & {
     type: FormElementType;
     id: string;
     options: {
@@ -104,10 +101,9 @@ export declare const FORCE_COMPUTE_ALL_TISSUE: {
         unchecked: number;
     };
     useSession: boolean;
+    label: string;
 };
 export declare const FORCE_COMPUTE_ALL_CELLLINE: {
-    label: string;
-} & {
     type: FormElementType;
     id: string;
     options: {
@@ -115,6 +111,7 @@ export declare const FORCE_COMPUTE_ALL_CELLLINE: {
         unchecked: number;
     };
     useSession: boolean;
+    label: string;
 };
 export declare const FORM_SINGLE_SCORE: {
     type: FormElementType;
@@ -137,22 +134,6 @@ export declare const FORM_SINGLE_SCORE: {
     useSession: boolean;
 }[];
 export declare const FORM_AGGREGATED_SCORE_DEPLETION: ({
-    type: FormElementType;
-    label: string;
-    id: string;
-    attributes: {
-        style: string;
-    };
-    required: boolean;
-    options: {
-        placeholder: string;
-        data: {
-            id: string;
-            text: string;
-        }[];
-    };
-    useSession: boolean;
-} | {
     type: FormElementType;
     label: string;
     id: string;
@@ -199,6 +180,22 @@ export declare const FORM_AGGREGATED_SCORE_DEPLETION: ({
         step: string;
         optionsData?: undefined;
     };
+} | {
+    type: FormElementType;
+    label: string;
+    id: string;
+    attributes: {
+        style: string;
+    };
+    required: boolean;
+    options: {
+        placeholder: string;
+        data: {
+            id: string;
+            text: string;
+        }[];
+    };
+    useSession: boolean;
 })[];
 export declare const FORM_SINGLE_SCORE_DEPLETION: {
     type: FormElementType;
@@ -227,10 +224,10 @@ export declare const FORM_SINGLE_SCORE_DRUG: ({
     required: boolean;
     options: {
         placeholder: string;
-        data: {
-            id: string;
-            text: string;
-        }[];
+        optionsData: any[];
+        search: typeof import("..").GeneUtils.searchDrugScreen;
+        validate: typeof import("..").GeneUtils.validateDrugScreen;
+        format: typeof import("..").GeneUtils.formatDrugScreen;
     };
     useSession: boolean;
 } | {
@@ -243,10 +240,11 @@ export declare const FORM_SINGLE_SCORE_DRUG: ({
     required: boolean;
     options: {
         placeholder: string;
-        optionsData: any[];
-        search: typeof import("..").GeneUtils.searchDrugScreen;
-        validate: typeof import("..").GeneUtils.validateDrugScreen;
-        format: typeof import("..").GeneUtils.formatDrugScreen;
+        data: {
+            id: string;
+            text: string;
+        }[];
     };
     useSession: boolean;
 })[];
+//# sourceMappingURL=forms.d.ts.map

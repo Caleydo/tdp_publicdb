@@ -2,18 +2,14 @@
  * Created by sam on 06.03.2017.
  */
 
-import {Categories} from 'tdp_gene';
-import {IServerColumn} from 'tdp_core';
-import {ColumnDescUtils} from 'tdp_core';
-import {IAdditionalColumnDesc} from 'tdp_core';
-
+import { Categories } from 'tdp_gene';
+import { IServerColumn, ColumnDescUtils, IAdditionalColumnDesc } from 'tdp_core';
 
 /**
  * maximal number of rows in which just the subset if fetched instead of all
  * @type {number}
  */
 export const MAX_FILTER_SCORE_ROWS_BEFORE_ALL = 1000;
-
 
 /**
  * Detailed information about the column type
@@ -65,30 +61,52 @@ export const cellline: IDataSourceConfig = {
   base: 'cellline',
   columns: (find: (column: string) => IServerColumn) => {
     return [
-      ColumnDescUtils.stringCol('id', {label: 'Name'}),
-      //categoricalCol('species', desc.columns.species.categories, 'Species', true),
-      ColumnDescUtils.categoricalCol('tumortype', find('tumortype').categories, {label: 'Tumor Type'}),
-      ColumnDescUtils.categoricalCol('organ', find('organ').categories, {label: 'Organ'}),
-      ColumnDescUtils.categoricalCol('gender', find('gender').categories, {label: 'Gender'}),
-      ColumnDescUtils.categoricalCol('metastatic_site', find('metastatic_site').categories, {label: 'Metastatic Site', visible: false}),
-      ColumnDescUtils.categoricalCol('histology_type', find('histology_type').categories, {label: 'Histology Type', visible: false}),
-      ColumnDescUtils.categoricalCol('morphology', find('morphology').categories, {label: 'Morphology', visible: false}),
-      ColumnDescUtils.categoricalCol('growth_type', find('growth_type').categories, {label: 'Growth Type', visible: false}),
-      ColumnDescUtils.categoricalCol('age_at_surgery', find('age_at_surgery').categories, {label: 'Age at Surgery', visible: false}),
-      ColumnDescUtils.categoricalCol('microsatellite_stability_class', find('microsatellite_stability_class').categories, {label: 'Micro Satellite Instability (MSI) Status', visible: false}),
-      ColumnDescUtils.numberCol('microsatellite_stability_score', 0, find('microsatellite_stability_score').max, {label: 'Micro Satellite Instability (MSI) Score', visible: false}),
-      ColumnDescUtils.categoricalCol('hla_a_allele1', find('hla_a_allele1').categories, {label: 'Human Leukocyte Antigen (HLA) type allele 1', visible: false}),
-      ColumnDescUtils.categoricalCol('hla_a_allele2', find('hla_a_allele2').categories, {label: 'Human Leukocyte Antigen (HLA) type allele 2', visible: false}),
-      ColumnDescUtils.numberCol('mutational_fraction', 0, find('mutational_fraction').max, {label: 'Mutational Burden', visible: false}),
+      ColumnDescUtils.stringCol('id', { label: 'Name' }),
+      // categoricalCol('species', desc.columns.species.categories, 'Species', true),
+      ColumnDescUtils.categoricalCol('tumortype', find('tumortype').categories, { label: 'Tumor Type' }),
+      ColumnDescUtils.categoricalCol('organ', find('organ').categories, { label: 'Organ' }),
+      ColumnDescUtils.categoricalCol('gender', find('gender').categories, { label: 'Gender' }),
+      ColumnDescUtils.categoricalCol('metastatic_site', find('metastatic_site').categories, { label: 'Metastatic Site', visible: false }),
+      ColumnDescUtils.categoricalCol('histology_type', find('histology_type').categories, { label: 'Histology Type', visible: false }),
+      ColumnDescUtils.categoricalCol('morphology', find('morphology').categories, { label: 'Morphology', visible: false }),
+      ColumnDescUtils.categoricalCol('growth_type', find('growth_type').categories, { label: 'Growth Type', visible: false }),
+      ColumnDescUtils.categoricalCol('age_at_surgery', find('age_at_surgery').categories, { label: 'Age at Surgery', visible: false }),
+      ColumnDescUtils.categoricalCol('microsatellite_stability_class', find('microsatellite_stability_class').categories, {
+        label: 'Micro Satellite Instability (MSI) Status',
+        visible: false,
+      }),
+      ColumnDescUtils.numberCol('microsatellite_stability_score', 0, find('microsatellite_stability_score').max, {
+        label: 'Micro Satellite Instability (MSI) Score',
+        visible: false,
+      }),
+      ColumnDescUtils.categoricalCol('hla_a_allele1', find('hla_a_allele1').categories, {
+        label: 'Human Leukocyte Antigen (HLA) type allele 1',
+        visible: false,
+      }),
+      ColumnDescUtils.categoricalCol('hla_a_allele2', find('hla_a_allele2').categories, {
+        label: 'Human Leukocyte Antigen (HLA) type allele 2',
+        visible: false,
+      }),
+      ColumnDescUtils.numberCol('mutational_fraction', 0, find('mutational_fraction').max, { label: 'Mutational Burden', visible: false }),
     ];
   },
   columnInfo: {
     string: ['id'],
     number: ['microsatellite_stability_score', 'mutational_fraction'],
-    categorical: ['organ', 'gender', 'tumortype', 'metastatic_site', 'histology_type', 'morphology', 'growth_type', 'microsatellite_stability_class', 'hla_a_allele1', 'hla_a_allele2']
-  }
+    categorical: [
+      'organ',
+      'gender',
+      'tumortype',
+      'metastatic_site',
+      'histology_type',
+      'morphology',
+      'growth_type',
+      'microsatellite_stability_class',
+      'hla_a_allele1',
+      'hla_a_allele2',
+    ],
+  },
 };
-
 
 export const tissue: IDataSourceConfig = {
   idType: 'Tissue',
@@ -101,34 +119,57 @@ export const tissue: IDataSourceConfig = {
   base: 'tissue',
   columns: (find: (column: string) => IServerColumn) => {
     return [
-      ColumnDescUtils.stringCol('id', {label: 'Name'}),
-      //categoricalCol('species', desc.columns.species.categories, 'Species', true),
-      ColumnDescUtils.categoricalCol('tumortype', find('tumortype').categories, {label: 'Tumor Type'}),
-      ColumnDescUtils.categoricalCol('organ', find('organ').categories, {label: 'Organ'}),
-      ColumnDescUtils.categoricalCol('gender', find('gender').categories, {label: 'Gender'}),
-      ColumnDescUtils.stringCol('tumortype_adjacent', {label: 'Tumor Type adjacent', visible: false}),
-      ColumnDescUtils.categoricalCol('vendorname', find('vendorname').categories, {label: 'Vendor name', visible: false}),
-      ColumnDescUtils.categoricalCol('race', find('race').categories, {label: 'Race', visible: false}),
-      ColumnDescUtils.categoricalCol('ethnicity', find('ethnicity').categories, {label: 'Ethnicity', visible: false}),
-      ColumnDescUtils.numberCol('age', find('age').min, find('age').max, {label: 'Age', visible: false}),
-      ColumnDescUtils.numberCol('days_to_death', 0, find('days_to_death').max, {label: 'Days to death', visible: false}),
-      ColumnDescUtils.numberCol('days_to_last_followup', 0, find('days_to_last_followup').max, {label: 'Days to last follow up', visible: false}),
-      ColumnDescUtils.categoricalCol('vital_status', find('vital_status').categories, {label: 'Vital status', visible: false}),
-      ColumnDescUtils.numberCol('height', 0, find('height').max, {label: 'Height', visible: false}),
-      ColumnDescUtils.numberCol('weight', 0, find('weight').max, {label: 'Weight', visible: false}),
-      ColumnDescUtils.numberCol('bmi', 0, find('bmi').max, {label: 'Body Mass Index (BMI)', visible: false}),
-      ColumnDescUtils.categoricalCol('microsatellite_stability_class', find('microsatellite_stability_class').categories, {label: 'Micro Satellite Instability (MSI) Status', visible: false}),
-      ColumnDescUtils.numberCol('microsatellite_stability_score', 0, find('microsatellite_stability_score').max, {label: 'Micro Satellite Instability (MSI) Score', visible: false}),
-      ColumnDescUtils.categoricalCol('hla_a_allele1', find('hla_a_allele1').categories, {label: 'Human Leukocyte Antigen (HLA) type allele 1', visible: false}),
-      ColumnDescUtils.categoricalCol('hla_a_allele2', find('hla_a_allele2').categories, {label: 'Human Leukocyte Antigen (HLA) type allele 2', visible: false}),
-      ColumnDescUtils.numberCol('mutational_fraction', 0, find('mutational_fraction').max, {label: 'Mutational Burden', visible: false}),
+      ColumnDescUtils.stringCol('id', { label: 'Name' }),
+      // categoricalCol('species', desc.columns.species.categories, 'Species', true),
+      ColumnDescUtils.categoricalCol('tumortype', find('tumortype').categories, { label: 'Tumor Type' }),
+      ColumnDescUtils.categoricalCol('organ', find('organ').categories, { label: 'Organ' }),
+      ColumnDescUtils.categoricalCol('gender', find('gender').categories, { label: 'Gender' }),
+      ColumnDescUtils.stringCol('tumortype_adjacent', { label: 'Tumor Type adjacent', visible: false }),
+      ColumnDescUtils.categoricalCol('vendorname', find('vendorname').categories, { label: 'Vendor name', visible: false }),
+      ColumnDescUtils.categoricalCol('race', find('race').categories, { label: 'Race', visible: false }),
+      ColumnDescUtils.categoricalCol('ethnicity', find('ethnicity').categories, { label: 'Ethnicity', visible: false }),
+      ColumnDescUtils.numberCol('age', find('age').min, find('age').max, { label: 'Age', visible: false }),
+      ColumnDescUtils.numberCol('days_to_death', 0, find('days_to_death').max, { label: 'Days to death', visible: false }),
+      ColumnDescUtils.numberCol('days_to_last_followup', 0, find('days_to_last_followup').max, { label: 'Days to last follow up', visible: false }),
+      ColumnDescUtils.categoricalCol('vital_status', find('vital_status').categories, { label: 'Vital status', visible: false }),
+      ColumnDescUtils.numberCol('height', 0, find('height').max, { label: 'Height', visible: false }),
+      ColumnDescUtils.numberCol('weight', 0, find('weight').max, { label: 'Weight', visible: false }),
+      ColumnDescUtils.numberCol('bmi', 0, find('bmi').max, { label: 'Body Mass Index (BMI)', visible: false }),
+      ColumnDescUtils.categoricalCol('microsatellite_stability_class', find('microsatellite_stability_class').categories, {
+        label: 'Micro Satellite Instability (MSI) Status',
+        visible: false,
+      }),
+      ColumnDescUtils.numberCol('microsatellite_stability_score', 0, find('microsatellite_stability_score').max, {
+        label: 'Micro Satellite Instability (MSI) Score',
+        visible: false,
+      }),
+      ColumnDescUtils.categoricalCol('hla_a_allele1', find('hla_a_allele1').categories, {
+        label: 'Human Leukocyte Antigen (HLA) type allele 1',
+        visible: false,
+      }),
+      ColumnDescUtils.categoricalCol('hla_a_allele2', find('hla_a_allele2').categories, {
+        label: 'Human Leukocyte Antigen (HLA) type allele 2',
+        visible: false,
+      }),
+      ColumnDescUtils.numberCol('mutational_fraction', 0, find('mutational_fraction').max, { label: 'Mutational Burden', visible: false }),
     ];
   },
   columnInfo: {
     string: ['id', 'tumortype_adjacent'],
     number: ['age', 'days_to_death', 'days_to_last_followup', 'height', 'weight', 'bmi', 'microsatellite_stability_score', 'mutational_fraction'],
-    categorical: ['organ', 'gender', 'tumortype', 'vendorname', 'race', 'ethnicity', 'vital_status', 'microsatellite_stability_class', 'hla_a_allele1', 'hla_a_allele2']
-  }
+    categorical: [
+      'organ',
+      'gender',
+      'tumortype',
+      'vendorname',
+      'race',
+      'ethnicity',
+      'vital_status',
+      'microsatellite_stability_class',
+      'hla_a_allele1',
+      'hla_a_allele2',
+    ],
+  },
 };
 
 function toChromosomes(categories: string[]) {
@@ -157,7 +198,7 @@ function toChromosomes(categories: string[]) {
     return ai - bi;
   });
 
-  return categories.map((d, i) => ({name: d, label: d, value: i}));
+  return categories.map((d, i) => ({ name: d, label: d, value: i }));
 }
 
 export const gene: IDataSourceConfig = {
@@ -172,34 +213,41 @@ export const gene: IDataSourceConfig = {
   columns: (find: (column: string) => IServerColumn) => {
     const maxRegion = Math.max(find('seqregionstart').max, find('seqregionend').max);
     return [
-      ColumnDescUtils.stringCol('symbol', {label: 'Symbol', width: 120}),
-      ColumnDescUtils.stringCol('id', {label: 'Ensembl'}),
-      ColumnDescUtils.stringCol('name', {label: 'Name'}),
-      ColumnDescUtils.categoricalCol('chromosome', toChromosomes(find('chromosome').categories), {label: 'Chromosome'}),
-      ColumnDescUtils.categoricalCol('biotype', find('biotype').categories, {label: 'Biotype'}),
-      ColumnDescUtils.categoricalCol('strand', [{label: 'reverse strand', name: String(-1)}, {label: 'forward strand', name: String(1)}], {label: 'Strand', visible: false}),
-      ColumnDescUtils.numberCol('seqregionstart', 0, maxRegion, {label: 'Seq Region Start', visible: false, extras: {renderer: 'default'}}),
-      ColumnDescUtils.numberCol('seqregionend', 0, maxRegion, {label: 'Seq Region End', visible: false, extras: {renderer: 'default'}}),
+      ColumnDescUtils.stringCol('symbol', { label: 'Symbol', width: 120 }),
+      ColumnDescUtils.stringCol('id', { label: 'Ensembl' }),
+      ColumnDescUtils.stringCol('name', { label: 'Name' }),
+      ColumnDescUtils.categoricalCol('chromosome', toChromosomes(find('chromosome').categories), { label: 'Chromosome' }),
+      ColumnDescUtils.categoricalCol('biotype', find('biotype').categories, { label: 'Biotype' }),
+      ColumnDescUtils.categoricalCol(
+        'strand',
+        [
+          { label: 'reverse strand', name: String(-1) },
+          { label: 'forward strand', name: String(1) },
+        ],
+        { label: 'Strand', visible: false },
+      ),
+      ColumnDescUtils.numberCol('seqregionstart', 0, maxRegion, { label: 'Seq Region Start', visible: false, extras: { renderer: 'default' } }),
+      ColumnDescUtils.numberCol('seqregionend', 0, maxRegion, { label: 'Seq Region End', visible: false, extras: { renderer: 'default' } }),
     ];
   },
   columnInfo: {
     string: ['id', 'symbol', 'name', 'chromosome', 'seqregionstart', 'seqregionend'],
     number: [],
-    categorical: ['biotype', 'strand']
-  }
+    categorical: ['biotype', 'strand'],
+  },
 };
 
 export const dataSources = [cellline, tissue];
 
 export function chooseDataSource(desc: any): IDataSourceConfig {
-  if (typeof (desc) === 'object') {
+  if (typeof desc === 'object') {
     if (desc.sampleType === 'Tissue' || desc.idtype === 'Tissue' || desc.idType === 'Tissue') {
       return tissue;
-    } else if (desc.sampleType === 'Cellline' || desc.idtype === 'Cellline' || desc.idType === 'Cellline') {
-      return cellline;
-    } else {
-      return gene;
     }
+    if (desc.sampleType === 'Cellline' || desc.idtype === 'Cellline' || desc.idType === 'Cellline') {
+      return cellline;
+    }
+    return gene;
   }
 
   switch (desc) {
@@ -209,6 +257,8 @@ export function chooseDataSource(desc: any): IDataSourceConfig {
       return tissue;
     case gene.name:
       return gene;
+    default:
+      return undefined;
   }
 }
 
@@ -227,8 +277,7 @@ export const dataSubtypes = {
   number: 'number',
   string: 'string',
   cat: 'cat',
-  boxplot: 'boxplot'
-
+  boxplot: 'boxplot',
 };
 
 export interface IDataSubtypeConfig {
@@ -237,10 +286,10 @@ export interface IDataSubtypeConfig {
   type: string;
   useForAggregation: string;
 
-  //type: 'cat';
-  categories?: {label: string, name: string, color: string}[];
+  // type: 'cat';
+  categories?: { label: string; name: string; color: string }[];
 
-  //type: 'number';
+  // type: 'number';
   domain?: number[];
   missingValue?: number;
   constantDomain?: boolean;
@@ -259,7 +308,7 @@ export const expression: IDataTypeConfig = {
       domain: [null, null], // domain will be auto-inferred
       missingValue: NaN,
       constantDomain: true,
-      useForAggregation: 'tpm'
+      useForAggregation: 'tpm',
     },
     {
       id: 'counts',
@@ -268,10 +317,14 @@ export const expression: IDataTypeConfig = {
       domain: [null, null],
       missingValue: NaN,
       constantDomain: true,
-      useForAggregation: 'counts'
-    }
-  ]
+      useForAggregation: 'counts',
+    },
+  ],
 };
+
+function toLineUpCategories(arr: { name: string; value: any; color: string }[]) {
+  return arr.map((a) => ({ label: a.name, name: String(a.value), color: a.color }));
+}
 
 export const copyNumber: IDataTypeConfig = {
   id: 'copy_number',
@@ -286,7 +339,7 @@ export const copyNumber: IDataTypeConfig = {
       domain: [null, null],
       missingValue: NaN,
       constantDomain: true,
-      useForAggregation: 'relativecopynumber'
+      useForAggregation: 'relativecopynumber',
     },
     {
       id: 'totalabscopynumber',
@@ -295,7 +348,7 @@ export const copyNumber: IDataTypeConfig = {
       domain: [null, null],
       missingValue: NaN,
       constantDomain: true,
-      useForAggregation: 'totalabscopynumber'
+      useForAggregation: 'totalabscopynumber',
     },
     {
       id: 'copynumberclass',
@@ -304,8 +357,8 @@ export const copyNumber: IDataTypeConfig = {
       categories: toLineUpCategories(Categories.copyNumberCat),
       domain: [0, 100],
       missingValue: Categories.unknownCopyNumberValue,
-      useForAggregation: 'copynumberclass'
-    }
+      useForAggregation: 'copynumberclass',
+    },
   ],
 };
 
@@ -315,7 +368,7 @@ export const mutation: IDataTypeConfig = {
   tableName: 'mutation',
   query: 'alteration_mutation_frequency',
   dataSubtypes: [
-    //it is a cat by default but in the frequency case also a number?
+    // it is a cat by default but in the frequency case also a number?
     {
       id: 'aa_mutated',
       name: 'AA Mutated',
@@ -325,14 +378,14 @@ export const mutation: IDataTypeConfig = {
       domain: [null, null],
       missingValue: Categories.unknownMutationValue
     },
-    //just for single score:
+    // just for single score:
     {
       id: 'aamutation',
       name: 'AA Mutation',
       type: dataSubtypes.string,
       useForAggregation: '',
       domain: [null, null],
-      missingValue: NaN
+      missingValue: NaN,
     },
     {
       id: 'dna_mutated',
@@ -341,16 +394,16 @@ export const mutation: IDataTypeConfig = {
       categories: toLineUpCategories(Categories.mutationCat),
       useForAggregation: 'dna_mutated',
       domain: [null, null],
-      missingValue: Categories.unknownMutationValue
+      missingValue: Categories.unknownMutationValue,
     },
-    //just for single score:
+    // just for single score:
     {
       id: 'dnamutation',
       name: 'DNA Mutation',
       type: dataSubtypes.string,
       useForAggregation: '',
       domain: [null, null],
-      missingValue: NaN
+      missingValue: NaN,
     },
     {
       id: 'zygosity',
@@ -358,9 +411,9 @@ export const mutation: IDataTypeConfig = {
       type: dataSubtypes.number,
       domain: [null, null],
       missingValue: NaN,
-      useForAggregation: 'zygosity'
-    }
-  ]
+      useForAggregation: 'zygosity',
+    },
+  ],
 };
 
 export const depletion: IDataTypeConfig = {
@@ -376,7 +429,7 @@ export const depletion: IDataTypeConfig = {
       domain: [null, null],
       missingValue: NaN,
       constantDomain: false,
-      useForAggregation: 'rsa'
+      useForAggregation: 'rsa',
     },
     {
       id: 'ataris',
@@ -385,7 +438,7 @@ export const depletion: IDataTypeConfig = {
       domain: [null, null],
       missingValue: NaN,
       constantDomain: false,
-      useForAggregation: 'ataris'
+      useForAggregation: 'ataris',
     },
     {
       id: 'ceres',
@@ -394,9 +447,9 @@ export const depletion: IDataTypeConfig = {
       domain: [null, null],
       missingValue: NaN,
       constantDomain: false,
-      useForAggregation: 'ceres'
-    }
-  ]
+      useForAggregation: 'ceres',
+    },
+  ],
 };
 
 export const drugScreen: IDataTypeConfig = {
@@ -412,7 +465,7 @@ export const drugScreen: IDataTypeConfig = {
       domain: [null, null],
       missingValue: NaN,
       constantDomain: false,
-      useForAggregation: 'actarea'
+      useForAggregation: 'actarea',
     },
     {
       id: 'ic50',
@@ -421,7 +474,7 @@ export const drugScreen: IDataTypeConfig = {
       domain: [null, null],
       missingValue: NaN,
       constantDomain: false,
-      useForAggregation: 'ic50'
+      useForAggregation: 'ic50',
     },
     {
       id: 'ec50',
@@ -430,9 +483,9 @@ export const drugScreen: IDataTypeConfig = {
       domain: [null, null],
       missingValue: NaN,
       constantDomain: false,
-      useForAggregation: 'ec50'
-    }
-  ]
+      useForAggregation: 'ec50',
+    },
+  ],
 };
 
 export const drug: IDataSourceConfig = {
@@ -443,24 +496,10 @@ export const drug: IDataSourceConfig = {
   tableName: 'tdp_drug',
   entityName: 'drugid',
   base: 'drug',
-  columns: () => []
+  columns: () => [],
 };
 
-
 export const dataTypes: IDataTypeConfig[] = [expression, copyNumber, mutation];
-
-function toLineUpCategories(arr: {name: string, value: any, color: string}[]) {
-  return arr.map((a) => ({label: a.name, name: String(a.value), color: a.color}));
-}
-
-/**
- * splits strings in the form of "DATA_TYPE-DATA_SUBTYPE" and returns the corresponding DATA_TYPE and DATA_SUBTYPE objects
- */
-export function splitTypes(toSplit: string): {dataType: IDataTypeConfig, dataSubType: IDataSubtypeConfig} {
-  console.assert(toSplit.includes('-'), 'The splitTypes method requires the string to contain a dash ("-")');
-  const [type, subtype] = toSplit.split('-');
-  return resolveDataTypes(type, subtype);
-}
 
 export function resolveDataTypes(dataTypeId: string, dataSubTypeId: string) {
   let dataType: IDataTypeConfig;
@@ -481,10 +520,21 @@ export function resolveDataTypes(dataTypeId: string, dataSubTypeId: string) {
     case drugScreen.id:
       dataType = drugScreen;
       break;
+    default:
+      break;
   }
   const dataSubType = dataType.dataSubtypes.find((element) => element.id === dataSubTypeId);
   return {
     dataType,
-    dataSubType
+    dataSubType,
   };
+}
+
+/**
+ * splits strings in the form of "DATA_TYPE-DATA_SUBTYPE" and returns the corresponding DATA_TYPE and DATA_SUBTYPE objects
+ */
+export function splitTypes(toSplit: string): { dataType: IDataTypeConfig; dataSubType: IDataSubtypeConfig } {
+  console.assert(toSplit.includes('-'), 'The splitTypes method requires the string to contain a dash ("-")');
+  const [type, subtype] = toSplit.split('-');
+  return resolveDataTypes(type, subtype);
 }

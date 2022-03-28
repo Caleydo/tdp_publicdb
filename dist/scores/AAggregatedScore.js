@@ -1,14 +1,26 @@
 /**
  * Created by sam on 06.03.2017.
  */
-import { SpeciesUtils } from 'tdp_gene';
-import { dataSubtypes, MAX_FILTER_SCORE_ROWS_BEFORE_ALL } from '../common/config';
+import { IDTypeManager, RestBaseUtils, LineupUtils } from 'tdp_core';
+import { SpeciesUtils, FieldUtils } from 'tdp_gene';
 import { ScoreUtils } from './ScoreUtils';
 import { AScore } from './AScore';
-import { FieldUtils } from 'tdp_gene';
-import { IDTypeManager } from 'tdp_core';
-import { RestBaseUtils } from 'tdp_core';
-import { LineupUtils } from 'tdp_core';
+import { dataSubtypes, MAX_FILTER_SCORE_ROWS_BEFORE_ALL } from '../common/config';
+/**
+ * by convention the 'panel' filter key refers to the panel used for the returning entity, e.g. a list of genes will be returned -> panel = gene panel
+ * however, in the score case panel would refer to sample, while the form itself is fixed for old provenance graph this method is needed
+ * @param {IParams} filter
+ * @param {string} oppositeEntityName
+ */
+function compatibilityFilter(filter, oppositeEntityName) {
+    if (!filter.hasOwnProperty('panel')) {
+        return filter;
+    }
+    const old = filter.panel;
+    delete filter.panel;
+    filter[`panel_${oppositeEntityName}`] = old;
+    return filter;
+}
 export class AAggregatedScore extends AScore {
     constructor(parameter, dataSource, oppositeDataSource) {
         super(parameter);
@@ -34,7 +46,7 @@ export class AAggregatedScore extends AScore {
             data_subtype: this.dataSubType.useForAggregation,
             agg: this.parameter.aggregation,
             species: SpeciesUtils.getSelectedSpecies(),
-            target: idtype.id
+            target: idtype.id,
         };
         const maxDirectRows = typeof this.parameter.maxDirectFilterRows === 'number' ? this.parameter.maxDirectFilterRows : MAX_FILTER_SCORE_ROWS_BEFORE_ALL;
         FieldUtils.limitScoreRows(param, ids, idtype, this.dataSource.entityName, maxDirectRows, namedSet);
@@ -51,7 +63,7 @@ export class AAggregatedScore extends AScore {
             const columns = Array.from(keys).sort();
             // create an array with missing entries
             rows.forEach((row) => {
-                row.score = columns.map((c) => row.score.hasOwnProperty(c) ? row.score[c] : NaN);
+                row.score = columns.map((c) => (row.score.hasOwnProperty(c) ? row.score[c] : NaN));
             });
             // hack in the _columns
             rows._columns = columns;
@@ -64,20 +76,5 @@ export class AAggregatedScore extends AScore {
     createFilter() {
         return {};
     }
-}
-/**
- * by convention the 'panel' filter key refers to the panel used for the returning entity, e.g. a list of genes will be returned -> panel = gene panel
- * however, in the score case panel would refer to sample, while the form itself is fixed for old provenance graph this method is needed
- * @param {IParams} filter
- * @param {string} oppositeEntityName
- */
-function compatibilityFilter(filter, oppositeEntityName) {
-    if (!filter.hasOwnProperty('panel')) {
-        return filter;
-    }
-    const old = filter.panel;
-    delete filter.panel;
-    filter['panel_' + oppositeEntityName] = old;
-    return filter;
 }
 //# sourceMappingURL=AAggregatedScore.js.map

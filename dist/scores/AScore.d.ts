@@ -26,3 +26,4 @@ export declare class AScore {
         data_subtype: string;
     });
 }
+//# sourceMappingURL=AScore.d.ts.map
