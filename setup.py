@@ -1,9 +1,3 @@
-###############################################################################
-# Caleydo - Visualization for Molecular Biology - http://caleydo.org
-# Copyright (c) The Caleydo Team. All rights reserved.
-# Licensed under the new BSD license, available at http://caleydo.org/license
-###############################################################################
-
 from setuptools import setup, find_packages
 from codecs import open
 from os import path
@@ -68,7 +62,7 @@ setup(
   # installed, specify them here.  If using Python 2.6 or less, then these
   # have to be included in MANIFEST.in as well.
   package_data={
-    pkg['name']: []
+    pkg['name']: ['*/**/*']
   },
 
   # Although 'package_data' is the preferred approach, in some case you may
