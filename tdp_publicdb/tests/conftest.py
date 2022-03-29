@@ -1,7 +1,8 @@
 from typing import Any, Generator
+
+import pytest
 from fastapi import FastAPI
 from fastapi.testclient import TestClient
-import pytest
 from tdp_core.server.visyn_server import create_visyn_server
 
 
@@ -11,8 +12,6 @@ def app() -> Generator[FastAPI, Any, None]:
 
 
 @pytest.fixture(scope="function")
-def client(
-    app: FastAPI
-) -> Generator[TestClient, Any, None]:
+def client(app: FastAPI) -> Generator[TestClient, Any, None]:
     with TestClient(app) as client:
         yield client
