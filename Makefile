@@ -1,5 +1,5 @@
 .DEFAULT_GOAL := help
-pkg_src = tdp_publicdb
+pkg_src = $(shell pwd)
 
 flake8 = flake8 $(pkg_src)
 isort = isort $(pkg_src)
