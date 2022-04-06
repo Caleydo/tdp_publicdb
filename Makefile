@@ -29,9 +29,9 @@ lint:
 test:
 	pytest $(pkg_src)
 
-.PHONEY: sphinx ## Generate API docs using sphinx
-sphinx: 
-	sphinx-apidoc -o docs -f ./$(pkg_src) && sphinx-build ./docs build/docs
+.PHONEY: documentation ## Generate docs
+documentation: 
+	mkdocs build
 
 .PHONY: install  ## Install the requirements
 install:
@@ -43,12 +43,12 @@ develop:
 
 .PHONY: build  ## Build a wheel
 build:
-	python setup.py sdist bdist_wheel
+	python setup.py sdist bdist_wheel --dist-dir dist_python
 
 .PHONY: publish  ## Publish the ./dist/* using twine
 publish:
 	pip install twine==3.8.0
-	twine upload --repository-url https://upload.pypi.org/legacy/ dist/*
+	twine upload --repository-url https://upload.pypi.org/legacy/ dist_python/*
 
 .PHONY: help  ## Display this message
 help:

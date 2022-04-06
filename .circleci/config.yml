@@ -38,9 +38,6 @@ jobs:
             . ~/venv/bin/activate
             pip list || true
       - run:
-          name: Clear dist folder
-          command: rm -rf dist && mkdir dist
-      - run:
           name: Linting
           command: |
             . ~/venv/bin/activate
@@ -50,19 +47,13 @@ jobs:
           command: |
             . ~/venv/bin/activate
             make test
-      # TODO: This should be in a hook or something?
-      - run:
-          name: API Doc generation
-          command: |
-            . ~/venv/bin/activate
-            make sphinx
       - run:
           name: Build wheel
           command: |
             . ~/venv/bin/activate
             make build
       - store_artifacts:
-          path: dist
+          path: dist_python
           destination: dist-python
       - persist_to_workspace:
           root: ~/.
