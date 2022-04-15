@@ -1,9 +1,11 @@
 import { ACommonList } from 'tdp_gene';
 import { tissue } from '../common/config';
+import { ViewUtils } from './ViewUtils';
 export class TissueList extends ACommonList {
     constructor(context, selection, parent, options) {
         super(context, selection, parent, tissue, {
             enableAddingColumnGrouping: true,
+            ...ViewUtils.rankingOptionsFromEnv(),
             ...options,
         });
     }

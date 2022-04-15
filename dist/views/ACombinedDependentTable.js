@@ -13,6 +13,7 @@ export class ACombinedDependentTable extends ARankingView {
             panelAddColumnBtnOptions: {
                 btnClass: 'btn-primary',
             },
+            ...ViewUtils.rankingOptionsFromEnv(),
         }));
         this.dataType = dataType;
         this.dataType = dataType;
