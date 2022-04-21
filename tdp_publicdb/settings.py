@@ -1,10 +1,10 @@
 from typing import Dict
 
-from pydantic import BaseSettings
-from tdp_core.settings.model import get_global_settings
+from pydantic import BaseModel
+from tdp_core import manager
 
 
-class TDPPublicDBSettings(BaseSettings):
+class TDPPublicDBSettings(BaseModel):
     dburl: str = "postgresql://publicdb:publicdb@publicdb:5432/publicdb"
     statement_timeout: str = "'5min'"
     statement_timeout_query: str = "set statement_timeout to {}"
@@ -12,4 +12,4 @@ class TDPPublicDBSettings(BaseSettings):
 
 
 def get_settings() -> TDPPublicDBSettings:
-    return get_global_settings().tdp_publicdb
+    return manager.settings.tdp_publicdb
