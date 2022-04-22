@@ -7,7 +7,7 @@
 
 from typing import Type
 
-from pydantic import BaseSettings
+from pydantic import BaseModel
 from tdp_core.plugin.model import AVisynPlugin, RegHelper
 
 from .settings import TDPPublicDBSettings
@@ -39,5 +39,5 @@ class VisynPlugin(AVisynPlugin):
         )
 
     @property
-    def setting_class(self) -> Type[BaseSettings]:
+    def setting_class(self) -> Type[BaseModel]:
         return TDPPublicDBSettings
