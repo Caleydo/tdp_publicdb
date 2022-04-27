@@ -1,7 +1,7 @@
 {
   "name": "tdp_publicdb",
   "description": "",
-  "version": "11.0.0",
+  "version": "11.0.1-SNAPSHOT",
   "author": {
     "name": "The Caleydo Team",
     "email": "contact@caleydo.org",
@@ -114,9 +114,9 @@
     "react-select": "^4.1.0",
     "react-select-async-paginate": "^0.5.3",
     "react-virtualized": "^9.22.3",
-    "tdp_gene": "github:Caleydo/tdp_gene#semver:^10.0.0"
+    "tdp_gene": "github:Caleydo/tdp_gene#develop"
   },
   "optionalDependencies": {
-    "ordino": "github:Caleydo/ordino#semver:^11.0.0"
+    "ordino": "github:Caleydo/ordino#develop"
   }
 }
