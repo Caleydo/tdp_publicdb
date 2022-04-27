@@ -1,9 +1,5 @@
-import {IScore, IScoreRow} from 'tdp_core';
-import {IDTypeManager} from 'phovea_core';
-import {ColumnDescUtils} from 'tdp_core';
-import {RestBaseUtils} from 'tdp_core';
-import {IDataSourceConfig} from '../common/config';
-
+import { IScore, IScoreRow, IDTypeManager, ColumnDescUtils, RestBaseUtils } from 'tdp_core';
+import { IDataSourceConfig } from '../common/config';
 
 export interface IBooleanScoreParams {
   [key: string]: any;
@@ -13,7 +9,6 @@ export interface IBooleanScoreParams {
  * score implementation in this case a numeric score is computed
  */
 export abstract class ABooleanScore implements IScore<number> {
-
   /**
    * defines the IDType of which score values are returned. A score row is a pair of id and its score, e.g. {id: 'EGFR', score: 100}
    * @type {IDType}
@@ -29,8 +24,8 @@ export abstract class ABooleanScore implements IScore<number> {
    * @returns {IAdditionalColumnDesc}
    */
   createDesc() {
-    const label = this.label;
-    return ColumnDescUtils.booleanCol(this.columnName, {label, width: 60});
+    const { label } = this;
+    return ColumnDescUtils.booleanCol(this.columnName, { label, width: 60 });
   }
 
   /**

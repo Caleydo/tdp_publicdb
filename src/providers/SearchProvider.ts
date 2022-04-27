@@ -1,10 +1,6 @@
-import {SearchProvider} from 'tdp_gene';
-import {IResult} from 'tdp_core';
-import {cellline, gene, tissue} from '../common/config';
-import {SpeciesUtils} from 'tdp_gene';
-import {RestBaseUtils} from 'tdp_core';
-
-
+import { SearchProvider, SpeciesUtils } from 'tdp_gene';
+import { IResult, RestBaseUtils } from 'tdp_core';
+import { cellline, gene, tissue } from '../common/config';
 
 export class GeneSearchProvider extends SearchProvider {
   get searchView() {
@@ -13,10 +9,6 @@ export class GeneSearchProvider extends SearchProvider {
 
   get verifyView() {
     return `${this.dataSource.base}_gene_items_verify`;
-  }
-
-  format(item: IResult, node: HTMLElement, mode: 'result'|'selection', currentSearchQuery: string): string {
-    return (item.id && mode === 'result') ? `${item.text || ''} <span class="ensg">${item.id}</span>` : item.text;
   }
 
   validate(query: string[]): Promise<IResult[]> {

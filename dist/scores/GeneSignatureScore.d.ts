@@ -1,7 +1,5 @@
-import { IScore, IScoreRow, INamedSet } from 'tdp_core';
+import { IScore, IScoreRow, INamedSet, IDType, IPluginDesc } from 'tdp_core';
 import { IDataSourceConfig } from '../common/config';
-import { RangeLike, IDType } from 'phovea_core';
-import { IPluginDesc } from 'phovea_core';
 /**
  * Interface describing the parameter needed for a `Gene Signature Score`.
  */
@@ -43,7 +41,7 @@ export declare class GeneSignatureScore implements IScore<number> {
      * Computes the actual scores and returns a Promise of IScoreRow rows.
      * @returns {Promise<IScoreRow<number>[]>}
      */
-    compute(ids: RangeLike, idtype: IDType, namedSet?: INamedSet): Promise<IScoreRow<number>[]>;
+    compute(ids: string[], idtype: IDType, namedSet?: INamedSet): Promise<IScoreRow<number>[]>;
     static createGeneSignatureScore(data: IGeneSignatureData | IGeneSignatureData[], pluginDesc: IPluginDesc): GeneSignatureScore[];
     /**
      * Builder function for building the parameters of the score.
@@ -52,3 +50,4 @@ export declare class GeneSignatureScore implements IScore<number> {
     static createGeneSignatureDialog(pluginDesc: IPluginDesc): Promise<IGeneSignatureData[]>;
 }
 export {};
+//# sourceMappingURL=GeneSignatureScore.d.ts.map

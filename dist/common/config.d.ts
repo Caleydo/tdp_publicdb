@@ -1,8 +1,7 @@
 /**
  * Created by sam on 06.03.2017.
  */
-import { IServerColumn } from 'tdp_core';
-import { IAdditionalColumnDesc } from 'tdp_core';
+import { IServerColumn, IAdditionalColumnDesc } from 'tdp_core';
 /**
  * maximal number of rows in which just the subset if fetched instead of all
  * @type {number}
@@ -82,6 +81,10 @@ export declare const depletion: IDataTypeConfig;
 export declare const drugScreen: IDataTypeConfig;
 export declare const drug: IDataSourceConfig;
 export declare const dataTypes: IDataTypeConfig[];
+export declare function resolveDataTypes(dataTypeId: string, dataSubTypeId: string): {
+    dataType: IDataTypeConfig;
+    dataSubType: IDataSubtypeConfig;
+};
 /**
  * splits strings in the form of "DATA_TYPE-DATA_SUBTYPE" and returns the corresponding DATA_TYPE and DATA_SUBTYPE objects
  */
@@ -89,8 +92,5 @@ export declare function splitTypes(toSplit: string): {
     dataType: IDataTypeConfig;
     dataSubType: IDataSubtypeConfig;
 };
-export declare function resolveDataTypes(dataTypeId: string, dataSubTypeId: string): {
-    dataType: IDataTypeConfig;
-    dataSubType: IDataSubtypeConfig;
-};
 export {};
+//# sourceMappingURL=config.d.ts.map

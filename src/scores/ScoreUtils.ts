@@ -2,15 +2,11 @@
  * Created by Samuel Gratzl on 27.04.2016.
  */
 
-import {IPluginDesc} from 'phovea_core';
-import {IDataSubtypeConfig, dataSubtypes, cellline, tissue, gene, drug, IDataSourceConfig} from '../common/config';
-import {FORM_GENE_FILTER, FORM_TISSUE_FILTER, FORM_CELLLINE_FILTER} from '../common/forms';
-import {LineupUtils} from 'tdp_core';
-import {IFormMultiMap} from 'tdp_core';
-
+import { IPluginDesc, LineupUtils, IFormMultiMap } from 'tdp_core';
+import { IDataSubtypeConfig, dataSubtypes, cellline, tissue, gene, drug, IDataSourceConfig } from '../common/config';
+import { FORM_GENE_FILTER, FORM_TISSUE_FILTER, FORM_CELLLINE_FILTER } from '../common/forms';
 
 export class ScoreUtils {
-
   /**
    * creates a lineup config out of a IDataSubtypeConfig
    * @param type force a specific type
@@ -28,14 +24,14 @@ export class ScoreUtils {
           description,
           categories: subtype.categories,
           missingValue: subtype.missingValue,
-          lazyLoaded: true
+          lazyLoaded: true,
         };
       case dataSubtypes.string:
         return {
           type: 'string',
           label,
           description,
-          lazyLoaded: true
+          lazyLoaded: true,
         };
       case dataSubtypes.boxplot:
         return {
@@ -45,7 +41,7 @@ export class ScoreUtils {
           domain: [1, 100],
           lazyLoaded: true,
           sort: 'median', // sort by default by median
-          missingValue: null
+          missingValue: null,
         };
       case 'numbers':
         return {
@@ -57,7 +53,7 @@ export class ScoreUtils {
           lazyLoaded: true,
           dataLength: 10, // initial width
           sort: 'median', // sort by default by median
-          missingValue: null
+          missingValue: null,
         };
       default:
         return {
@@ -66,7 +62,7 @@ export class ScoreUtils {
           description,
           domain: subtype.domain,
           missingValue: subtype.missingValue,
-          lazyLoaded: true
+          lazyLoaded: true,
         };
     }
   }
@@ -78,7 +74,7 @@ export class ScoreUtils {
   static selectDataSources(pluginDesc: IPluginDesc) {
     const primary = ScoreUtils.select(pluginDesc.primaryType);
     const opposite = ScoreUtils.select(pluginDesc.oppositeType);
-    return {primary, opposite};
+    return { primary, opposite };
   }
 
   private static toFilterDesc(ds: IDataSourceConfig) {
@@ -89,6 +85,8 @@ export class ScoreUtils {
         return FORM_TISSUE_FILTER;
       case cellline:
         return FORM_CELLLINE_FILTER;
+      default:
+        return undefined;
     }
   }
 
@@ -103,5 +101,4 @@ export class ScoreUtils {
     }
     return LineupUtils.toFilterString(filter, key2name);
   }
-
 }

@@ -2,19 +2,16 @@
  * Created by Samuel Gratzl on 29.01.2016.
  */
 import { tsv } from 'd3';
-import { ARankingView, ColumnDescUtils } from 'tdp_core';
-import { FormElementType } from 'tdp_core';
-import { SpeciesUtils } from 'tdp_gene';
-import { IDTypeManager } from 'phovea_core';
-import { RestBaseUtils } from 'tdp_core';
+import { ARankingView, ColumnDescUtils, FormElementType, RestBaseUtils, } from 'tdp_core';
 import { createSelectionDesc, createStackDesc } from 'lineupjs';
+import { SpeciesUtils } from 'tdp_gene';
 const SELECT_ID = 'genehopper_selection';
 export class SimilarityView extends ARankingView {
     constructor(context, selection, parent, options = {}) {
         super(context, selection, parent, Object.assign(options, {
             panelAddColumnBtnOptions: {
-                btnClass: 'btn-primary'
-            }
+                btnClass: 'btn-primary',
+            },
         }));
         this.loader = null;
         this.node.classList.add('genehopper_similarity');
@@ -26,9 +23,9 @@ export class SimilarityView extends ARankingView {
                 label: 'Show',
                 id: SELECT_ID,
                 options: {
-                    optionsData: []
-                }
-            }
+                    optionsData: [],
+                },
+            },
         ]);
     }
     get itemIDType() {
@@ -54,7 +51,7 @@ export class SimilarityView extends ARankingView {
                     row[name] = +row[name];
                 }
             });
-            //(<any>row).id = KNOWN_GENES[(<any>row).name] || 22279;
+            // (<any>row).id = KNOWN_GENES[(<any>row).name] || 22279;
             return row;
         });
     }
@@ -66,20 +63,16 @@ export class SimilarityView extends ARankingView {
         }
         const data = await RestBaseUtils.getTDPProxyData('genehopper_similar', { gene: gene.value }, 'text');
         const rows = SimilarityView.convertData(data);
-        const columns = [ColumnDescUtils.stringCol('name', { label: 'Name' }),
-            ColumnDescUtils.stringCol('hom')
-        ];
+        const columns = [ColumnDescUtils.stringCol('name', { label: 'Name' }), ColumnDescUtils.stringCol('hom')];
         const cols = ['bas', 'brs', 'cll', 'gbp', 'gcc', 'gdi', 'gmf', 'hgs', 'hor', 'ipr', 'pup', 'sin', 'swp', 'tis', 'vap'];
         columns.push(...cols.map((d) => ColumnDescUtils.numberColFromArray(d, rows)));
-        const uids = await IDTypeManager.getInstance().resolveIdType(this.idType).map(rows.map((r) => r.ensgid));
         rows.forEach((row, i) => {
-            row._id = uids[i];
             row.id = row.ensgid;
         });
         return {
             idType: this.idType,
             columns,
-            rows
+            rows,
         };
     }
     load() {
@@ -117,7 +110,9 @@ export class SimilarityView extends ARankingView {
         ranking.push(provider.create(createSelectionDesc()));
         provider.push(ranking, columns[0]);
         const stack = provider.push(ranking, createStackDesc('Combined'));
-        columns.filter((d) => d.type === 'number').forEach((d) => {
+        columns
+            .filter((d) => d.type === 'number')
+            .forEach((d) => {
             const col = provider.create(d);
             col.setWidth(80);
             stack.push(col);

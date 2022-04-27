@@ -5,6 +5,7 @@ export * from './common';
 export * from './detectors';
 export * from './tours';
 export * from './providers';
+// eslint-disable-next-line import/export
 export * from './menu';
 export * from './scores';
 export * from './views';

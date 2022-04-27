@@ -7,3 +7,4 @@ export declare class CombinedDependentGeneTable extends ACombinedDependentTable 
     protected getParameterFormDescs(): import("tdp_core").IFormElementDesc[];
     static createCombinedDependentGeneTable(context: IViewContext, selection: ISelection, parent: HTMLElement): CombinedDependentGeneTable;
 }
+//# sourceMappingURL=CombinedDependentGeneTable.d.ts.map

@@ -2,15 +2,13 @@
  * Created by Holger Stitz on 06.12.2016.
  */
 
-import {ProxyView} from 'tdp_core';
-import {IFormSelectOption} from 'tdp_core';
-import {ViewUtils} from './ViewUtils';
+import { ProxyView, IFormSelectOption } from 'tdp_core';
+import { ViewUtils } from './ViewUtils';
 
 /**
  * helper view for proxying an existing external website
  */
 export class GeneSymbolProxyView extends ProxyView {
-
   protected async getSelectionSelectData(ensgs: string[]): Promise<IFormSelectOption[]> {
     if (ensgs === null || ensgs.length === 0) {
       return Promise.resolve([]);
@@ -24,12 +22,13 @@ export class GeneSymbolProxyView extends ProxyView {
         return {
           name: `${d.symbol} (${d.id})`,
           value: d.symbol,
-          data: d
+          data: d,
         };
       });
-    } catch(error) {
+    } catch (error) {
       console.error(error);
       this.setBusy(false);
+      return undefined;
     }
   }
 }

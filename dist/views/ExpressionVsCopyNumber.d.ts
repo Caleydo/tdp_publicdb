@@ -1,9 +1,5 @@
-/**
- * Created by sam on 16.02.2017.
- */
 import { IFormElementDesc } from 'tdp_core';
 import { AExpressionVsCopyNumber, ICopyNumberDataFormatRow } from 'tdp_gene';
-import { Range } from 'phovea_core';
 export declare class ExpressionVsCopyNumber extends AExpressionVsCopyNumber {
     protected getParameterFormDescs(): IFormElementDesc[];
     private get dataSource();
@@ -19,6 +15,7 @@ export declare class ExpressionVsCopyNumber extends AExpressionVsCopyNumber {
         value: string;
         data: import("../common/config").IDataSubtypeConfig;
     }[];
-    get itemIDType(): import("phovea_core").IDType;
-    protected select(range: Range): void;
+    get itemIDType(): import("tdp_core").IDType;
+    protected select(ids: string[]): void;
 }
+//# sourceMappingURL=ExpressionVsCopyNumber.d.ts.map

@@ -1,16 +1,15 @@
-
-
-import {ACommonList, IACommonListOptions} from 'tdp_gene';
-import {ISelection, IViewContext} from 'tdp_core';
-import {tissue} from '../common/config';
-import {IServerColumn} from 'tdp_core';
+import { ACommonList, IACommonListOptions } from 'tdp_gene';
+import { ISelection, IViewContext, IServerColumn } from 'tdp_core';
+import { tissue } from '../common/config';
+import { ViewUtils } from './ViewUtils';
 
 export class TissueList extends ACommonList {
-
-  constructor(context:IViewContext, selection: ISelection, parent:HTMLElement, options: IACommonListOptions) {
-    super(context, selection, parent, tissue, Object.assign({
-      enableAddingColumnGrouping: true
-    }, options));
+  constructor(context: IViewContext, selection: ISelection, parent: HTMLElement, options: IACommonListOptions) {
+    super(context, selection, parent, tissue, {
+      enableAddingColumnGrouping: true,
+      ...ViewUtils.rankingOptionsFromEnv(),
+      ...options,
+    });
   }
 
   protected getColumnDescs(columns: IServerColumn[]) {

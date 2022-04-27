@@ -2,27 +2,18 @@
  * Created by Samuel Gratzl on 27.04.2016.
  */
 
-import {I18nextManager, IPluginDesc} from 'phovea_core';
-import {ParameterFormIds, FORM_GENE_FILTER, FORM_TISSUE_FILTER, FORM_CELLLINE_FILTER} from '../common/forms';
-import {
-  FORCE_COMPUTE_ALL_CELLLINE, FORCE_COMPUTE_ALL_GENES, FORCE_COMPUTE_ALL_TISSUE,
-  FORM_AGGREGATED_SCORE, FORM_AGGREGATED_SCORE_DEPLETION
-} from './forms';
-import {gene, tissue, cellline, splitTypes, MAX_FILTER_SCORE_ROWS_BEFORE_ALL} from '../common/config';
-import {ScoreUtils} from './ScoreUtils';
-import {IFormElementDesc}  from 'tdp_core';
-import {FormDialog}  from 'tdp_core';
-import {FormMap} from 'tdp_core';
-import {IForm} from 'tdp_core';
-
+import { I18nextManager, IPluginDesc, IFormElementDesc, FormDialog, FormMap, IForm } from 'tdp_core';
+import { ParameterFormIds, FORM_GENE_FILTER, FORM_TISSUE_FILTER, FORM_CELLLINE_FILTER } from '../common/forms';
+import { FORCE_COMPUTE_ALL_CELLLINE, FORCE_COMPUTE_ALL_GENES, FORCE_COMPUTE_ALL_TISSUE, FORM_AGGREGATED_SCORE, FORM_AGGREGATED_SCORE_DEPLETION } from './forms';
+import { gene, tissue, cellline, splitTypes, MAX_FILTER_SCORE_ROWS_BEFORE_ALL } from '../common/config';
+import { ScoreUtils } from './ScoreUtils';
 
 export class AggregateScoreDialog {
-
   static createScoreDialog(pluginDesc: IPluginDesc, extras: any, formDesc: IFormElementDesc[], countHint?: number) {
-    const {primary, opposite} = ScoreUtils.selectDataSources(pluginDesc);
+    const { primary, opposite } = ScoreUtils.selectDataSources(pluginDesc);
 
     const dialog = new FormDialog(I18nextManager.getInstance().i18n.t('tdp:publicdb.addAggregated'), I18nextManager.getInstance().i18n.t('tdp:publicdb.add'));
-    switch(opposite) {
+    switch (opposite) {
       case gene:
         formDesc.unshift(FORM_GENE_FILTER);
         formDesc.push(primary === tissue ? FORCE_COMPUTE_ALL_TISSUE : FORCE_COMPUTE_ALL_CELLLINE);
@@ -34,6 +25,8 @@ export class AggregateScoreDialog {
       case cellline:
         formDesc.unshift(FORM_CELLLINE_FILTER);
         formDesc.push(FORCE_COMPUTE_ALL_GENES);
+        break;
+      default:
         break;
     }
 
@@ -48,7 +41,7 @@ export class AggregateScoreDialog {
       if (AggregateScoreDialog.showSizeWarning(dialog.body.parentElement!, data, typeof countHint === 'number' ? countHint : -1)) {
         return null;
       }
-      const {dataType, dataSubType} = splitTypes(data[ParameterFormIds.DATA_HIERARCHICAL_SUBTYPE].id);
+      const { dataType, dataSubType } = splitTypes(data[ParameterFormIds.DATA_HIERARCHICAL_SUBTYPE].id);
       delete data[ParameterFormIds.DATA_HIERARCHICAL_SUBTYPE];
       data.data_type = dataType.id;
       data.data_subtype = dataSubType.id;
@@ -66,7 +59,7 @@ export class AggregateScoreDialog {
   /**
    * hacky way to integrate a warning sign if the raw matrix is too big
    */
-  private static showSizeWarning(dialog: HTMLElement, data: any, countHint: number = -1) {
+  private static showSizeWarning(dialog: HTMLElement, data: any, countHint = -1) {
     const footer = dialog.querySelector('.modal-footer');
     if (!footer.querySelector('div.alert')) {
       footer.insertAdjacentHTML('afterbegin', `<div class="alert alert-warning" style="text-align: left" data-size="0">Confirm loading</div>`);
@@ -79,11 +72,11 @@ export class AggregateScoreDialog {
     }
     // try to find out how many columns we are dealing with
     const columns = parseInt((<HTMLElement>dialog.querySelector('span.badge')).innerText, 10);
-    if (!columns || isNaN(columns)) {
+    if (!columns || Number.isNaN(columns)) {
       return false;
     }
     if (columns <= 8) {
-      return false; //small
+      return false; // small
     }
 
     // show
@@ -92,8 +85,10 @@ export class AggregateScoreDialog {
       return false; // already showing the alert with the same size -> user confirmed it
     }
     alert.dataset.size = String(columns);
-    alert.innerHTML = `Note that this query might take very long.s
-    Loading ${columns} values per row for ${countHint > 0 ? countHint : 'e.g. 1000'} rows results in ${columns * (countHint > 0 ? countHint : 1000)} values that need to be transferred from the database.
+    alert.innerHTML = `Note that this query might take very long.
+    Loading ${columns} values per row for ${countHint > 0 ? countHint : 'e.g. 1000'} rows results in ${
+      columns * (countHint > 0 ? countHint : 1000)
+    } values that need to be transferred from the database.
     Confirm that you want to run this query by pressing the button.`;
     return true;
   }

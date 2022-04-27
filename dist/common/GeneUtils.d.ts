@@ -1,9 +1,10 @@
+import { ICommonDBConfig } from 'tdp_gene';
 import { ISelect3Item, IdTextPair } from 'tdp_core';
 import { IDataSourceConfig } from './config';
-import { ICommonDBConfig } from 'tdp_gene';
 interface IDrugData extends IdTextPair {
     target?: string;
     moa?: string;
+    scientificname?: string;
 }
 export declare class GeneUtils {
     /**
@@ -108,3 +109,4 @@ export declare class GeneUtils {
     static validateGeneric(dataSource: IDataSourceConfig, query: string[]): Promise<Readonly<IdTextPair>[]>;
 }
 export {};
+//# sourceMappingURL=GeneUtils.d.ts.map

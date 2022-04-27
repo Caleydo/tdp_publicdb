@@ -1,14 +1,11 @@
 /**
  * Created by sam on 06.03.2017.
  */
-import { SpeciesUtils } from 'tdp_gene';
-import { dataSubtypes, mutation, MAX_FILTER_SCORE_ROWS_BEFORE_ALL } from '../common/config';
+import { IDTypeManager, RestBaseUtils, LineupUtils } from 'tdp_core';
+import { SpeciesUtils, FieldUtils } from 'tdp_gene';
 import { ScoreUtils } from './ScoreUtils';
 import { AScore } from './AScore';
-import { FieldUtils } from 'tdp_gene';
-import { IDTypeManager } from 'phovea_core';
-import { RestBaseUtils } from 'tdp_core';
-import { LineupUtils } from 'tdp_core';
+import { dataSubtypes, mutation, MAX_FILTER_SCORE_ROWS_BEFORE_ALL } from '../common/config';
 export class AFrequencyScore extends AScore {
     constructor(parameter, dataSource, oppositeDataSource, countOnly) {
         super(parameter);
@@ -42,7 +39,7 @@ export class AFrequencyScore extends AScore {
             attribute: this.dataSubType.useForAggregation,
             species: SpeciesUtils.getSelectedSpecies(),
             table: this.dataType.tableName,
-            target: idtype.id
+            target: idtype.id,
         };
         if (!isMutation && !isCopyNumberClass) {
             param.operator = this.parameter.comparison_operator;
@@ -55,7 +52,7 @@ export class AFrequencyScore extends AScore {
         FieldUtils.limitScoreRows(param, ids, idtype, this.dataSource.entityName, maxDirectRows, namedSet);
         const filters = Object.assign(LineupUtils.toFilter(this.parameter.filter), this.createFilter());
         const rows = await RestBaseUtils.getTDPScore(this.dataSource.db, `${this.getViewPrefix()}${this.dataSource.base}_${this.oppositeDataSource.base}_frequency_${isMutation ? 'mutation_' : ''}${isCopyNumberClass ? 'copynumberclass_' : ''}score`, param, filters);
-        rows.forEach((row) => row.score = this.countOnly ? row.count : row.count / row.total);
+        rows.forEach((row) => (row.score = this.countOnly ? row.count : row.count / row.total));
         return rows;
     }
     createFilter() {

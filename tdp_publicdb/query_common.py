@@ -9,7 +9,6 @@ def create_common(views, entity):
     .derive_columns() \
     .column(entity.id, label='id', type='string') \
     .call(entity.column_def) \
-    .assign_ids() \
     .call(inject_where) \
     .filter('panel', entity.panel, join=entity.panel_join) \
     .filter('panel_' + entity.id, entity.panel, join=entity.panel_join) \
@@ -23,7 +22,6 @@ def create_common(views, entity):
       ORDER BY {{column}} ASC""".format(table=entity.table, id=entity.id)) \
     .replace('column', entity.columns) \
     .call(limit_offset) \
-    .assign_ids() \
     .arg('query').arg('species') \
     .build()
 
@@ -32,7 +30,6 @@ def create_common(views, entity):
        FROM {table} WHERE species = :species""".format(table=entity.table, id=entity.id)) \
     .replace('column', entity.columns) \
     .call(inject_where) \
-    .assign_ids() \
     .arg('species') \
     .filter(entity.id, 'LOWER(' + entity.id + ') {operator} {value}') \
     .build()
