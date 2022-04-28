@@ -13,7 +13,7 @@ import {
   useAsync,
 } from 'tdp_core';
 import { NamedSetList, OrdinoContext } from 'ordino';
-import { Species, SpeciesUtils, IACommonListOptions } from 'tdp_gene';
+import { Species, IACommonListOptions } from 'tdp_gene';
 import { DatasetSearchBox } from './DatasetSearchBox';
 import { IPublicDbStartMenuDatasetSectionDesc } from '../base/extensions';
 
@@ -60,15 +60,31 @@ export default function DatasetCard({ name, icon, tabs, startViewId, dataSource,
   }, [dataSource.idType]);
 
   const loadNamedSets = React.useMemo<() => Promise<INamedSet[]>>(() => {
-    return () => RestStorageUtils.listNamedSets(dataSource.idType);
+    return async () => {
+      const sets = await RestStorageUtils.listNamedSets(dataSource.idType);
+      // use `Intl.Collator` to apply natural sorting (i.e., `1, 2, 10, A, Ä, a, Z`)
+      // @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/Collator
+      const collator = new Intl.Collator(undefined, { numeric: true, sensitivity: 'base' });
+      return sets.sort((a, b) => collator.compare(a.name, b.name));
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dataSource.idType, dirtyNamedSets]);
 
   const predefinedNamedSets = useAsync(loadPredefinedSet, []);
   const me = UserSession.getInstance().currentUserNameOrAnonymous();
   const namedSets = useAsync(loadNamedSets, []);
-  const myNamedSets = { ...namedSets, ...{ value: namedSets.value?.filter((d) => d.type === ENamedSetType.NAMEDSET && d.creator === me) } };
-  const publicNamedSets = { ...namedSets, ...{ value: namedSets.value?.filter((d) => d.type === ENamedSetType.NAMEDSET && d.creator !== me) } };
+  const myNamedSets = {
+    ...namedSets,
+    ...{
+      value: namedSets.value?.filter((d) => d.type === ENamedSetType.NAMEDSET && d.creator === me),
+    },
+  };
+  const publicNamedSets = {
+    ...namedSets,
+    ...{
+      value: namedSets.value?.filter((d) => d.type === ENamedSetType.NAMEDSET && d.creator !== me),
+    },
+  };
   const filterValue = (value: INamedSet[], tab: string) => value?.filter((entry) => entry.subTypeValue === tab);
 
   const onOpenNamedSet = (event: React.MouseEvent<HTMLElement>, { namedSet, species }: { namedSet: INamedSet; species: string }) => {

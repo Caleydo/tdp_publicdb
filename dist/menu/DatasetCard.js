@@ -44,14 +44,30 @@ export default function DatasetCard({ name, icon, tabs, startViewId, dataSource,
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [dataSource.idType]);
     const loadNamedSets = React.useMemo(() => {
-        return () => RestStorageUtils.listNamedSets(dataSource.idType);
+        return async () => {
+            const sets = await RestStorageUtils.listNamedSets(dataSource.idType);
+            // use `Intl.Collator` to apply natural sorting (i.e., `1, 2, 10, A, Ä, a, Z`)
+            // @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/Collator
+            const collator = new Intl.Collator(undefined, { numeric: true, sensitivity: 'base' });
+            return sets.sort((a, b) => collator.compare(a.name, b.name));
+        };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [dataSource.idType, dirtyNamedSets]);
     const predefinedNamedSets = useAsync(loadPredefinedSet, []);
     const me = UserSession.getInstance().currentUserNameOrAnonymous();
     const namedSets = useAsync(loadNamedSets, []);
-    const myNamedSets = { ...namedSets, ...{ value: (_a = namedSets.value) === null || _a === void 0 ? void 0 : _a.filter((d) => d.type === ENamedSetType.NAMEDSET && d.creator === me) } };
-    const publicNamedSets = { ...namedSets, ...{ value: (_b = namedSets.value) === null || _b === void 0 ? void 0 : _b.filter((d) => d.type === ENamedSetType.NAMEDSET && d.creator !== me) } };
+    const myNamedSets = {
+        ...namedSets,
+        ...{
+            value: (_a = namedSets.value) === null || _a === void 0 ? void 0 : _a.filter((d) => d.type === ENamedSetType.NAMEDSET && d.creator === me),
+        },
+    };
+    const publicNamedSets = {
+        ...namedSets,
+        ...{
+            value: (_b = namedSets.value) === null || _b === void 0 ? void 0 : _b.filter((d) => d.type === ENamedSetType.NAMEDSET && d.creator !== me),
+        },
+    };
     const filterValue = (value, tab) => value === null || value === void 0 ? void 0 : value.filter((entry) => entry.subTypeValue === tab);
     const onOpenNamedSet = (event, { namedSet, species }) => {
         event.preventDefault();
