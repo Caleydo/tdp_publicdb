@@ -44,13 +44,13 @@ export default function DatasetCard({ name, icon, tabs, startViewId, dataSource,
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [dataSource.idType]);
     const loadNamedSets = React.useMemo(() => {
-        return async () => {
-            const sets = await RestStorageUtils.listNamedSets(dataSource.idType);
-            // use `Intl.Collator` to apply natural sorting (i.e., `1, 2, 10, A, Ä, a, Z`)
-            // @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/Collator
-            const collator = new Intl.Collator(undefined, { numeric: true, sensitivity: 'base' });
-            return sets.sort((a, b) => collator.compare(a.name, b.name));
-        };
+        return () => RestStorageUtils.listNamedSets(dataSource.idType);
+        //   const sets = await RestStorageUtils.listNamedSets(dataSource.idType);
+        //   // use `Intl.Collator` to apply natural sorting (i.e., `1, 2, 10, A, Ä, a, Z`)
+        //   // @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/Collator
+        //   const collator = new Intl.Collator(undefined, { numeric: true, sensitivity: 'base' });
+        //   return sets.sort((a, b) => collator.compare(a.name, b.name));
+        // };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [dataSource.idType, dirtyNamedSets]);
     const predefinedNamedSets = useAsync(loadPredefinedSet, []);
