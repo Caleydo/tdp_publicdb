@@ -47,4 +47,11 @@ export class ViewUtils {
     }
     return ColumnDescUtils.numberCol(col, dataSubType.domain[0], dataSubType.domain[1], { label });
   }
+
+  /**
+   * Extracts ranking options from .env file (via process.env) and returns them in an object that can be spread into the ranking options.
+   */
+  static rankingOptionsFromEnv() {
+    return process.env.RANKING_ENABLE_VIS_PANEL == null ? {} : { enableVisPanel: JSON.parse(process.env.RANKING_ENABLE_VIS_PANEL) };
+  }
 }
