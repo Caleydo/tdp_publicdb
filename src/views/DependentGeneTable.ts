@@ -42,7 +42,9 @@ export class DependentGeneTable extends ARankingView {
       panelAddColumnBtnOptions: {
         btnClass: 'btn-primary',
       },
-      ...Object.assign(options, { enableSidePanel: 'collapsed' }),
+      enableSidePanel: 'collapsed',
+      ...ViewUtils.rankingOptionsFromEnv(),
+      ...options,
     });
 
     this.dataSource = chooseDataSource(context.desc);
