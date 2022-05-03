@@ -100,13 +100,16 @@ export default function DatasetCard({ name, icon, tabs, startViewId, dataSource,
   };
 
   const onSaveAsNamedSet = (items: IdTextPair[], subtype: { key: string; value: string }) => {
-    StoreUtils.editDialog(null, I18nextManager.getInstance().i18n.t(`tdp:core.editDialog.listOfEntities.default`), async (n, description, isPublic) => {
-      const idStrings = items?.map((i) => i.id);
-      const idType = IDTypeManager.getInstance().resolveIdType(dataSource.idType);
-
-      await RestStorageUtils.saveNamedSet(name, idType, idStrings, subtype, description, isPublic);
-      setDirtyNamedSets((d) => !d);
-    });
+    StoreUtils.editDialog(
+      null,
+      I18nextManager.getInstance().i18n.t(`tdp:core.editDialog.listOfEntities.default`),
+      async (datasetName, description, isPublic) => {
+        const idStrings = items?.map((i) => i.id);
+        const idType = IDTypeManager.getInstance().resolveIdType(dataSource.idType);
+        await RestStorageUtils.saveNamedSet(datasetName, idType, idStrings, subtype, description, isPublic);
+        setDirtyNamedSets((d) => !d);
+      },
+    );
   };
 
   const id = React.useMemo(() => UniqueIdManager.getInstance().uniqueId(), []);
