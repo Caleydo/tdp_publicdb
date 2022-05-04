@@ -1,5 +1,5 @@
 import React from 'react';
-import { ENamedSetType, RestBaseUtils, RestStorageUtils, StoreUtils, UserSession, UniqueIdManager, I18nextManager, IDTypeManager, useAsync, } from 'tdp_core';
+import { ENamedSetType, RestBaseUtils, RestStorageUtils, StoreUtils, UserSession, UniqueIdManager, I18nextManager, IDTypeManager, useAsync, GlobalEventHandler, AView, } from 'tdp_core';
 import { NamedSetList, OrdinoContext } from 'ordino';
 import { Species } from 'tdp_gene';
 import { DatasetSearchBox } from './DatasetSearchBox';
@@ -47,6 +47,14 @@ export default function DatasetCard({ name, icon, tabs, startViewId, dataSource,
         return () => RestStorageUtils.listNamedSets(dataSource.idType);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [dataSource.idType, dirtyNamedSets]);
+    React.useEffect(() => {
+        GlobalEventHandler.getInstance().on(AView.EVENT_UPDATE_ENTRY_POINT, () => {
+            setDirtyNamedSets((d) => !d);
+        });
+        return () => {
+            GlobalEventHandler.getInstance().off(AView.EVENT_UPDATE_ENTRY_POINT, () => setDirtyNamedSets((d) => !d));
+        };
+    }, [dataSource.idType]);
     const predefinedNamedSets = useAsync(loadPredefinedSet, []);
     const me = UserSession.getInstance().currentUserNameOrAnonymous();
     const namedSets = useAsync(loadNamedSets, []);
@@ -102,13 +110,13 @@ export default function DatasetCard({ name, icon, tabs, startViewId, dataSource,
                         React.createElement("div", { className: "row mt-4" },
                             React.createElement(NamedSetList, { headerIcon: "fas fa-database", headerText: "Predefined Sets", onOpen: (event, namedSet) => {
                                     onOpenNamedSet(event, { namedSet, species: tab.id });
-                                }, status: predefinedNamedSets.status, value: filterValue(predefinedNamedSets.value, tab.id) }),
+                                }, onEditNamedSet: () => setDirtyNamedSets((d) => !d), onDeleteNamedSet: () => setDirtyNamedSets((d) => !d), status: predefinedNamedSets.status, value: filterValue(predefinedNamedSets.value, tab.id) }),
                             React.createElement(NamedSetList, { headerIcon: "fas fa-user", headerText: "My Sets", onOpen: (event, namedSet) => {
                                     onOpenNamedSet(event, { namedSet, species: tab.id });
-                                }, status: myNamedSets.status, value: filterValue(myNamedSets.value, tab.id) }),
+                                }, onEditNamedSet: () => setDirtyNamedSets((d) => !d), onDeleteNamedSet: () => setDirtyNamedSets((d) => !d), status: myNamedSets.status, value: filterValue(myNamedSets.value, tab.id) }),
                             React.createElement(NamedSetList, { headerIcon: "fas fa-users", headerText: "Other Sets", onOpen: (event, namedSet) => {
                                     onOpenNamedSet(event, { namedSet, species: tab.id });
-                                }, status: publicNamedSets.status, value: filterValue(publicNamedSets.value, tab.id) }))));
+                                }, onEditNamedSet: () => setDirtyNamedSets((d) => !d), onDeleteNamedSet: () => setDirtyNamedSets((d) => !d), status: publicNamedSets.status, value: filterValue(publicNamedSets.value, tab.id) }))));
                 }))))));
 }
 //# sourceMappingURL=DatasetCard.js.map
