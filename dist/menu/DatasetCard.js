@@ -72,10 +72,10 @@ export default function DatasetCard({ name, icon, tabs, startViewId, dataSource,
         app.startNewSession(startViewId, searchResult, defaultSessionValues);
     };
     const onSaveAsNamedSet = (items, subtype) => {
-        StoreUtils.editDialog(null, I18nextManager.getInstance().i18n.t(`tdp:core.editDialog.listOfEntities.default`), async (n, description, isPublic) => {
+        StoreUtils.editDialog(null, I18nextManager.getInstance().i18n.t(`tdp:core.editDialog.listOfEntities.default`), async (datasetName, description, isPublic) => {
             const idStrings = items === null || items === void 0 ? void 0 : items.map((i) => i.id);
             const idType = IDTypeManager.getInstance().resolveIdType(dataSource.idType);
-            await RestStorageUtils.saveNamedSet(name, idType, idStrings, subtype, description, isPublic);
+            await RestStorageUtils.saveNamedSet(datasetName, idType, idStrings, subtype, description, isPublic);
             setDirtyNamedSets((d) => !d);
         });
     };
