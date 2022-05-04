@@ -182,8 +182,8 @@ export default function DatasetCard({ name, icon, tabs, startViewId, dataSource,
                       onOpen={(event, namedSet: INamedSet) => {
                         onOpenNamedSet(event, { namedSet, species: tab.id });
                       }}
-                      onEditNamedSet={() => setDirtyNamedSets((d) => !d)}
-                      onDeleteNamedSet={() => setDirtyNamedSets((d) => !d)}
+                      onEditNamedSet={(namedSet) => setDirtyNamedSets((d) => !d)}
+                      onDeleteNamedSet={(namedSet) => setDirtyNamedSets((d) => !d)}
                       status={predefinedNamedSets.status}
                       value={filterValue(predefinedNamedSets.value, tab.id)}
                     />
@@ -193,8 +193,8 @@ export default function DatasetCard({ name, icon, tabs, startViewId, dataSource,
                       onOpen={(event, namedSet: INamedSet) => {
                         onOpenNamedSet(event, { namedSet, species: tab.id });
                       }}
-                      onEditNamedSet={() => setDirtyNamedSets((d) => !d)}
-                      onDeleteNamedSet={() => setDirtyNamedSets((d) => !d)}
+                      onEditNamedSet={(namedSet) => setDirtyNamedSets((d) => !d)}
+                      onDeleteNamedSet={(namedSet) => setDirtyNamedSets((d) => !d)}
                       status={myNamedSets.status}
                       value={filterValue(myNamedSets.value, tab.id)}
                     />
@@ -204,8 +204,8 @@ export default function DatasetCard({ name, icon, tabs, startViewId, dataSource,
                       onOpen={(event, namedSet: INamedSet) => {
                         onOpenNamedSet(event, { namedSet, species: tab.id });
                       }}
-                      onEditNamedSet={() => setDirtyNamedSets((d) => !d)}
-                      onDeleteNamedSet={() => setDirtyNamedSets((d) => !d)}
+                      onEditNamedSet={(namedSet) => setDirtyNamedSets((d) => !d)}
+                      onDeleteNamedSet={(namedSet) => setDirtyNamedSets((d) => !d)}
                       status={publicNamedSets.status}
                       value={filterValue(publicNamedSets.value, tab.id)}
                     />

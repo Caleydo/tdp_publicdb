@@ -110,13 +110,13 @@ export default function DatasetCard({ name, icon, tabs, startViewId, dataSource,
                         React.createElement("div", { className: "row mt-4" },
                             React.createElement(NamedSetList, { headerIcon: "fas fa-database", headerText: "Predefined Sets", onOpen: (event, namedSet) => {
                                     onOpenNamedSet(event, { namedSet, species: tab.id });
-                                }, onEditNamedSet: () => setDirtyNamedSets((d) => !d), onDeleteNamedSet: () => setDirtyNamedSets((d) => !d), status: predefinedNamedSets.status, value: filterValue(predefinedNamedSets.value, tab.id) }),
+                                }, onEditNamedSet: (namedSet) => setDirtyNamedSets((d) => !d), onDeleteNamedSet: (namedSet) => setDirtyNamedSets((d) => !d), status: predefinedNamedSets.status, value: filterValue(predefinedNamedSets.value, tab.id) }),
                             React.createElement(NamedSetList, { headerIcon: "fas fa-user", headerText: "My Sets", onOpen: (event, namedSet) => {
                                     onOpenNamedSet(event, { namedSet, species: tab.id });
-                                }, onEditNamedSet: () => setDirtyNamedSets((d) => !d), onDeleteNamedSet: () => setDirtyNamedSets((d) => !d), status: myNamedSets.status, value: filterValue(myNamedSets.value, tab.id) }),
+                                }, onEditNamedSet: (namedSet) => setDirtyNamedSets((d) => !d), onDeleteNamedSet: (namedSet) => setDirtyNamedSets((d) => !d), status: myNamedSets.status, value: filterValue(myNamedSets.value, tab.id) }),
                             React.createElement(NamedSetList, { headerIcon: "fas fa-users", headerText: "Other Sets", onOpen: (event, namedSet) => {
                                     onOpenNamedSet(event, { namedSet, species: tab.id });
-                                }, onEditNamedSet: () => setDirtyNamedSets((d) => !d), onDeleteNamedSet: () => setDirtyNamedSets((d) => !d), status: publicNamedSets.status, value: filterValue(publicNamedSets.value, tab.id) }))));
+                                }, onEditNamedSet: (namedSet) => setDirtyNamedSets((d) => !d), onDeleteNamedSet: (namedSet) => setDirtyNamedSets((d) => !d), status: publicNamedSets.status, value: filterValue(publicNamedSets.value, tab.id) }))));
                 }))))));
 }
 //# sourceMappingURL=DatasetCard.js.map
