@@ -59,7 +59,7 @@
     "node": ">= 12.13"
   },
   "devDependencies": {
-    "@types/d3": "~3.5.36",
+    "@types/d3v3": "npm:@types/d3@~3.5.47",
     "@types/react-select": "^4.0.13",
     "@typescript-eslint/eslint-plugin": "^5.9.0",
     "@typescript-eslint/parser": "^5.9.0",
@@ -86,7 +86,7 @@
     "typescript": "~4.6.2"
   },
   "dependencies": {
-    "d3": "~3.5.17",
+    "d3v3": "npm:d3@~3.5.17",
     "react-highlight-words": "^0.17.0",
     "react-select": "^4.1.0",
     "react-select-async-paginate": "^0.5.3",
