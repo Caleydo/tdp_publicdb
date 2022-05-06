@@ -63,11 +63,12 @@ export default function DatasetCard({ name, icon, tabs, startViewId, dataSource,
   }, [dataSource.idType]);
 
   const loadNamedSets = React.useCallback<() => Promise<void>>(async () => {
+    // if dirty is false do not reload data again
     if (!dirtyNamedSets) {
       return;
     }
-    setDirtyNamedSets(false);
     setNamedSets(await RestStorageUtils.listNamedSets(dataSource.idType));
+    setDirtyNamedSets(false);
   }, [dataSource.idType, dirtyNamedSets]);
 
   React.useEffect(() => {

@@ -44,11 +44,12 @@ export default function DatasetCard({ name, icon, tabs, startViewId, dataSource,
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [dataSource.idType]);
     const loadNamedSets = React.useCallback(async () => {
+        // if dirty is false do not reload data again
         if (!dirtyNamedSets) {
             return;
         }
-        setDirtyNamedSets(false);
         setNamedSets(await RestStorageUtils.listNamedSets(dataSource.idType));
+        setDirtyNamedSets(false);
     }, [dataSource.idType, dirtyNamedSets]);
     React.useEffect(() => {
         const entryPointChanged = () => setDirtyNamedSets(true);
