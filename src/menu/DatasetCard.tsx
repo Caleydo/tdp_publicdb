@@ -73,7 +73,7 @@ export default function DatasetCard({ name, icon, tabs, startViewId, dataSource,
     return () => {
       GlobalEventHandler.getInstance().off(AView.EVENT_UPDATE_ENTRY_POINT, () => setDirtyNamedSets((d) => !d));
     };
-  }, [dataSource.idType]);
+  }, []);
 
   const predefinedNamedSets = useAsync(loadPredefinedSet, []);
   const me = UserSession.getInstance().currentUserNameOrAnonymous();
