@@ -67,11 +67,11 @@ export default function DatasetCard({ name, icon, tabs, startViewId, dataSource,
   }, [dataSource.idType, dirtyNamedSets]);
 
   React.useEffect(() => {
-    GlobalEventHandler.getInstance().on(AView.EVENT_UPDATE_ENTRY_POINT, () => {
-      setDirtyNamedSets((d) => !d);
-    });
+    const entryPointChanged = () => setDirtyNamedSets((d) => !d);
+
+    GlobalEventHandler.getInstance().on(AView.EVENT_UPDATE_ENTRY_POINT, entryPointChanged);
     return () => {
-      GlobalEventHandler.getInstance().off(AView.EVENT_UPDATE_ENTRY_POINT, () => setDirtyNamedSets((d) => !d));
+      GlobalEventHandler.getInstance().off(AView.EVENT_UPDATE_ENTRY_POINT, entryPointChanged);
     };
   }, []);
 
