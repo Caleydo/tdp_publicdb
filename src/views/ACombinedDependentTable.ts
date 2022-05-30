@@ -32,6 +32,7 @@ export abstract class ACombinedDependentTable extends ARankingView {
         panelAddColumnBtnOptions: {
           btnClass: 'btn-primary',
         },
+        ...ViewUtils.rankingOptionsFromEnv(),
       }),
     );
 
