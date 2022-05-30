@@ -1,13 +1,13 @@
 import React from 'react';
-import { ENamedSetType, RestBaseUtils, RestStorageUtils, StoreUtils, UserSession, UniqueIdManager, I18nextManager, IDTypeManager, useAsync, } from 'tdp_core';
+import { ENamedSetType, RestBaseUtils, RestStorageUtils, StoreUtils, UserSession, UniqueIdManager, I18nextManager, IDTypeManager, useAsync, GlobalEventHandler, AView, } from 'tdp_core';
 import { NamedSetList, OrdinoContext } from 'ordino';
 import { Species } from 'tdp_gene';
 import { DatasetSearchBox } from './DatasetSearchBox';
 export default function DatasetCard({ name, icon, tabs, startViewId, dataSource, cssClass, tokenSeparators }) {
-    var _a, _b;
     const testId = `datasetcard-${cssClass}`;
     const { app } = React.useContext(OrdinoContext);
-    const [dirtyNamedSets, setDirtyNamedSets] = React.useState(false);
+    const [namedSets, setNamedSets] = React.useState([]);
+    const [dirtyNamedSets, setDirtyNamedSets] = React.useState(true);
     const loadPredefinedSet = React.useMemo(() => {
         return async () => {
             const panels = await RestBaseUtils.getTDPData(dataSource.db, `${dataSource.base}_panel`);
@@ -44,15 +44,26 @@ export default function DatasetCard({ name, icon, tabs, startViewId, dataSource,
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [dataSource.idType]);
-    const loadNamedSets = React.useMemo(() => {
-        return () => RestStorageUtils.listNamedSets(dataSource.idType);
-        // eslint-disable-next-line react-hooks/exhaustive-deps
+    const loadNamedSets = React.useCallback(async () => {
+        // if dirty is false do not reload data again
+        if (!dirtyNamedSets) {
+            return;
+        }
+        setNamedSets(await RestStorageUtils.listNamedSets(dataSource.idType));
+        setDirtyNamedSets(false);
     }, [dataSource.idType, dirtyNamedSets]);
+    React.useEffect(() => {
+        const entryPointChanged = () => setDirtyNamedSets(true);
+        GlobalEventHandler.getInstance().on(AView.EVENT_UPDATE_ENTRY_POINT, entryPointChanged);
+        return () => {
+            GlobalEventHandler.getInstance().off(AView.EVENT_UPDATE_ENTRY_POINT, entryPointChanged);
+        };
+    }, []);
     const predefinedNamedSets = useAsync(loadPredefinedSet, []);
     const me = UserSession.getInstance().currentUserNameOrAnonymous();
-    const namedSets = useAsync(loadNamedSets, []);
-    const myNamedSets = { ...namedSets, ...{ value: (_a = namedSets.value) === null || _a === void 0 ? void 0 : _a.filter((d) => d.type === ENamedSetType.NAMEDSET && d.creator === me) } };
-    const publicNamedSets = { ...namedSets, ...{ value: (_b = namedSets.value) === null || _b === void 0 ? void 0 : _b.filter((d) => d.type === ENamedSetType.NAMEDSET && d.creator !== me) } };
+    const { status: namedSetsStatus } = useAsync(loadNamedSets, []);
+    const myNamedSets = { ...namedSets, ...{ value: namedSets === null || namedSets === void 0 ? void 0 : namedSets.filter((d) => d.type === ENamedSetType.NAMEDSET && d.creator === me) } };
+    const publicNamedSets = { ...namedSets, ...{ value: namedSets === null || namedSets === void 0 ? void 0 : namedSets.filter((d) => d.type === ENamedSetType.NAMEDSET && d.creator !== me) } };
     const filterValue = (value, tab) => value === null || value === void 0 ? void 0 : value.filter((entry) => entry.subTypeValue === tab);
     const onOpenNamedSet = (event, { namedSet, species }) => {
         event.preventDefault();
@@ -73,11 +84,11 @@ export default function DatasetCard({ name, icon, tabs, startViewId, dataSource,
         app.startNewSession(startViewId, searchResult, defaultSessionValues);
     };
     const onSaveAsNamedSet = (items, subtype) => {
-        StoreUtils.editDialog(null, I18nextManager.getInstance().i18n.t(`tdp:core.editDialog.listOfEntities.default`), async (n, description, isPublic) => {
+        StoreUtils.editDialog(null, I18nextManager.getInstance().i18n.t(`tdp:core.editDialog.listOfEntities.default`), async (datasetName, description, isPublic) => {
             const idStrings = items === null || items === void 0 ? void 0 : items.map((i) => i.id);
             const idType = IDTypeManager.getInstance().resolveIdType(dataSource.idType);
-            await RestStorageUtils.saveNamedSet(name, idType, idStrings, subtype, description, isPublic);
-            setDirtyNamedSets((d) => !d);
+            await RestStorageUtils.saveNamedSet(datasetName, idType, idStrings, subtype, description, isPublic);
+            setDirtyNamedSets(true);
         });
     };
     const id = React.useMemo(() => UniqueIdManager.getInstance().uniqueId(), []);
@@ -103,13 +114,13 @@ export default function DatasetCard({ name, icon, tabs, startViewId, dataSource,
                         React.createElement("div", { className: "row mt-4" },
                             React.createElement(NamedSetList, { headerIcon: "fas fa-database", headerText: "Predefined Sets", onOpen: (event, namedSet) => {
                                     onOpenNamedSet(event, { namedSet, species: tab.id });
-                                }, status: predefinedNamedSets.status, value: filterValue(predefinedNamedSets.value, tab.id) }),
+                                }, onEditNamedSet: () => setDirtyNamedSets(true), onDeleteNamedSet: () => setDirtyNamedSets(true), status: predefinedNamedSets.status, value: filterValue(predefinedNamedSets.value, tab.id) }),
                             React.createElement(NamedSetList, { headerIcon: "fas fa-user", headerText: "My Sets", onOpen: (event, namedSet) => {
                                     onOpenNamedSet(event, { namedSet, species: tab.id });
-                                }, status: myNamedSets.status, value: filterValue(myNamedSets.value, tab.id) }),
+                                }, onEditNamedSet: () => setDirtyNamedSets(true), onDeleteNamedSet: () => setDirtyNamedSets(true), status: namedSetsStatus, value: filterValue(myNamedSets.value, tab.id) }),
                             React.createElement(NamedSetList, { headerIcon: "fas fa-users", headerText: "Other Sets", onOpen: (event, namedSet) => {
                                     onOpenNamedSet(event, { namedSet, species: tab.id });
-                                }, status: publicNamedSets.status, value: filterValue(publicNamedSets.value, tab.id) }))));
+                                }, onEditNamedSet: () => setDirtyNamedSets(true), onDeleteNamedSet: () => setDirtyNamedSets(true), status: namedSetsStatus, value: filterValue(publicNamedSets.value, tab.id) }))));
                 }))))));
 }
 //# sourceMappingURL=DatasetCard.js.map
