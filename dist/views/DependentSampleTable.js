@@ -19,7 +19,9 @@ export class DependentSampleTable extends ARankingView {
             panelAddColumnBtnOptions: {
                 btnClass: 'btn-primary',
             },
-            ...Object.assign(options, { enableSidePanel: 'collapsed' }),
+            enableSidePanel: 'collapsed',
+            ...ViewUtils.rankingOptionsFromEnv(),
+            ...options,
         });
         this.dataType = dataType;
     }

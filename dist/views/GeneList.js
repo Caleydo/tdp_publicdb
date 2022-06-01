@@ -1,9 +1,11 @@
 import { ACommonList } from 'tdp_gene';
 import { gene } from '../common/config';
+import { ViewUtils } from './ViewUtils';
 export class GeneList extends ACommonList {
     constructor(context, selection, parent, options) {
         super(context, selection, parent, gene, {
             enableAddingColumnGrouping: true,
+            ...ViewUtils.rankingOptionsFromEnv(),
             ...options,
         });
     }
