@@ -4,7 +4,7 @@ import { NamedSetList, OrdinoContext } from 'ordino';
 import { Species } from 'tdp_gene';
 import { DatasetSearchBox } from './DatasetSearchBox';
 export default function DatasetCard({ name, icon, tabs, startViewId, dataSource, cssClass, tokenSeparators }) {
-    const testId = `datasetcard-${cssClass}`;
+    const testId = `dataset-card-${cssClass}`;
     const { app } = React.useContext(OrdinoContext);
     const [namedSets, setNamedSets] = React.useState([]);
     const [dirtyNamedSets, setDirtyNamedSets] = React.useState(true);

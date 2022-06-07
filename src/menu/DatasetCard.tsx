@@ -20,7 +20,7 @@ import { DatasetSearchBox } from './DatasetSearchBox';
 import { IPublicDbStartMenuDatasetSectionDesc } from '../base/extensions';
 
 export default function DatasetCard({ name, icon, tabs, startViewId, dataSource, cssClass, tokenSeparators }: IPublicDbStartMenuDatasetSectionDesc) {
-  const testId = `datasetcard-${cssClass}`;
+  const testId = `dataset-card-${cssClass}`;
   const { app } = React.useContext(OrdinoContext);
   const [namedSets, setNamedSets] = React.useState<INamedSet[] | null>([]);
   const [dirtyNamedSets, setDirtyNamedSets] = React.useState(true);
