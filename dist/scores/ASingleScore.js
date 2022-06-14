@@ -35,8 +35,6 @@ export class ASingleScore extends AScore {
         const maxDirectRows = typeof this.parameter.maxDirectFilterRows === 'number' ? this.parameter.maxDirectFilterRows : MAX_FILTER_SCORE_ROWS_BEFORE_ALL;
         FieldUtils.limitScoreRows(param, ids, idtype, this.dataSource.entityName, maxDirectRows, namedSet);
         const filters = this.createFilter();
-        console.log('param', param);
-        console.log('filter', filters);
         const rows = await RestBaseUtils.getTDPScore(this.dataSource.db, `${this.getViewPrefix()}${this.dataSource.base}_${this.oppositeDataSource.base}_single_score`, param, filters);
         if (this.dataSubType.useForAggregation.indexOf('log2') !== -1) {
             return FieldUtils.convertLog2ToLinear(rows, 'score');

@@ -61,8 +61,6 @@ export abstract class ASingleScore extends AScore implements IScore<any> {
 
     const filters = this.createFilter();
 
-    console.log('param', param);
-    console.log('filter', filters);
     const rows = await RestBaseUtils.getTDPScore(
       this.dataSource.db,
       `${this.getViewPrefix()}${this.dataSource.base}_${this.oppositeDataSource.base}_single_score`,
