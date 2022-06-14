@@ -56,7 +56,7 @@ export class SingleDepletionScore extends ASingleScore implements IScore<any> {
 
   protected createFilter(): IParams {
     return {
-      depletionscreen: this.dataSubType.id === 'ceres' ? 'Avana' : 'Drive',
+      depletionscreen: this.dataSubType.filter,
     };
   }
 

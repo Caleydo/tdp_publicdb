@@ -29,7 +29,7 @@ export class AggregatedDepletionScore extends AAggregatedScore {
     }
     createFilter() {
         return {
-            depletionscreen: this.dataSubType.id === 'ceres' ? 'Avana' : 'Drive',
+            depletionscreen: this.dataSubType.filter,
         };
     }
     // Factories for depletion scores for DRIVE data
