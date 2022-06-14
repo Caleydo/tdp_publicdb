@@ -6,7 +6,6 @@ Create Date: 2022-06-14 12:44:43.553285
 
 """
 from alembic import op
-import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
@@ -67,7 +66,7 @@ def downgrade():
     """
 
     -- DROP VIEW cellline.processeddepletionscoreview;
-
+    -- INFO First alter the views to remove the dependencies to the columns and then drop the columns
     CREATE OR REPLACE VIEW cellline.processeddepletionscoreview
     AS
     SELECT d.ensg,
