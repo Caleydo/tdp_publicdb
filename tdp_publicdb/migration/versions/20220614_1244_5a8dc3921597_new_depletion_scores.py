@@ -7,7 +7,6 @@ Create Date: 2022-06-14 12:44:43.553285
 """
 from alembic import op
 
-
 # revision identifiers, used by Alembic.
 revision = '5a8dc3921597'
 down_revision = 'ec6a94da4809'
@@ -21,7 +20,7 @@ def upgrade():
     connection.execute(
         """
         ALTER TABLE cellline.processeddepletionscore
-        ADD COLUMN IF NOT EXISTS chronos real;
+        ADD COLUMN IF NOT EXISTS chronos real,
         ADD COLUMN IF NOT EXISTS escore real;
 
         -- DROP VIEW cellline.processeddepletionscoreview;
@@ -58,45 +57,48 @@ def upgrade():
 
         ALTER TABLE cellline.tdp_depletionscore
             OWNER TO postgres;
-                """
+        """
     )
 
 
 def downgrade():
-    """
+    connection = op.get_bind()
 
-    -- DROP VIEW cellline.processeddepletionscoreview;
-    -- INFO First alter the views to remove the dependencies to the columns and then drop the columns
-    CREATE OR REPLACE VIEW cellline.processeddepletionscoreview
-    AS
-    SELECT d.ensg,
-        g.symbol,
-        d.celllinename,
-        d.depletionscreen,
-        d.rsa,
-        d.ataris,
-        d.ceres
-    FROM cellline.processeddepletionscore d
-        JOIN gene g ON d.ensg = g.ensg;
+    connection.execute(
+        """
 
-    ALTER TABLE cellline.processeddepletionscoreview
-        OWNER TO postgres;
+        -- DROP VIEW cellline.processeddepletionscoreview;
+        -- INFO First alter the views to remove the dependencies to the columns and then drop the columns
+        CREATE OR REPLACE VIEW cellline.processeddepletionscoreview
+        AS
+        SELECT d.ensg,
+            g.symbol,
+            d.celllinename,
+            d.depletionscreen,
+            d.rsa,
+            d.ataris,
+            d.ceres
+        FROM cellline.processeddepletionscore d
+            JOIN gene g ON d.ensg = g.ensg;
 
-    CREATE OR REPLACE VIEW cellline.tdp_depletionscore
-    AS
-    SELECT ensg,
-        symbol,
-        celllinename,
-        depletionscreen,
-        rsa,
-        ataris,
-        ceres
-    FROM cellline.processeddepletionscoreview;
+        ALTER TABLE cellline.processeddepletionscoreview
+            OWNER TO postgres;
 
-    ALTER TABLE cellline.tdp_depletionscore
-        OWNER TO postgres;
+        CREATE OR REPLACE VIEW cellline.tdp_depletionscore
+        AS
+        SELECT ensg,
+            symbol,
+            celllinename,
+            depletionscreen,
+            rsa,
+            ataris,
+            ceres
+        FROM cellline.processeddepletionscoreview;
 
-    ALTER TABLE cellline.processeddepletionscore
-        DROP COLUMN IF EXISTS chronos;
-        DROP COLUMN IF EXISTS escore;
-            """
+        ALTER TABLE cellline.tdp_depletionscore
+            OWNER TO postgres;
+
+        ALTER TABLE cellline.processeddepletionscore
+            DROP COLUMN IF EXISTS chronos,
+            DROP COLUMN IF EXISTS escore;
+    """)
