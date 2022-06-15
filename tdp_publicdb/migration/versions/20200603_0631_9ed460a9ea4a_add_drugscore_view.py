@@ -7,10 +7,9 @@ Create Date: 2020-06-03 06:31:30.718184
 """
 from alembic import op
 
-
 # revision identifiers, used by Alembic.
-revision = '9ed460a9ea4a'
-down_revision = 'dd7c97913940'
+revision = "9ed460a9ea4a"
+down_revision = "dd7c97913940"
 branch_labels = None
 depends_on = None
 

@@ -5,6 +5,7 @@
 /lib/
 /build/
 /dist/tsBuildInfoFile
+/dist_python/
 *.egg-info/
 *.egg
 *.py[cod]
