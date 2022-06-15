@@ -8,8 +8,8 @@ Create Date: 2022-06-14 12:44:43.553285
 from alembic import op
 
 # revision identifiers, used by Alembic.
-revision = '5a8dc3921597'
-down_revision = 'ec6a94da4809'
+revision = "5a8dc3921597"
+down_revision = "ec6a94da4809"
 branch_labels = None
 depends_on = None
 
@@ -101,4 +101,5 @@ def downgrade():
         ALTER TABLE cellline.processeddepletionscore
             DROP COLUMN IF EXISTS chronos,
             DROP COLUMN IF EXISTS escore;
-    """)
+    """
+    )
