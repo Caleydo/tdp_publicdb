@@ -3,25 +3,6 @@ export declare const FORM_AGGREGATED_SCORE: ({
     type: FormElementType;
     label: string;
     id: string;
-    attributes: {
-        style: string;
-    };
-    required: boolean;
-    options: {
-        placeholder: string;
-        data: {
-            text: string;
-            children: {
-                id: string;
-                text: string;
-            }[];
-        }[];
-    };
-    useSession: boolean;
-} | {
-    type: FormElementType;
-    label: string;
-    id: string;
     dependsOn: string[];
     required: boolean;
     options: {
@@ -65,6 +46,25 @@ export declare const FORM_AGGREGATED_SCORE: ({
         step: string;
         optionsData?: undefined;
     };
+} | {
+    type: FormElementType;
+    label: string;
+    id: string;
+    attributes: {
+        style: string;
+    };
+    required: boolean;
+    options: {
+        placeholder: string;
+        data: {
+            text: string;
+            children: {
+                id: string;
+                text: string;
+            }[];
+        }[];
+    };
+    useSession: boolean;
 } | {
     type: FormElementType;
     label: string;
@@ -137,22 +137,6 @@ export declare const FORM_AGGREGATED_SCORE_DEPLETION: ({
     type: FormElementType;
     label: string;
     id: string;
-    attributes: {
-        style: string;
-    };
-    required: boolean;
-    options: {
-        placeholder: string;
-        data: {
-            id: string;
-            text: string;
-        }[];
-    };
-    useSession: boolean;
-} | {
-    type: FormElementType;
-    label: string;
-    id: string;
     dependsOn: string[];
     required: boolean;
     options: {
@@ -196,6 +180,22 @@ export declare const FORM_AGGREGATED_SCORE_DEPLETION: ({
         step: string;
         optionsData?: undefined;
     };
+} | {
+    type: FormElementType;
+    label: string;
+    id: string;
+    attributes: {
+        style: string;
+    };
+    required: boolean;
+    options: {
+        placeholder: string;
+        data: {
+            id: string;
+            text: string;
+        }[];
+    };
+    useSession: boolean;
 })[];
 export declare const FORM_SINGLE_SCORE_DEPLETION: {
     type: FormElementType;
@@ -224,10 +224,10 @@ export declare const FORM_SINGLE_SCORE_DRUG: ({
     required: boolean;
     options: {
         placeholder: string;
-        data: {
-            id: string;
-            text: string;
-        }[];
+        optionsData: any[];
+        search: typeof import("..").GeneUtils.searchDrugScreen;
+        validate: typeof import("..").GeneUtils.validateDrugScreen;
+        format: typeof import("..").GeneUtils.formatDrugScreen;
     };
     useSession: boolean;
 } | {
@@ -240,10 +240,10 @@ export declare const FORM_SINGLE_SCORE_DRUG: ({
     required: boolean;
     options: {
         placeholder: string;
-        optionsData: any[];
-        search: typeof import("..").GeneUtils.searchDrugScreen;
-        validate: typeof import("..").GeneUtils.validateDrugScreen;
-        format: typeof import("..").GeneUtils.formatDrugScreen;
+        data: {
+            id: string;
+            text: string;
+        }[];
     };
     useSession: boolean;
 })[];

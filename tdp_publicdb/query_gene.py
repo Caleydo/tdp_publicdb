@@ -46,22 +46,6 @@ def create_gene(views, gene):
         .build()
     )
 
-    views[gene.prefix + "_map_ensgs"] = (
-        DBViewBuilder("helper")
-        .idtype(gene.idtype)
-        .query(
-            """
-        SELECT {g.id} AS id, symbol
-        FROM {g.table} WHERE {g.id} IN ({{ensgs}}) AND species = :species
-        ORDER BY symbol ASC""".format(
-                g=gene
-            )
-        )
-        .replace("ensgs", re.compile(r"(\'[\w]+\')(,\'[\w]+\')*"))
-        .arg("species")
-        .build()
-    )
-
     views[gene.prefix + "_match_symbols"] = (
         DBViewBuilder("helper")
         .query(
