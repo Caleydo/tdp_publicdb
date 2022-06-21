@@ -422,7 +422,7 @@ export const mutation: IDataTypeConfig = {
 
 export const depletion: IDataTypeConfig = {
   id: 'depletion',
-  name: 'Depletion Screen ',
+  name: 'Depletion Screen',
   tableName: 'depletionscore',
   query: 'depletion_score',
   dataSubtypes: [
@@ -468,7 +468,7 @@ export const depletion: IDataTypeConfig = {
     },
     {
       id: 'escore',
-      name: 'Sanger E-score (Fiona M. Behan et al., Nature 2019',
+      name: 'Sanger E-score (Fiona M. Behan et al., Nature 2019)',
       type: dataSubtypes.number,
       domain: [0, null],
       missingValue: NaN,

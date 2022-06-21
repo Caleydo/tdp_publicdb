@@ -335,7 +335,7 @@ export const mutation = {
 };
 export const depletion = {
     id: 'depletion',
-    name: 'Depletion Screen ',
+    name: 'Depletion Screen',
     tableName: 'depletionscore',
     query: 'depletion_score',
     dataSubtypes: [
@@ -381,7 +381,7 @@ export const depletion = {
         },
         {
             id: 'escore',
-            name: 'Sanger E-score (Fiona M. Behan et al., Nature 2019',
+            name: 'Sanger E-score (Fiona M. Behan et al., Nature 2019)',
             type: dataSubtypes.number,
             domain: [0, null],
             missingValue: NaN,
