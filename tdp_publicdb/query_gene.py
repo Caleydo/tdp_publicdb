@@ -1,5 +1,3 @@
-import re
-
 from tdp_core.dbview import DBViewBuilder, inject_where, limit_offset
 
 
