@@ -10,7 +10,6 @@ export declare class CoExpression extends ACoExpression {
     loadGeneList(ensgs: string[]): Promise<{
         id: string;
         symbol: string;
-        _id: number;
     }[]>;
     loadData(ensg: string): Promise<ICoExprDataFormatRow[]>;
     loadFirstName(ensg: string): Promise<string>;

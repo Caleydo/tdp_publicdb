@@ -8,7 +8,7 @@ function initializeScore(data, pluginDesc, singleScoreFactory) {
     const configs = data.data_types;
     function defineScore(name) {
         if (configs) {
-            return configs.map((ds) => singleScoreFactory({ name, data_type: ds[0], data_subtype: ds[1], maxDirectFilterRows: data.maxDirectFilterRows }, primary, opposite));
+            return configs.map((ds) => singleScoreFactory({ name, screen_type: data.screen_type, data_type: ds[0], data_subtype: ds[1], maxDirectFilterRows: data.maxDirectFilterRows }, primary, opposite));
         }
         return singleScoreFactory({ ...data, name }, primary, opposite);
     }
