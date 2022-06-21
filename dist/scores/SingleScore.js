@@ -31,7 +31,7 @@ export class SingleDepletionScore extends ASingleScore {
     }
     createFilter() {
         return {
-            depletionscreen: this.dataSubType.id === 'ceres' ? 'Avana' : 'Drive',
+            depletionscreen: this.dataSubType.filter,
         };
     }
     static createSingleDepletionScore(data, pluginDesc) {

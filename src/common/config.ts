@@ -293,6 +293,10 @@ export interface IDataSubtypeConfig {
   domain?: number[];
   missingValue?: number;
   constantDomain?: boolean;
+  /**
+   * Value of the column filter.
+   */
+  filter?: string;
 }
 
 export const expression: IDataTypeConfig = {
@@ -418,7 +422,7 @@ export const mutation: IDataTypeConfig = {
 
 export const depletion: IDataTypeConfig = {
   id: 'depletion',
-  name: 'Depletion Screen ',
+  name: 'Depletion Screen',
   tableName: 'depletionscore',
   query: 'depletion_score',
   dataSubtypes: [
@@ -430,6 +434,7 @@ export const depletion: IDataTypeConfig = {
       missingValue: NaN,
       constantDomain: false,
       useForAggregation: 'rsa',
+      filter: 'Drive',
     },
     {
       id: 'ataris',
@@ -439,6 +444,7 @@ export const depletion: IDataTypeConfig = {
       missingValue: NaN,
       constantDomain: false,
       useForAggregation: 'ataris',
+      filter: 'Drive',
     },
     {
       id: 'ceres',
@@ -448,6 +454,27 @@ export const depletion: IDataTypeConfig = {
       missingValue: NaN,
       constantDomain: false,
       useForAggregation: 'ceres',
+      filter: 'Avana',
+    },
+    {
+      id: 'chronos',
+      name: 'AVANA Chronos (DepMap.org)',
+      type: dataSubtypes.number,
+      domain: [0, null],
+      missingValue: NaN,
+      constantDomain: false,
+      useForAggregation: 'chronos',
+      filter: 'Avana',
+    },
+    {
+      id: 'escore',
+      name: 'Sanger E-score (Fiona M. Behan et al., Nature 2019)',
+      type: dataSubtypes.number,
+      domain: [0, null],
+      missingValue: NaN,
+      constantDomain: false,
+      useForAggregation: 'escore',
+      filter: 'Sanger',
     },
   ],
 };
