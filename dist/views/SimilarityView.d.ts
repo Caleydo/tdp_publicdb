@@ -17,8 +17,8 @@ export declare class SimilarityView extends ARankingView {
     protected getColumnDescs(columns: any[]): IAdditionalColumnDesc[];
     protected loadColumnDesc(): Promise<any>;
     protected loadRows(): Promise<any>;
-    protected parameterChanged(name: string): void;
-    protected selectionChanged(): void;
+    protected parameterChanged(name: string): Promise<void>;
+    protected selectionChanged(): Promise<void>;
     private updateImpl;
     protected createInitialRanking(provider: LocalDataProvider): void;
 }

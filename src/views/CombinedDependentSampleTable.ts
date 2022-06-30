@@ -24,10 +24,9 @@ export class CombinedDependentSampleTable extends ACombinedDependentTable {
 
   protected parameterChanged(name: string) {
     if (name === FORM_DATA_SOURCE.id) {
-      this.rebuild();
-      return; // early abort since there is nothing worse than building from scratch
+      return this.rebuild(); // early abort after rebuild since there is nothing worse than building from scratch
     }
-    super.parameterChanged(name);
+    return super.parameterChanged(name);
   }
 
   protected getSelectionColumnLabel(ensg: string) {

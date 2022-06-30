@@ -12,7 +12,6 @@ import {
   ColumnDescUtils,
   FormElementType,
   IFormSelectElement,
-  IDTypeManager,
   RestBaseUtils,
 } from 'tdp_core';
 import { LocalDataProvider, createSelectionDesc, createStackDesc, StackColumn } from 'lineupjs';
@@ -127,18 +126,18 @@ export class SimilarityView extends ARankingView {
 
   protected parameterChanged(name: string) {
     super.parameterChanged(name);
-    this.updateImpl();
+    return this.updateImpl();
   }
 
   protected selectionChanged() {
     super.selectionChanged();
-    this.updateImpl();
+    return this.updateImpl();
   }
 
   private updateImpl() {
-    this.updateOptionsData().then(() => {
+    return this.updateOptionsData().then(() => {
       this.loader = null;
-      this.rebuild();
+      return this.rebuild();
     });
   }
 
