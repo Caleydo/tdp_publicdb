@@ -2,22 +2,32 @@
  * Created by sam on 16.02.2017.
  */
 
-import { SpeciesUtils, FieldUtils } from 'tdp_gene';
-import { RestBaseUtils, IScoreRow, ColumnDescUtils } from 'tdp_core';
+import { FieldUtils } from 'tdp_gene';
+import { IScoreRow, ColumnDescUtils, IDTypeManager } from 'tdp_core';
+import { zipWith } from 'lodash';
 import { IDataSubtypeConfig } from '../common/config';
 
 export class ViewUtils {
-  static loadFirstName(ensg: string): Promise<string> {
-    return RestBaseUtils.getTDPData<any>('publicdb', 'gene_map_ensgs', {
-      ensgs: `'${ensg}'`,
-      species: SpeciesUtils.getSelectedSpecies(),
-    }).then((r) => (r.length > 0 ? r[0].symbol || r[0].id : ensg));
+  static async loadFirstName(ensg: string): Promise<string> {
+    const symbols = await IDTypeManager.getInstance().mapNameToFirstName(
+      IDTypeManager.getInstance().resolveIdType('Ensembl'),
+      [ensg],
+      IDTypeManager.getInstance().resolveIdType('GeneSymbol'),
+    );
+    return symbols.length > 0 ? symbols[0] : ensg;
   }
 
-  static loadGeneList(ensgs: string[]): Promise<{ id: string; symbol: string; _id: number }[]> {
-    return RestBaseUtils.getTDPData('publicdb', 'gene_map_ensgs', {
-      ensgs: `'${ensgs.join("','")}'`,
-      species: SpeciesUtils.getSelectedSpecies(),
+  static async loadGeneList(ensgs: string[]): Promise<{ id: string; symbol: string }[]> {
+    const symbols = await IDTypeManager.getInstance().mapNameToFirstName(
+      IDTypeManager.getInstance().resolveIdType('Ensembl'),
+      ensgs,
+      IDTypeManager.getInstance().resolveIdType('GeneSymbol'),
+    );
+    return zipWith(ensgs, symbols, (ensg, symbol) => {
+      return {
+        id: ensg,
+        symbol,
+      };
     });
   }
 
