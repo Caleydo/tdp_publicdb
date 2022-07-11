@@ -1,7 +1,7 @@
 /**
  * Created by Samuel Gratzl on 29.01.2016.
  */
-import { tsv } from 'd3v3';
+import * as d3v3 from 'd3v3';
 import { ARankingView, ColumnDescUtils, FormElementType, RestBaseUtils, } from 'tdp_core';
 import { createSelectionDesc, createStackDesc } from 'lineupjs';
 import { SpeciesUtils } from 'tdp_gene';
@@ -44,7 +44,7 @@ export class SimilarityView extends ARankingView {
         }
     }
     static convertData(data) {
-        return tsv.parse(data, (row) => {
+        return d3v3.tsv.parse(data, (row) => {
             const strings = ['name', 'ensgid', 'hom'];
             Object.keys(row).forEach((name) => {
                 if (strings.indexOf(name) < 0) {
@@ -92,14 +92,14 @@ export class SimilarityView extends ARankingView {
     }
     parameterChanged(name) {
         super.parameterChanged(name);
-        this.updateImpl();
+        return this.updateImpl();
     }
     selectionChanged() {
         super.selectionChanged();
-        this.updateImpl();
+        return this.updateImpl();
     }
     updateImpl() {
-        this.updateOptionsData().then(() => {
+        return this.updateOptionsData().then(() => {
             this.loader = null;
             this.rebuild();
         });

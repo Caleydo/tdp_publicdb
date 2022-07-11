@@ -18,10 +18,9 @@ export class CombinedDependentSampleTable extends ACombinedDependentTable {
     }
     parameterChanged(name) {
         if (name === FORM_DATA_SOURCE.id) {
-            this.rebuild();
-            return; // early abort since there is nothing worse than building from scratch
+            return this.rebuild();
         }
-        super.parameterChanged(name);
+        return super.parameterChanged(name);
     }
     getSelectionColumnLabel(ensg) {
         return ViewUtils.loadFirstName(ensg);

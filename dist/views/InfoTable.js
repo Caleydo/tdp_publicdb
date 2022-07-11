@@ -5,7 +5,7 @@ import { IDTypeManager } from 'tdp_core';
 import { AD3View } from 'tdp_core';
 import { RestBaseUtils } from 'tdp_core';
 import { SpeciesUtils } from 'tdp_gene';
-import { transpose as d3Transpose } from 'd3v3';
+import * as d3v3 from 'd3v3';
 import { cellline, tissue, gene } from '../common/config';
 export class AInfoTable extends AD3View {
     constructor(context, selection, parent, dataSource) {
@@ -87,7 +87,7 @@ export class AInfoTable extends AD3View {
             return first.order - second.order;
         });
         if (transposeTable) {
-            return d3Transpose([header, ...body]);
+            return d3v3.transpose([header, ...body]);
         }
         return [header, ...body];
     }

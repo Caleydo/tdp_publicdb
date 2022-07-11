@@ -38,7 +38,7 @@ export class CoExpression extends ACoExpression {
     return <IDataSubtypeConfig>this.getParameterData(ParameterFormIds.EXPRESSION_SUBTYPE);
   }
 
-  loadGeneList(ensgs: string[]) {
+  loadGeneList(ensgs: string[]): Promise<{ id: string; symbol: string }[]> {
     return ViewUtils.loadGeneList(ensgs);
   }
 

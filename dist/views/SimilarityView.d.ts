@@ -9,14 +9,16 @@ export declare class SimilarityView extends ARankingView {
     protected getParameterFormDescs(): import("tdp_core").IFormElementDesc[];
     get itemIDType(): import("tdp_core").IDType;
     private updateOptionsData;
-    static convertData(data: string): any;
+    static convertData(data: string): {
+        [key: string]: any;
+    }[];
     private loadImpl;
     private load;
     protected getColumnDescs(columns: any[]): IAdditionalColumnDesc[];
     protected loadColumnDesc(): Promise<any>;
     protected loadRows(): Promise<any>;
-    protected parameterChanged(name: string): void;
-    protected selectionChanged(): void;
+    protected parameterChanged(name: string): Promise<void>;
+    protected selectionChanged(): Promise<void>;
     private updateImpl;
     protected createInitialRanking(provider: LocalDataProvider): void;
 }

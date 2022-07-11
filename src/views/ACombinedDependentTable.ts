@@ -85,8 +85,9 @@ export abstract class ACombinedDependentTable extends ARankingView {
   protected parameterChanged(name: string) {
     super.parameterChanged(name);
     if (name === 'filter') {
-      this.reloadData();
+      return this.reloadData();
     }
+    return Promise.resolve();
   }
 
   protected loadColumnDesc() {
