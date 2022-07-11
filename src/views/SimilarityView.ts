@@ -2,7 +2,7 @@
  * Created by Samuel Gratzl on 29.01.2016.
  */
 
-import { tsv } from 'd3v3';
+import * as d3v3 from 'd3v3';
 import {
   IARankingViewOptions,
   ISelection,
@@ -71,7 +71,7 @@ export class SimilarityView extends ARankingView {
   }
 
   static convertData(data: string) {
-    return tsv.parse(data, (row: { [key: string]: any }) => {
+    return d3v3.tsv.parse(data, (row: { [key: string]: any }) => {
       const strings = ['name', 'ensgid', 'hom'];
       Object.keys(row).forEach((name) => {
         if (strings.indexOf(name) < 0) {
@@ -127,16 +127,16 @@ export class SimilarityView extends ARankingView {
 
   protected parameterChanged(name: string) {
     super.parameterChanged(name);
-    this.updateImpl();
+    return this.updateImpl();
   }
 
   protected selectionChanged() {
     super.selectionChanged();
-    this.updateImpl();
+    return this.updateImpl();
   }
 
   private updateImpl() {
-    this.updateOptionsData().then(() => {
+    return this.updateOptionsData().then(() => {
       this.loader = null;
       this.rebuild();
     });
