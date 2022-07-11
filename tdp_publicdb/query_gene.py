@@ -1,5 +1,3 @@
-import re
-
 from tdp_core.dbview import DBViewBuilder, inject_where, limit_offset
 
 
@@ -43,22 +41,6 @@ def create_gene(views, gene):
         .call(inject_where)
         .arg("species")
         .filter("symbol", "(lower(ensg) {operator} {value} or lower(symbol) {operator} {value})")
-        .build()
-    )
-
-    views[gene.prefix + "_map_ensgs"] = (
-        DBViewBuilder("helper")
-        .idtype(gene.idtype)
-        .query(
-            """
-        SELECT {g.id} AS id, symbol
-        FROM {g.table} WHERE {g.id} IN ({{ensgs}}) AND species = :species
-        ORDER BY symbol ASC""".format(
-                g=gene
-            )
-        )
-        .replace("ensgs", re.compile(r"(\'[\w]+\')(,\'[\w]+\')*"))
-        .arg("species")
         .build()
     )
 
