@@ -1,6 +1,3 @@
-import {scrollElementIntoCenter} from 'tdp_core/dist/cypress/utils';
-import {waitLineupReadyOrdino} from 'ordino/dist/cypress/utils';
-
 it('Load all Genes', function() {
     cy.visit(Cypress.env('host'));
 
@@ -10,7 +7,7 @@ it('Load all Genes', function() {
     cy.login(); // use Cypress command registerd in Ordino app
 
     // Show you can select single genes if you wanted
-    scrollElementIntoCenter('[data-testid=dataset-card-genes-dataset] [data-testid=human-tab] [data-testid=ordino-dataset-searchbox] [data-testid=async-paginate-input]').click()
+    cy.scrollElementIntoCenter('[data-testid=dataset-card-genes-dataset] [data-testid=human-tab] [data-testid=ordino-dataset-searchbox] [data-testid=async-paginate-input]').click()
     cy.get('[data-testid=dataset-card-genes-dataset] [data-testid=human-tab] [data-testid=ordino-dataset-searchbox] [data-testid=async-paginate-input]').click()
     // wait intentionally a few seconds
     cy.wait(2000)
@@ -23,5 +20,5 @@ it('Load all Genes', function() {
     cy.get('[data-testid=normal-chromosome-protein-coding-human-genes-button]').click();
     cy.wait('@gene_desc');
     cy.wait('@human_genes');
-    waitLineupReadyOrdino(0)
+    cy.waitLineupReadyOrdino(0)
 });

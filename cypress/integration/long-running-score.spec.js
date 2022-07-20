@@ -1,6 +1,3 @@
-import {scrollElementIntoCenter, formSelect, select2SingleSelect} from 'tdp_core/dist/cypress/utils';
-import {waitLineupReadyOrdino, checkScoreColLoadedOrdino} from 'ordino/dist/cypress/utils';
-
 // https://www.youtube.com/watch?v=JZIIf-k852g&t=1s
 it('Long Running Score', function() {
     cy.visit(Cypress.env('host'));
@@ -10,7 +7,7 @@ it('Long Running Score', function() {
     cy.login(); // use Cypress command registerd in Ordino app
 
     // Show you can select single genes if you wanted
-    scrollElementIntoCenter('[data-testid=dataset-card-genes-dataset] [data-testid=human-tab] [data-testid=ordino-dataset-searchbox] [data-testid=async-paginate-input]').click()
+    cy.scrollElementIntoCenter('[data-testid=dataset-card-genes-dataset] [data-testid=human-tab] [data-testid=ordino-dataset-searchbox] [data-testid=async-paginate-input]').click()
     cy.get('[data-testid=dataset-card-genes-dataset] [data-testid=human-tab] [data-testid=ordino-dataset-searchbox] [data-testid=async-paginate-input]').click()
     // wait intentionally a few seconds
     cy.wait(2000)
@@ -23,24 +20,24 @@ it('Long Running Score', function() {
     cy.get('[data-testid=normal-chromosome-protein-coding-human-genes-button]').click();
     cy.wait('@gene_desc');
     cy.wait('@human_genes');
-    waitLineupReadyOrdino(0)
+    cy.waitLineupReadyOrdino(0)
 
     // Add column
     cy.get('[data-testid=add-column-button]').click();
     cy.wait(2000);
     cy.get('[data-testid=lu-adder-div] > .lu-search > .lu-search-list > :nth-child(2) > ul > :nth-child(2) > span').click();
-    select2SingleSelect("data-type", "Relative Copy Number")
-    formSelect("aggregation", "Boxplot")
+    cy.select2SingleSelect("data-type", "Relative Copy Number")
+    cy.formSelect("aggregation", "Boxplot")
     cy.get('[data-testid=primary-dialog-button]').click();
-    checkScoreColLoadedOrdino(0, ['Relative Copy Number', 'Boxplot'], 9)
+    cy.checkScoreColLoadedOrdino(0, ['Relative Copy Number', 'Boxplot'], 9)
 
     // Add column
     cy.get('[data-testid=add-column-button]').click();
     cy.get('[data-testid=lu-adder-div] > .lu-search > .lu-search-list > :nth-child(2) > ul > :nth-child(2) > span').click();
-    formSelect("aggregation", "Frequency")
-    formSelect("comparison-operator", "> greater than")
+    cy.formSelect("aggregation", "Frequency")
+    cy.formSelect("comparison-operator", "> greater than")
     cy.get(':nth-child(5) > .form-control').clear();
     cy.get(':nth-child(5) > .form-control').type('4');
     cy.get('[data-testid=primary-dialog-button]').click();
-    checkScoreColLoadedOrdino(0, ['Frequency > 4'], 10)
+    cy.checkScoreColLoadedOrdino(0, ['Frequency > 4'], 10)
 })

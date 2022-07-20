@@ -1,6 +1,4 @@
 import { cy, it, Cypress } from 'local-cypress';
-import { waitLineupReadyOrdino, checkScoreColLoadedOrdino} from 'ordino/dist/cypress/utils';
-import { scrollElementIntoCenter, select2MultiSelect, formSelect, select2SingleSelect, waitTdpNotBusy} from 'tdp_core/dist/cypress/utils';
 
 // https://www.youtube.com/watch?v=JZIIf-k852g&t=1s
 it('ordino video', function() {
@@ -11,7 +9,7 @@ it('ordino video', function() {
     cy.login(); // use Cypress command registerd in Ordino app
 
     // Show you can select single genes if you wanted
-    scrollElementIntoCenter('[data-testid=dataset-card-genes-dataset] [data-testid=human-tab] [data-testid=ordino-dataset-searchbox] [data-testid=async-paginate-input]').click()
+    cy.scrollElementIntoCenter('[data-testid=dataset-card-genes-dataset] [data-testid=human-tab] [data-testid=ordino-dataset-searchbox] [data-testid=async-paginate-input]').click()
     cy.get('[data-testid=dataset-card-genes-dataset] [data-testid=human-tab] [data-testid=ordino-dataset-searchbox] [data-testid=async-paginate-input]').click()
     // wait intentionally a few seconds
     cy.wait(2000)
@@ -24,15 +22,15 @@ it('ordino video', function() {
     cy.get('[data-testid=normal-chromosome-protein-coding-human-genes-button]').click();
     cy.wait('@gene_desc');
     cy.wait('@human_genes');
-    waitLineupReadyOrdino(0)
+    cy.waitLineupReadyOrdino(0)
 
     // Add column
     cy.get('[data-testid=add-column-button]').click();
     cy.get('[data-testid=lu-adder-div] > .lu-search > .lu-search-list > :nth-child(2) > ul > :nth-child(1) > span').click();
-    select2MultiSelect("cell-line", "HCC1954")
-    select2MultiSelect("data-type", "Relative Copy Number")
+    cy.select2MultiSelect("cell-line", "HCC1954")
+    cy.select2MultiSelect("data-type", "Relative Copy Number")
     cy.get('[data-testid=primary-dialog-button]').click();
-    checkScoreColLoadedOrdino(0, ['HCC1954', 'Relative Copy Number'], 9);
+    cy.checkScoreColLoadedOrdino(0, ['HCC1954', 'Relative Copy Number'], 9);
 
     // Sort by column
     // cy.get('[data-draginfo="Merge"] > .lu-toolbar > .lu-action-sort').click();
@@ -47,18 +45,18 @@ it('ordino video', function() {
     // Add column
     cy.get('[data-testid=add-column-button]').click();
     cy.get('[data-testid=lu-adder-div] > .lu-search > .lu-search-list > :nth-child(2) > ul > :nth-child(1) > span').click();
-    select2MultiSelect("cell-line", "HCC1954")
-    select2MultiSelect("data-type", "Normalized Gene Expression (TPM Values)")
+    cy.select2MultiSelect("cell-line", "HCC1954")
+    cy.select2MultiSelect("data-type", "Normalized Gene Expression (TPM Values)")
     cy.get('[data-testid=primary-dialog-button]').click();
-    checkScoreColLoadedOrdino(0, ['HCC1954', 'Normalized Gene Expression (TPM Values)'], 10)
+    cy.checkScoreColLoadedOrdino(0, ['HCC1954', 'Normalized Gene Expression (TPM Values)'], 10)
 
     // Add column
     cy.get('[data-testid=add-column-button]').click();
     cy.get('[data-testid=lu-adder-div] > .lu-search > .lu-search-list > :nth-child(2) > ul > :nth-child(5) > span').click();
-    select2MultiSelect("cell-line", "HCC1954")
-    select2MultiSelect("data-type", "DRIVE RSA (ER McDonald III et al., Cell, 2017)")
+    cy.select2MultiSelect("cell-line", "HCC1954")
+    cy.select2MultiSelect("data-type", "DRIVE RSA (ER McDonald III et al., Cell, 2017)")
     cy.get('[data-testid=primary-dialog-button]').click();
-    checkScoreColLoadedOrdino(0, ['HCC1954', 'DRIVE RSA (ER McDonald III et al., Cell, 2017)'], 11)
+    cy.checkScoreColLoadedOrdino(0, ['HCC1954', 'DRIVE RSA (ER McDonald III et al., Cell, 2017)'], 11)
 
     // Invert column
     // Here the title should be used. For some reason cypress has problmes, because there is a " character in the title. For now I use the data-id
@@ -70,53 +68,53 @@ it('ordino video', function() {
     // Add column
     cy.get('[data-testid=add-column-button]').click();
     cy.get('[data-testid=lu-adder-div] > .lu-search > .lu-search-list > :nth-child(2) > ul > :nth-child(2) > span').click();
-    formSelect("row-1", "Tumor Type")
-    select2MultiSelect("row-1", "breast carcinoma")
-    select2SingleSelect("data-type", "Normalized Gene Expression (TPM Values)")
+    cy.formSelect("row-1", "Tumor Type")
+    cy.select2MultiSelect("row-1", "breast carcinoma")
+    cy.select2SingleSelect("data-type", "Normalized Gene Expression (TPM Values)")
     cy.get('[data-testid=primary-dialog-button]').click();
-    checkScoreColLoadedOrdino(0, ['Tumor Type', 'breast carcinoma', 'Normalized Gene Expression (TPM Values)'], 12)
+    cy.checkScoreColLoadedOrdino(0, ['Tumor Type', 'breast carcinoma', 'Normalized Gene Expression (TPM Values)'], 12)
 
     // Add column
     cy.get('[data-testid=add-column-button]').click();
     cy.wait(2000);
     cy.get('[data-testid=lu-adder-div] > .lu-search > .lu-search-list > :nth-child(2) > ul > :nth-child(2) > span').click();
-    select2SingleSelect("data-type", "Relative Copy Number")
-    formSelect("aggregation", "Boxplot")
+    cy.select2SingleSelect("data-type", "Relative Copy Number")
+    cy.formSelect("aggregation", "Boxplot")
     cy.get('[data-testid=primary-dialog-button]').click();
-    checkScoreColLoadedOrdino(0, ['Relative Copy Number', 'Boxplot'], 13)
+    cy.checkScoreColLoadedOrdino(0, ['Relative Copy Number', 'Boxplot'], 13)
 
     // Add column
     cy.get('[data-testid=add-column-button]').click();
     cy.get('[data-testid=lu-adder-div] > .lu-search > .lu-search-list > :nth-child(2) > ul > :nth-child(2) > span').click();
-    formSelect("aggregation", "Frequency")
-    formSelect("comparison-operator", "> greater than")
+    cy.formSelect("aggregation", "Frequency")
+    cy.formSelect("comparison-operator", "> greater than")
     cy.get(':nth-child(5) > .form-control').clear();
     cy.get(':nth-child(5) > .form-control').type('4');
     cy.get('[data-testid=primary-dialog-button]').click();
-    checkScoreColLoadedOrdino(0, ['Frequency > 4'], 14)
+    cy.checkScoreColLoadedOrdino(0, ['Frequency > 4'], 14)
 
     // Select elements and click on detail views
-    waitLineupReadyOrdino(0)
+    cy.waitLineupReadyOrdino(0)
     cy.get('[data-index="0"] > .lu-renderer-selection').click();
     cy.get('[data-testid=celllinedb_expression_vs_copynumber]').click();
-    waitTdpNotBusy()
-    waitLineupReadyOrdino(0)
+    cy.waitTdpNotBusy()
+    cy.waitLineupReadyOrdino(0)
     cy.wait(2000)
     cy.get('[data-index="6"] > .lu-renderer-selection').click();
-    waitTdpNotBusy()
-    waitLineupReadyOrdino(0)
+    cy.waitTdpNotBusy()
+    cy.waitLineupReadyOrdino(0)
     cy.wait(2000)
     cy.get('[data-index="6"] > .lu-renderer-selection').click();
-    waitTdpNotBusy()
+    cy.waitTdpNotBusy()
     cy.wait(2000)
     cy.get('[data-testid=targetvalidation]').click();
-    waitTdpNotBusy()
+    cy.waitTdpNotBusy()
     cy.wait(2000)
     cy.get('[data-testid=ensembl_org]').click();
-    waitTdpNotBusy()
+    cy.waitTdpNotBusy()
     cy.wait(2000)
     cy.get('[data-testid=copynumbertable]').click();
-    waitTdpNotBusy()
+    cy.waitTdpNotBusy()
     cy.wait(2000)
 
     // Sort and filter columns
@@ -131,22 +129,22 @@ it('ordino video', function() {
     // Add column
     cy.get('[data-testid=viewWrapper-1] [data-testid=side-panel-wrapper] [data-testid=lu-adder-div] [data-testid=add-column-button]').click();
     cy.get('[data-testid=viewWrapper-1] > .view > .inner > .tdp-view > [data-testid=side-panel-wrapper] > .panel-header > :nth-child(2) > [data-testid=lu-adder-div] > .lu-search > .lu-search-list > :nth-child(2) > ul > :nth-child(1) > span').click();
-    select2MultiSelect("gene-symbol", ["BRCA1", "BRCA2"])
-    select2MultiSelect("data-type", "AA Mutated")
+    cy.select2MultiSelect("gene-symbol", ["BRCA1", "BRCA2"])
+    cy.select2MultiSelect("data-type", "AA Mutated")
     cy.get('[data-testid=primary-dialog-button]').click();
-    checkScoreColLoadedOrdino(1, ['BRCA1', 'AA Mutated'], 10)
-    checkScoreColLoadedOrdino(1, ['BRCA2', 'AA Mutated'], 10)
+    cy.checkScoreColLoadedOrdino(1, ['BRCA1', 'AA Mutated'], 10)
+    cy.checkScoreColLoadedOrdino(1, ['BRCA2', 'AA Mutated'], 10)
 
-    waitLineupReadyOrdino(1)
+    cy.waitLineupReadyOrdino(1)
     cy.get('[data-testid=viewWrapper-1] [data-index="0"] > .lu-renderer-selection').click();
     cy.get('[data-testid=viewWrapper-1] [data-index="1"] > .lu-renderer-selection').click();
     cy.get('[data-testid=cosmic]').click();
     // Intentionally wait 2 seconds
-    waitTdpNotBusy()
+    cy.waitTdpNotBusy()
     cy.wait(2000)
     cy.get('[data-testid=show] [data-testid=form-select]').select('907046');
     // Intentionally wait 2 seconds
-    waitTdpNotBusy()
+    cy.waitTdpNotBusy()
     cy.wait(2000)
     cy.get('[data-testid=ordino_sessions_shortcut-link]').click();
     cy.get('[data-testid=current-session-sessionscard] [data-testid=ordino0] [data-testid=save-button]').click();
