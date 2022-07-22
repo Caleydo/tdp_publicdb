@@ -33,7 +33,7 @@ it('ordino video', function() {
     cy.checkScoreColLoadedOrdino(0, ['HCC1954', 'Relative Copy Number'], 9);
 
     // Sort by column
-    // cy.get('[data-draginfo="Merge"] > .lu-toolbar > .lu-action-sort').click();
+    cy.get('[data-testid=viewWrapper-0] > .view > .inner > .tdp-view > :nth-child(1) > .le > .le-header > .le-thead > section:nth-last-child(-n+1) > .lu-toolbar > .lu-action-sort').click();
 
     // Show some information
     cy.get('[data-testid="(un)collapse-button"] > .fas').click();
@@ -100,13 +100,10 @@ it('ordino video', function() {
     cy.waitTdpNotBusy()
     cy.waitLineupReadyOrdino(0)
     cy.wait(2000)
-    cy.get('[data-index="6"] > .lu-renderer-selection').click();
-    cy.waitTdpNotBusy()
-    cy.waitLineupReadyOrdino(0)
-    cy.wait(2000)
-    cy.get('[data-index="6"] > .lu-renderer-selection').click();
-    cy.waitTdpNotBusy()
-    cy.wait(2000)
+    // cy.get('[data-index="6"] > .lu-renderer-selection').click();
+    // cy.waitTdpNotBusy()
+    // cy.waitLineupReadyOrdino(0)
+    // cy.wait(2000)
     cy.get('[data-testid=targetvalidation]').click();
     cy.waitTdpNotBusy()
     cy.wait(2000)
@@ -118,7 +115,7 @@ it('ordino video', function() {
     cy.wait(2000)
 
     // Sort and filter columns
-    cy.get('[data-testid=viewWrapper-1] > .view > .inner > .tdp-view > :nth-child(1) > .le > .le-header > .le-thead > [data-draginfo="Merge"] > .lu-toolbar > .lu-action-sort').click();
+    cy.get('[data-testid=viewWrapper-1] > .view > .inner > .tdp-view > :nth-child(1) > .le > .le-header > .le-thead > section:nth-last-child(-n+1) > .lu-toolbar > .lu-action-sort').click();
     cy.get('[title="Tumor Type"] > .lu-toolbar > .lu-action-filter').click();
     cy.get('.lu-dialog-table > :nth-child(1) > :nth-child(2) > div').click();
     cy.get('.lu-dialog-table > :nth-child(1) > input').uncheck();
@@ -137,12 +134,12 @@ it('ordino video', function() {
 
     cy.waitLineupReadyOrdino(1)
     cy.get('[data-testid=viewWrapper-1] [data-index="0"] > .lu-renderer-selection').click();
-    cy.get('[data-testid=viewWrapper-1] [data-index="1"] > .lu-renderer-selection').click();
+    cy.get('[data-testid=viewWrapper-1] [data-index="12"] > .lu-renderer-selection').click();
     cy.get('[data-testid=cosmic]').click();
     // Intentionally wait 2 seconds
     cy.waitTdpNotBusy()
     cy.wait(2000)
-    cy.get('[data-testid=show] [data-testid=form-select]').select('907046');
+    cy.get('[data-testid=show] [data-testid=form-select]').select('687455');
     // Intentionally wait 2 seconds
     cy.waitTdpNotBusy()
     cy.wait(2000)
