@@ -28,7 +28,11 @@ function initializeScore(
   function defineScore(name: { id: string; text: string }) {
     if (configs) {
       return configs.map((ds) =>
-        singleScoreFactory({ name, data_type: ds[0], data_subtype: ds[1], maxDirectFilterRows: data.maxDirectFilterRows }, primary, opposite),
+        singleScoreFactory(
+          { name, screen_type: data.screen_type, data_type: ds[0], data_subtype: ds[1], maxDirectFilterRows: data.maxDirectFilterRows },
+          primary,
+          opposite,
+        ),
       );
     }
     return singleScoreFactory({ ...data, name }, primary, opposite);
@@ -56,7 +60,7 @@ export class SingleDepletionScore extends ASingleScore implements IScore<any> {
 
   protected createFilter(): IParams {
     return {
-      depletionscreen: this.dataSubType.id === 'ceres' ? 'Avana' : 'Drive',
+      depletionscreen: this.dataSubType.filter,
     };
   }
 

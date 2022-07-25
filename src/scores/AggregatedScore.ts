@@ -48,7 +48,7 @@ export class AggregatedDepletionScore extends AAggregatedScore implements IScore
 
   protected createFilter(): IParams {
     return {
-      depletionscreen: this.dataSubType.id === 'ceres' ? 'Avana' : 'Drive',
+      depletionscreen: this.dataSubType.filter,
     };
   }
 
