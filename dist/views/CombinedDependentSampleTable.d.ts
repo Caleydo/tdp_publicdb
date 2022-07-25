@@ -5,7 +5,7 @@ export declare class CombinedDependentSampleTable extends ACombinedDependentTabl
     constructor(context: IViewContext, selection: ISelection, parent: HTMLElement, dataType: IDataTypeConfig[]);
     protected get oppositeDataSource(): IDataSourceConfig;
     protected getParameterFormDescs(): import("tdp_core").IFormElementDesc[];
-    protected parameterChanged(name: string): void;
+    protected parameterChanged(name: string): Promise<void>;
     protected getSelectionColumnLabel(ensg: string): Promise<string>;
     static createCombinedDependentSampleTable(context: IViewContext, selection: ISelection, parent: HTMLElement): CombinedDependentSampleTable;
 }

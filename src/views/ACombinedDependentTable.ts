@@ -82,11 +82,12 @@ export abstract class ACombinedDependentTable extends ARankingView {
     });
   }
 
-  protected parameterChanged(name: string) {
+  protected parameterChanged(name: string): Promise<void> {
     super.parameterChanged(name);
     if (name === 'filter') {
-      this.reloadData();
+      return this.reloadData();
     }
+    return Promise.resolve();
   }
 
   protected loadColumnDesc() {
