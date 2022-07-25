@@ -9,7 +9,7 @@ export declare abstract class ACombinedDependentTable extends ARankingView {
     protected getParameterFormDescs(): import("tdp_core").IFormElementDesc[];
     private get subTypes();
     protected createSelectionAdapter(): import("tdp_core").ISelectionAdapter;
-    protected parameterChanged(name: string): void;
+    protected parameterChanged(name: string): Promise<void>;
     protected loadColumnDesc(): Promise<Readonly<import("tdp_core").IDatabaseViewDesc>>;
     protected getColumnDescs(columns: IServerColumn[]): IAdditionalColumnDesc[];
     protected loadRows(): Promise<import("tdp_core").IRow[]>;

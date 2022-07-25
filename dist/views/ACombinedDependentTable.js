@@ -58,8 +58,9 @@ export class ACombinedDependentTable extends ARankingView {
     parameterChanged(name) {
         super.parameterChanged(name);
         if (name === 'filter') {
-            this.reloadData();
+            return this.reloadData();
         }
+        return Promise.resolve();
     }
     loadColumnDesc() {
         return RestBaseUtils.getTDPDesc(this.dataSource.db, this.oppositeDataSource.base);

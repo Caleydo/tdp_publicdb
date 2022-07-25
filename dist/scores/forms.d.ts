@@ -3,25 +3,6 @@ export declare const FORM_AGGREGATED_SCORE: ({
     type: FormElementType;
     label: string;
     id: string;
-    attributes: {
-        style: string;
-    };
-    required: boolean;
-    options: {
-        placeholder: string;
-        data: {
-            text: string;
-            children: {
-                id: string;
-                text: string;
-            }[];
-        }[];
-    };
-    useSession: boolean;
-} | {
-    type: FormElementType;
-    label: string;
-    id: string;
     dependsOn: string[];
     required: boolean;
     options: {
@@ -65,6 +46,25 @@ export declare const FORM_AGGREGATED_SCORE: ({
         step: string;
         optionsData?: undefined;
     };
+} | {
+    type: FormElementType;
+    label: string;
+    id: string;
+    attributes: {
+        style: string;
+    };
+    required: boolean;
+    options: {
+        placeholder: string;
+        data: {
+            text: string;
+            children: {
+                id: string;
+                text: string;
+            }[];
+        }[];
+    };
+    useSession: boolean;
 } | {
     type: FormElementType;
     label: string;
