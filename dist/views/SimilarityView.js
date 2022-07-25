@@ -92,14 +92,14 @@ export class SimilarityView extends ARankingView {
     }
     parameterChanged(name) {
         super.parameterChanged(name);
-        this.updateImpl();
+        return this.updateImpl();
     }
     selectionChanged() {
         super.selectionChanged();
-        this.updateImpl();
+        return this.updateImpl();
     }
     updateImpl() {
-        this.updateOptionsData().then(() => {
+        return this.updateOptionsData().then(() => {
             this.loader = null;
             this.rebuild();
         });
