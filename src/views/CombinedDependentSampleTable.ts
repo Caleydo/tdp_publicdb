@@ -22,12 +22,11 @@ export class CombinedDependentSampleTable extends ACombinedDependentTable {
     return base;
   }
 
-  protected parameterChanged(name: string) {
+  protected parameterChanged(name: string): Promise<void> {
     if (name === FORM_DATA_SOURCE.id) {
-      this.rebuild();
-      return; // early abort since there is nothing worse than building from scratch
+      return this.rebuild();
     }
-    super.parameterChanged(name);
+    return super.parameterChanged(name);
   }
 
   protected getSelectionColumnLabel(ensg: string) {

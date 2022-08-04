@@ -293,6 +293,10 @@ export interface IDataSubtypeConfig {
   domain?: number[];
   missingValue?: number;
   constantDomain?: boolean;
+  /**
+   * Value of the column filter.
+   */
+  filter?: string;
 }
 
 export const expression: IDataTypeConfig = {
@@ -305,7 +309,7 @@ export const expression: IDataTypeConfig = {
       id: 'tpm',
       name: 'Normalized Gene Expression (TPM Values)',
       type: dataSubtypes.number,
-      domain: [-3, 3],
+      domain: [null, null], // domain will be auto-inferred
       missingValue: NaN,
       constantDomain: true,
       useForAggregation: 'tpm',
@@ -314,7 +318,7 @@ export const expression: IDataTypeConfig = {
       id: 'counts',
       name: 'Raw Counts',
       type: dataSubtypes.number,
-      domain: [0, 10000],
+      domain: [null, null],
       missingValue: NaN,
       constantDomain: true,
       useForAggregation: 'counts',
@@ -336,7 +340,7 @@ export const copyNumber: IDataTypeConfig = {
       id: 'relativecopynumber',
       name: 'Relative Copy Number',
       type: dataSubtypes.number,
-      domain: [0, 15],
+      domain: [0, null],
       missingValue: NaN,
       constantDomain: true,
       useForAggregation: 'relativecopynumber',
@@ -345,7 +349,7 @@ export const copyNumber: IDataTypeConfig = {
       id: 'totalabscopynumber',
       name: 'Total Absolute Copy Number',
       type: dataSubtypes.number,
-      domain: [0, 15],
+      domain: [0, null],
       missingValue: NaN,
       constantDomain: true,
       useForAggregation: 'totalabscopynumber',
@@ -375,7 +379,7 @@ export const mutation: IDataTypeConfig = {
       type: dataSubtypes.cat,
       categories: toLineUpCategories(Categories.mutationCat),
       useForAggregation: 'aa_mutated',
-      domain: [0, 100],
+      domain: [0, null],
       missingValue: Categories.unknownMutationValue,
     },
     // just for single score:
@@ -384,7 +388,7 @@ export const mutation: IDataTypeConfig = {
       name: 'AA Mutation',
       type: dataSubtypes.string,
       useForAggregation: '',
-      domain: [0, 100],
+      domain: [0, null],
       missingValue: NaN,
     },
     {
@@ -393,7 +397,7 @@ export const mutation: IDataTypeConfig = {
       type: dataSubtypes.cat,
       categories: toLineUpCategories(Categories.mutationCat),
       useForAggregation: 'dna_mutated',
-      domain: [0, 100],
+      domain: [0, null],
       missingValue: Categories.unknownMutationValue,
     },
     // just for single score:
@@ -402,14 +406,14 @@ export const mutation: IDataTypeConfig = {
       name: 'DNA Mutation',
       type: dataSubtypes.string,
       useForAggregation: '',
-      domain: [0, 100],
+      domain: [0, null],
       missingValue: NaN,
     },
     {
       id: 'zygosity',
       name: 'Zygosity',
       type: dataSubtypes.number,
-      domain: [0, 15],
+      domain: [0, null],
       missingValue: NaN,
       useForAggregation: 'zygosity',
     },
@@ -418,7 +422,7 @@ export const mutation: IDataTypeConfig = {
 
 export const depletion: IDataTypeConfig = {
   id: 'depletion',
-  name: 'Depletion Screen ',
+  name: 'Depletion Screen',
   tableName: 'depletionscore',
   query: 'depletion_score',
   dataSubtypes: [
@@ -426,28 +430,51 @@ export const depletion: IDataTypeConfig = {
       id: 'rsa',
       name: 'DRIVE RSA (ER McDonald III et al., Cell, 2017)',
       type: dataSubtypes.number,
-      domain: [-3, 3],
+      domain: [null, null],
       missingValue: NaN,
       constantDomain: false,
       useForAggregation: 'rsa',
+      filter: 'Drive',
     },
     {
       id: 'ataris',
       name: 'DRIVE ATARiS (ER McDonald III et al., Cell, 2017)',
       type: dataSubtypes.number,
-      domain: [0, 10000],
+      domain: [0, null],
       missingValue: NaN,
       constantDomain: false,
       useForAggregation: 'ataris',
+      filter: 'Drive',
     },
     {
       id: 'ceres',
       name: 'Avana CERES (Robin M. Meyers et al., Nature Genetics, 2017)',
       type: dataSubtypes.number,
-      domain: [0, 10000],
+      domain: [0, null],
       missingValue: NaN,
       constantDomain: false,
       useForAggregation: 'ceres',
+      filter: 'Avana',
+    },
+    {
+      id: 'chronos',
+      name: 'AVANA Chronos (DepMap.org)',
+      type: dataSubtypes.number,
+      domain: [0, null],
+      missingValue: NaN,
+      constantDomain: false,
+      useForAggregation: 'chronos',
+      filter: 'Avana',
+    },
+    {
+      id: 'escore',
+      name: 'Sanger E-score (Fiona M. Behan et al., Nature 2019)',
+      type: dataSubtypes.number,
+      domain: [0, null],
+      missingValue: NaN,
+      constantDomain: false,
+      useForAggregation: 'escore',
+      filter: 'Sanger',
     },
   ],
 };
@@ -462,7 +489,7 @@ export const drugScreen: IDataTypeConfig = {
       id: 'actarea',
       name: 'Activity Area',
       type: dataSubtypes.number,
-      domain: [-3, 3],
+      domain: [null, null],
       missingValue: NaN,
       constantDomain: false,
       useForAggregation: 'actarea',
@@ -471,7 +498,7 @@ export const drugScreen: IDataTypeConfig = {
       id: 'ic50',
       name: 'IC50',
       type: dataSubtypes.number,
-      domain: [-3, 3],
+      domain: [null, null],
       missingValue: NaN,
       constantDomain: false,
       useForAggregation: 'ic50',
@@ -480,7 +507,7 @@ export const drugScreen: IDataTypeConfig = {
       id: 'ec50',
       name: 'EC50',
       type: dataSubtypes.number,
-      domain: [-3, 3],
+      domain: [null, null],
       missingValue: NaN,
       constantDomain: false,
       useForAggregation: 'ec50',

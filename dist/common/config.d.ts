@@ -73,6 +73,10 @@ export interface IDataSubtypeConfig {
     domain?: number[];
     missingValue?: number;
     constantDomain?: boolean;
+    /**
+     * Value of the column filter.
+     */
+    filter?: string;
 }
 export declare const expression: IDataTypeConfig;
 export declare const copyNumber: IDataTypeConfig;
