@@ -124,7 +124,7 @@ export class SimilarityView extends ARankingView {
     return this.load().then((desc) => desc.rows);
   }
 
-  protected parameterChanged(name: string) {
+  protected parameterChanged(name: string): Promise<void> {
     super.parameterChanged(name);
     return this.updateImpl();
   }

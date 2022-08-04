@@ -1,9 +1,7 @@
 /**
  * Created by Samuel Gratzl on 27.04.2016.
  */
-import { IDTypeManager } from 'tdp_core';
-import { AD3View } from 'tdp_core';
-import { RestBaseUtils } from 'tdp_core';
+import { IDTypeManager, AD3View, RestBaseUtils } from 'tdp_core';
 import { SpeciesUtils } from 'tdp_gene';
 import { transpose as d3Transpose } from 'd3';
 import { cellline, tissue, gene } from '../common/config';
