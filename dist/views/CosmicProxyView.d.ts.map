@@ -1,1 +1,0 @@
-{"version":3,"file":"CosmicProxyView.d.ts","sourceRoot":"","sources":["../../src/views/CosmicProxyView.ts"],"names":[],"mappings":"AAIA,OAAO,EAAE,SAAS,EAAE,iBAAiB,EAAiB,MAAM,UAAU,CAAC;AAEvE;;;GAGG;AACH,qBAAa,eAAgB,SAAQ,SAAS;cAC5B,sBAAsB,CAAC,KAAK,EAAE,MAAM,EAAE,GAAG,OAAO,CAAC,iBAAiB,EAAE,CAAC;IAYrF;;;OAGG;IACH,SAAS,CAAC,gBAAgB,CAAC,cAAc,EAAE,MAAM;CAIlD"}
