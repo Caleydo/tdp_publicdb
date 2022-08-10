@@ -4,7 +4,7 @@
 /.idea
 /lib/
 /build/
-/dist/tsBuildInfoFile
+/dist/
 /dist_python/
 *.egg-info/
 *.egg
@@ -27,4 +27,3 @@ node_modules/
 /tests/**/*.map
 *.css
 package-lock.json
-/dist/

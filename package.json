@@ -21,11 +21,8 @@
     "src",
     "dist",
     "tdp_publicdb",
-    "__init__.py",
-    "__main__.py",
     "requirements.txt",
-    "requirements_dev.txt",
-    "docker_packages.txt"
+    "requirements_dev.txt"
   ],
   "scripts": {
     "all": "npm run lint:fix && npm run test && npm run build && npm run dist",
