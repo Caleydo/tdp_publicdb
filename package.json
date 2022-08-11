@@ -66,9 +66,6 @@
     "tdp_gene": "git+ssh://git@github.com:Caleydo/tdp_gene#visyn_scripts",
     "visyn_scripts": "git+ssh://git@github.com/datavisyn/visyn_scripts.git#develop"
   },
-  "optionalDependencies": {
-    "ordino": "git+ssh://git@github.com:Caleydo/ordino#visyn_scripts"
-  },
   "visyn": {
     "entries": {
       "app": "./src/index.ts"
