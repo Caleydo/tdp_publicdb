@@ -101,7 +101,7 @@ export class SimilarityView extends ARankingView {
     updateImpl() {
         return this.updateOptionsData().then(() => {
             this.loader = null;
-            this.rebuild();
+            return this.rebuild();
         });
     }
     createInitialRanking(provider) {

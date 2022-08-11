@@ -20,6 +20,7 @@ import { DatasetSearchBox } from './DatasetSearchBox';
 import { IPublicDbStartMenuDatasetSectionDesc } from '../base/extensions';
 
 export default function DatasetCard({ name, icon, tabs, startViewId, dataSource, cssClass, tokenSeparators }: IPublicDbStartMenuDatasetSectionDesc) {
+  const testId = `dataset-card-${cssClass}`;
   const { app } = React.useContext(OrdinoContext);
   const [namedSets, setNamedSets] = React.useState<INamedSet[] | null>([]);
   const [dirtyNamedSets, setDirtyNamedSets] = React.useState(true);
@@ -132,7 +133,7 @@ export default function DatasetCard({ name, icon, tabs, startViewId, dataSource,
   const activeTabIndex = 0;
 
   return (
-    <div className={`ordino-dataset ${cssClass || ''}`}>
+    <div className={`ordino-dataset ${cssClass || ''}`} data-testid={testId}>
       <h4 className="text-start mb-3">
         <i className={`me-2 ordino-icon-2 ${icon}`} />
         {name}
@@ -145,6 +146,7 @@ export default function DatasetCard({ name, icon, tabs, startViewId, dataSource,
                 <li key={tab.id} className="nav-item" role="presentation">
                   <a
                     className={`nav-link ${index === activeTabIndex ? 'active' : ''}`}
+                    data-testid={`${tab.id}-link`}
                     id={`dataset-tab-${tab.id}-${id}`}
                     data-bs-toggle="tab"
                     href={`#dataset-panel-${tab.id}-${id}`}
@@ -166,6 +168,7 @@ export default function DatasetCard({ name, icon, tabs, startViewId, dataSource,
                 <div
                   key={tab.id}
                   className={`tab-pane fade mt-4 ${index === activeTabIndex ? 'show active' : ''}`}
+                  data-testid={`${tab.id}-tab`}
                   role="tabpanel"
                   id={`dataset-panel-${tab.id}-${id}`}
                   aria-labelledby={`dataset-tab-${tab.id}-${id}`}
