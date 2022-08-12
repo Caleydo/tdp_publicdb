@@ -59,12 +59,11 @@
   },
   "dependencies": {
     "d3": "~3.5.17",
+    "jstat": "^1.9.4",
     "react-highlight-words": "^0.17.0",
     "react-select": "^4.1.0",
     "react-select-async-paginate": "^0.5.3",
-    "react-virtualized": "^9.22.3",
-    "tdp_gene": "git+ssh://git@github.com:Caleydo/tdp_gene#visyn_scripts",
-    "visyn_scripts": "git+ssh://git@github.com/datavisyn/visyn_scripts.git#develop"
+    "react-virtualized": "^9.22.3"
   },
   "optionalDependencies": {
     "ordino": "git+ssh://git@github.com:Caleydo/ordino#visyn_scripts"

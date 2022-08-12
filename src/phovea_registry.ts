@@ -10,8 +10,6 @@ import reg from './phovea';
 /**
  * build a registry by registering all phovea modules
  */
-// other modules
-import 'tdp_gene/dist/phovea_registry';
 /// #if include('ordino')
 import 'ordino/dist/phovea_registry';
 /// #endif

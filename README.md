@@ -2,7 +2,7 @@ tdp_publicdb
 =====================
 [![Phovea][phovea-image-client]][phovea-url] [![Phovea][phovea-image-server]][phovea-url] [![NPM version][npm-image]][npm-url] [![Build Status][circleci-image]][circleci-url]
 
-This repository contains the database connector to the bioinfoDB.hg38 database and the respective SQL queries to drive the [tdp_gene](https://github.com/Caleydo/tdp_gene/) views and visualizations.
+This repository contains the database connector to the bioinfoDB.hg38 database and the respective SQL queries to show the views and visualizations.
 
 Installation
 ------------

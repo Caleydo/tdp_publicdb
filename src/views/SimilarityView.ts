@@ -12,11 +12,10 @@ import {
   ColumnDescUtils,
   FormElementType,
   IFormSelectElement,
-  IDTypeManager,
   RestBaseUtils,
 } from 'tdp_core';
 import { LocalDataProvider, createSelectionDesc, createStackDesc, StackColumn } from 'lineupjs';
-import { SpeciesUtils } from 'tdp_gene';
+import { SpeciesUtils } from '../common';
 
 const SELECT_ID = 'genehopper_selection';
 
@@ -138,7 +137,7 @@ export class SimilarityView extends ARankingView {
   private updateImpl() {
     return this.updateOptionsData().then(() => {
       this.loader = null;
-      this.rebuild();
+      return this.rebuild();
     });
   }
 
