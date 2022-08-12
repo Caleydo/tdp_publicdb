@@ -1,5 +1,5 @@
 import { IDTypeManager, AInstantView, RestBaseUtils, ErrorAlertHandler } from 'tdp_core';
-import { SpeciesUtils } from 'tdp_gene';
+import { SpeciesUtils } from '../common';
 import { gene } from '../common/config';
 
 interface IGeneInfo {

@@ -11,7 +11,6 @@ import reg from './dist/phovea';
  * build a registry by registering all phovea modules
  */
 //other modules
-import 'tdp_gene/phovea_registry.js';
 /// #if include('ordino')
 import 'ordino/phovea_registry.js';
 /// #endif

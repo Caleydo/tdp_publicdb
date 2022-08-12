@@ -3,7 +3,8 @@
  */
 
 import { IDType, IScore, INamedSet, IDTypeManager, RestBaseUtils, IParams, LineupUtils } from 'tdp_core';
-import { SpeciesUtils, FieldUtils } from 'tdp_gene';
+import { FieldUtils } from '../providers';
+import { SpeciesUtils } from '../common';
 import { ScoreUtils } from './ScoreUtils';
 import { AScore, ICommonScoreParam } from './AScore';
 import { IDataSourceConfig, dataSubtypes, mutation, MAX_FILTER_SCORE_ROWS_BEFORE_ALL } from '../common/config';

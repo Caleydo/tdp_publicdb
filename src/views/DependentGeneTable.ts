@@ -15,10 +15,10 @@ import {
   LineupUtils,
   IDTypeManager,
 } from 'tdp_core';
-import { SpeciesUtils, Species } from 'tdp_gene';
 import { ParameterFormIds, FORM_GENE_FILTER } from '../common/forms';
 import { ViewUtils } from './ViewUtils';
 import { gene, expression, copyNumber, mutation, IDataTypeConfig, chooseDataSource, IDataSourceConfig, IDataSubtypeConfig } from '../common/config';
+import { Species, SpeciesUtils } from '../common';
 
 export class DependentGeneTable extends ARankingView {
   private readonly dataSource: IDataSourceConfig;

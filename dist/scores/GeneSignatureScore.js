@@ -1,5 +1,6 @@
 import { ColumnDescUtils, RestBaseUtils, FormDialog, FormElementType, AppContext, IDTypeManager, I18nextManager, } from 'tdp_core';
-import { SpeciesUtils, FieldUtils } from 'tdp_gene';
+import { FieldUtils } from '../providers';
+import { SpeciesUtils } from '../common';
 import { ScoreUtils } from './ScoreUtils';
 import { MAX_FILTER_SCORE_ROWS_BEFORE_ALL } from '../common/config';
 /**

@@ -15,7 +15,7 @@ import {
   RestBaseUtils,
 } from 'tdp_core';
 import { LocalDataProvider, createSelectionDesc, createStackDesc, StackColumn } from 'lineupjs';
-import { SpeciesUtils } from 'tdp_gene';
+import { SpeciesUtils } from '../common';
 
 const SELECT_ID = 'genehopper_selection';
 

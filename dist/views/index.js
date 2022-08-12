@@ -15,4 +15,10 @@ export * from './InfoTable';
 export * from './OncoPrint';
 export * from './TissueList';
 export * from './SimilarityView';
+export * from './ACoExpression';
+export * from './ACommonList';
+export * from './AExpressionVsCopyNumber';
+export * from './AOncoPrint';
+export * from './GeneProxyView';
+export * from './UniProtProxyView';
 //# sourceMappingURL=index.js.map

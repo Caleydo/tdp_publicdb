@@ -1,5 +1,7 @@
-import { Categories, SpeciesUtils, ICommonDBConfig } from 'tdp_gene';
 import { Select3Utils, ISelect3Item, IdTextPair, RestBaseUtils } from 'tdp_core';
+import type { ICommonDBConfig } from '../views/ACommonList';
+import { Categories } from './Categories';
+import { SpeciesUtils } from './common';
 import { gene, IDataSourceConfig, drug } from './config';
 
 interface IDrugData extends IdTextPair {

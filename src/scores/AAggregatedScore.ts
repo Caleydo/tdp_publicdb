@@ -3,10 +3,11 @@
  */
 
 import { IScore, IScoreRow, INamedSet, IDTypeManager, RestBaseUtils, IParams, LineupUtils, IDType } from 'tdp_core';
-import { SpeciesUtils, FieldUtils } from 'tdp_gene';
 import { ScoreUtils } from './ScoreUtils';
 import { AScore, ICommonScoreParam } from './AScore';
 import { IDataSourceConfig, dataSubtypes, MAX_FILTER_SCORE_ROWS_BEFORE_ALL } from '../common/config';
+import { FieldUtils } from '../providers';
+import { SpeciesUtils } from '../common';
 
 /**
  * by convention the 'panel' filter key refers to the panel used for the returning entity, e.g. a list of genes will be returned -> panel = gene panel

@@ -1,5 +1,5 @@
 import { RestBaseUtils, IParams, IRow, IAdditionalColumnDesc } from 'tdp_core';
-import { SpeciesUtils, Species } from 'tdp_gene';
+import { Species, SpeciesUtils } from '../common/common';
 import { gene } from '../common/config';
 
 export class LineUpStoredData {

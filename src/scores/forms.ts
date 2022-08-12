@@ -1,5 +1,5 @@
 import { FormElementType } from 'tdp_core';
-import { Categories } from 'tdp_gene';
+import { Categories } from '../common/Categories';
 import {
   ParameterFormIds,
   CATEGORICAL_AGGREGATION,
