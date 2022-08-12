@@ -91,7 +91,8 @@
     "react-highlight-words": "^0.17.0",
     "react-select": "^4.1.0",
     "react-select-async-paginate": "^0.5.3",
-    "react-virtualized": "^9.22.3"
+    "react-virtualized": "^9.22.3",
+    "tdp_core": "git+ssh://git@github.com:datavisyn/tdp_core#develop"
   },
   "optionalDependencies": {
     "ordino": "git+ssh://git@github.com:Caleydo/ordino#develop"
