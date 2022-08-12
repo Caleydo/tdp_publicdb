@@ -1,8 +1,8 @@
 /**
  * Created by sam on 06.03.2017.
  */
-import { Categories } from 'tdp_gene';
 import { ColumnDescUtils } from 'tdp_core';
+import { Categories } from './Categories';
 /**
  * maximal number of rows in which just the subset if fetched instead of all
  * @type {number}

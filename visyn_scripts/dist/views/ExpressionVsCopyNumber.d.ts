@@ -1,5 +1,5 @@
 import { IFormElementDesc } from 'tdp_core';
-import { AExpressionVsCopyNumber, ICopyNumberDataFormatRow } from 'tdp_gene';
+import { AExpressionVsCopyNumber, ICopyNumberDataFormatRow } from './AExpressionVsCopyNumber';
 export declare class ExpressionVsCopyNumber extends AExpressionVsCopyNumber {
     protected getParameterFormDescs(): IFormElementDesc[];
     private get dataSource();
@@ -8,12 +8,12 @@ export declare class ExpressionVsCopyNumber extends AExpressionVsCopyNumber {
     protected getExpressionValues(): {
         name: string;
         value: string;
-        data: import("../common/config").IDataSubtypeConfig;
+        data: import("../common").IDataSubtypeConfig;
     }[];
     protected getCopyNumberValues(): {
         name: string;
         value: string;
-        data: import("../common/config").IDataSubtypeConfig;
+        data: import("../common").IDataSubtypeConfig;
     }[];
     get itemIDType(): import("tdp_core").IDType;
     protected select(ids: string[]): void;

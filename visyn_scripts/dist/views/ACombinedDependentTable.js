@@ -1,5 +1,5 @@
-import { SpeciesUtils } from 'tdp_gene';
 import { ARankingView, RestBaseUtils, IDTypeManager, LineupUtils, AdapterUtils, } from 'tdp_core';
+import { SpeciesUtils } from '../common';
 import { ParameterFormIds, FORM_DATA_HIERARCHICAL_SUBTYPE } from '../common/forms';
 import { ViewUtils } from './ViewUtils';
 import { splitTypes } from '../common/config';

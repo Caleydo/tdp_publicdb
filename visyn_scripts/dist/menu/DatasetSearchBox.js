@@ -4,10 +4,25 @@ import { components } from 'react-select';
 import { AsyncPaginate } from 'react-select-async-paginate';
 import Highlighter from 'react-highlight-words';
 import { GeneUtils } from '../common';
+// functions to add data-testid attribute to react-select components
+// eslint-disable-next-line
+const addDataTestId = (Component, dataTestId) => 
+// eslint-disable-next-line
+(props) => (
+// eslint-disable-next-line
+React.createElement(Component, { ...props, 
+    // eslint-disable-next-line
+    innerProps: Object.assign({}, props.innerProps, { 'data-testid': `${dataTestId}${props.data ? '-' + props.data.id : ''}` }) }));
 function Input(props) {
     const { onPaste } = props.selectProps;
-    return React.createElement(components.Input, { onPaste: onPaste, ...props });
+    const modifiedProps = { 'data-testid': 'async-paginate-input', ...props };
+    delete modifiedProps.popoverType; // remove the "illegal" prop from the copy
+    return React.createElement(components.Input, { onPaste: onPaste, ...modifiedProps });
 }
+const clearIndicator = (props) => components.ClearIndicator && React.createElement(components.ClearIndicator, { ...props });
+const dropdownIndicator = (props) => components.DropdownIndicator && React.createElement(components.DropdownIndicator, { ...props });
+const option = (props) => components.Option && React.createElement(components.Option, { ...props });
+const multiValueRemove = (props) => components.MultiValueRemove && React.createElement(components.MultiValueRemove, { ...props });
 export function DatasetSearchBox({ placeholder, dataSource, onOpen, onSaveAsNamedSet, params = {}, tokenSeparators = /[\s;,]+/gm }) {
     const [items, setItems] = React.useState([]);
     const [inputValue, setInputValue] = React.useState('');
@@ -27,6 +42,7 @@ export function DatasetSearchBox({ placeholder, dataSource, onOpen, onSaveAsName
             },
         }));
     };
+    // eslint-disable-next-line @typescript-eslint/no-shadow
     const formatOptionLabel = (option, ctx) => {
         var _a;
         // do not highlight selected elements
@@ -60,10 +76,16 @@ export function DatasetSearchBox({ placeholder, dataSource, onOpen, onSaveAsName
             type: dataSource.tableName,
         },
     };
-    return (React.createElement("div", { className: "hstack gap-3 ordino-dataset-searchbox" },
-        React.createElement(AsyncPaginate, { className: "flex-fill", onPaste: onPaste, placeholder: placeholder, noOptionsMessage: () => 'No results found', isMulti: true, loadOptions: loadOptions, inputValue: inputValue, value: items, onChange: setItems, onInputChange: setInputValue, formatOptionLabel: formatOptionLabel, hideSelectedOptions: true, getOptionLabel: (option) => option.text, getOptionValue: (option) => option.id, captureMenuScroll: false, additional: {
+    return (React.createElement("div", { className: "hstack gap-3 ordino-dataset-searchbox", "data-testid": "ordino-dataset-searchbox" },
+        React.createElement(AsyncPaginate, { className: "flex-fill", onPaste: onPaste, placeholder: placeholder, noOptionsMessage: () => 'No results found', isMulti: true, loadOptions: loadOptions, inputValue: inputValue, value: items, onChange: setItems, onInputChange: setInputValue, formatOptionLabel: formatOptionLabel, hideSelectedOptions: true, getOptionLabel: (opt) => opt.text, getOptionValue: (opt) => opt.id, captureMenuScroll: false, additional: {
                 page: 0, // page starts from index 0
-            }, components: { Input }, styles: {
+            }, components: {
+                Input,
+                Option: addDataTestId(option, 'async-paginate-option'),
+                MultiValueRemove: addDataTestId(multiValueRemove, 'async-paginate-multiselect-remove'),
+                ClearIndicator: addDataTestId(clearIndicator, 'async-paginate-clearindicator'),
+                DropdownIndicator: addDataTestId(dropdownIndicator, 'async-paginate-dropdownindicator'),
+            }, styles: {
                 multiValue: (styles, { data }) => ({
                     ...styles,
                     border: `1px solid #CCC`,
@@ -109,7 +131,7 @@ export function DatasetSearchBox({ placeholder, dataSource, onOpen, onSaveAsName
                     },
                 }),
             } }),
-        React.createElement("button", { type: "button", className: "btn btn-secondary", disabled: !(validItems === null || validItems === void 0 ? void 0 : validItems.length), onClick: (event) => onOpen(event, searchResults) }, "Open"),
-        React.createElement("button", { type: "button", className: "btn btn-outline-secondary", disabled: !(validItems === null || validItems === void 0 ? void 0 : validItems.length), onClick: () => onSaveAsNamedSet(validItems) }, "Save as set")));
+        React.createElement("button", { type: "button", className: "btn btn-secondary", "data-testid": "open-button", disabled: !(validItems === null || validItems === void 0 ? void 0 : validItems.length), onClick: (event) => onOpen(event, searchResults) }, "Open"),
+        React.createElement("button", { type: "button", className: "btn btn-outline-secondary", "data-testid": "save-button", disabled: !(validItems === null || validItems === void 0 ? void 0 : validItems.length), onClick: () => onSaveAsNamedSet(validItems) }, "Save as set")));
 }
 //# sourceMappingURL=DatasetSearchBox.js.map

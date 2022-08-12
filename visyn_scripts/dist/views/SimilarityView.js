@@ -4,7 +4,7 @@
 import { tsv } from 'd3';
 import { ARankingView, ColumnDescUtils, FormElementType, RestBaseUtils, } from 'tdp_core';
 import { createSelectionDesc, createStackDesc } from 'lineupjs';
-import { SpeciesUtils } from 'tdp_gene';
+import { SpeciesUtils } from '../common';
 const SELECT_ID = 'genehopper_selection';
 export class SimilarityView extends ARankingView {
     constructor(context, selection, parent, options = {}) {
@@ -101,7 +101,7 @@ export class SimilarityView extends ARankingView {
     updateImpl() {
         return this.updateOptionsData().then(() => {
             this.loader = null;
-            this.rebuild();
+            return this.rebuild();
         });
     }
     createInitialRanking(provider) {

@@ -1,8 +1,9 @@
 import { IDTypeManager, LineupUtils, RestBaseUtils } from 'tdp_core';
-import { AExpressionVsCopyNumber, SpeciesUtils } from 'tdp_gene';
 import { ViewUtils } from './ViewUtils';
 import { ParameterFormIds, FORM_TISSUE_OR_CELLLINE_FILTER, FORM_DATA_SOURCE, FORM_COLOR_CODING } from '../common/forms';
 import { expression, copyNumber } from '../common/config';
+import { AExpressionVsCopyNumber } from './AExpressionVsCopyNumber';
+import { SpeciesUtils } from '../common';
 export class ExpressionVsCopyNumber extends AExpressionVsCopyNumber {
     getParameterFormDescs() {
         const base = super.getParameterFormDescs();
