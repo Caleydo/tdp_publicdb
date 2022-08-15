@@ -4,7 +4,6 @@
 /.idea
 /lib/
 /build/
-/dist/
 /dist_python/
 *.egg-info/
 *.egg

@@ -1,0 +1,13 @@
+@import "./abstracts/variables";
+
+@import "./overrides/select2";
+@import "./overrides/idtype_color";
+
+// styles for views
+@import "./components/onco_print";
+@import "./components/expression_vs_copynumber";
+@import "./components/species";
+@import "./components/startMenu";
+@import "./components/legend";
+
+@import "./menu/DatasetCard.scss";
