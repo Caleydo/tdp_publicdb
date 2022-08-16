@@ -1023,6 +1023,25 @@ export default function (registry) {
 
   registry.push(
     'tdpTour',
+    'ordinoWelcomeTour2',
+    function () {
+      return import('./tours').then((t) => t.WelcomeTour2);
+    },
+    {
+      factory: 'createTour',
+      name: 'Ordino Welcome Tour 2',
+      description: 'Learn the basic features of Ordino in a short welcome tour again!!!!.',
+      preview() {
+        return import('./assets/previews/expression.jpg'); // TODO update preview image
+      },
+      multiPage: true,
+      level: 'beginner',
+      canJumpAround: false,
+    },
+  );
+
+  registry.push(
+    'tdpTour',
     'ordinoStartMenuTour',
     function () {
       return import('./tours').then((t) => t.StartMenuTour);
