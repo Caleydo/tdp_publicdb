@@ -2,7 +2,7 @@
  * Created by Samuel Gratzl on 29.01.2016.
  */
 
-import { tsv } from 'd3';
+import { tsv } from 'd3v3';
 import {
   IARankingViewOptions,
   ISelection,
@@ -15,7 +15,7 @@ import {
   RestBaseUtils,
 } from 'tdp_core';
 import { LocalDataProvider, createSelectionDesc, createStackDesc, StackColumn } from 'lineupjs';
-import { SpeciesUtils } from 'tdp_gene';
+import { SpeciesUtils } from '../common';
 
 const SELECT_ID = 'genehopper_selection';
 

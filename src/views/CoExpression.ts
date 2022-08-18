@@ -3,10 +3,11 @@
  */
 
 import { FormElementType, IFormElementDesc, IDTypeManager, RestBaseUtils, IParams, LineupUtils } from 'tdp_core';
-import { ACoExpression, ICoExprDataFormatRow, IGeneOption, SpeciesUtils } from 'tdp_gene';
 import { ParameterFormIds, FORM_TISSUE_OR_CELLLINE_FILTER, FORM_DATA_SOURCE, FORM_COLOR_CODING } from '../common/forms';
 import { ViewUtils } from './ViewUtils';
 import { expression, IDataSourceConfig, IDataSubtypeConfig } from '../common/config';
+import { ACoExpression, ICoExprDataFormatRow, IGeneOption } from './ACoExpression';
+import { SpeciesUtils } from '../common';
 
 export class CoExpression extends ACoExpression {
   protected getParameterFormDescs(): IFormElementDesc[] {

@@ -1,8 +1,8 @@
 import React from 'react';
 import { ENamedSetType, RestBaseUtils, RestStorageUtils, StoreUtils, UserSession, UniqueIdManager, I18nextManager, IDTypeManager, useAsync, GlobalEventHandler, AView, } from 'tdp_core';
 import { NamedSetList, OrdinoContext } from 'ordino';
-import { Species } from 'tdp_gene';
 import { DatasetSearchBox } from './DatasetSearchBox';
+import { Species } from '../common';
 export default function DatasetCard({ name, icon, tabs, startViewId, dataSource, cssClass, tokenSeparators }) {
     const testId = `dataset-card-${cssClass}`;
     const { app } = React.useContext(OrdinoContext);

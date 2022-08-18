@@ -1,5 +1,5 @@
-import { ACommonList } from 'tdp_gene';
 import { gene } from '../common/config';
+import { ACommonList } from './ACommonList';
 import { ViewUtils } from './ViewUtils';
 export class GeneList extends ACommonList {
     constructor(context, selection, parent, options) {

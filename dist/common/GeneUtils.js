@@ -1,5 +1,6 @@
-import { Categories, SpeciesUtils } from 'tdp_gene';
 import { Select3Utils, RestBaseUtils } from 'tdp_core';
+import { Categories } from './Categories';
+import { SpeciesUtils } from './common';
 import { gene, drug } from './config';
 // Gene
 export class GeneUtils {
