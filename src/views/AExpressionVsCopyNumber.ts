@@ -1,5 +1,5 @@
 import { ErrorAlertHandler, IFormElementDesc, FormElementType, AD3View, IDTypeManager, SelectionUtils, SelectOperation } from 'tdp_core';
-import * as d3 from 'd3';
+import * as d3v3 from 'd3v3';
 import { jStat } from 'jstat';
 import { FormSubtype } from '../providers/forms';
 import { ViewUtils } from './ViewUtils';
@@ -13,17 +13,17 @@ export abstract class AExpressionVsCopyNumber extends AD3View {
 
   private readonly height = 320 - this.margin.top - this.margin.bottom;
 
-  private $legend: d3.Selection<any>;
+  private $legend: d3v3.Selection<any>;
 
-  private x = d3.scale.linear();
+  private x = d3v3.scale.linear();
 
-  private y = d3.scale.log();
+  private y = d3v3.scale.log();
 
   private readonly color = ViewUtils.colorScale();
 
-  private xAxis = d3.svg.axis().orient('bottom').scale(this.x);
+  private xAxis = d3v3.svg.axis().orient('bottom').scale(this.x);
 
-  private yAxis = d3.svg.axis().orient('left').scale(this.y).tickFormat(this.y.tickFormat(2, '.1f'));
+  private yAxis = d3v3.svg.axis().orient('left').scale(this.y).tickFormat(this.y.tickFormat(2, '.1f'));
 
   protected initImpl() {
     super.initImpl();
@@ -100,7 +100,7 @@ export abstract class AExpressionVsCopyNumber extends AD3View {
     const enterOrUpdateAll = updateAll ? $ids : $idsEnter;
 
     enterOrUpdateAll.each(function (this: HTMLElement, d) {
-      const $id = d3.select(this);
+      const $id = d3v3.select(this);
       const promise = IDTypeManager.getInstance()
         .mapOneNameToFirstName(idtype, d.id, that.idType)
         .then((name) => Promise.all([that.loadData(name), that.loadFirstName(name)]));
@@ -138,7 +138,7 @@ export abstract class AExpressionVsCopyNumber extends AD3View {
 
   protected abstract loadFirstName(ensg: string): Promise<string>;
 
-  private initChart($parent: d3.Selection<any>) {
+  private initChart($parent: d3v3.Selection<any>) {
     // already initialized svg node -> skip this part
     if ($parent.select('svg').size() > 0) {
       return;
@@ -167,7 +167,7 @@ export abstract class AExpressionVsCopyNumber extends AD3View {
     $parent.append('div').classed('statistics', true).append('div').attr('class', 'spearmancoeff');
   }
 
-  private resizeChart($parent: d3.Selection<any>) {
+  private resizeChart($parent: d3v3.Selection<any>) {
     this.x.range([0, this.width]);
     this.y.range([this.height, 0]);
 
@@ -196,7 +196,7 @@ export abstract class AExpressionVsCopyNumber extends AD3View {
      }); */
   }
 
-  private updateChartData($parent: d3.Selection<any>) {
+  private updateChartData($parent: d3v3.Selection<any>) {
     const data: ICopyNumberDataFormat = $parent.datum();
     const { geneName } = data;
     const rows = data.rows.slice();
@@ -204,8 +204,8 @@ export abstract class AExpressionVsCopyNumber extends AD3View {
     // sort missing colors to the front
     rows.sort((a, b) => (a.color === b.color ? 0 : a.color === null ? -1 : b.color === null ? 1 : 0));
 
-    this.x.domain([0, d3.max(rows, (d) => d.cn)]);
-    this.y.domain([1, d3.max(rows, (d) => d.expression)]).clamp(true);
+    this.x.domain([0, d3v3.max(rows, (d) => d.cn)]);
+    this.y.domain([1, d3v3.max(rows, (d) => d.expression)]).clamp(true);
     ViewUtils.integrateColors(
       this.color,
       rows.map((d) => d.color),
@@ -227,7 +227,7 @@ export abstract class AExpressionVsCopyNumber extends AD3View {
     $g.select('text.title').text(title);
 
     // statistics
-    const formatter = d3.format('.4f');
+    const formatter = d3v3.format('.4f');
     const spearmancoeff = jStat.jStat.spearmancoeff(
       rows.map((d) => d.cn),
       rows.map((d) => d.expression),
@@ -241,17 +241,17 @@ export abstract class AExpressionVsCopyNumber extends AD3View {
       .classed('mark', true)
       .attr('r', 2)
       .on('click', (d) => {
-        const { target } = <Event>d3.event;
+        const { target } = <Event>d3v3.event;
 
-        const selectOperation = SelectionUtils.toSelectOperation(<MouseEvent>d3.event);
+        const selectOperation = SelectionUtils.toSelectOperation(<MouseEvent>d3v3.event);
         const oldSelection = this.getItemSelection();
         const { id } = d;
         const newSelection = SelectionUtils.integrateSelection(oldSelection.ids, [id], selectOperation);
 
         if (selectOperation === SelectOperation.SET) {
-          d3.selectAll('circle.mark.clicked').classed('clicked', false);
+          d3v3.selectAll('circle.mark.clicked').classed('clicked', false);
         }
-        d3.select(target).classed('clicked', selectOperation !== SelectOperation.REMOVE);
+        d3v3.select(target).classed('clicked', selectOperation !== SelectOperation.REMOVE);
         this.select(newSelection);
       })
       .append('title');

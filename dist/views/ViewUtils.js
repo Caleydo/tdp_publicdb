@@ -1,6 +1,6 @@
 import { ColumnDescUtils, IDTypeManager } from 'tdp_core';
 import { zipWith } from 'lodash';
-import { scale as d3Scale } from 'd3';
+import { scale as d3Scale } from 'd3v3';
 import { FieldUtils } from '../providers';
 export class ViewUtils {
     static integrateColors(scale, colors) {

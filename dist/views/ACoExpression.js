@@ -4,7 +4,7 @@
 import { IDTypeManager } from 'tdp_core';
 import { FormElementType } from 'tdp_core';
 import { ErrorAlertHandler } from 'tdp_core';
-import * as d3 from 'd3';
+import * as d3v3 from 'd3v3';
 import { SelectionUtils, SelectOperation } from 'tdp_core';
 import { AD3View } from 'tdp_core';
 import { jStat } from 'jstat';
@@ -29,11 +29,11 @@ export class ACoExpression extends AD3View {
         this.height = 320 - this.margin.top - this.margin.bottom;
         this.refGene = null;
         this.refGeneExpression = [];
-        this.x = d3.scale.log();
-        this.y = d3.scale.log();
+        this.x = d3v3.scale.log();
+        this.y = d3v3.scale.log();
         this.color = ViewUtils.colorScale();
-        this.xAxis = d3.svg.axis().orient('bottom').scale(this.x).tickFormat(this.x.tickFormat(2, '.1f')); // .tickFormat((d) => d.toFixed(1));
-        this.yAxis = d3.svg.axis().orient('left').scale(this.y).tickFormat(this.y.tickFormat(2, '.1f')); // .tickFormat((d) => d.toFixed(1));
+        this.xAxis = d3v3.svg.axis().orient('bottom').scale(this.x).tickFormat(this.x.tickFormat(2, '.1f')); // .tickFormat((d) => d.toFixed(1));
+        this.yAxis = d3v3.svg.axis().orient('left').scale(this.y).tickFormat(this.y.tickFormat(2, '.1f')); // .tickFormat((d) => d.toFixed(1));
     }
     initImpl() {
         super.initImpl();
@@ -177,7 +177,7 @@ export class ACoExpression extends AD3View {
         // or to reload the data for all items (e.g. due to parameter change)
         const enterOrUpdateAll = updateAll ? $plots : $plotsEnter;
         enterOrUpdateAll.each(function (d) {
-            const $id = d3.select(this);
+            const $id = d3v3.select(this);
             const promise = IDTypeManager.getInstance()
                 .mapNameToFirstName(idtype, [d.id], that.idType)
                 .then(([name]) => {
@@ -259,8 +259,8 @@ export class ACoExpression extends AD3View {
             $g.selectAll('.mark').remove();
             return;
         }
-        this.x.domain([1, d3.max(refGeneExpression, (d) => d.expression)]).clamp(true);
-        this.y.domain([1, d3.max(rows, (d) => d.expression)]).clamp(true);
+        this.x.domain([1, d3v3.max(refGeneExpression, (d) => d.expression)]).clamp(true);
+        this.y.domain([1, d3v3.max(rows, (d) => d.expression)]).clamp(true);
         ViewUtils.integrateColors(this.color, rows.map((d) => d.color));
         ViewUtils.legend(this.$legend.node(), this.color);
         const attribute = this.getAttributeName();
@@ -271,7 +271,7 @@ export class ACoExpression extends AD3View {
         const smallerArray = refGeneExpression.length <= rows.length ? refGeneExpression : rows;
         const firstIsReference = refGeneExpression.length <= rows.length;
         // build hashmap for faster access
-        const hash = d3.map(largerArray, (d) => d.samplename);
+        const hash = d3v3.map(largerArray, (d) => d.samplename);
         const data2 = smallerArray.reduce((result, d) => {
             if (hash.has(d.samplename)) {
                 result.push({ expr1: d.expression, expr2: hash.get(d.samplename).expression, title: d.samplename, color: d.color, id: d.id });
@@ -282,7 +282,7 @@ export class ACoExpression extends AD3View {
         data2.sort((a, b) => (a.color === b.color ? 0 : a.color === null ? -1 : b.color === null ? 1 : 0));
         // statistics
         {
-            const formatter = d3.format('.4f');
+            const formatter = d3v3.format('.4f');
             const xData = data2.map((d) => d.expr1);
             const yData = data2.map((d) => d.expr2);
             const spearmancoeff = jStat.jStat.spearmancoeff(firstIsReference ? xData : yData, !firstIsReference ? xData : yData);
@@ -295,15 +295,15 @@ export class ACoExpression extends AD3View {
             .classed('mark', true)
             .attr('r', 2)
             .on('click', (d) => {
-            const { target } = d3.event;
-            const selectOperation = SelectionUtils.toSelectOperation(d3.event);
+            const { target } = d3v3.event;
+            const selectOperation = SelectionUtils.toSelectOperation(d3v3.event);
             const oldSelection = this.getItemSelection();
             const { id } = d;
             const newSelection = SelectionUtils.integrateSelection(oldSelection.ids, [id], selectOperation);
             if (selectOperation === SelectOperation.SET) {
-                d3.selectAll('circle.mark.clicked').classed('clicked', false);
+                d3v3.selectAll('circle.mark.clicked').classed('clicked', false);
             }
-            d3.select(target).classed('clicked', selectOperation !== SelectOperation.REMOVE);
+            d3v3.select(target).classed('clicked', selectOperation !== SelectOperation.REMOVE);
             this.select(newSelection);
         })
             .append('title');

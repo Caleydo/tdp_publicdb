@@ -3,7 +3,7 @@
  */
 
 import { IViewContext, ISelection, IView, IDTypeManager, AD3View, RestBaseUtils } from 'tdp_core';
-import { Primitive, transpose as d3Transpose, Selection } from 'd3';
+import { Primitive, transpose as d3Transpose, Selection } from 'd3v3';
 import { IDataSourceConfig, cellline, tissue, gene } from '../common/config';
 import { SpeciesUtils } from '../common';
 

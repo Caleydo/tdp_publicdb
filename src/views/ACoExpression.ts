@@ -4,7 +4,7 @@
 import { ISelection, IFormElementDesc, IDTypeManager } from 'tdp_core';
 import { FormElementType, IFormSelectElement, IFormSelectOption } from 'tdp_core';
 import { ErrorAlertHandler } from 'tdp_core';
-import * as d3 from 'd3';
+import * as d3v3 from 'd3v3';
 import { SelectionUtils, SelectOperation } from 'tdp_core';
 import { AD3View } from 'tdp_core';
 import { jStat } from 'jstat';
@@ -36,23 +36,23 @@ export abstract class ACoExpression extends AD3View {
 
   private readonly height = 320 - this.margin.top - this.margin.bottom;
 
-  protected $errorMessage: d3.Selection<any>;
+  protected $errorMessage: d3v3.Selection<any>;
 
-  protected $legend: d3.Selection<any>;
+  protected $legend: d3v3.Selection<any>;
 
   private refGene: IGeneOption = null;
 
   private refGeneExpression: ICoExprDataFormatRow[] = [];
 
-  private readonly x = d3.scale.log();
+  private readonly x = d3v3.scale.log();
 
-  private readonly y = d3.scale.log();
+  private readonly y = d3v3.scale.log();
 
   private readonly color = ViewUtils.colorScale();
 
-  private readonly xAxis = d3.svg.axis().orient('bottom').scale(this.x).tickFormat(this.x.tickFormat(2, '.1f')); // .tickFormat((d) => d.toFixed(1));
+  private readonly xAxis = d3v3.svg.axis().orient('bottom').scale(this.x).tickFormat(this.x.tickFormat(2, '.1f')); // .tickFormat((d) => d.toFixed(1));
 
-  private readonly yAxis = d3.svg.axis().orient('left').scale(this.y).tickFormat(this.y.tickFormat(2, '.1f')); // .tickFormat((d) => d.toFixed(1));
+  private readonly yAxis = d3v3.svg.axis().orient('left').scale(this.y).tickFormat(this.y.tickFormat(2, '.1f')); // .tickFormat((d) => d.toFixed(1));
 
   protected initImpl() {
     super.initImpl();
@@ -225,7 +225,7 @@ export abstract class ACoExpression extends AD3View {
     const enterOrUpdateAll = updateAll ? $plots : $plotsEnter;
 
     enterOrUpdateAll.each(function (this: HTMLElement, d: ICoExprDataFormat) {
-      const $id = d3.select(this);
+      const $id = d3v3.select(this);
       const promise = IDTypeManager.getInstance()
         .mapNameToFirstName(idtype, [d.id], that.idType)
         .then(([name]) => {
@@ -260,7 +260,7 @@ export abstract class ACoExpression extends AD3View {
       });
   }
 
-  private initChart($parent: d3.Selection<any>) {
+  private initChart($parent: d3v3.Selection<any>) {
     // already initialized svg node -> skip this part
     if ($parent.select('svg').size() > 0) {
       return;
@@ -283,7 +283,7 @@ export abstract class ACoExpression extends AD3View {
     $parent.append('div').classed('statistics', true).append('div').attr('class', 'spearmancoeff');
   }
 
-  private resizeChart($parent: d3.Selection<ICoExprDataFormat>) {
+  private resizeChart($parent: d3v3.Selection<ICoExprDataFormat>) {
     this.x.range([0, this.width]);
     this.y.range([this.height, 0]);
 
@@ -316,7 +316,7 @@ export abstract class ACoExpression extends AD3View {
     refGene: { id: string; symbol: string },
     refGeneExpression: ICoExprDataFormatRow[],
     data: ICoExprDataFormat,
-    $parent: d3.Selection<ICoExprDataFormat>,
+    $parent: d3v3.Selection<ICoExprDataFormat>,
   ) {
     const { geneName } = data;
 
@@ -338,8 +338,8 @@ export abstract class ACoExpression extends AD3View {
       return;
     }
 
-    this.x.domain([1, d3.max(refGeneExpression, (d) => d.expression)]).clamp(true);
-    this.y.domain([1, d3.max(rows, (d) => d.expression)]).clamp(true);
+    this.x.domain([1, d3v3.max(refGeneExpression, (d) => d.expression)]).clamp(true);
+    this.y.domain([1, d3v3.max(rows, (d) => d.expression)]).clamp(true);
     ViewUtils.integrateColors(
       this.color,
       rows.map((d) => d.color),
@@ -357,7 +357,7 @@ export abstract class ACoExpression extends AD3View {
     const firstIsReference = refGeneExpression.length <= rows.length;
 
     // build hashmap for faster access
-    const hash = d3.map(largerArray, (d) => d.samplename);
+    const hash = d3v3.map(largerArray, (d) => d.samplename);
 
     const data2 = smallerArray.reduce((result, d) => {
       if (hash.has(d.samplename)) {
@@ -371,7 +371,7 @@ export abstract class ACoExpression extends AD3View {
 
     // statistics
     {
-      const formatter = d3.format('.4f');
+      const formatter = d3v3.format('.4f');
       const xData = data2.map((d) => d.expr1);
       const yData = data2.map((d) => d.expr2);
       const spearmancoeff = jStat.jStat.spearmancoeff(firstIsReference ? xData : yData, !firstIsReference ? xData : yData);
@@ -386,17 +386,17 @@ export abstract class ACoExpression extends AD3View {
       .classed('mark', true)
       .attr('r', 2)
       .on('click', (d) => {
-        const { target } = <Event>d3.event;
+        const { target } = <Event>d3v3.event;
 
-        const selectOperation: SelectOperation = SelectionUtils.toSelectOperation(<MouseEvent>d3.event);
+        const selectOperation: SelectOperation = SelectionUtils.toSelectOperation(<MouseEvent>d3v3.event);
         const oldSelection = this.getItemSelection();
         const { id } = d;
         const newSelection = SelectionUtils.integrateSelection(oldSelection.ids, [id], selectOperation);
 
         if (selectOperation === SelectOperation.SET) {
-          d3.selectAll('circle.mark.clicked').classed('clicked', false);
+          d3v3.selectAll('circle.mark.clicked').classed('clicked', false);
         }
-        d3.select(target).classed('clicked', selectOperation !== SelectOperation.REMOVE);
+        d3v3.select(target).classed('clicked', selectOperation !== SelectOperation.REMOVE);
         this.select(newSelection);
       })
       .append('title');

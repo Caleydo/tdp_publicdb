@@ -1,5 +1,5 @@
 import { ErrorAlertHandler, FormElementType, AD3View, IDTypeManager, SelectionUtils, SelectOperation } from 'tdp_core';
-import * as d3 from 'd3';
+import * as d3v3 from 'd3v3';
 import { jStat } from 'jstat';
 import { FormSubtype } from '../providers/forms';
 import { ViewUtils } from './ViewUtils';
@@ -10,11 +10,11 @@ export class AExpressionVsCopyNumber extends AD3View {
         this.margin = { top: 40, right: 5, bottom: 50, left: 90 };
         this.width = 280 - this.margin.left - this.margin.right;
         this.height = 320 - this.margin.top - this.margin.bottom;
-        this.x = d3.scale.linear();
-        this.y = d3.scale.log();
+        this.x = d3v3.scale.linear();
+        this.y = d3v3.scale.log();
         this.color = ViewUtils.colorScale();
-        this.xAxis = d3.svg.axis().orient('bottom').scale(this.x);
-        this.yAxis = d3.svg.axis().orient('left').scale(this.y).tickFormat(this.y.tickFormat(2, '.1f'));
+        this.xAxis = d3v3.svg.axis().orient('bottom').scale(this.x);
+        this.yAxis = d3v3.svg.axis().orient('left').scale(this.y).tickFormat(this.y.tickFormat(2, '.1f'));
     }
     initImpl() {
         super.initImpl();
@@ -78,7 +78,7 @@ export class AExpressionVsCopyNumber extends AD3View {
         // or to reload the data for all items (e.g. due to parameter change)
         const enterOrUpdateAll = updateAll ? $ids : $idsEnter;
         enterOrUpdateAll.each(function (d) {
-            const $id = d3.select(this);
+            const $id = d3v3.select(this);
             const promise = IDTypeManager.getInstance()
                 .mapOneNameToFirstName(idtype, d.id, that.idType)
                 .then((name) => Promise.all([that.loadData(name), that.loadFirstName(name)]));
@@ -154,8 +154,8 @@ export class AExpressionVsCopyNumber extends AD3View {
         const rows = data.rows.slice();
         // sort missing colors to the front
         rows.sort((a, b) => (a.color === b.color ? 0 : a.color === null ? -1 : b.color === null ? 1 : 0));
-        this.x.domain([0, d3.max(rows, (d) => d.cn)]);
-        this.y.domain([1, d3.max(rows, (d) => d.expression)]).clamp(true);
+        this.x.domain([0, d3v3.max(rows, (d) => d.cn)]);
+        this.y.domain([1, d3v3.max(rows, (d) => d.expression)]).clamp(true);
         ViewUtils.integrateColors(this.color, rows.map((d) => d.color));
         ViewUtils.legend(this.$legend.node(), this.color);
         const $g = $parent.select('svg g');
@@ -169,7 +169,7 @@ export class AExpressionVsCopyNumber extends AD3View {
         }
         $g.select('text.title').text(title);
         // statistics
-        const formatter = d3.format('.4f');
+        const formatter = d3v3.format('.4f');
         const spearmancoeff = jStat.jStat.spearmancoeff(rows.map((d) => d.cn), rows.map((d) => d.expression));
         $parent.select('div.statistics .spearmancoeff').text(spearmancoeffTitle + formatter(spearmancoeff));
         const marks = $g.selectAll('.mark').data(rows);
@@ -179,15 +179,15 @@ export class AExpressionVsCopyNumber extends AD3View {
             .classed('mark', true)
             .attr('r', 2)
             .on('click', (d) => {
-            const { target } = d3.event;
-            const selectOperation = SelectionUtils.toSelectOperation(d3.event);
+            const { target } = d3v3.event;
+            const selectOperation = SelectionUtils.toSelectOperation(d3v3.event);
             const oldSelection = this.getItemSelection();
             const { id } = d;
             const newSelection = SelectionUtils.integrateSelection(oldSelection.ids, [id], selectOperation);
             if (selectOperation === SelectOperation.SET) {
-                d3.selectAll('circle.mark.clicked').classed('clicked', false);
+                d3v3.selectAll('circle.mark.clicked').classed('clicked', false);
             }
-            d3.select(target).classed('clicked', selectOperation !== SelectOperation.REMOVE);
+            d3v3.select(target).classed('clicked', selectOperation !== SelectOperation.REMOVE);
             this.select(newSelection);
         })
             .append('title');

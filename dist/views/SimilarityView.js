@@ -1,7 +1,7 @@
 /**
  * Created by Samuel Gratzl on 29.01.2016.
  */
-import { tsv } from 'd3';
+import { tsv } from 'd3v3';
 import { ARankingView, ColumnDescUtils, FormElementType, RestBaseUtils, } from 'tdp_core';
 import { createSelectionDesc, createStackDesc } from 'lineupjs';
 import { SpeciesUtils } from '../common';

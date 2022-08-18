@@ -53,13 +53,11 @@
     "node": ">=16"
   },
   "devDependencies": {
-    "@types/d3": "~3.5.36",
     "@types/react-select": "^4.0.13"
   },
   "dependencies": {
-    "d3": "~3.5.17",
-    "jstat": "^1.9.4",
     "jquery-ui": "1.12.1",
+    "jstat": "^1.9.4",
     "react-highlight-words": "^0.17.0",
     "react-select": "^4.1.0",
     "react-select-async-paginate": "^0.5.3",
@@ -69,7 +67,7 @@
   },
   "optionalDependencies": {
     "ordino": "git+ssh://git@github.com:Caleydo/ordino#visyn_scripts"
-  },  
+  },
   "visyn": {
     "entries": {
       "app": "./src/index.ts"

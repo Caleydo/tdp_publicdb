@@ -1,5 +1,5 @@
 import { IScoreRow } from 'tdp_core';
-import { scale as d3Scale } from 'd3';
+import { scale as d3Scale } from 'd3v3';
 import { IDataSubtypeConfig } from '../common/config';
 export declare class ViewUtils {
     static base: string[];

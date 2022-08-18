@@ -2,7 +2,7 @@
  * Created by Samuel Gratzl on 27.04.2016.
  */
 
-import { select, format, event as d3event, Selection } from 'd3';
+import { select, format, event as d3event, Selection } from 'd3v3';
 import { IDTypeManager, SelectionUtils, SelectOperation, IDType, IView, AView, ErrorAlertHandler } from 'tdp_core';
 import * as $ from 'jquery';
 import { Categories } from '../common/Categories';

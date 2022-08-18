@@ -1,6 +1,6 @@
 import { IScoreRow, ColumnDescUtils, IDTypeManager } from 'tdp_core';
 import { zipWith } from 'lodash';
-import { scale as d3Scale } from 'd3';
+import { scale as d3Scale } from 'd3v3';
 import { IDataSubtypeConfig } from '../common/config';
 import { FieldUtils } from '../providers';
 
