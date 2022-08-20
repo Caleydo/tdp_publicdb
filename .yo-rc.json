@@ -44,9 +44,6 @@
     "today": "Sun, 06 Nov 2016 23:21:43 GMT",
     "app": "",
     "clientOnly": false,
-    "entries": {
-      "app": "./src/index.ts"
-    },
     "libraryAliases": {
       "scrollTo": "jquery.scrollto/jquery.scrollTo.js"
     },

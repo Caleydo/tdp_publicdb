@@ -2,10 +2,10 @@
  * Created by Marc Streit on 26.07.2016.
  */
 import { ARankingView, AdapterUtils, FormElementType, RestBaseUtils, IDTypeManager, LineupUtils, } from 'tdp_core';
-import { SpeciesUtils, Species } from 'tdp_gene';
 import { ParameterFormIds, FORM_DATA_SOURCE, FORM_TISSUE_OR_CELLLINE_FILTER } from '../common/forms';
 import { ViewUtils } from './ViewUtils';
 import { expression, copyNumber, mutation } from '../common/config';
+import { Species, SpeciesUtils } from '../common';
 export class DependentSampleTable extends ARankingView {
     constructor(context, selection, parent, dataType, options = {}) {
         super(context, selection, parent, {

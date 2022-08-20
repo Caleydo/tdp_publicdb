@@ -1,4 +1,3 @@
-import { SpeciesUtils } from 'tdp_gene';
 import {
   IViewContext,
   ISelection,
@@ -12,6 +11,7 @@ import {
   LineupUtils,
   AdapterUtils,
 } from 'tdp_core';
+import { SpeciesUtils } from '../common';
 import { ParameterFormIds, FORM_DATA_HIERARCHICAL_SUBTYPE } from '../common/forms';
 import { ViewUtils } from './ViewUtils';
 import { IDataTypeConfig, IDataSourceConfig, splitTypes } from '../common/config';
@@ -82,7 +82,7 @@ export abstract class ACombinedDependentTable extends ARankingView {
     });
   }
 
-  protected parameterChanged(name: string) {
+  protected parameterChanged(name: string): Promise<void> {
     super.parameterChanged(name);
     if (name === 'filter') {
       return this.reloadData();

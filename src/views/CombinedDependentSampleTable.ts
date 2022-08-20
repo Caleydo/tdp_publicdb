@@ -22,7 +22,7 @@ export class CombinedDependentSampleTable extends ACombinedDependentTable {
     return base;
   }
 
-  protected parameterChanged(name: string) {
+  protected parameterChanged(name: string): Promise<void> {
     if (name === FORM_DATA_SOURCE.id) {
       return this.rebuild();
     }

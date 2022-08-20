@@ -2,7 +2,7 @@
  * Created by sam on 16.02.2017.
  */
 import { IFormElementDesc } from 'tdp_core';
-import { ACoExpression, ICoExprDataFormatRow, IGeneOption } from 'tdp_gene';
+import { ACoExpression, ICoExprDataFormatRow, IGeneOption } from './ACoExpression';
 export declare class CoExpression extends ACoExpression {
     protected getParameterFormDescs(): IFormElementDesc[];
     private get dataSource();

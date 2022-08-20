@@ -3,13 +3,8 @@ import { RestBaseUtils, IdTextPair, Select3Utils } from 'tdp_core';
 import { components, FormatOptionLabelMeta } from 'react-select';
 import { AsyncPaginate } from 'react-select-async-paginate';
 import Highlighter from 'react-highlight-words';
-import { IACommonListOptions } from 'tdp_gene';
+import { IACommonListOptions } from '../views';
 import { GeneUtils, IDataSourceConfig } from '../common';
-
-function Input(props: any) {
-  const { onPaste } = props.selectProps;
-  return <components.Input onPaste={onPaste} {...props} />;
-}
 
 interface IDatasetSearchOption {
   id: any;
@@ -33,6 +28,36 @@ interface IDatasetSearchBoxProps {
   tokenSeparators?: RegExp;
 }
 
+// functions to add data-testid attribute to react-select components
+// eslint-disable-next-line
+const addDataTestId =
+  (Component, dataTestId) =>
+  // eslint-disable-next-line
+  (props) =>
+    (
+      // eslint-disable-next-line
+      <Component
+        {...props}
+        // eslint-disable-next-line
+        innerProps={Object.assign({}, props.innerProps, { 'data-testid': `${dataTestId}${props.data ? '-' + props.data.id : ''}` })}
+      />
+    );
+
+function Input(props: any) {
+  const { onPaste } = props.selectProps;
+  const modifiedProps = { 'data-testid': 'async-paginate-input', ...props };
+  delete modifiedProps.popoverType; // remove the "illegal" prop from the copy
+  return <components.Input onPaste={onPaste} {...modifiedProps} />;
+}
+
+const clearIndicator = (props) => components.ClearIndicator && <components.ClearIndicator {...props} />;
+
+const dropdownIndicator = (props) => components.DropdownIndicator && <components.DropdownIndicator {...props} />;
+
+const option = (props) => components.Option && <components.Option {...props} />;
+
+const multiValueRemove = (props) => components.MultiValueRemove && <components.MultiValueRemove {...props} />;
+
 export function DatasetSearchBox({ placeholder, dataSource, onOpen, onSaveAsNamedSet, params = {}, tokenSeparators = /[\s;,]+/gm }: IDatasetSearchBoxProps) {
   const [items, setItems] = React.useState<IDatasetSearchOption[]>([]);
   const [inputValue, setInputValue] = React.useState('');
@@ -53,6 +78,7 @@ export function DatasetSearchBox({ placeholder, dataSource, onOpen, onSaveAsName
     }));
   };
 
+  // eslint-disable-next-line @typescript-eslint/no-shadow
   const formatOptionLabel = (option: IDatasetSearchOption, ctx: FormatOptionLabelMeta<IDatasetSearchOption, true>) => {
     // do not highlight selected elements
     if (ctx.selectValue?.some((o) => o.id === option.id)) {
@@ -97,7 +123,7 @@ export function DatasetSearchBox({ placeholder, dataSource, onOpen, onSaveAsName
   };
 
   return (
-    <div className="hstack gap-3 ordino-dataset-searchbox">
+    <div className="hstack gap-3 ordino-dataset-searchbox" data-testid="ordino-dataset-searchbox">
       <AsyncPaginate
         className="flex-fill"
         onPaste={onPaste}
@@ -111,13 +137,19 @@ export function DatasetSearchBox({ placeholder, dataSource, onOpen, onSaveAsName
         onInputChange={setInputValue}
         formatOptionLabel={formatOptionLabel}
         hideSelectedOptions
-        getOptionLabel={(option) => option.text}
-        getOptionValue={(option) => option.id}
+        getOptionLabel={(opt) => opt.text}
+        getOptionValue={(opt) => opt.id}
         captureMenuScroll={false}
         additional={{
           page: 0, // page starts from index 0
         }}
-        components={{ Input }}
+        components={{
+          Input,
+          Option: addDataTestId(option, 'async-paginate-option'),
+          MultiValueRemove: addDataTestId(multiValueRemove, 'async-paginate-multiselect-remove'),
+          ClearIndicator: addDataTestId(clearIndicator, 'async-paginate-clearindicator'),
+          DropdownIndicator: addDataTestId(dropdownIndicator, 'async-paginate-dropdownindicator'),
+        }}
         styles={{
           multiValue: (styles, { data }) => ({
             ...styles,
@@ -166,10 +198,22 @@ export function DatasetSearchBox({ placeholder, dataSource, onOpen, onSaveAsName
           }),
         }}
       />
-      <button type="button" className="btn btn-secondary" disabled={!validItems?.length} onClick={(event) => onOpen(event, searchResults)}>
+      <button
+        type="button"
+        className="btn btn-secondary"
+        data-testid="open-button"
+        disabled={!validItems?.length}
+        onClick={(event) => onOpen(event, searchResults)}
+      >
         Open
       </button>
-      <button type="button" className="btn btn-outline-secondary" disabled={!validItems?.length} onClick={() => onSaveAsNamedSet(validItems)}>
+      <button
+        type="button"
+        className="btn btn-outline-secondary"
+        data-testid="save-button"
+        disabled={!validItems?.length}
+        onClick={() => onSaveAsNamedSet(validItems)}
+      >
         Save as set
       </button>
     </div>

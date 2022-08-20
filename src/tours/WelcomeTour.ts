@@ -114,7 +114,7 @@ export class WelcomeTour {
         placement: 'centered',
         html: `As data type, we choose <i>'Relative Copy Number'</i>`,
         postAction: () => {
-          TourUtils.setValueAndTrigger('.col > select', 'copy_number-relativecopynumber', 'change');
+          TourUtils.setValueAndTrigger('.modal.show .col > select', 'copy_number-relativecopynumber', 'change');
         },
       },
       {
