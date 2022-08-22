@@ -6,13 +6,13 @@ import Highlighter from 'react-highlight-words';
 import { GeneUtils } from '../common';
 // functions to add data-testid attribute to react-select components
 // eslint-disable-next-line
-const addDataTestId = (Component, dataTestId) => (
+const addDataTestId = (Component, dataTestId) => 
 // eslint-disable-next-line
 (props) => (
 // eslint-disable-next-line
 React.createElement(Component, { ...props, 
     // eslint-disable-next-line
-    innerProps: Object.assign({}, props.innerProps, { 'data-testid': `${dataTestId}${props.data ? '-' + props.data.id : ''}` }) })));
+    innerProps: Object.assign({}, props.innerProps, { 'data-testid': `${dataTestId}${props.data ? '-' + props.data.id : ''}` }) }));
 function Input(props) {
     const { onPaste } = props.selectProps;
     const modifiedProps = { 'data-testid': 'async-paginate-input', ...props };
