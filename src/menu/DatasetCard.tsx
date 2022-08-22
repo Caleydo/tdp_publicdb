@@ -15,9 +15,10 @@ import {
   AView,
 } from 'tdp_core';
 import { NamedSetList, OrdinoContext } from 'ordino';
-import { Species, IACommonListOptions } from 'tdp_gene';
 import { DatasetSearchBox } from './DatasetSearchBox';
 import { IPublicDbStartMenuDatasetSectionDesc } from '../base/extensions';
+import { Species } from '../common';
+import { IACommonListOptions } from '../views';
 
 export default function DatasetCard({ name, icon, tabs, startViewId, dataSource, cssClass, tokenSeparators }: IPublicDbStartMenuDatasetSectionDesc) {
   const testId = `dataset-card-${cssClass}`;

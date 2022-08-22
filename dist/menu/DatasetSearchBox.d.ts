@@ -1,6 +1,6 @@
 import React from 'react';
 import { IdTextPair } from 'tdp_core';
-import { IACommonListOptions } from 'tdp_gene';
+import { IACommonListOptions } from '../views';
 import { IDataSourceConfig } from '../common';
 interface IDatasetSearchBoxParams {
     [key: string]: any;

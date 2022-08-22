@@ -3,7 +3,7 @@ import { RestBaseUtils, IdTextPair, Select3Utils } from 'tdp_core';
 import { components, FormatOptionLabelMeta } from 'react-select';
 import { AsyncPaginate } from 'react-select-async-paginate';
 import Highlighter from 'react-highlight-words';
-import { IACommonListOptions } from 'tdp_gene';
+import { IACommonListOptions } from '../views';
 import { GeneUtils, IDataSourceConfig } from '../common';
 
 interface IDatasetSearchOption {
@@ -30,13 +30,18 @@ interface IDatasetSearchBoxProps {
 
 // functions to add data-testid attribute to react-select components
 // eslint-disable-next-line
-const addDataTestId = (Component, dataTestId) => (
+const addDataTestId =
+  (Component, dataTestId) =>
   // eslint-disable-next-line
-    (props) => (
+  (props) =>
+    (
       // eslint-disable-next-line
-        <Component {...props}
+      <Component
+        {...props}
         // eslint-disable-next-line
-            innerProps={Object.assign({}, props.innerProps, {'data-testid': `${dataTestId}${props.data ? '-' + props.data.id : ''}`})} />));
+        innerProps={Object.assign({}, props.innerProps, { 'data-testid': `${dataTestId}${props.data ? '-' + props.data.id : ''}` })}
+      />
+    );
 
 function Input(props: any) {
   const { onPaste } = props.selectProps;

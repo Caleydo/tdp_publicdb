@@ -1,12 +1,9 @@
-import { IFormElementDesc } from 'tdp_core';
-import { AExpressionVsCopyNumber, ICopyNumberDataFormatRow } from 'tdp_gene';
-import { SpeciesUtils } from 'tdp_gene';
-import { IDTypeManager } from 'tdp_core';
-import { LineupUtils } from 'tdp_core';
-import { RestBaseUtils, IParams } from 'tdp_core';
+import { IFormElementDesc, IDTypeManager, LineupUtils, RestBaseUtils, IParams } from 'tdp_core';
 import { ViewUtils } from './ViewUtils';
 import { ParameterFormIds, FORM_TISSUE_OR_CELLLINE_FILTER, FORM_DATA_SOURCE, FORM_COLOR_CODING } from '../common/forms';
 import { expression, copyNumber, IDataSourceConfig } from '../common/config';
+import { AExpressionVsCopyNumber, ICopyNumberDataFormatRow } from './AExpressionVsCopyNumber';
+import { SpeciesUtils } from '../common';
 
 export class ExpressionVsCopyNumber extends AExpressionVsCopyNumber {
   protected getParameterFormDescs(): IFormElementDesc[] {

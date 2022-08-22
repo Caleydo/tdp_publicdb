@@ -1,6 +1,6 @@
-import { ACommonList, IACommonListOptions } from 'tdp_gene';
 import { ISelection, IViewContext, IServerColumn } from 'tdp_core';
 import { tissue } from '../common/config';
+import { ACommonList, IACommonListOptions } from './ACommonList';
 import { ViewUtils } from './ViewUtils';
 
 export class TissueList extends ACommonList {
