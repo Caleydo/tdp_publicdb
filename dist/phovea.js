@@ -733,6 +733,19 @@ export default function (registry) {
         level: 'beginner',
         canJumpAround: false,
     });
+    registry.push('tdpTour', 'ordinoAssessBCCellLines', function () {
+        return import('./tours').then((t) => t.AssessBCCellLines);
+    }, {
+        factory: 'createTour',
+        name: 'Assessment and Selection of Breast Cancer Cell Lines',
+        description: 'This case study summarizes an analysis session carried out by a scientist working in a drug discovery team at a pharmaceutical company.',
+        preview() {
+            return import('./assets/previews/expression.jpg'); // TODO update preview image
+        },
+        multiPage: true,
+        level: 'beginner',
+        canJumpAround: false,
+    });
     /// #endif
     registry.push(EP_PHOVEA_CORE_LOCALE, 'tdpPublicDBLocaleEN', function () {
         return import('./locales/en/tdp.json').then(PluginRegistry.getInstance().asResource);

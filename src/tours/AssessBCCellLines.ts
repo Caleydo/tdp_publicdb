@@ -1,10 +1,10 @@
 import { IStep, TourUtils } from 'tdp_core';
 
-export class WelcomeTour2 {
+export class AssessBCCellLines {
   static createTour(): IStep[] {
     return [
       {
-        html: `<p>W222elcome to this short tour showing the basic features of Ordino!</p>
+        html: `<p>Welcome to this short tour showing the assessment of breast cancer cell lines!</p>
         <p>
           Use the "Next" button to iterate through all the steps. You can use the
           <i>"Cancel"</i> button at any time to stop the tour and to interact with Ordino.
@@ -14,7 +14,7 @@ export class WelcomeTour2 {
       },
       {
         selector: 'ul[data-header="mainMenu"] > li:first-child > a',
-        html: `222222To start an analysis, click on the <i>'Datasets'</i> tab. Subsequently, you can define the list of entities you want to work with`,
+        html: `To start an analysis, click on the <i>'Datasets'</i> tab. Subsequently, you can define the list of entities you want to work with`,
         placement: 'centered',
         preAction: () => {
           const datasetTab = document.querySelector('ul[data-header="mainMenu"] > li:nth-child(1)') as HTMLElement;
@@ -34,17 +34,19 @@ export class WelcomeTour2 {
       },
       {
         selector: '.ordino-dataset.genes-dataset > .card',
-        html: `<p>222222222222You can choose between the three entity types <i>'Cell Lines'</i>, <i>'Tissue Samples'</i>, and <i>'Genes'</i>.</p> <p>In this example we will work with a list of genes</p>`,
+        html: `<p>You can choose between the three entity types <i>'Cell Lines'</i>, <i>'Tissue Samples'</i>, and <i>'Genes'</i>.</p> <p>In this example we will work with a list of genes</p>`,
         placement: 'centered',
         preAction: () => TourUtils.waitFor('#ordino_dataset_tab > .ordino-scrollspy-container .genes-dataset > .card').then(() => TourUtils.wait(600)),
         postAction: () => TourUtils.click('.ordino-dataset.genes-dataset .session-tab > li:first-child'),
       },
       {
-        selector: '.ordino-dataset.genes-dataset .dataset-entry',
-        html: `Of the available predefined gene sets, we open a list of known cancer genes, called <i>'Cancer Gene Census'</i>`,
+        selector: '[data-testid="normal-chromosome-protein-coding-human-genes-button"]',
+        html: `The scientist starts by loading the list of all protein coding genes.`,
         placement: 'centered',
         postAction: () => {
-          return TourUtils.waitFor('.ordino-dataset.genes-dataset .dataset-entry button[title^="Name: Cancer Gene Census"]').then(TourUtils.click);
+          return TourUtils.waitFor('.ordino-dataset.genes-dataset .dataset-entry button[title^="Name: normal chromosome protein coding human genes"]').then(
+            TourUtils.click,
+          );
         },
         pageBreak: 'manual',
       },
@@ -61,20 +63,30 @@ export class WelcomeTour2 {
         postAction: TourUtils.clickSelector,
       },
       {
-        selector: '.lu-search .lu-search-item',
-        html: `First, we want to add a metadata column`,
+        selector: '[data-testid=lu-adder-div] > .lu-search > .lu-search-list > :nth-child(2) > ul > :nth-child(1) > span',
+        html: `First, we want to add a new column`,
         placement: 'centered',
         postAction: () => {
-          TourUtils.click('.lu-search .lu-search-item');
+          TourUtils.click('[data-testid=lu-adder-div] > .lu-search > .lu-search-list > :nth-child(2) > ul > :nth-child(1) > span');
           TourUtils.toggleClass('.lu-adder.once', 'once', false);
         },
       },
       {
-        selector: '.modal.show .col > .select2',
-        html: `Here we select <i>'Strand'</i> &hellip;`,
+        selector: '.modal.show .col > .select3',
         placement: 'centered',
         preAction: () => TourUtils.waitFor('.modal.show').then(() => TourUtils.wait(250)),
-        postAction: () => TourUtils.setValueAndTrigger('.col > select', 'strand', 'change'),
+        html: `We select the Cell Line`,
+        postAction: () => {
+          TourUtils.setValueAndTrigger('.modal.show .select3 input.select2-search__field', 'HCC1954;', 'input');
+        },
+      },
+      {
+        selector: '.modal.show .col > .select2',
+        placement: 'centered',
+        html: `and the data type`,
+        postAction: () => {
+          TourUtils.setValueAndTrigger('.col > select', 'copy_number-relativecopynumber', 'change');
+        },
       },
       {
         selector: '.modal.show .modal-footer button[type=submit]',
@@ -83,20 +95,42 @@ export class WelcomeTour2 {
         postAction: TourUtils.clickSelector,
       },
       {
-        selector: '.le header section[title=Strand]',
+        selector: '.le header [data-col-id="col8"]',
         placement: 'centered',
-        html: `The strand information was added as a new column`,
+        html: `The new column was added here`,
         preAction: TourUtils.waitForSelector,
       },
       {
-        selector: '.lu-search .lu-search-group .lu-search-item',
+        selector: '.le [data-col-id="col8"] .lu-action-sort',
         placement: 'centered',
-        html: `Now, we want to add two columns containing the copy number information of two specific cell lines. To do so, we open the <i>'Cell Line Score'</i> dialog`,
-        preAction: () => {
-          TourUtils.click('.lu-side-panel-wrapper .lu-adder > button');
-        },
+        html: `Now, we want to sort by this column`,
         postAction: () => {
-          TourUtils.click('.lu-search .lu-search-group .lu-search-item');
+          TourUtils.click('.le [data-col-id="col8"] .lu-action-sort');
+        },
+      },
+      {
+        selector: '.le.le-multi.lineup-engine',
+        placement: 'centered',
+        html: `Now everything was sorted!`,
+      },
+      {
+        selector: '.le.le-multi.lineup-engine',
+        placement: 'centered',
+        html: `After sorting by this column, the analyst observes
+        that about 15 genes on chromosome 17 are affected by a large genomic amplification.`,
+      },
+      {
+        selector: '.lu-side-panel-wrapper .lu-adder > button',
+        html: `In order to identify the most relevant gene of these, the analyst adds a column with the gene expression (a measure of activity) in HCC1954`,
+        placement: 'centered',
+        postAction: TourUtils.clickSelector,
+      },
+      {
+        selector: '[data-testid=lu-adder-div] > .lu-search > .lu-search-list > :nth-child(2) > ul > :nth-child(1) > span',
+        html: `We want to add a 2nd new column`,
+        placement: 'centered',
+        postAction: () => {
+          TourUtils.click('[data-testid=lu-adder-div] > .lu-search > .lu-search-list > :nth-child(2) > ul > :nth-child(1) > span');
           TourUtils.toggleClass('.lu-adder.once', 'once', false);
         },
       },
@@ -104,35 +138,78 @@ export class WelcomeTour2 {
         selector: '.modal.show .col > .select3',
         placement: 'centered',
         preAction: () => TourUtils.waitFor('.modal.show').then(() => TourUtils.wait(250)),
-        html: `We select the cell lines <i>'HCC-827'</i> and <i>'BT-20'</i>.`,
+        html: `We select the 2nd Cell Line`,
         postAction: () => {
-          TourUtils.setValueAndTrigger('.modal.show .select3 input.select2-search__field', 'HCC-827;BT-20;', 'input');
+          TourUtils.setValueAndTrigger('.modal.show .select3 input.select2-search__field', 'HCC1954;', 'input');
         },
       },
       {
         selector: '.modal.show .col > .select2',
         placement: 'centered',
-        html: `As data type, we choose <i>'Relative Copy Number'</i>`,
+        html: `and the 2nd data type`,
         postAction: () => {
-          TourUtils.setValueAndTrigger('.col > select', 'copy_number-relativecopynumber', 'change');
+          TourUtils.setValueAndTrigger('.col > select', 'expression-tpm', 'change');
         },
       },
       {
         selector: '.modal.show .modal-footer button[type=submit]',
-        html: `Finally, click <i>'Add'</i>`,
+        html: `&hellip; and click <i>'Add'</i>`,
         placement: 'centered',
         postAction: TourUtils.clickSelector,
       },
       {
-        selector: ['.le header section[title^=BT], .le header section[title^=HCC]'],
+        selector: '.lu-side-panel-wrapper .lu-adder > button',
+        html: `They also add a gene sensitivity score (a measure of importance for cell survival) for HCC1954 (RSA scores obtained from DRIVE data set [4]).`,
         placement: 'centered',
-        preAction: () => TourUtils.waitFor('.le header section[title^=BT]', 10000),
-        html: `The copy number information for each selected cell line has been added as additional columns`,
+        postAction: TourUtils.clickSelector,
       },
       {
-        selector: '.le > header',
+        selector: '[data-testid=lu-adder-div] > .lu-search > .lu-search-list > :nth-child(2) > ul > :nth-child(5) > span',
+        html: `We want to add a 3rd new column`,
         placement: 'centered',
-        html: `The column headers can be used to sort and filter the list of genes based on any of the available data`,
+        postAction: () => {
+          TourUtils.click('[data-testid=lu-adder-div] > .lu-search > .lu-search-list > :nth-child(2) > ul > :nth-child(5) > span');
+          TourUtils.toggleClass('.lu-adder.once', 'once', false);
+        },
+      },
+      {
+        selector: '.modal.show .col > .select3',
+        placement: 'centered',
+        preAction: () => TourUtils.waitFor('.modal.show').then(() => TourUtils.wait(250)),
+        html: `We select the 3rd Cell Line`,
+        postAction: () => {
+          TourUtils.setValueAndTrigger('.modal.show .select3 input.select2-search__field', 'HCC1954;', 'input');
+        },
+      },
+      {
+        selector: '.modal.show .col > .select2',
+        placement: 'centered',
+        html: `and the 3rd data type`,
+        postAction: () => {
+          TourUtils.setValueAndTrigger('.col > select', 'depletion-rsa', 'change');
+        },
+      },
+      {
+        selector: '.modal.show .modal-footer button[type=submit]',
+        html: `&hellip; and click <i>'Add'</i>`,
+        placement: 'centered',
+        postAction: TourUtils.clickSelector,
+      },
+      {
+        selector: '[data-id="col10"] > .lu-toolbar > .lu-action-more',
+        html: `We now want to invert the linear scaling of the depletion screen score to improve the scale's readability.`,
+        placement: 'centered',
+        postAction: () => {
+          TourUtils.click('[data-id="col10"] > .lu-toolbar > .lu-action-more');
+          TourUtils.click('.lu-action-data-mapping > span');
+          TourUtils.setValueAndTrigger('.browser-default', 'linear_invert', 'change');
+          TourUtils.click('.lu-dialog-buttons > [type="submit"]');
+        },
+      },
+      {
+        selector: '.le.le-multi.lineup-engine',
+        placement: 'centered',
+        html: `TOUR IS HERE SO FAR.`,
       },
       {
         selector: '.le header section[title^=HCC] i[title^=Sort]',

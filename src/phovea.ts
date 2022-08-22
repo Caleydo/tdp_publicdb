@@ -1023,25 +1023,6 @@ export default function (registry) {
 
   registry.push(
     'tdpTour',
-    'ordinoWelcomeTour2',
-    function () {
-      return import('./tours').then((t) => t.WelcomeTour2);
-    },
-    {
-      factory: 'createTour',
-      name: 'Ordino Welcome Tour 2',
-      description: 'Learn the basic features of Ordino in a short welcome tour again!!!!.',
-      preview() {
-        return import('./assets/previews/expression.jpg'); // TODO update preview image
-      },
-      multiPage: true,
-      level: 'beginner',
-      canJumpAround: false,
-    },
-  );
-
-  registry.push(
-    'tdpTour',
     'ordinoStartMenuTour',
     function () {
       return import('./tours').then((t) => t.StartMenuTour);
@@ -1069,6 +1050,25 @@ export default function (registry) {
       factory: 'createTour',
       name: 'Adding Data Columns',
       description: 'Learn how to add data columns to rankings in Ordino.',
+      preview() {
+        return import('./assets/previews/expression.jpg'); // TODO update preview image
+      },
+      multiPage: true,
+      level: 'beginner',
+      canJumpAround: false,
+    },
+  );
+
+  registry.push(
+    'tdpTour',
+    'ordinoAssessBCCellLines',
+    function () {
+      return import('./tours').then((t) => t.AssessBCCellLines);
+    },
+    {
+      factory: 'createTour',
+      name: 'Assessment and Selection of Breast Cancer Cell Lines',
+      description: 'This case study summarizes an analysis session carried out by a scientist working in a drug discovery team at a pharmaceutical company.',
       preview() {
         return import('./assets/previews/expression.jpg'); // TODO update preview image
       },
