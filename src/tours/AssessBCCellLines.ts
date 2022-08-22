@@ -207,6 +207,40 @@ export class AssessBCCellLines {
         },
       },
       {
+        selector: '[data-index="0"]',
+        placement: 'centered',
+        html: `Observe: Of the highly amplified genes, ERBB2 (HER2) has the highest expression and the lowest sensitivity score. Therefore, it is probably the most relevant gene of this amplicon.`,
+      },
+      {
+        selector: '.le header [data-col-id="col10"]',
+        html: `<p>Combine both score columns to obtain stacked bars.</p>
+        <p>Observe: Combining the columns highlights the importance of ERBB2.</p>
+        <p>It is therefore probably the most relevant gene within this amplified genomic region.</p>`,
+        placement: 'centered',
+      },
+      {
+        selector: '.lu-side-panel-wrapper .lu-adder > button',
+        html: `<p>This finding leads the scientist to the question whether ERBB2 is also highly expressed and frequently amplified in other breast cancer cell lines.</p>
+        <p>To investigate this, the analyst adds the following columns:
+          <ul>
+            <li>A column with the average gene expression</li>
+            <li>A column with the gene copy number distribution</li>
+            <li>a column with the gene amplification frequency across all breast cancer cell lines</li>
+          </ul>
+        </p>`,
+        placement: 'centered',
+        postAction: () => {
+          // Add the average gene expression column
+          TourUtils.click('.lu-side-panel-wrapper .lu-adder > button');
+          TourUtils.click('[data-testid=lu-adder-div] > .lu-search > .lu-search-list > :nth-child(2) > ul > :nth-child(2) > span');
+          
+
+          TourUtils.click('.lu-action-data-mapping > span');
+          TourUtils.setValueAndTrigger('.browser-default', 'linear_invert', 'change');
+          TourUtils.click('.lu-dialog-buttons > [type="submit"]');
+        },
+      },
+      {
         selector: '.le.le-multi.lineup-engine',
         placement: 'centered',
         html: `TOUR IS HERE SO FAR.`,

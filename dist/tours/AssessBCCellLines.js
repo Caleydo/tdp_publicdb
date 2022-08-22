@@ -204,6 +204,17 @@ export class AssessBCCellLines {
                 },
             },
             {
+                selector: '[data-index="0"]',
+                placement: 'centered',
+                html: `Observe: Of the highly amplified genes, ERBB2 (HER2) has the highest expression and the lowest sensitivity score. Therefore, it is probably the most relevant gene of this amplicon.`,
+            },
+            {
+                selector: '[data-id="col10"] > .lu-toolbar > .lu-action-more',
+                html: `<p>Combine both score columns to obtain stacked bars.</p>
+        <p>Observe: Combining the columns highlights the importance of ERBB2.</p>`,
+                placement: 'centered',
+            },
+            {
                 selector: '.le.le-multi.lineup-engine',
                 placement: 'centered',
                 html: `TOUR IS HERE SO FAR.`,
