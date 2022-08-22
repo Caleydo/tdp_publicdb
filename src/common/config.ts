@@ -2,8 +2,8 @@
  * Created by sam on 06.03.2017.
  */
 
-import { Categories } from 'tdp_gene';
 import { IServerColumn, ColumnDescUtils, IAdditionalColumnDesc } from 'tdp_core';
+import { Categories } from './Categories';
 
 /**
  * maximal number of rows in which just the subset if fetched instead of all
@@ -309,7 +309,7 @@ export const expression: IDataTypeConfig = {
       id: 'tpm',
       name: 'Normalized Gene Expression (TPM Values)',
       type: dataSubtypes.number,
-      domain: [-3, 3],
+      domain: [null, null], // domain will be auto-inferred
       missingValue: NaN,
       constantDomain: true,
       useForAggregation: 'tpm',
@@ -318,7 +318,7 @@ export const expression: IDataTypeConfig = {
       id: 'counts',
       name: 'Raw Counts',
       type: dataSubtypes.number,
-      domain: [0, 10000],
+      domain: [null, null],
       missingValue: NaN,
       constantDomain: true,
       useForAggregation: 'counts',
@@ -340,7 +340,7 @@ export const copyNumber: IDataTypeConfig = {
       id: 'relativecopynumber',
       name: 'Relative Copy Number',
       type: dataSubtypes.number,
-      domain: [0, 15],
+      domain: [0, null],
       missingValue: NaN,
       constantDomain: true,
       useForAggregation: 'relativecopynumber',
@@ -349,7 +349,7 @@ export const copyNumber: IDataTypeConfig = {
       id: 'totalabscopynumber',
       name: 'Total Absolute Copy Number',
       type: dataSubtypes.number,
-      domain: [0, 15],
+      domain: [0, null],
       missingValue: NaN,
       constantDomain: true,
       useForAggregation: 'totalabscopynumber',
@@ -379,7 +379,7 @@ export const mutation: IDataTypeConfig = {
       type: dataSubtypes.cat,
       categories: toLineUpCategories(Categories.mutationCat),
       useForAggregation: 'aa_mutated',
-      domain: [0, 100],
+      domain: [0, null],
       missingValue: Categories.unknownMutationValue,
     },
     // just for single score:
@@ -388,7 +388,7 @@ export const mutation: IDataTypeConfig = {
       name: 'AA Mutation',
       type: dataSubtypes.string,
       useForAggregation: '',
-      domain: [0, 100],
+      domain: [0, null],
       missingValue: NaN,
     },
     {
@@ -397,7 +397,7 @@ export const mutation: IDataTypeConfig = {
       type: dataSubtypes.cat,
       categories: toLineUpCategories(Categories.mutationCat),
       useForAggregation: 'dna_mutated',
-      domain: [0, 100],
+      domain: [0, null],
       missingValue: Categories.unknownMutationValue,
     },
     // just for single score:
@@ -406,14 +406,14 @@ export const mutation: IDataTypeConfig = {
       name: 'DNA Mutation',
       type: dataSubtypes.string,
       useForAggregation: '',
-      domain: [0, 100],
+      domain: [0, null],
       missingValue: NaN,
     },
     {
       id: 'zygosity',
       name: 'Zygosity',
       type: dataSubtypes.number,
-      domain: [0, 15],
+      domain: [0, null],
       missingValue: NaN,
       useForAggregation: 'zygosity',
     },
@@ -430,7 +430,7 @@ export const depletion: IDataTypeConfig = {
       id: 'rsa',
       name: 'DRIVE RSA (ER McDonald III et al., Cell, 2017)',
       type: dataSubtypes.number,
-      domain: [-3, 3],
+      domain: [null, null],
       missingValue: NaN,
       constantDomain: false,
       useForAggregation: 'rsa',
@@ -440,7 +440,7 @@ export const depletion: IDataTypeConfig = {
       id: 'ataris',
       name: 'DRIVE ATARiS (ER McDonald III et al., Cell, 2017)',
       type: dataSubtypes.number,
-      domain: [0, 10000],
+      domain: [0, null],
       missingValue: NaN,
       constantDomain: false,
       useForAggregation: 'ataris',
@@ -450,7 +450,7 @@ export const depletion: IDataTypeConfig = {
       id: 'ceres',
       name: 'Avana CERES (Robin M. Meyers et al., Nature Genetics, 2017)',
       type: dataSubtypes.number,
-      domain: [0, 10000],
+      domain: [0, null],
       missingValue: NaN,
       constantDomain: false,
       useForAggregation: 'ceres',
@@ -489,7 +489,7 @@ export const drugScreen: IDataTypeConfig = {
       id: 'actarea',
       name: 'Activity Area',
       type: dataSubtypes.number,
-      domain: [-3, 3],
+      domain: [null, null],
       missingValue: NaN,
       constantDomain: false,
       useForAggregation: 'actarea',
@@ -498,7 +498,7 @@ export const drugScreen: IDataTypeConfig = {
       id: 'ic50',
       name: 'IC50',
       type: dataSubtypes.number,
-      domain: [-3, 3],
+      domain: [null, null],
       missingValue: NaN,
       constantDomain: false,
       useForAggregation: 'ic50',
@@ -507,7 +507,7 @@ export const drugScreen: IDataTypeConfig = {
       id: 'ec50',
       name: 'EC50',
       type: dataSubtypes.number,
-      domain: [-3, 3],
+      domain: [null, null],
       missingValue: NaN,
       constantDomain: false,
       useForAggregation: 'ec50',

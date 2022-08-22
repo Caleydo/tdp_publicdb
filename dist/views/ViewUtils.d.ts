@@ -1,9 +1,13 @@
-/**
- * Created by sam on 16.02.2017.
- */
 import { IScoreRow } from 'tdp_core';
+import { scale as d3Scale } from 'd3v3';
 import { IDataSubtypeConfig } from '../common/config';
 export declare class ViewUtils {
+    static base: string[];
+    static removed: string[];
+    static colors: string[];
+    static integrateColors(scale: d3Scale.Ordinal<string, string>, colors: string[]): void;
+    static colorScale(): d3Scale.Ordinal<string, string>;
+    static legend(legend: HTMLElement, scale: d3Scale.Ordinal<string, string>): void;
     static loadFirstName(ensg: string): Promise<string>;
     static loadGeneList(ensgs: string[]): Promise<{
         id: string;

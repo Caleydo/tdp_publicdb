@@ -4,7 +4,6 @@
 /.idea
 /lib/
 /build/
-/dist/tsBuildInfoFile
 /dist_python/
 *.egg-info/
 *.egg
@@ -27,3 +26,12 @@ node_modules/
 /tests/**/*.map
 *.css
 package-lock.json
+/yarn.lock
+# yarn
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions

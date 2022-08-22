@@ -1,7 +1,7 @@
 {
   "name": "tdp_publicdb",
   "description": "",
-  "version": "12.0.1-SNAPSHOT",
+  "version": "12.1.1-SNAPSHOT",
   "author": {
     "name": "The Caleydo Team",
     "email": "contact@caleydo.org",
@@ -19,82 +19,59 @@
   "private": false,
   "files": [
     "src",
-    "phovea_registry.js",
     "dist",
     "tdp_publicdb",
-    "__init__.py",
-    "__main__.py",
     "requirements.txt",
-    "requirements_dev.txt",
-    "docker_packages.txt"
+    "requirements_dev.txt"
   ],
   "scripts": {
-    "build": "npm run clean && npm run compile",
+    "all": "npm run lint:fix && npm run test && npm run build && npm run dist",
+    "build": "npm run clean && npm run compile && npm run copy",
     "clean": "rimraf build dist lib",
-    "compile:watch": "tsc -w",
-    "compile": "tsc",
-    "copy-assets": "if [ -d src/assets ]; then cp -rv src/assets/. dist/assets/; fi && if [ -d src/template ]; then shx --verbose cp -R src/template/. dist/template/; fi",
-    "copy-styles": "if [ -d src/scss ]; then shx --verbose cp -R src/scss/. dist/scss/; fi",
-    "copy": "npm run copy-assets && npm run copy-styles",
+    "compile:watch": "visyn_scripts compile --watch",
+    "compile": "visyn_scripts compile",
+    "copy": "visyn_scripts copy",
     "cy:open": "cypress open",
+    "cy:run": "cypress run",
     "delete-dependencies": "rimraf node_modules",
+    "predist": "npm run lint && npm run test && npm run build",
     "dist": "mkdir lib && cd dist && tar cvzf ../lib/tdp_publicdb.tar.gz *",
-    "docs": "typedoc --options typedoc.json src/**.ts",
-    "lint:fix": "eslint --fix --cache src/**/*.ts{,x} tests/**/*.ts{,x}",
-    "lint": "eslint --cache src/**/*.ts{,x} tests/**/*.ts{,x}",
-    "postcompile": "npm run copy",
-    "posttest": "npm run lint",
-    "prebuild": "npm run test",
-    "predist": "npm run build && npm run docs",
-    "release:major": "npm version major && npm publish && git push --follow-tags",
-    "release:minor": "npm version minor && npm publish && git push --follow-tags",
-    "release:patch": "npm version patch && npm publish && git push --follow-tags",
-    "test:watch": "jest --watch",
-    "test": "test ! $(find tests -name \"*.ts\") || jest -w=1",
-    "make": "make --"
+    "docs": "visyn_scripts docs",
+    "lint:fix": "visyn_scripts lint --fix",
+    "lint": "visyn_scripts lint",
+    "start": "visyn_scripts start --env workspace_mode=single",
+    "storybook:build": "NODE_OPTIONS=--max_old_space_size=4096 build-storybook",
+    "storybook": "NODE_OPTIONS=--max_old_space_size=4096 start-storybook -p 6006",
+    "test": "visyn_scripts test",
+    "webpack:dev": "visyn_scripts build --mode development --env workspace_mode=single",
+    "webpack:prod": "visyn_scripts build --mode production --env workspace_mode=single"
   },
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "engines": {
-    "npm": ">= 6.12",
-    "node": ">= 12.13"
+    "npm": ">=8",
+    "node": ">=16"
   },
   "devDependencies": {
-    "@types/d3": "~3.5.36",
-    "@types/react-select": "^4.0.13",
-    "@typescript-eslint/eslint-plugin": "^5.9.0",
-    "@typescript-eslint/parser": "^5.9.0",
-    "eslint": "^8.7.0",
-    "eslint-config-airbnb": "^19.0.4",
-    "eslint-config-airbnb-typescript": "^16.1.0",
-    "eslint-config-prettier": "^8.3.0",
-    "eslint-plugin-import": "^2.25.4",
-    "eslint-plugin-jest": "^25.3.4",
-    "eslint-plugin-jsx-a11y": "^6.5.1",
-    "eslint-plugin-prettier": "^4.0.0",
-    "eslint-plugin-react": "^7.28.0",
-    "eslint-plugin-react-hooks": "^4.3.0",
-    "identity-obj-proxy": "~3.0.0",
-    "jest-raw-loader": "~1.0.1",
-    "prettier": "^2.5.1",
-    "rimraf": "~3.0.2",
-    "shx": "~0.3.3",
-    "@types/jest": "~27.4.1",
-    "jest": "~27.5.1",
-    "ts-jest": "~27.1.3",
-    "tslib": "~2.3.1",
-    "typedoc": "~0.22.13",
-    "typescript": "~4.6.2"
+    "@types/react-select": "^4.0.13"
   },
   "dependencies": {
-    "d3": "~3.5.17",
+    "jquery-ui": "1.12.1",
+    "jstat": "^1.9.4",
     "react-highlight-words": "^0.17.0",
     "react-select": "^4.1.0",
     "react-select-async-paginate": "^0.5.3",
     "react-virtualized": "^9.22.3",
-    "tdp_gene": "git+ssh://git@github.com:Caleydo/tdp_gene#develop"
+    "tdp_core": "git+ssh://git@github.com:datavisyn/tdp_core#develop",
+    "visyn_scripts": "git+ssh://git@github.com/datavisyn/visyn_scripts#develop"
   },
   "optionalDependencies": {
     "ordino": "git+ssh://git@github.com:Caleydo/ordino#develop"
-  }
+  },
+  "visyn": {
+    "entries": {
+      "app": "./src/index.ts"
+    }
+  },
+  "packageManager": "yarn@3.2.2"
 }

@@ -1,0 +1,15 @@
+.tdp-legend {
+  div {
+    cursor: pointer;
+
+    span:first-child {
+      display: inline-block;
+      width: 10px;
+      height: 10px;
+    }
+
+    &.disabled {
+      opacity: 0.5;
+    }
+  }
+}

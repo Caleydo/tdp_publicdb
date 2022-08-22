@@ -2,10 +2,11 @@
  * Created by sam on 16.02.2017.
  */
 import { FormElementType, IDTypeManager, RestBaseUtils, LineupUtils } from 'tdp_core';
-import { ACoExpression, SpeciesUtils } from 'tdp_gene';
 import { ParameterFormIds, FORM_TISSUE_OR_CELLLINE_FILTER, FORM_DATA_SOURCE, FORM_COLOR_CODING } from '../common/forms';
 import { ViewUtils } from './ViewUtils';
 import { expression } from '../common/config';
+import { ACoExpression } from './ACoExpression';
+import { SpeciesUtils } from '../common';
 export class CoExpression extends ACoExpression {
     getParameterFormDescs() {
         const base = super.getParameterFormDescs();

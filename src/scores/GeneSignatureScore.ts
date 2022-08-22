@@ -12,7 +12,8 @@ import {
   I18nextManager,
   IPluginDesc,
 } from 'tdp_core';
-import { SpeciesUtils, FieldUtils } from 'tdp_gene';
+import { FieldUtils } from '../providers';
+import { SpeciesUtils } from '../common';
 import { ScoreUtils } from './ScoreUtils';
 import { IDataSourceConfig, MAX_FILTER_SCORE_ROWS_BEFORE_ALL } from '../common/config';
 
