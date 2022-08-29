@@ -82,7 +82,7 @@ export class AssessBCCellLines {
                 placement: 'centered',
                 html: `and the data type`,
                 postAction: () => {
-                    TourUtils.setValueAndTrigger('.col > select', 'copy_number-relativecopynumber', 'change');
+                    TourUtils.setValueAndTrigger('.show .col > select', 'copy_number-relativecopynumber', 'change');
                 },
             },
             {
@@ -145,7 +145,7 @@ export class AssessBCCellLines {
                 placement: 'centered',
                 html: `and the 2nd data type`,
                 postAction: () => {
-                    TourUtils.setValueAndTrigger('.col > select', 'expression-tpm', 'change');
+                    TourUtils.setValueAndTrigger('.show .col > select', 'expression-tpm', 'change');
                 },
             },
             {
@@ -183,7 +183,7 @@ export class AssessBCCellLines {
                 placement: 'centered',
                 html: `and the 3rd data type`,
                 postAction: () => {
-                    TourUtils.setValueAndTrigger('.col > select', 'depletion-rsa', 'change');
+                    TourUtils.setValueAndTrigger('.show .col > select', 'depletion-rsa', 'change');
                 },
             },
             {
@@ -209,31 +209,92 @@ export class AssessBCCellLines {
                 html: `Observe: Of the highly amplified genes, ERBB2 (HER2) has the highest expression and the lowest sensitivity score. Therefore, it is probably the most relevant gene of this amplicon.`,
             },
             {
-                selector: '.le header [data-col-id="col10"]',
+                selector: '.le header [data-col-id="col9"], .le header [data-col-id="col10"]',
                 html: `<p>Combine both score columns to obtain stacked bars.</p>
         <p>Observe: Combining the columns highlights the importance of ERBB2.</p>
         <p>It is therefore probably the most relevant gene within this amplified genomic region.</p>`,
                 placement: 'centered',
             },
             {
-                selector: '.lu-side-panel-wrapper .lu-adder > button',
+                selector: '.le header [data-col-id="col10"]',
                 html: `<p>This finding leads the scientist to the question whether ERBB2 is also highly expressed and frequently amplified in other breast cancer cell lines.</p>
         <p>To investigate this, the analyst adds the following columns:
           <ul>
             <li>A column with the average gene expression</li>
             <li>A column with the gene copy number distribution</li>
-            <li>a column with the gene amplification frequency across all breast cancer cell lines</li>
+            <li>A column with the gene amplification frequency across all breast cancer cell lines</li>
           </ul>
         </p>`,
+                placement: 'centered',
+            },
+            {
+                selector: '.lu-side-panel-wrapper .lu-adder > button',
+                html: `1. A column with the average gene expression`,
                 placement: 'centered',
                 postAction: () => {
                     // Add the average gene expression column
                     TourUtils.click('.lu-side-panel-wrapper .lu-adder > button');
                     TourUtils.click('[data-testid=lu-adder-div] > .lu-search > .lu-search-list > :nth-child(2) > ul > :nth-child(2) > span');
-                    TourUtils.click('.lu-action-data-mapping > span');
-                    TourUtils.setValueAndTrigger('.browser-default', 'linear_invert', 'change');
-                    TourUtils.click('.lu-dialog-buttons > [type="submit"]');
+                    TourUtils.toggleClass('.lu-adder.once', 'once', false);
+                    TourUtils.waitFor('.show .modal-body form > div:nth-child(1) .row:nth-child(1) div:nth-child(1) select').then(() => {
+                        TourUtils.setValueAndTrigger('.show .modal-body form > div:nth-child(1) .row:nth-child(1) div:nth-child(1) select', 'tumortype', 'change');
+                        TourUtils.setValueAndTrigger('.show .modal-body form > .col-sm-12:nth-child(1) .row:nth-child(1) .row:nth-child(1) > div:nth-child(2) select', 'breast carcinoma', 'change');
+                        TourUtils.setValueAndTrigger('.show .modal-body form > .col-sm-12:nth-child(2) select', 'expression-tpm', 'change');
+                        TourUtils.setValueAndTrigger('.show [data-testid="aggregation"] select', 'avg', 'change');
+                        TourUtils.wait(1000).then(() => TourUtils.click('.modal.show .modal-footer button[type=submit]'));
+                    });
                 },
+            },
+            {
+                selector: '.lu-side-panel-wrapper .lu-adder > button',
+                html: `2. A column with the gene copy number distribution`,
+                placement: 'centered',
+                postAction: () => {
+                    // Add the average gene expression column
+                    TourUtils.click('.lu-side-panel-wrapper .lu-adder > button');
+                    TourUtils.click('[data-testid=lu-adder-div] > .lu-search > .lu-search-list > :nth-child(2) > ul > :nth-child(2) > span');
+                    TourUtils.toggleClass('.lu-adder.once', 'once', false);
+                    TourUtils.waitFor('.show .modal-body form > div:nth-child(1) .row:nth-child(1) div:nth-child(1) select').then(() => {
+                        TourUtils.setValueAndTrigger('.show .modal-body form > div:nth-child(1) .row:nth-child(1) div:nth-child(1) select', 'tumortype', 'change');
+                        TourUtils.setValueAndTrigger('.show .modal-body form > .col-sm-12:nth-child(1) .row:nth-child(1) .row:nth-child(1) > div:nth-child(2) select', 'breast carcinoma', 'change');
+                        TourUtils.setValueAndTrigger('.show .modal-body form > .col-sm-12:nth-child(2) select', 'copy_number-relativecopynumber', 'change');
+                        TourUtils.setValueAndTrigger('.show [data-testid="aggregation"] select', 'boxplot', 'change');
+                        TourUtils.wait(1000).then(() => TourUtils.click('.modal.show .modal-footer button[type=submit]'));
+                    });
+                },
+            },
+            {
+                selector: '.lu-side-panel-wrapper .lu-adder > button',
+                html: `3. A column with the gene amplification frequency across all breast cancer cell lines`,
+                placement: 'centered',
+                postAction: () => {
+                    // Add the average gene expression column
+                    TourUtils.click('.lu-side-panel-wrapper .lu-adder > button');
+                    TourUtils.click('[data-testid=lu-adder-div] > .lu-search > .lu-search-list > :nth-child(2) > ul > :nth-child(2) > span');
+                    TourUtils.toggleClass('.lu-adder.once', 'once', false);
+                    TourUtils.waitFor('.show .modal-body form > div:nth-child(1) .row:nth-child(1) div:nth-child(1) select').then(() => {
+                        TourUtils.setValueAndTrigger('.show .modal-body form > div:nth-child(1) .row:nth-child(1) div:nth-child(1) select', 'tumortype', 'change');
+                        TourUtils.setValueAndTrigger('.show .modal-body form > .col-sm-12:nth-child(1) .row:nth-child(1) .row:nth-child(1) > div:nth-child(2) select', 'breast carcinoma', 'change');
+                        TourUtils.setValueAndTrigger('.show .modal-body form > .col-sm-12:nth-child(2) select', 'copy_number-relativecopynumber', 'change');
+                        TourUtils.setValueAndTrigger('.show [data-testid="aggregation"] select', 'frequency', 'change');
+                        TourUtils.waitFor('.show [data-testid="Comparison Operator"]').then(() => {
+                            TourUtils.setValueAndTrigger('.show [data-testid="comparison-operator"] select', '>', 'change');
+                            TourUtils.setValueAndTrigger('.show [type="number"]', '4', 'input');
+                        });
+                        TourUtils.wait(1000).then(() => TourUtils.click('.modal.show .modal-footer button[type=submit]'));
+                    });
+                },
+            },
+            {
+                selector: '.le.le-multi.lineup-engine',
+                html: `Observe: ERBB2 is amplified in almost 25% of all assessed breast cancer cell lines. Further, it is highly expressed.`,
+                placement: 'centered',
+            },
+            {
+                selector: '.le.le-multi.lineup-engine',
+                html: `<p>The aim is now to get more information about ERBB2.</p>
+        <p>Select ERBB2 in the list.</p>`,
+                placement: 'centered',
             },
             {
                 selector: '.le.le-multi.lineup-engine',

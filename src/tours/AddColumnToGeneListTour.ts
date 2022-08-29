@@ -93,7 +93,7 @@ export class AddColumnToGeneListTour {
         <p>In this example, we select <i>'Strand'</i> &hellip;</p>`,
         placement: 'centered',
         preAction: () => TourUtils.waitFor('.modal.show').then(() => TourUtils.wait(250)),
-        postAction: () => TourUtils.setValueAndTrigger('.col > select', 'strand', 'change'),
+        postAction: () => TourUtils.setValueAndTrigger('.show .col > select', 'strand', 'change'),
       },
 
       {
@@ -157,7 +157,7 @@ export class AddColumnToGeneListTour {
         placement: 'centered',
         html: `As data type, we choose <i>'Relative Copy Number'</i>`,
         postAction: () => {
-          TourUtils.setValueAndTrigger('.col > select', 'copy_number-relativecopynumber', 'change');
+          TourUtils.setValueAndTrigger('.show .col > select', 'copy_number-relativecopynumber', 'change');
         },
       },
 
@@ -197,26 +197,26 @@ export class AddColumnToGeneListTour {
       },
 
       {
-        selector: '.modal-body form > .col-sm-12:nth-child(1) .row:nth-child(1) div:nth-child(1) select',
+        selector: '.show .modal-body form > .col-sm-12:nth-child(1) .row:nth-child(1) div:nth-child(1) select',
         html: `<p>First, we need to define the subset of cell lines which we want to aggregate.</p>
         <p>For the filter attribute we select <i>'Tumor Type'</i> &hellip;</p>`,
         placement: 'centered',
         postAction: () => {
-          TourUtils.setValueAndTrigger('.modal-body form > div:nth-child(1) .row:nth-child(1) div:nth-child(1) select', 'tumortype', 'change');
+          TourUtils.setValueAndTrigger('.show .modal-body form > div:nth-child(1) .row:nth-child(1) div:nth-child(1) select', 'tumortype', 'change');
         },
       },
 
       {
-        selector: '.modal-body form > .col-sm-12:nth-child(1) .row:nth-child(1) .row:nth-child(1) > div:nth-child(2) .select2',
+        selector: '.show .modal-body form > .col-sm-12:nth-child(1) .row:nth-child(1) .row:nth-child(1) > div:nth-child(2) .select2',
         html: `&hellip; and for the filter value we select <i>'breast carcinoma'</i>.`,
         placement: 'centered',
         preAction: () =>
-          TourUtils.waitFor('.modal-body form > .col-sm-12:nth-child(1) .row:nth-child(1) .row:nth-child(1) > div:nth-child(2) .select2').then(() =>
+          TourUtils.waitFor('.show .modal-body form > .col-sm-12:nth-child(1) .row:nth-child(1) .row:nth-child(1) > div:nth-child(2) .select2').then(() =>
             TourUtils.wait(250),
           ),
         postAction: () => {
           TourUtils.setValueAndTrigger(
-            '.modal-body form > .col-sm-12:nth-child(1) .row:nth-child(1) .row:nth-child(1) > div:nth-child(2) select',
+            '.show .modal-body form > .col-sm-12:nth-child(1) .row:nth-child(1) .row:nth-child(1) > div:nth-child(2) select',
             'breast carcinoma',
             'change',
           );
@@ -224,21 +224,21 @@ export class AddColumnToGeneListTour {
       },
 
       {
-        selector: '.modal-body form > .col-sm-12:nth-child(2) .row:nth-child(1) .select2',
+        selector: '.show .modal-body form > .col-sm-12:nth-child(2) .row:nth-child(1) .select2',
         placement: 'centered',
         html: `As data type, we choose <i>'Relative Copy Number'</i> &hellip;`,
         postAction: () => {
-          TourUtils.setValueAndTrigger('.modal-body form > .col-sm-12:nth-child(2) select', 'copy_number-relativecopynumber', 'change');
+          TourUtils.setValueAndTrigger('.show .modal-body form > .col-sm-12:nth-child(2) select', 'copy_number-relativecopynumber', 'change');
         },
       },
 
       {
-        selector: '.modal-body form > .col-sm-12:nth-child(3) select',
+        selector: '.show .modal-body form > .col-sm-12:nth-child(3) select',
         placement: 'centered',
         html: `<p>&hellip; and as type of aggregation we choose <i>'Average'</i></p>
         <p>FYI: other types of aggregation are, for instance, <i>'Min'</i>, <i>'Max'</i>, <i>'Median'</i>, <i>'Count'</i>, and <i>'Boxplot'</i>.`,
         postAction: () => {
-          TourUtils.setValueAndTrigger('.modal-body form > .col-sm-12:nth-child(3) > select', 'avg', 'change');
+          TourUtils.setValueAndTrigger('.show .modal-body form > .col-sm-12:nth-child(3) > select', 'avg', 'change');
         },
       },
 
