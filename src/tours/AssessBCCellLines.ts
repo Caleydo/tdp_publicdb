@@ -75,7 +75,7 @@ export class AssessBCCellLines {
       {
         selector: '.modal.show .col > .select3',
         placement: 'centered',
-        preAction: () => TourUtils.waitFor('.modal.show').then(() => TourUtils.wait(250)),
+        preAction: () => TourUtils.waitFor('.modal.show').then(() => TourUtils.wait(150)),
         html: `We select the Cell Line`,
         postAction: () => {
           TourUtils.setValueAndTrigger('.modal.show .select3 input.select2-search__field', 'HCC1954;', 'input');
@@ -138,7 +138,7 @@ export class AssessBCCellLines {
       {
         selector: '.modal.show .col > .select3',
         placement: 'centered',
-        preAction: () => TourUtils.waitFor('.modal.show').then(() => TourUtils.wait(250)),
+        preAction: () => TourUtils.waitFor('.modal.show').then(() => TourUtils.wait(150)),
         html: `We select the 2nd Cell Line`,
         postAction: () => {
           TourUtils.setValueAndTrigger('.modal.show .select3 input.select2-search__field', 'HCC1954;', 'input');
@@ -176,7 +176,7 @@ export class AssessBCCellLines {
       {
         selector: '.modal.show .col > .select3',
         placement: 'centered',
-        preAction: () => TourUtils.waitFor('.modal.show').then(() => TourUtils.wait(250)),
+        preAction: () => TourUtils.waitFor('.modal.show').then(() => TourUtils.wait(150)),
         html: `We select the 3rd Cell Line`,
         postAction: () => {
           TourUtils.setValueAndTrigger('.modal.show .select3 input.select2-search__field', 'HCC1954;', 'input');
@@ -213,14 +213,14 @@ export class AssessBCCellLines {
         html: `Observe: Of the highly amplified genes, ERBB2 (HER2) has the highest expression and the lowest sensitivity score. Therefore, it is probably the most relevant gene of this amplicon.`,
       },
       {
-        selector: '.le header [data-col-id="col9"], .le header [data-col-id="col10"]',
+        selector: ['.le header [data-col-id="col9"], .le header [data-col-id="col10"]'],
         html: `<p>Combine both score columns to obtain stacked bars.</p>
         <p>Observe: Combining the columns highlights the importance of ERBB2.</p>
         <p>It is therefore probably the most relevant gene within this amplified genomic region.</p>`,
         placement: 'centered',
       },
       {
-        selector: '.le header [data-col-id="col10"]',
+        selector: '[data-index="0"]',
         html: `<p>This finding leads the scientist to the question whether ERBB2 is also highly expressed and frequently amplified in other breast cancer cell lines.</p>
         <p>To investigate this, the analyst adds the following columns:
           <ul>
@@ -236,11 +236,10 @@ export class AssessBCCellLines {
         html: `1. A column with the average gene expression`,
         placement: 'centered',
         postAction: () => {
-          // Add the average gene expression column
           TourUtils.click('.lu-side-panel-wrapper .lu-adder > button');
           TourUtils.click('[data-testid=lu-adder-div] > .lu-search > .lu-search-list > :nth-child(2) > ul > :nth-child(2) > span');
           TourUtils.toggleClass('.lu-adder.once', 'once', false);
-          TourUtils.waitFor('.show .modal-body form > div:nth-child(1) .row:nth-child(1) div:nth-child(1) select').then(() => {
+          return TourUtils.waitFor('.show .modal-body form > div:nth-child(1) .row:nth-child(1) div:nth-child(1) select').then(() => {
             TourUtils.setValueAndTrigger('.show .modal-body form > div:nth-child(1) .row:nth-child(1) div:nth-child(1) select', 'tumortype', 'change');
             TourUtils.setValueAndTrigger(
               '.show .modal-body form > .col-sm-12:nth-child(1) .row:nth-child(1) .row:nth-child(1) > div:nth-child(2) select',
@@ -257,12 +256,14 @@ export class AssessBCCellLines {
         selector: '.lu-side-panel-wrapper .lu-adder > button',
         html: `2. A column with the gene copy number distribution`,
         placement: 'centered',
+        preAction: () => {
+          TourUtils.waitFor('.le header [data-col-id="col11"]');
+        },
         postAction: () => {
-          // Add the average gene expression column
           TourUtils.click('.lu-side-panel-wrapper .lu-adder > button');
           TourUtils.click('[data-testid=lu-adder-div] > .lu-search > .lu-search-list > :nth-child(2) > ul > :nth-child(2) > span');
           TourUtils.toggleClass('.lu-adder.once', 'once', false);
-          TourUtils.waitFor('.show .modal-body form > div:nth-child(1) .row:nth-child(1) div:nth-child(1) select').then(() => {
+          return TourUtils.waitFor('.show .modal-body form > div:nth-child(1) .row:nth-child(1) div:nth-child(1) select').then(() => {
             TourUtils.setValueAndTrigger('.show .modal-body form > div:nth-child(1) .row:nth-child(1) div:nth-child(1) select', 'tumortype', 'change');
             TourUtils.setValueAndTrigger(
               '.show .modal-body form > .col-sm-12:nth-child(1) .row:nth-child(1) .row:nth-child(1) > div:nth-child(2) select',
@@ -279,12 +280,14 @@ export class AssessBCCellLines {
         selector: '.lu-side-panel-wrapper .lu-adder > button',
         html: `3. A column with the gene amplification frequency across all breast cancer cell lines`,
         placement: 'centered',
+        preAction: () => {
+          TourUtils.waitFor('.le header [data-col-id="col12"]');
+        },
         postAction: () => {
-          // Add the average gene expression column
           TourUtils.click('.lu-side-panel-wrapper .lu-adder > button');
           TourUtils.click('[data-testid=lu-adder-div] > .lu-search > .lu-search-list > :nth-child(2) > ul > :nth-child(2) > span');
           TourUtils.toggleClass('.lu-adder.once', 'once', false);
-          TourUtils.waitFor('.show .modal-body form > div:nth-child(1) .row:nth-child(1) div:nth-child(1) select').then(() => {
+          return TourUtils.waitFor('.show .modal-body form > div:nth-child(1) .row:nth-child(1) div:nth-child(1) select').then(() => {
             TourUtils.setValueAndTrigger('.show .modal-body form > div:nth-child(1) .row:nth-child(1) div:nth-child(1) select', 'tumortype', 'change');
             TourUtils.setValueAndTrigger(
               '.show .modal-body form > .col-sm-12:nth-child(1) .row:nth-child(1) .row:nth-child(1) > div:nth-child(2) select',
@@ -305,57 +308,181 @@ export class AssessBCCellLines {
         selector: '.le.le-multi.lineup-engine',
         html: `Observe: ERBB2 is amplified in almost 25% of all assessed breast cancer cell lines. Further, it is highly expressed.`,
         placement: 'centered',
+        preAction: () => {
+          TourUtils.waitFor('.le header [data-col-id="col13"]');
+        },
       },
       {
-        selector: '.le.le-multi.lineup-engine',
+        selector: '[data-index="0"] .lu-renderer-selection',
         html: `<p>The aim is now to get more information about ERBB2.</p>
         <p>Select ERBB2 in the list.</p>`,
         placement: 'centered',
-      },
-      {
-        selector: '.le.le-multi.lineup-engine',
-        placement: 'centered',
-        html: `TOUR IS HERE SO FAR.`,
-      },
-      {
-        selector: '.le header section[title^=HCC] i[title^=Sort]',
-        placement: 'centered',
-        html: `For example, you can use this icon to sort all genes by their copy number in the cell line <i>'HCC-827'</i>`,
         postAction: TourUtils.clickSelector,
       },
       {
-        selector: '.le-tr[data-index="0"]',
+        selector: '[data-viewid="celllinedb_expression_vs_copynumber"]',
+        html: `Open the Expression vs Copy Number detail view`,
         placement: 'centered',
-        html: `In order to obtain additional information about one or more genes, click on the respective line or use the checkboxes`,
-        preAction: () =>
-          TourUtils.waitFor(() => {
-            const r = document.querySelector<HTMLElement>('.le-tr[data-index="0"]');
-            if (!r) {
-              return null;
-            }
-            // has a string renderered EGFR entry
-            if (!Array.from(r.querySelectorAll<HTMLElement>('div[data-renderer="string"]')).some((d) => d.textContent === 'EGFR')) {
-              return null;
-            }
-            return r;
-          }, Infinity).then(() => TourUtils.wait(500)), // wait for animation to complete
-        postAction: TourUtils.clickSelector,
-      },
-      {
-        selector: '.viewWrapper .chooser:not(.hidden)',
-        placement: 'centered',
-        html: `Various 'Detail Views', providing additional information, are available.`,
         preAction: TourUtils.waitForSelector,
-      },
-      {
-        selector: '.viewWrapper .chooser button[data-viewid="celllinedb_expression_vs_copynumber"]',
-        placement: 'centered',
-        html: `For instance, clicking on <i>'Expression vs Copy Number'</i> opens a scatter plot showing the relation of the two types of data`,
         postAction: TourUtils.clickSelector,
       },
       {
-        html: `<p>Thanks for joining this tour demonstrating the basic features of Ordino.</p>
-        <p>There are many more features to discover. Enjoy!</p>`,
+        selector: '.ids',
+        html: `Observe the direct correlation between copy number and expression of ERBB2`,
+        placement: 'centered',
+        preAction: () => {
+          return TourUtils.waitFor('.ids');
+        },
+      },
+      {
+        selector: '[data-viewid="targetvalidation"]',
+        html: `Now open the Open Targets detail view...`,
+        placement: 'centered',
+        postAction: TourUtils.clickSelector,
+      },
+      {
+        selector: '[data-viewid="pubmed"]',
+        html: `...and the PubMed detail view.`,
+        placement: 'centered',
+        postAction: TourUtils.clickSelector,
+      },
+      {
+        selector: '',
+        html: `Question: In what cell lines is ERBB2 amplified? Select cell lines with ERBB2 amplification that have mutation in BRCA1 or BRCA2`,
+        placement: 'centered',
+      },
+      {
+        selector: '[data-viewid="copynumbertable"]',
+        html: `Start by opening the Copy Number detail view`,
+        placement: 'centered',
+        postAction: TourUtils.clickSelector,
+      },
+      {
+        selector: '[data-id="col7"] .lu-action-sort',
+        html: `Now sort by the copy number`,
+        placement: 'centered',
+        preAction: TourUtils.waitForSelector,
+        postAction: TourUtils.clickSelector,
+      },
+      {
+        selector: '[data-testid="viewWrapper-1"] [data-id="col4"] .lu-action-filter',
+        html: `Filter for breast cancer via column menu of column tumor type (also filter out cell lines with unknown tumor type)`,
+        placement: 'centered',
+        postAction: TourUtils.clickSelector,
+      },
+      {
+        selector: '.lu-dialog .lu-dialog-table',
+        html: `First select only the "breast carcinoma" tumor type.`,
+        placement: 'centered',
+        postAction: () => {
+          TourUtils.wait(100)
+            .then(() => {
+              TourUtils.click('.lu-dialog-table .lu-checkbox:first-child');
+            })
+            .then(() => {
+              TourUtils.wait(500).then(() => {
+                TourUtils.click('input[type="checkbox"][data-cat="breast carcinoma"]');
+              });
+            });
+        },
+      },
+      {
+        selector: '.lu-dialog .lu-dialog-table',
+        html: `Then filter cell lines with unknown types and submit the filter.`,
+        placement: 'centered',
+        postAction: () => {
+          TourUtils.wait(100)
+            .then(() => {
+              TourUtils.click('.lu-dialog > .lu-checkbox input');
+            })
+            .then(() => {
+              TourUtils.wait(500).then(() => {
+                TourUtils.click('.lu-dialog-button[type="submit"]');
+              });
+            });
+        },
+      },
+      {
+        selector: '[data-testid="viewWrapper-1"] .lu-side-panel-wrapper .lu-adder > button',
+        html: `Let's now add the BRCA gene scores.`,
+        placement: 'centered',
+        postAction: TourUtils.clickSelector,
+      },
+      {
+        selector: '[data-testid="viewWrapper-1"] [data-testid=lu-adder-div] > .lu-search > .lu-search-list > :nth-child(2) > ul > :nth-child(1) > span',
+        html: `We want to add a new column`,
+        placement: 'centered',
+        postAction: () => {
+          TourUtils.click(
+            '[data-testid="viewWrapper-1"] [data-testid=lu-adder-div] > .lu-search > .lu-search-list > :nth-child(2) > ul > :nth-child(1) > span',
+          );
+          TourUtils.toggleClass('.lu-adder.once', 'once', false);
+        },
+      },
+      {
+        selector: '.modal.show .col > .select3',
+        placement: 'centered',
+        preAction: () => TourUtils.waitFor('.modal.show').then(() => TourUtils.wait(150)),
+        html: `We select the BRCA1 and BRCA2 cell lines.`,
+        postAction: () => {
+          TourUtils.setValueAndTrigger('.modal.show .select3 input.select2-search__field', 'BRCA1;', 'input');
+          TourUtils.wait(400).then(() => {
+            TourUtils.setValueAndTrigger('.modal.show .select3 input.select2-search__field', 'BRCA2;', 'input');
+          });
+        },
+      },
+      {
+        selector: '.modal.show .col > .select2',
+        placement: 'centered',
+        html: `Then set the data type to AA Mutated.`,
+        postAction: () => {
+          TourUtils.setValueAndTrigger('.show .col > select', 'mutation-aa_mutated', 'change');
+        },
+      },
+      {
+        selector: '.modal.show .modal-footer button[type=submit]',
+        html: `&hellip; and click <i>'Add'</i>`,
+        placement: 'centered',
+        postAction: TourUtils.clickSelector,
+      },
+      {
+        selector: ['[data-testid="viewWrapper-1"] [data-index="0"].le-tr, [data-testid="viewWrapper-1"] [data-index="2"].le-tr'],
+        html: `<p>Observe:</p>
+        <p>HCC1954 has the highest ERBB2 amplification among BRCA1 mutated cell lines.</p>
+        <p>HCC1569 has the highest ERBB2 amplification among BRCA2 mutated cell lines.</p>`,
+        placement: 'centered',
+      },
+      {
+        selector: '',
+        html: `Aim: Show information provided by COSMIC about these two cell lines`,
+        placement: 'centered',
+      },
+      {
+        selector: ['[data-testid="viewWrapper-1"] [data-index="0"].le-tr, [data-testid="viewWrapper-1"] [data-index="2"].le-tr'],
+        html: `Select HCC1954 and HCC1569`,
+        placement: 'centered',
+        postAction: () => {
+          TourUtils.click('[data-testid="viewWrapper-1"] [data-index="0"] .lu-renderer-selection');
+          TourUtils.click('[data-testid="viewWrapper-1"] [data-index="2"] .lu-renderer-selection');
+        },
+      },
+      {
+        selector: '[data-testid="viewWrapper-1"] [data-viewid="cosmic"]',
+        html: `Open the COSMIC detail view`,
+        placement: 'centered',
+        preAction: TourUtils.waitForSelector,
+        postAction: TourUtils.clickSelector,
+      },
+      {
+        selector: '[data-testid="viewWrapper-2"] select',
+        html: `Use the drop-down menu to switch between the two cell lines.`,
+        placement: 'centered',
+        preAction: TourUtils.waitForSelector,
+        postAction: TourUtils.clickSelector,
+      },
+      {
+        html: `<p>Thanks for joining this tour demonstrating the assessment of breast cancer cell lines.</p>
+        <p>There are still many more features to discover. Enjoy!</p>`,
       },
     ];
   }
