@@ -1,4 +1,5 @@
 export * from './WelcomeTour';
 export * from './AddColumnToGeneListTour';
 export * from './StartMenuTour';
-export * from './AssessBCCellLines';
+export * from './AssessBCCellLinesTour';
+export * from './PredictionTP53Tour';

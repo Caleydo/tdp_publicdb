@@ -1,7 +1,7 @@
 // import {ToursSection} from 'ordino';
 import { IStep, Tour, TourUtils } from 'tdp_core';
 
-export class AssessBCCellLines {
+export class PredictionTP53Tour {
   static createTour(): IStep[] {
     return [
       {
@@ -33,6 +33,11 @@ export class AssessBCCellLines {
           return TourUtils.waitFor('.ordino-dataset.genes-dataset').then(() => TourUtils.click('#ordino_dataset_tab > .ordino-scrollspy-nav > a:nth-child(3)'));
         },
         pageBreak: 'manual',
+      },
+      {
+        selector: '.le.le-multi.lineup-engine',
+        html: `TOUR IS HERE SO FAR`,
+        placement: 'centered',
       },
       {
         selector: '.ordino-dataset.genes-dataset > .card',

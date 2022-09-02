@@ -1061,14 +1061,33 @@ export default function (registry) {
 
   registry.push(
     'tdpTour',
-    'ordinoAssessBCCellLines',
+    'ordinoAssessBCCellLinesTour',
     function () {
-      return import('./tours').then((t) => t.AssessBCCellLines);
+      return import('./tours').then((t) => t.AssessBCCellLinesTour);
     },
     {
       factory: 'createTour',
       name: 'Assessment and Selection of Breast Cancer Cell Lines',
       description: 'This case study summarizes an analysis session carried out by a scientist working in a drug discovery team at a pharmaceutical company.',
+      preview() {
+        return import('./assets/previews/expression.jpg'); // TODO update preview image
+      },
+      multiPage: true,
+      level: 'beginner',
+      canJumpAround: false,
+    },
+  );
+
+  registry.push(
+    'tdpTour',
+    'ordinoPredictionTP53Tour',
+    function () {
+      return import('./tours').then((t) => t.PredictionTP53Tour);
+    },
+    {
+      factory: 'createTour',
+      name: 'Something about TP53 Mutation',
+      description: 'Add description here.',
       preview() {
         return import('./assets/previews/expression.jpg'); // TODO update preview image
       },
