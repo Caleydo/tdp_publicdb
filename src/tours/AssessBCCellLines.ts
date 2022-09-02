@@ -1,4 +1,4 @@
-import {ToursSection} from 'ordino';
+// import {ToursSection} from 'ordino';
 import { IStep, Tour, TourUtils } from 'tdp_core';
 
 export class AssessBCCellLines {
@@ -6,6 +6,7 @@ export class AssessBCCellLines {
     return [
       {
         html: `<p>Welcome to this short tour showing the assessment of breast cancer cell lines!</p>
+        <p>This tour will follow an analysis session from the perspective of a drug discovery team at a pharmaceutical company.</p>
         <p>
           Use the "Next" button to iterate through all the steps. You can use the
           <i>"Cancel"</i> button at any time to stop the tour and to interact with Ordino.
@@ -15,7 +16,7 @@ export class AssessBCCellLines {
       },
       {
         selector: 'ul[data-header="mainMenu"] > li:first-child > a',
-        html: `To start an analysis, click on the <i>'Datasets'</i> tab. Subsequently, you can define the list of entities you want to work with`,
+        html: `To start the analysis, the team clicks on the <i>'Datasets'</i> tab.`,
         placement: 'centered',
         preAction: () => {
           const datasetTab = document.querySelector('ul[data-header="mainMenu"] > li:nth-child(1)') as HTMLElement;
@@ -35,14 +36,15 @@ export class AssessBCCellLines {
       },
       {
         selector: '.ordino-dataset.genes-dataset > .card',
-        html: `<p>You can choose between the three entity types <i>'Cell Lines'</i>, <i>'Tissue Samples'</i>, and <i>'Genes'</i>.</p> <p>In this example we will work with a list of genes</p>`,
+        html: `<p>Here they choose between the three entity types <i>'Cell Lines'</i>, <i>'Tissue Samples'</i>, and <i>'Genes'</i>.</p>
+        <p>In this example they choose to work with a list of genes.</p>`,
         placement: 'centered',
         preAction: () => TourUtils.waitFor('#ordino_dataset_tab > .ordino-scrollspy-container .genes-dataset > .card').then(() => TourUtils.wait(600)),
         postAction: () => TourUtils.click('.ordino-dataset.genes-dataset .session-tab > li:first-child'),
       },
       {
         selector: '[data-testid="normal-chromosome-protein-coding-human-genes-button"]',
-        html: `The scientist starts by loading the list of all protein coding genes.`,
+        html: `The scientists start by loading the list of all protein coding genes for humans.`,
         placement: 'centered',
         postAction: () => {
           return TourUtils.waitFor('.ordino-dataset.genes-dataset .dataset-entry button[title^="Name: normal chromosome protein coding human genes"]').then(
@@ -59,13 +61,13 @@ export class AssessBCCellLines {
       },
       {
         selector: '.lu-side-panel-wrapper .lu-adder > button',
-        html: `Additional columns can be added using the plus sign.`,
+        html: `They begin by adding an additional column, done so by clicking on the plus icon shown here.`,
         placement: 'centered',
         postAction: TourUtils.clickSelector,
       },
       {
         selector: '[data-testid=lu-adder-div] > .lu-search > .lu-search-list > :nth-child(2) > ul > :nth-child(1) > span',
-        html: `First, we want to add a new column`,
+        html: `They choose to add a column for a single cell line score.`,
         placement: 'centered',
         postAction: () => {
           TourUtils.click('[data-testid=lu-adder-div] > .lu-search > .lu-search-list > :nth-child(2) > ul > :nth-child(1) > span');
@@ -76,7 +78,7 @@ export class AssessBCCellLines {
         selector: '.modal.show .col > .select3',
         placement: 'centered',
         preAction: () => TourUtils.waitFor('.modal.show').then(() => TourUtils.wait(150)),
-        html: `We select the Cell Line`,
+        html: `Now they select the cell line 'HCC1954' &hellip;`,
         postAction: () => {
           TourUtils.setValueAndTrigger('.modal.show .select3 input.select2-search__field', 'HCC1954;', 'input');
         },
@@ -84,125 +86,90 @@ export class AssessBCCellLines {
       {
         selector: '.modal.show .col > .select2',
         placement: 'centered',
-        html: `and the data type`,
+        html: `&hellip; and the data type as 'Relative Copy Number' &hellip;`,
         postAction: () => {
           TourUtils.setValueAndTrigger('.show .col > select', 'copy_number-relativecopynumber', 'change');
         },
       },
       {
         selector: '.modal.show .modal-footer button[type=submit]',
-        html: `&hellip; and click <i>'Add'</i>`,
+        html: `&hellip; and click <i>'Add'</i>.`,
         placement: 'centered',
         postAction: TourUtils.clickSelector,
       },
       {
-        selector: '.le header [data-col-id="col8"]',
-        placement: 'centered',
-        html: `The new column was added here`,
-        preAction: TourUtils.waitForSelector,
-      },
-      {
         selector: '.le [data-col-id="col8"] .lu-action-sort',
         placement: 'centered',
-        html: `Now, we want to sort by this column`,
+        html: `They want to sort by this newly added column, so they click on the sort button in the column header.`,
+        preAction: () => TourUtils.waitFor('.le [data-col-id="col8"] .lu-action-sort'),
         postAction: () => {
           TourUtils.click('.le [data-col-id="col8"] .lu-action-sort');
         },
       },
       {
-        selector: '.le.le-multi.lineup-engine',
+        selector: ['[data-index="0"].le-tr, [data-index="14"].le-tr'],
         placement: 'centered',
-        html: `Now everything was sorted!`,
-      },
-      {
-        selector: '.le.le-multi.lineup-engine',
-        placement: 'centered',
-        html: `After sorting by this column, the analyst observes
-        that about 15 genes on chromosome 17 are affected by a large genomic amplification.`,
+        html: `After sorting by this column, the analyst observes that about 15 genes on chromosome 17 are affected by a large genomic amplification.`,
       },
       {
         selector: '.lu-side-panel-wrapper .lu-adder > button',
-        html: `In order to identify the most relevant gene of these, the analyst adds a column with the gene expression (a measure of activity) in HCC1954`,
-        placement: 'centered',
-        postAction: TourUtils.clickSelector,
-      },
-      {
-        selector: '[data-testid=lu-adder-div] > .lu-search > .lu-search-list > :nth-child(2) > ul > :nth-child(1) > span',
-        html: `We want to add a 2nd new column`,
+        html: `<p>In order to identify the most relevant of these genes, the analyst adds a column with the Normalized Gene Expression (a measure of activity) for cell line HCC1954</p>
+        <p><i>Individual steps for adding a column have been skipped this time.</i></p>`,
         placement: 'centered',
         postAction: () => {
+          TourUtils.click('.lu-side-panel-wrapper .lu-adder > button');
           TourUtils.click('[data-testid=lu-adder-div] > .lu-search > .lu-search-list > :nth-child(2) > ul > :nth-child(1) > span');
           TourUtils.toggleClass('.lu-adder.once', 'once', false);
+          TourUtils.waitFor('.modal.show').then(() => {
+            TourUtils.setValueAndTrigger('.modal.show .select3 input.select2-search__field', 'HCC1954;', 'input');
+            TourUtils.setValueAndTrigger('.show .col > select', 'expression-tpm', 'change');
+            TourUtils.wait(1000).then(() => TourUtils.click('.modal.show .modal-footer button[type=submit]'));
+          });
         },
-      },
-      {
-        selector: '.modal.show .col > .select3',
-        placement: 'centered',
-        preAction: () => TourUtils.waitFor('.modal.show').then(() => TourUtils.wait(150)),
-        html: `We select the 2nd Cell Line`,
-        postAction: () => {
-          TourUtils.setValueAndTrigger('.modal.show .select3 input.select2-search__field', 'HCC1954;', 'input');
-        },
-      },
-      {
-        selector: '.modal.show .col > .select2',
-        placement: 'centered',
-        html: `and the 2nd data type`,
-        postAction: () => {
-          TourUtils.setValueAndTrigger('.show .col > select', 'expression-tpm', 'change');
-        },
-      },
-      {
-        selector: '.modal.show .modal-footer button[type=submit]',
-        html: `&hellip; and click <i>'Add'</i>`,
-        placement: 'centered',
-        postAction: TourUtils.clickSelector,
       },
       {
         selector: '.lu-side-panel-wrapper .lu-adder > button',
-        html: `They also add a gene sensitivity score (a measure of importance for cell survival) for HCC1954 (RSA scores obtained from DRIVE data set [4]).`,
+        html: `They also add a column with a Gene Sensitivity Score (a measure of importance for cell survival) for HCC1954.`,
         placement: 'centered',
-        postAction: TourUtils.clickSelector,
+        preAction: () => TourUtils.waitFor('.le header [data-col-id="col9"]').then(() => TourUtils.wait(500)),
+        postAction: () => {
+          TourUtils.click('.lu-side-panel-wrapper .lu-adder > button');
+        },
       },
       {
         selector: '[data-testid=lu-adder-div] > .lu-search > .lu-search-list > :nth-child(2) > ul > :nth-child(5) > span',
-        html: `We want to add a 3rd new column`,
+        html: `<p>To do so, they select to add a 'Depletion Screen Score (Single)' column.</p>
+        <p><i>Similarly, the specific steps for adding a column have been skipped this time.</i></p>`,
         placement: 'centered',
         postAction: () => {
           TourUtils.click('[data-testid=lu-adder-div] > .lu-search > .lu-search-list > :nth-child(2) > ul > :nth-child(5) > span');
           TourUtils.toggleClass('.lu-adder.once', 'once', false);
+          TourUtils.waitFor('.modal.show').then(() => {
+            TourUtils.setValueAndTrigger('.modal.show .select3 input.select2-search__field', 'HCC1954;', 'input');
+            TourUtils.setValueAndTrigger('.show .col > select', 'depletion-rsa', 'change');
+            TourUtils.wait(1000).then(() => TourUtils.click('.modal.show .modal-footer button[type=submit]'));
+          });
         },
       },
       {
-        selector: '.modal.show .col > .select3',
+        selector: '[data-id="col10"] > .lu-toolbar > .lu-action-more',
+        html: `<p>In an effort to improve the depletion score's readability, they decide to invert the linear scaling.</p>
+        <p>To do this, they click on the three dots for more column options.</p>`,
         placement: 'centered',
-        preAction: () => TourUtils.waitFor('.modal.show').then(() => TourUtils.wait(150)),
-        html: `We select the 3rd Cell Line`,
-        postAction: () => {
-          TourUtils.setValueAndTrigger('.modal.show .select3 input.select2-search__field', 'HCC1954;', 'input');
-        },
+        preAction: TourUtils.waitForSelector,
+        postAction: TourUtils.clickSelector,
       },
       {
-        selector: '.modal.show .col > .select2',
-        placement: 'centered',
-        html: `and the 3rd data type`,
-        postAction: () => {
-          TourUtils.setValueAndTrigger('.show .col > select', 'depletion-rsa', 'change');
-        },
-      },
-      {
-        selector: '.modal.show .modal-footer button[type=submit]',
-        html: `&hellip; and click <i>'Add'</i>`,
+        selector: '.lu-action-data-mapping > span',
+        html: `They now click on 'Data Mapping'.`,
         placement: 'centered',
         postAction: TourUtils.clickSelector,
       },
       {
-        selector: '[data-id="col10"] > .lu-toolbar > .lu-action-more',
-        html: `We now want to invert the linear scaling of the depletion screen score to improve the scale's readability.`,
+        selector: ['.browser-default, .lu-dialog-buttons > [type="submit"]'],
+        html: `They select the 'Invert' option in the Normalization Scaling dropdown and then click on the tick at the bottom right to apply the new mapping.`,
         placement: 'centered',
         postAction: () => {
-          TourUtils.click('[data-id="col10"] > .lu-toolbar > .lu-action-more');
-          TourUtils.click('.lu-action-data-mapping > span');
           TourUtils.setValueAndTrigger('.browser-default', 'linear_invert', 'change');
           TourUtils.click('.lu-dialog-buttons > [type="submit"]');
         },
@@ -210,11 +177,11 @@ export class AssessBCCellLines {
       {
         selector: '[data-index="0"]',
         placement: 'centered',
-        html: `Observe: Of the highly amplified genes, ERBB2 (HER2) has the highest expression and the lowest sensitivity score. Therefore, it is probably the most relevant gene of this amplicon.`,
+        html: `Observe: Of the highly amplified genes, they notice that ERBB2 (HER2) has the highest expression and the lowest sensitivity score. Therefore, it is probably the most relevant gene of this amplicon.`,
       },
       {
         selector: ['.le header [data-col-id="col9"], .le header [data-col-id="col10"]'],
-        html: `<p>Combine both score columns to obtain stacked bars.</p>
+        html: `<p>They can combine both score columns by dragging them together to obtain stacked bars.</p>
         <p>Observe: Combining the columns highlights the importance of ERBB2.</p>
         <p>It is therefore probably the most relevant gene within this amplified genomic region.</p>`,
         placement: 'centered',
@@ -224,22 +191,22 @@ export class AssessBCCellLines {
         html: `<p>This finding leads the scientist to the question whether ERBB2 is also highly expressed and frequently amplified in other breast cancer cell lines.</p>
         <p>To investigate this, the analyst adds the following columns:
           <ul>
-            <li>A column with the average gene expression</li>
-            <li>A column with the gene copy number distribution</li>
-            <li>A column with the gene amplification frequency across all breast cancer cell lines</li>
+            <li>A column with the average gene expression for breast cancer cell lines</li>
+            <li>A column with the gene copy number distribution for breast cancer cell lines in boxplot format</li>
+            <li>A column with the gene amplification frequency (>4) across all breast cancer cell lines</li>
           </ul>
         </p>`,
         placement: 'centered',
       },
       {
         selector: '.lu-side-panel-wrapper .lu-adder > button',
-        html: `1. A column with the average gene expression`,
+        html: `1. A column with the average gene expression for breast cancer cell lines`,
         placement: 'centered',
         postAction: () => {
           TourUtils.click('.lu-side-panel-wrapper .lu-adder > button');
           TourUtils.click('[data-testid=lu-adder-div] > .lu-search > .lu-search-list > :nth-child(2) > ul > :nth-child(2) > span');
           TourUtils.toggleClass('.lu-adder.once', 'once', false);
-          return TourUtils.waitFor('.show .modal-body form > div:nth-child(1) .row:nth-child(1) div:nth-child(1) select').then(() => {
+          TourUtils.waitFor('.show .modal-body form > div:nth-child(1) .row:nth-child(1) div:nth-child(1) select').then(() => {
             TourUtils.setValueAndTrigger('.show .modal-body form > div:nth-child(1) .row:nth-child(1) div:nth-child(1) select', 'tumortype', 'change');
             TourUtils.setValueAndTrigger(
               '.show .modal-body form > .col-sm-12:nth-child(1) .row:nth-child(1) .row:nth-child(1) > div:nth-child(2) select',
@@ -248,22 +215,22 @@ export class AssessBCCellLines {
             );
             TourUtils.setValueAndTrigger('.show .modal-body form > .col-sm-12:nth-child(2) select', 'expression-tpm', 'change');
             TourUtils.setValueAndTrigger('.show [data-testid="aggregation"] select', 'avg', 'change');
-            TourUtils.wait(1000).then(() => TourUtils.click('.modal.show .modal-footer button[type=submit]'));
+            TourUtils.wait(1000).then(() => {
+              TourUtils.click('.modal.show .modal-footer button[type=submit]');
+            });
           });
         },
       },
       {
         selector: '.lu-side-panel-wrapper .lu-adder > button',
-        html: `2. A column with the gene copy number distribution`,
+        html: `2. A column with the gene copy number distribution for breast cancer cell lines in boxplot format`,
         placement: 'centered',
-        preAction: () => {
-          TourUtils.waitFor('.le header [data-col-id="col11"]');
-        },
+        preAction: () => TourUtils.waitFor('.le header [data-col-id="col11"]'),
         postAction: () => {
           TourUtils.click('.lu-side-panel-wrapper .lu-adder > button');
           TourUtils.click('[data-testid=lu-adder-div] > .lu-search > .lu-search-list > :nth-child(2) > ul > :nth-child(2) > span');
           TourUtils.toggleClass('.lu-adder.once', 'once', false);
-          return TourUtils.waitFor('.show .modal-body form > div:nth-child(1) .row:nth-child(1) div:nth-child(1) select').then(() => {
+          TourUtils.waitFor('.show .modal-body form > div:nth-child(1) .row:nth-child(1) div:nth-child(1) select').then(() => {
             TourUtils.setValueAndTrigger('.show .modal-body form > div:nth-child(1) .row:nth-child(1) div:nth-child(1) select', 'tumortype', 'change');
             TourUtils.setValueAndTrigger(
               '.show .modal-body form > .col-sm-12:nth-child(1) .row:nth-child(1) .row:nth-child(1) > div:nth-child(2) select',
@@ -272,22 +239,22 @@ export class AssessBCCellLines {
             );
             TourUtils.setValueAndTrigger('.show .modal-body form > .col-sm-12:nth-child(2) select', 'copy_number-relativecopynumber', 'change');
             TourUtils.setValueAndTrigger('.show [data-testid="aggregation"] select', 'boxplot', 'change');
-            TourUtils.wait(1000).then(() => TourUtils.click('.modal.show .modal-footer button[type=submit]'));
+            TourUtils.wait(1000).then(() => {
+              TourUtils.click('.modal.show .modal-footer button[type=submit]');
+            });
           });
         },
       },
       {
         selector: '.lu-side-panel-wrapper .lu-adder > button',
-        html: `3. A column with the gene amplification frequency across all breast cancer cell lines`,
+        html: `3. A column with the gene amplification frequency (>4) across all breast cancer cell lines`,
         placement: 'centered',
-        preAction: () => {
-          TourUtils.waitFor('.le header [data-col-id="col12"]');
-        },
+        preAction: () => TourUtils.waitFor('.le header [data-col-id="col12"]'),
         postAction: () => {
           TourUtils.click('.lu-side-panel-wrapper .lu-adder > button');
           TourUtils.click('[data-testid=lu-adder-div] > .lu-search > .lu-search-list > :nth-child(2) > ul > :nth-child(2) > span');
           TourUtils.toggleClass('.lu-adder.once', 'once', false);
-          return TourUtils.waitFor('.show .modal-body form > div:nth-child(1) .row:nth-child(1) div:nth-child(1) select').then(() => {
+          TourUtils.waitFor('.show .modal-body form > div:nth-child(1) .row:nth-child(1) div:nth-child(1) select').then(() => {
             TourUtils.setValueAndTrigger('.show .modal-body form > div:nth-child(1) .row:nth-child(1) div:nth-child(1) select', 'tumortype', 'change');
             TourUtils.setValueAndTrigger(
               '.show .modal-body form > .col-sm-12:nth-child(1) .row:nth-child(1) .row:nth-child(1) > div:nth-child(2) select',
@@ -300,79 +267,77 @@ export class AssessBCCellLines {
               TourUtils.setValueAndTrigger('.show [data-testid="comparison-operator"] select', '>', 'change');
               TourUtils.setValueAndTrigger('.show [type="number"]', '4', 'input');
             });
-            TourUtils.wait(1000).then(() => TourUtils.click('.modal.show .modal-footer button[type=submit]'));
+            TourUtils.wait(1000).then(() => {
+              TourUtils.click('.modal.show .modal-footer button[type=submit]');
+            });
           });
         },
       },
       {
         selector: '.le.le-multi.lineup-engine',
-        html: `Observe: ERBB2 is amplified in almost 25% of all assessed breast cancer cell lines. Further, it is highly expressed.`,
+        html: `Observe: They notice that ERBB2 is amplified in almost 25% of all assessed breast cancer cell lines. Further, it is highly expressed.`,
         placement: 'centered',
-        preAction: () => {
-          TourUtils.waitFor('.le header [data-col-id="col13"]');
-        },
+        preAction: () => TourUtils.waitFor('.le header [data-col-id="col13"]'),
       },
       {
         selector: '[data-index="0"] .lu-renderer-selection',
         html: `<p>The aim is now to get more information about ERBB2.</p>
-        <p>Select ERBB2 in the list.</p>`,
+        <p>They select ERBB2 in the list.</p>`,
         placement: 'centered',
         postAction: TourUtils.clickSelector,
       },
       {
         selector: '[data-viewid="celllinedb_expression_vs_copynumber"]',
-        html: `Open the Expression vs Copy Number detail view`,
+        html: `They open the Expression vs Copy Number detail view.`,
         placement: 'centered',
         preAction: TourUtils.waitForSelector,
         postAction: TourUtils.clickSelector,
       },
       {
         selector: '.ids',
-        html: `Observe the direct correlation between copy number and expression of ERBB2`,
+        html: `Here they observe the direct correlation between copy number and expression of ERBB2.`,
         placement: 'centered',
-        preAction: () => {
-          return TourUtils.waitFor('.ids');
-        },
+        preAction: () => TourUtils.waitFor('.ids').then(() => TourUtils.wait(300)),
       },
       {
         selector: '[data-viewid="targetvalidation"]',
-        html: `Now open the Open Targets detail view...`,
+        html: `To find more information, they open the 'Open Targets' detail view &hellip;`,
         placement: 'centered',
         postAction: TourUtils.clickSelector,
       },
       {
         selector: '[data-viewid="pubmed"]',
-        html: `...and the PubMed detail view.`,
+        html: `&hellip; and then the 'PubMed' detail view.`,
         placement: 'centered',
         postAction: TourUtils.clickSelector,
       },
       {
         selector: '',
-        html: `Question: In what cell lines is ERBB2 amplified? Select cell lines with ERBB2 amplification that have mutation in BRCA1 or BRCA2`,
+        html: `Their question is now: In what cell lines is ERBB2 amplified?`,
         placement: 'centered',
       },
       {
         selector: '[data-viewid="copynumbertable"]',
-        html: `Start by opening the Copy Number detail view`,
+        html: `They continue by opening the Copy Number detail view &hellip;`,
         placement: 'centered',
         postAction: TourUtils.clickSelector,
       },
       {
         selector: '[data-id="col7"] .lu-action-sort',
-        html: `Now sort by the copy number`,
+        html: `&hellip; and then sorting by the copy number.`,
         placement: 'centered',
         preAction: TourUtils.waitForSelector,
         postAction: TourUtils.clickSelector,
       },
       {
         selector: '[data-testid="viewWrapper-1"] [data-id="col4"] .lu-action-filter',
-        html: `Filter for breast cancer via column menu of column tumor type (also filter out cell lines with unknown tumor type)`,
+        html: `They want to filter for breast cancer via the column menu of column 'Tumor Type', while also filtering out cell lines with unknown tumor types.`,
         placement: 'centered',
         postAction: TourUtils.clickSelector,
       },
       {
         selector: '.lu-dialog .lu-dialog-table',
-        html: `First select only the "breast carcinoma" tumor type.`,
+        html: `First they select only the "breast carcinoma" tumor type.`,
         placement: 'centered',
         postAction: () => {
           TourUtils.wait(100)
@@ -387,8 +352,8 @@ export class AssessBCCellLines {
         },
       },
       {
-        selector: '.lu-dialog .lu-dialog-table',
-        html: `Then filter cell lines with unknown types and submit the filter.`,
+        selector: ['.lu-dialog .lu-dialog-table, .lu-dialog-button[title="Apply"]'],
+        html: `Then they filter out cell lines with unknown types (the missing value rows) and submit the filter.`,
         placement: 'centered',
         postAction: () => {
           TourUtils.wait(100)
@@ -404,13 +369,13 @@ export class AssessBCCellLines {
       },
       {
         selector: '[data-testid="viewWrapper-1"] .lu-side-panel-wrapper .lu-adder > button',
-        html: `Let's now add the BRCA gene scores.`,
+        html: `They now want to add the BRCA gene score columns.`,
         placement: 'centered',
         postAction: TourUtils.clickSelector,
       },
       {
         selector: '[data-testid="viewWrapper-1"] [data-testid=lu-adder-div] > .lu-search > .lu-search-list > :nth-child(2) > ul > :nth-child(1) > span',
-        html: `We want to add a new column`,
+        html: `Once again, they use the plus icon to add a new column.`,
         placement: 'centered',
         postAction: () => {
           TourUtils.click(
@@ -423,7 +388,7 @@ export class AssessBCCellLines {
         selector: '.modal.show .col > .select3',
         placement: 'centered',
         preAction: () => TourUtils.waitFor('.modal.show').then(() => TourUtils.wait(150)),
-        html: `We select the BRCA1 and BRCA2 cell lines.`,
+        html: `Here they select the BRCA1 and BRCA2 cell lines &hellip;`,
         postAction: () => {
           TourUtils.setValueAndTrigger('.modal.show .select3 input.select2-search__field', 'BRCA1;', 'input');
           TourUtils.wait(400).then(() => {
@@ -434,14 +399,14 @@ export class AssessBCCellLines {
       {
         selector: '.modal.show .col > .select2',
         placement: 'centered',
-        html: `Then set the data type to AA Mutated.`,
+        html: `&hellip; and then they set the data type to AA Mutated &hellip;`,
         postAction: () => {
           TourUtils.setValueAndTrigger('.show .col > select', 'mutation-aa_mutated', 'change');
         },
       },
       {
         selector: '.modal.show .modal-footer button[type=submit]',
-        html: `&hellip; and click <i>'Add'</i>`,
+        html: `&hellip; and click <i>'Add'</i>.`,
         placement: 'centered',
         postAction: TourUtils.clickSelector,
       },
@@ -451,15 +416,16 @@ export class AssessBCCellLines {
         <p>HCC1954 has the highest ERBB2 amplification among BRCA1 mutated cell lines.</p>
         <p>HCC1569 has the highest ERBB2 amplification among BRCA2 mutated cell lines.</p>`,
         placement: 'centered',
+        preAction: () => TourUtils.waitFor('[data-testid="viewWrapper-1"] .le header [data-col-id="col8"]'),
       },
       {
         selector: '',
-        html: `Aim: Show information provided by COSMIC about these two cell lines`,
+        html: `Finally, their aim is to find information provided by COSMIC about these two cell lines.`,
         placement: 'centered',
       },
       {
         selector: ['[data-testid="viewWrapper-1"] [data-index="0"].le-tr, [data-testid="viewWrapper-1"] [data-index="2"].le-tr'],
-        html: `Select HCC1954 and HCC1569`,
+        html: `They select HCC1954 and HCC1569 &hellip;`,
         placement: 'centered',
         postAction: () => {
           TourUtils.click('[data-testid="viewWrapper-1"] [data-index="0"] .lu-renderer-selection');
@@ -468,17 +434,16 @@ export class AssessBCCellLines {
       },
       {
         selector: '[data-testid="viewWrapper-1"] [data-viewid="cosmic"]',
-        html: `Open the COSMIC detail view`,
+        html: `&hellip; and open the COSMIC detail view.`,
         placement: 'centered',
         preAction: TourUtils.waitForSelector,
         postAction: TourUtils.clickSelector,
       },
       {
         selector: '[data-testid="viewWrapper-2"] select',
-        html: `Use the drop-down menu to switch between the two cell lines.`,
+        html: `Here they can use the drop-down menu to switch between the two cell lines.`,
         placement: 'centered',
-        preAction: TourUtils.waitForSelector,
-        postAction: TourUtils.clickSelector,
+        preAction: () => TourUtils.waitFor('[data-testid="viewWrapper-2"] select').then(() => TourUtils.wait(1000)),
       },
       {
         html: `<p>Thanks for joining this tour demonstrating the assessment of breast cancer cell lines.</p>
