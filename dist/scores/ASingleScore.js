@@ -2,7 +2,8 @@
  * Created by sam on 06.03.2017.
  */
 import { IDTypeManager, RestBaseUtils } from 'tdp_core';
-import { SpeciesUtils, FieldUtils } from 'tdp_gene';
+import { FieldUtils } from '../providers';
+import { SpeciesUtils } from '../common';
 import { ScoreUtils } from './ScoreUtils';
 import { AScore } from './AScore';
 import { MAX_FILTER_SCORE_ROWS_BEFORE_ALL } from '../common/config';

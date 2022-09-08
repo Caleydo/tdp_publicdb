@@ -1,5 +1,5 @@
-import { ACommonList } from 'tdp_gene';
 import { cellline } from '../common/config';
+import { ACommonList } from './ACommonList';
 import { ViewUtils } from './ViewUtils';
 export class CelllineList extends ACommonList {
     constructor(context, selection, parent, options) {

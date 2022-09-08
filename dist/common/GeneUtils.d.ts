@@ -1,5 +1,5 @@
-import { ICommonDBConfig } from 'tdp_gene';
 import { ISelect3Item, IdTextPair } from 'tdp_core';
+import type { ICommonDBConfig } from '../views/ACommonList';
 import { IDataSourceConfig } from './config';
 interface IDrugData extends IdTextPair {
     target?: string;

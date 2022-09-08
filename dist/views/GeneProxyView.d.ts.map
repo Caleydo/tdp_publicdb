@@ -1,0 +1,1 @@
+{"version":3,"file":"GeneProxyView.d.ts","sourceRoot":"","sources":["../../src/views/GeneProxyView.ts"],"names":[],"mappings":"AAAA;;GAEG;AAEH,OAAO,EAAE,SAAS,EAAE,iBAAiB,EAAE,MAAM,UAAU,CAAC;AAGxD;;GAEG;AACH,qBAAa,aAAc,SAAQ,SAAS;IAC1C,SAAS,CAAC,sBAAsB,CAAC,KAAK,EAAE,MAAM,EAAE,GAAG,OAAO,CAAC,iBAAiB,EAAE,CAAC;IAI/E,SAAS,CAAC,eAAe;CAK1B"}

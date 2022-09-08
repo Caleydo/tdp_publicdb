@@ -2,9 +2,10 @@
  * Created by sam on 16.02.2017.
  */
 import { RestBaseUtils, LineupUtils, IDTypeManager } from 'tdp_core';
-import { AOncoPrint, SpeciesUtils } from 'tdp_gene';
 import { ParameterFormIds, FORM_TISSUE_OR_CELLLINE_FILTER, FORM_DATA_SOURCE } from '../common/forms';
 import { ViewUtils } from './ViewUtils';
+import { AOncoPrint } from './AOncoPrint';
+import { SpeciesUtils } from '../common';
 export class OncoPrint extends AOncoPrint {
     getParameterFormDescs() {
         return [FORM_DATA_SOURCE, FORM_TISSUE_OR_CELLLINE_FILTER];

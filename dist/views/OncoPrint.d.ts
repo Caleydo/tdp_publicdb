@@ -2,7 +2,7 @@
  * Created by sam on 16.02.2017.
  */
 import { IFormElementDesc } from 'tdp_core';
-import { AOncoPrint, IDataFormatRow, ISample } from 'tdp_gene';
+import { AOncoPrint, IDataFormatRow, ISample } from './AOncoPrint';
 export declare class OncoPrint extends AOncoPrint {
     protected getParameterFormDescs(): IFormElementDesc[];
     private get dataSource();

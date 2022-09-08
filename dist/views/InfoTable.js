@@ -2,9 +2,9 @@
  * Created by Samuel Gratzl on 27.04.2016.
  */
 import { IDTypeManager, AD3View, RestBaseUtils } from 'tdp_core';
-import { SpeciesUtils } from 'tdp_gene';
-import { transpose as d3Transpose } from 'd3';
+import { transpose as d3Transpose } from 'd3v3';
 import { cellline, tissue, gene } from '../common/config';
+import { SpeciesUtils } from '../common';
 export class AInfoTable extends AD3View {
     constructor(context, selection, parent, dataSource) {
         super(context, selection, parent);
