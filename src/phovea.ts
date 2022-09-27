@@ -1080,13 +1080,13 @@ export default function (registry) {
 
   registry.push(
     'tdpTour',
-    'ordinoPredictionTP53Tour',
+    'ordinoDrugTargetDiscoveryTour',
     function () {
-      return import('./tours').then((t) => t.PredictionTP53Tour);
+      return import('./tours').then((t) => t.DrugTargetDiscoveryTour);
     },
     {
       factory: 'createTour',
-      name: 'Something about TP53 Mutation',
+      name: '???Drug Target Discovery',
       description: 'Add description here.',
       preview() {
         return import('./assets/previews/expression.jpg'); // TODO update preview image
