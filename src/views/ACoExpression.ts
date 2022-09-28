@@ -60,7 +60,7 @@ export abstract class ACoExpression extends AD3View {
     this.$node.classed('coExpression', true);
     this.$node.classed('multiple', true);
 
-    this.$errorMessage = this.$node.append('p').classed('nodata', true).attr('hidden', true);
+    this.$errorMessage = this.$node.append('div').attr('class', 'nodata alert alert-warning').attr('hidden', true);
 
     this.$legend = this.$node.append('div');
 
@@ -192,7 +192,7 @@ export abstract class ACoExpression extends AD3View {
     const noData = refGeneExpression == null || refGeneExpression.length === 0;
 
     if (isEmpty) {
-      this.$errorMessage.text('Select two or more genes.').attr('hidden', null);
+      this.$errorMessage.text('Please select two or more genes.').attr('hidden', null);
       this.$node.selectAll('div.plots').remove();
       this.color.domain([]); // reset
       ViewUtils.legend(<HTMLElement>this.$legend.node(), this.color);
