@@ -309,7 +309,7 @@ export const expression: IDataTypeConfig = {
       id: 'tpm',
       name: 'Normalized Gene Expression (TPM Values)',
       type: dataSubtypes.number,
-      domain: [0, null], // domain will be auto-inferred
+      domain: [0, null],
       missingValue: NaN,
       constantDomain: true,
       useForAggregation: 'tpm',
