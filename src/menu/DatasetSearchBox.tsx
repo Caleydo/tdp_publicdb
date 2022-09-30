@@ -151,6 +151,16 @@ export function DatasetSearchBox({ placeholder, dataSource, onOpen, onSaveAsName
           DropdownIndicator: addDataTestId(dropdownIndicator, 'async-paginate-dropdownindicator'),
         }}
         styles={{
+          indicatorsContainer: (styles) => ({
+            ...styles,
+            maxHeight: '70px',
+            alignSelf: 'flex-end',
+          }),
+          valueContainer: (styles) => ({
+            ...styles,
+            maxHeight: '125px', // show 4 rows of values
+            overflow: 'auto',
+          }),
           multiValue: (styles, { data }) => ({
             ...styles,
             border: `1px solid #CCC`,
@@ -209,7 +219,7 @@ export function DatasetSearchBox({ placeholder, dataSource, onOpen, onSaveAsName
       </button>
       <button
         type="button"
-        className="btn btn-outline-secondary"
+        className="btn btn-outline-secondary text-nowrap"
         data-testid="save-button"
         disabled={!validItems?.length}
         onClick={() => onSaveAsNamedSet(validItems)}
