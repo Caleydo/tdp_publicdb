@@ -129,6 +129,7 @@ export const tissue = {
     },
 };
 function toChromosomes(categories) {
+    const mappedCategories = categories.map((category) => (typeof category === 'string' ? { name: category, label: category } : category));
     const order = new Map();
     for (let i = 1; i <= 22; ++i) {
         order.set(String(i), i);
@@ -136,9 +137,9 @@ function toChromosomes(categories) {
     order.set('x', 23);
     order.set('y', 24);
     order.set('mt', 25);
-    categories.sort((a, b) => {
-        const an = a.toLowerCase();
-        const bn = b.toLowerCase();
+    mappedCategories.sort((a, b) => {
+        const an = a.label.toLowerCase();
+        const bn = b.label.toLowerCase();
         const ai = order.get(an);
         const bi = order.get(bn);
         if (ai === bi) {
@@ -152,7 +153,7 @@ function toChromosomes(categories) {
         }
         return ai - bi;
     });
-    return categories.map((d, i) => ({ name: d, label: d, value: i }));
+    return mappedCategories.map((d, i) => ({ name: d.name, label: d.label, value: i }));
 }
 export const gene = {
     idType: Categories.GENE_IDTYPE,
