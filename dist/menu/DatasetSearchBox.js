@@ -86,6 +86,16 @@ export function DatasetSearchBox({ placeholder, dataSource, onOpen, onSaveAsName
                 ClearIndicator: addDataTestId(clearIndicator, 'async-paginate-clearindicator'),
                 DropdownIndicator: addDataTestId(dropdownIndicator, 'async-paginate-dropdownindicator'),
             }, styles: {
+                indicatorsContainer: (styles) => ({
+                    ...styles,
+                    maxHeight: '70px',
+                    alignSelf: 'flex-end',
+                }),
+                valueContainer: (styles) => ({
+                    ...styles,
+                    maxHeight: '125px',
+                    overflow: 'auto',
+                }),
                 multiValue: (styles, { data }) => ({
                     ...styles,
                     border: `1px solid #CCC`,
@@ -132,6 +142,6 @@ export function DatasetSearchBox({ placeholder, dataSource, onOpen, onSaveAsName
                 }),
             } }),
         React.createElement("button", { type: "button", className: "btn btn-secondary", "data-testid": "open-button", disabled: !(validItems === null || validItems === void 0 ? void 0 : validItems.length), onClick: (event) => onOpen(event, searchResults) }, "Open"),
-        React.createElement("button", { type: "button", className: "btn btn-outline-secondary", "data-testid": "save-button", disabled: !(validItems === null || validItems === void 0 ? void 0 : validItems.length), onClick: () => onSaveAsNamedSet(validItems) }, "Save as set")));
+        React.createElement("button", { type: "button", className: "btn btn-outline-secondary text-nowrap", "data-testid": "save-button", disabled: !(validItems === null || validItems === void 0 ? void 0 : validItems.length), onClick: () => onSaveAsNamedSet(validItems) }, "Save as set")));
 }
 //# sourceMappingURL=DatasetSearchBox.js.map

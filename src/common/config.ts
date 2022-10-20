@@ -2,6 +2,7 @@
  * Created by sam on 06.03.2017.
  */
 
+import { ICategory } from 'lineupjs';
 import { IServerColumn, ColumnDescUtils, IAdditionalColumnDesc } from 'tdp_core';
 import { Categories } from './Categories';
 
@@ -172,7 +173,9 @@ export const tissue: IDataSourceConfig = {
   },
 };
 
-function toChromosomes(categories: string[]) {
+function toChromosomes(categories: (string | Partial<ICategory>)[]) {
+  const mappedCategories: Partial<ICategory>[] = categories.map((category) => (typeof category === 'string' ? { name: category, label: category } : category));
+
   const order = new Map<string, number>();
   for (let i = 1; i <= 22; ++i) {
     order.set(String(i), i);
@@ -181,9 +184,9 @@ function toChromosomes(categories: string[]) {
   order.set('y', 24);
   order.set('mt', 25);
 
-  categories.sort((a, b) => {
-    const an = a.toLowerCase();
-    const bn = b.toLowerCase();
+  mappedCategories.sort((a, b) => {
+    const an = a.label.toLowerCase();
+    const bn = b.label.toLowerCase();
     const ai = order.get(an);
     const bi = order.get(bn);
     if (ai === bi) {
@@ -198,7 +201,7 @@ function toChromosomes(categories: string[]) {
     return ai - bi;
   });
 
-  return categories.map((d, i) => ({ name: d, label: d, value: i }));
+  return mappedCategories.map((d, i) => ({ name: d.name, label: d.label, value: i }));
 }
 
 export const gene: IDataSourceConfig = {
