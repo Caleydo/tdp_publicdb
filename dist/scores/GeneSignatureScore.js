@@ -25,7 +25,7 @@ export class GeneSignatureScore {
      */
     createDesc() {
         const label = this.options.description;
-        return ColumnDescUtils.numberCol('_gene_signature', -5, 5, { label });
+        return ColumnDescUtils.numberCol('_gene_signature', null, null, { label }); // null, null = infer min/max automatically from the data
     }
     /**
      * Computes the actual scores and returns a Promise of IScoreRow rows.
