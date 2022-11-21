@@ -461,7 +461,7 @@ export const depletion: IDataTypeConfig = {
     },
     {
       id: 'chronos',
-      name: 'AVANA Chronos (DepMap.org)',
+      name: 'Avana Chronos (DepMap.org)',
       type: dataSubtypes.number,
       domain: [null, null],
       missingValue: NaN,
