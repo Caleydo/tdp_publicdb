@@ -1,7 +1,7 @@
 {
   "name": "tdp_publicdb",
   "description": "",
-  "version": "13.0.2",
+  "version": "13.0.3",
   "author": {
     "name": "The Caleydo Team",
     "email": "contact@caleydo.org",
@@ -62,7 +62,7 @@
     "react-select": "^4.1.0",
     "react-select-async-paginate": "^0.5.3",
     "react-virtualized": "^9.22.3",
-    "tdp_core": "^16.2.1",
+    "tdp_core": "^16.2.2",
     "visyn_scripts": "^1.1.1"
   },
   "optionalDependencies": {
