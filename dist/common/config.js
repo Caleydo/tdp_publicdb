@@ -372,7 +372,7 @@ export const depletion = {
         },
         {
             id: 'chronos',
-            name: 'AVANA Chronos (DepMap.org)',
+            name: 'Avana Chronos (DepMap.org)',
             type: dataSubtypes.number,
             domain: [null, null],
             missingValue: NaN,
