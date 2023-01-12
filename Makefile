@@ -1,5 +1,5 @@
 .DEFAULT_GOAL := help
-pkg_src = ordino_eins
+pkg_src = tdp_publicdb
 
 black = black --line-length 140 $(pkg_src) setup.py
 pyright = echo 'pyright not used' # pyright $(pkg_src) setup.py
