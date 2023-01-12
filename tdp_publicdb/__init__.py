@@ -3,10 +3,6 @@
 # Copyright (c) The Caleydo Team. All rights reserved.
 # Licensed under the new BSD license, available at http://caleydo.org/license
 ###############################################################################
-
-
-from typing import Type
-
 from pydantic import BaseModel
 from tdp_core.plugin.model import AVisynPlugin, RegHelper
 
@@ -15,7 +11,7 @@ from .settings import TDPPublicDBSettings
 
 class VisynPlugin(AVisynPlugin):
     def register(self, registry: RegHelper):
-        registry.append("tdp-sql-database-definition", "publicdb", "tdp_publicdb.sql", dict(configKey="tdp_publicdb"))
+        registry.append("tdp-sql-database-definition", "publicdb", "tdp_publicdb.sql", {"configKey": "tdp_publicdb"})
 
         registry.append(
             "tdp_proxy",
@@ -39,5 +35,5 @@ class VisynPlugin(AVisynPlugin):
         )
 
     @property
-    def setting_class(self) -> Type[BaseModel]:
+    def setting_class(self) -> type[BaseModel]:
         return TDPPublicDBSettings
