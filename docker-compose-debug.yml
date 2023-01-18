@@ -1,0 +1,11 @@
+{}  # Uncomment the following lines for testing the web production build
+  #  web:
+  #    build:
+  #      context: ./deploy/web
+  #      dockerfile: deploy/web/Dockerfile
+  #    ports:
+  #      - '8090:80'
+  #    volumes:
+  #      - './bundles:/usr/share/nginx/html'
+  #    depends_on:
+  #      - api
