@@ -56,6 +56,7 @@ def _tissue_columns(query):
         .column("height", type="number")
         .column("weight", type="number")
         .column("bmi", type="number")
+        .column("tumorpurity", type="number")
         .column("microsatellite_stability_score", type="number")
         .column("microsatellite_stability_class", type="categorical")
         .column("mutational_fraction", type="number")
@@ -87,6 +88,7 @@ tissue = Entity(
         "height",
         "weight",
         "bmi",
+        "tumorpurity",
         "microsatellite_stability_class",
         "microsatellite_stability_score",
         "hla_a_allele1",
