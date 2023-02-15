@@ -38,7 +38,7 @@ export class ScoreUtils {
           type: 'boxplot',
           label,
           description,
-          domain: [1, 100],
+          domain: [null, null],
           lazyLoaded: true,
           sort: 'median', // sort by default by median
           missingValue: null,
@@ -48,7 +48,7 @@ export class ScoreUtils {
           type: 'numbers',
           label,
           description,
-          domain: [1, 100],
+          domain: [null, null],
           colorRange: ['white', 'black'],
           lazyLoaded: true,
           dataLength: 10, // initial width

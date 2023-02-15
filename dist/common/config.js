@@ -129,6 +129,7 @@ export const tissue = {
     },
 };
 function toChromosomes(categories) {
+    const mappedCategories = categories.map((category) => (typeof category === 'string' ? { name: category, label: category } : category));
     const order = new Map();
     for (let i = 1; i <= 22; ++i) {
         order.set(String(i), i);
@@ -136,9 +137,9 @@ function toChromosomes(categories) {
     order.set('x', 23);
     order.set('y', 24);
     order.set('mt', 25);
-    categories.sort((a, b) => {
-        const an = a.toLowerCase();
-        const bn = b.toLowerCase();
+    mappedCategories.sort((a, b) => {
+        const an = a.label.toLowerCase();
+        const bn = b.label.toLowerCase();
         const ai = order.get(an);
         const bi = order.get(bn);
         if (ai === bi) {
@@ -152,7 +153,7 @@ function toChromosomes(categories) {
         }
         return ai - bi;
     });
-    return categories.map((d, i) => ({ name: d, label: d, value: i }));
+    return mappedCategories.map((d, i) => ({ name: d.name, label: d.label, value: i }));
 }
 export const gene = {
     idType: Categories.GENE_IDTYPE,
@@ -226,7 +227,7 @@ export const expression = {
             id: 'tpm',
             name: 'Normalized Gene Expression (TPM Values)',
             type: dataSubtypes.number,
-            domain: [null, null],
+            domain: [0, null],
             missingValue: NaN,
             constantDomain: true,
             useForAggregation: 'tpm',
@@ -235,7 +236,7 @@ export const expression = {
             id: 'counts',
             name: 'Raw Counts',
             type: dataSubtypes.number,
-            domain: [null, null],
+            domain: [0, null],
             missingValue: NaN,
             constantDomain: true,
             useForAggregation: 'counts',
@@ -353,7 +354,7 @@ export const depletion = {
             id: 'ataris',
             name: 'DRIVE ATARiS (ER McDonald III et al., Cell, 2017)',
             type: dataSubtypes.number,
-            domain: [0, null],
+            domain: [null, null],
             missingValue: NaN,
             constantDomain: false,
             useForAggregation: 'ataris',
@@ -363,7 +364,7 @@ export const depletion = {
             id: 'ceres',
             name: 'Avana CERES (Robin M. Meyers et al., Nature Genetics, 2017)',
             type: dataSubtypes.number,
-            domain: [0, null],
+            domain: [null, null],
             missingValue: NaN,
             constantDomain: false,
             useForAggregation: 'ceres',
@@ -371,9 +372,9 @@ export const depletion = {
         },
         {
             id: 'chronos',
-            name: 'AVANA Chronos (DepMap.org)',
+            name: 'Avana Chronos (DepMap.org)',
             type: dataSubtypes.number,
-            domain: [0, null],
+            domain: [null, null],
             missingValue: NaN,
             constantDomain: false,
             useForAggregation: 'chronos',
@@ -383,7 +384,7 @@ export const depletion = {
             id: 'escore',
             name: 'Sanger E-score (Fiona M. Behan et al., Nature 2019)',
             type: dataSubtypes.number,
-            domain: [0, null],
+            domain: [null, null],
             missingValue: NaN,
             constantDomain: false,
             useForAggregation: 'escore',

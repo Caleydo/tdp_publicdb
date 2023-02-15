@@ -2,6 +2,7 @@
  * Created by sam on 06.03.2017.
  */
 
+import { ICategory } from 'lineupjs';
 import { IServerColumn, ColumnDescUtils, IAdditionalColumnDesc } from 'tdp_core';
 import { Categories } from './Categories';
 
@@ -135,6 +136,7 @@ export const tissue: IDataSourceConfig = {
       ColumnDescUtils.numberCol('height', 0, find('height').max, { label: 'Height', visible: false }),
       ColumnDescUtils.numberCol('weight', 0, find('weight').max, { label: 'Weight', visible: false }),
       ColumnDescUtils.numberCol('bmi', 0, find('bmi').max, { label: 'Body Mass Index (BMI)', visible: false }),
+      ColumnDescUtils.numberCol('tumorpurity', 0, find('tumorpurity').max, { label: 'Tumor Purity', visible: false }),
       ColumnDescUtils.categoricalCol('microsatellite_stability_class', find('microsatellite_stability_class').categories, {
         label: 'Micro Satellite Instability (MSI) Status',
         visible: false,
@@ -156,7 +158,17 @@ export const tissue: IDataSourceConfig = {
   },
   columnInfo: {
     string: ['id', 'tumortype_adjacent'],
-    number: ['age', 'days_to_death', 'days_to_last_followup', 'height', 'weight', 'bmi', 'microsatellite_stability_score', 'mutational_fraction'],
+    number: [
+      'age',
+      'days_to_death',
+      'days_to_last_followup',
+      'height',
+      'weight',
+      'bmi',
+      'tumorpurity',
+      'microsatellite_stability_score',
+      'mutational_fraction',
+    ],
     categorical: [
       'organ',
       'gender',
@@ -172,7 +184,9 @@ export const tissue: IDataSourceConfig = {
   },
 };
 
-function toChromosomes(categories: string[]) {
+function toChromosomes(categories: (string | Partial<ICategory>)[]) {
+  const mappedCategories: Partial<ICategory>[] = categories.map((category) => (typeof category === 'string' ? { name: category, label: category } : category));
+
   const order = new Map<string, number>();
   for (let i = 1; i <= 22; ++i) {
     order.set(String(i), i);
@@ -181,9 +195,9 @@ function toChromosomes(categories: string[]) {
   order.set('y', 24);
   order.set('mt', 25);
 
-  categories.sort((a, b) => {
-    const an = a.toLowerCase();
-    const bn = b.toLowerCase();
+  mappedCategories.sort((a, b) => {
+    const an = a.label.toLowerCase();
+    const bn = b.label.toLowerCase();
     const ai = order.get(an);
     const bi = order.get(bn);
     if (ai === bi) {
@@ -198,7 +212,7 @@ function toChromosomes(categories: string[]) {
     return ai - bi;
   });
 
-  return categories.map((d, i) => ({ name: d, label: d, value: i }));
+  return mappedCategories.map((d, i) => ({ name: d.name, label: d.label, value: i }));
 }
 
 export const gene: IDataSourceConfig = {
@@ -309,7 +323,7 @@ export const expression: IDataTypeConfig = {
       id: 'tpm',
       name: 'Normalized Gene Expression (TPM Values)',
       type: dataSubtypes.number,
-      domain: [null, null], // domain will be auto-inferred
+      domain: [0, null],
       missingValue: NaN,
       constantDomain: true,
       useForAggregation: 'tpm',
@@ -318,7 +332,7 @@ export const expression: IDataTypeConfig = {
       id: 'counts',
       name: 'Raw Counts',
       type: dataSubtypes.number,
-      domain: [null, null],
+      domain: [0, null],
       missingValue: NaN,
       constantDomain: true,
       useForAggregation: 'counts',
@@ -440,7 +454,7 @@ export const depletion: IDataTypeConfig = {
       id: 'ataris',
       name: 'DRIVE ATARiS (ER McDonald III et al., Cell, 2017)',
       type: dataSubtypes.number,
-      domain: [0, null],
+      domain: [null, null],
       missingValue: NaN,
       constantDomain: false,
       useForAggregation: 'ataris',
@@ -450,7 +464,7 @@ export const depletion: IDataTypeConfig = {
       id: 'ceres',
       name: 'Avana CERES (Robin M. Meyers et al., Nature Genetics, 2017)',
       type: dataSubtypes.number,
-      domain: [0, null],
+      domain: [null, null],
       missingValue: NaN,
       constantDomain: false,
       useForAggregation: 'ceres',
@@ -458,9 +472,9 @@ export const depletion: IDataTypeConfig = {
     },
     {
       id: 'chronos',
-      name: 'AVANA Chronos (DepMap.org)',
+      name: 'Avana Chronos (DepMap.org)',
       type: dataSubtypes.number,
-      domain: [0, null],
+      domain: [null, null],
       missingValue: NaN,
       constantDomain: false,
       useForAggregation: 'chronos',
@@ -470,7 +484,7 @@ export const depletion: IDataTypeConfig = {
       id: 'escore',
       name: 'Sanger E-score (Fiona M. Behan et al., Nature 2019)',
       type: dataSubtypes.number,
-      domain: [0, null],
+      domain: [null, null],
       missingValue: NaN,
       constantDomain: false,
       useForAggregation: 'escore',

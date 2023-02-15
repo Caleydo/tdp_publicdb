@@ -125,7 +125,7 @@ export class GeneUtils {
   static formatDrug(item: ISelect3Item<IDrugData>, node: HTMLElement, mode: 'result' | 'selection', currentSearchQuery?: RegExp) {
     if (mode === 'result') {
       // show scientific name if is different from the drug id
-      const showScientificName = item.id.toLocaleLowerCase() !== item.data.scientificname.toLocaleLowerCase();
+      const showScientificName = item.data.scientificname && item.id.toLocaleLowerCase() !== item.data.scientificname.toLocaleLowerCase();
       // highlight match
       return `${item.id.replace(currentSearchQuery!, Select3Utils.highlightMatch)}<br>
       ${
