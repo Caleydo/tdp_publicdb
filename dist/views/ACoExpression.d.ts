@@ -1,10 +1,8 @@
 /**
  * Created by Holger Stitz on 12.08.2016.
  */
-import { IFormElementDesc } from 'tdp_core';
-import { IFormSelectOption } from 'tdp_core';
 import * as d3v3 from 'd3v3';
-import { AD3View } from 'tdp_core';
+import { IFormSelectOption, AD3View, IFormElementDesc } from 'tdp_core';
 export interface IGeneOption extends IFormSelectOption {
     data: {
         id: string;

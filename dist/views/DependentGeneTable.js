@@ -1,7 +1,8 @@
 /**
  * Created by Marc Streit on 28.07.2016.
  */
-import { ARankingView, AdapterUtils, FormElementType, RestBaseUtils, LineupUtils, IDTypeManager, } from 'tdp_core';
+import { IDTypeManager } from 'visyn_core';
+import { ARankingView, AdapterUtils, FormElementType, RestBaseUtils, LineupUtils } from 'tdp_core';
 import { ParameterFormIds, FORM_GENE_FILTER } from '../common/forms';
 import { ViewUtils } from './ViewUtils';
 import { gene, expression, copyNumber, mutation, chooseDataSource } from '../common/config';

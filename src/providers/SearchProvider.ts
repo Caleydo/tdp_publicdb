@@ -1,5 +1,5 @@
 // redeclare to avoid dependency
-import { ISearchProvider, RestBaseUtils } from 'tdp_core';
+import { IResult, ISearchProvider, RestBaseUtils } from 'tdp_core';
 import { SpeciesUtils } from '../common/common';
 
 export class SearchProvider implements ISearchProvider {

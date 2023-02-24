@@ -1,4 +1,5 @@
-import { IDTypeManager, AInstantView, RestBaseUtils, ErrorAlertHandler } from 'tdp_core';
+import { IDTypeManager } from 'visyn_core';
+import { AInstantView, RestBaseUtils, ErrorAlertHandler } from 'tdp_core';
 import { SpeciesUtils } from '../common';
 import { gene } from '../common/config';
 export class GeneInstantView extends AInstantView {

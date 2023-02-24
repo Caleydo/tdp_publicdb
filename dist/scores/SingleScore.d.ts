@@ -1,7 +1,8 @@
 /**
  * Created by sam on 06.03.2017.
  */
-import { IScore, IPluginDesc, IParams } from 'tdp_core';
+import { IPluginDesc } from 'visyn_core';
+import { IScore, IParams } from 'tdp_core';
 import { IDataSourceConfig } from '../common/config';
 import { ASingleScore } from './ASingleScore';
 interface ISingleScoreParam {

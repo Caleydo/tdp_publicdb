@@ -1,7 +1,8 @@
 /**
  * Created by Samuel Gratzl on 11.05.2016.
  */
-import { IDType, IFormSelectOption, ISelection } from 'tdp_core';
+import { IDType } from 'visyn_core';
+import { IFormSelectOption, ISelection } from 'tdp_core';
 interface IAvailableSpecies {
     name: string;
     value: string;

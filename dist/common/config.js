@@ -92,6 +92,7 @@ export const tissue = {
             ColumnDescUtils.numberCol('height', 0, find('height').max, { label: 'Height', visible: false }),
             ColumnDescUtils.numberCol('weight', 0, find('weight').max, { label: 'Weight', visible: false }),
             ColumnDescUtils.numberCol('bmi', 0, find('bmi').max, { label: 'Body Mass Index (BMI)', visible: false }),
+            ColumnDescUtils.numberCol('tumorpurity', 0, find('tumorpurity').max, { label: 'Tumor Purity', visible: false }),
             ColumnDescUtils.categoricalCol('microsatellite_stability_class', find('microsatellite_stability_class').categories, {
                 label: 'Micro Satellite Instability (MSI) Status',
                 visible: false,
@@ -113,7 +114,17 @@ export const tissue = {
     },
     columnInfo: {
         string: ['id', 'tumortype_adjacent'],
-        number: ['age', 'days_to_death', 'days_to_last_followup', 'height', 'weight', 'bmi', 'microsatellite_stability_score', 'mutational_fraction'],
+        number: [
+            'age',
+            'days_to_death',
+            'days_to_last_followup',
+            'height',
+            'weight',
+            'bmi',
+            'tumorpurity',
+            'microsatellite_stability_score',
+            'mutational_fraction',
+        ],
         categorical: [
             'organ',
             'gender',

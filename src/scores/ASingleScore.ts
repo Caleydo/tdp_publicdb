@@ -3,7 +3,7 @@
  */
 
 import { IDTypeManager, IDType } from 'visyn_core';
-// import { IDTypeManager, IDType, IScore, INamedSet, RestBaseUtils, IParams } from 'tdp_core';
+import { IScore, INamedSet, RestBaseUtils, IParams } from 'tdp_core';
 import { FieldUtils } from '../providers';
 import { SpeciesUtils } from '../common';
 import { ScoreUtils } from './ScoreUtils';

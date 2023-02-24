@@ -15,7 +15,7 @@ export declare class ExpressionVsCopyNumber extends AExpressionVsCopyNumber {
         value: string;
         data: import("../common").IDataSubtypeConfig;
     }[];
-    get itemIDType(): import("tdp_core").IDType;
+    get itemIDType(): import("visyn_core").IDType;
     protected select(ids: string[]): void;
 }
 //# sourceMappingURL=ExpressionVsCopyNumber.d.ts.map

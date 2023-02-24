@@ -1,7 +1,8 @@
 /**
  * Created by Samuel Gratzl on 27.04.2016.
  */
-import { IPluginDesc, IFormElementDesc } from 'tdp_core';
+import { IPluginDesc } from 'visyn_core';
+import { IFormElementDesc } from 'tdp_core';
 export declare class AggregateScoreDialog {
     static createScoreDialog(pluginDesc: IPluginDesc, extras: any, formDesc: IFormElementDesc[], countHint?: number): Promise<{
         [key: string]: any;

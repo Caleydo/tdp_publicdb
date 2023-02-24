@@ -1,4 +1,5 @@
-import { FormDialog, FormElementType, AppContext, I18nextManager } from 'tdp_core';
+import { AppContext, I18nextManager } from 'visyn_core';
+import { FormDialog, FormElementType } from 'tdp_core';
 import { chooseDataSource } from '../common/config';
 import { ABooleanScore } from './ABooleanScore';
 import { ScoreUtils } from './ScoreUtils';
@@ -39,8 +40,7 @@ export class AnnotationColumn extends ABooleanScore {
             },
         });
         return dialog.showAsPromise((r) => {
-            var _a;
-            const panels = (_a = r.getElementValues()) === null || _a === void 0 ? void 0 : _a.panels.map(({ id }) => ({ panel: id }));
+            const panels = r.getElementValues()?.panels.map(({ id }) => ({ panel: id }));
             return panels;
         });
     }

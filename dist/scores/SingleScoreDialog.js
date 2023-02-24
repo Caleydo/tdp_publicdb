@@ -2,7 +2,8 @@
  * Created by sam on 06.03.2017.
  */
 import { merge } from 'lodash';
-import { FormElementType, I18nextManager, FormDialog } from 'tdp_core';
+import { I18nextManager } from 'visyn_core';
+import { FormElementType, FormDialog } from 'tdp_core';
 import { FORCE_COMPUTE_ALL_CELLLINE, FORCE_COMPUTE_ALL_GENES, FORCE_COMPUTE_ALL_TISSUE, FORM_SINGLE_SCORE, FORM_SINGLE_SCORE_DEPLETION, FORM_SINGLE_SCORE_DRUG, } from './forms';
 import { ScoreUtils } from './ScoreUtils';
 import { ParameterFormIds, FORM_GENE_NAME, FORM_TISSUE_NAME, FORM_CELLLINE_NAME, FORM_DRUG_NAME } from '../common/forms';
