@@ -4,7 +4,7 @@
 # Licensed under the new BSD license, available at http://caleydo.org/license
 ###############################################################################
 from pydantic import BaseModel
-from tdp_core.plugin.model import AVisynPlugin, RegHelper
+from visyncore.plugin.model import AVisynPlugin, RegHelper
 
 from .settings import TDPPublicDBSettings
 

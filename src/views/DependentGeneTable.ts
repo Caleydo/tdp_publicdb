@@ -2,19 +2,8 @@
  * Created by Marc Streit on 28.07.2016.
  */
 
-import {
-  ARankingView,
-  AdapterUtils,
-  IARankingViewOptions,
-  IScoreRow,
-  FormElementType,
-  ISelection,
-  IViewContext,
-  RestBaseUtils,
-  IServerColumn,
-  LineupUtils,
-  IDTypeManager,
-} from 'tdp_core';
+import { IServerColumn, IDTypeManager } from 'visyn_core';
+import { ARankingView, AdapterUtils, IARankingViewOptions, IScoreRow, FormElementType, ISelection, IViewContext, RestBaseUtils, LineupUtils } from 'tdp_core';
 import { ParameterFormIds, FORM_GENE_FILTER } from '../common/forms';
 import { ViewUtils } from './ViewUtils';
 import { gene, expression, copyNumber, mutation, IDataTypeConfig, chooseDataSource, IDataSourceConfig, IDataSubtypeConfig } from '../common/config';

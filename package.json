@@ -16,7 +16,6 @@
     "type": "git",
     "url": "https://github.com/caleydo/tdp_publicdb.git"
   },
-  "private": false,
   "files": [
     "src",
     "dist",
@@ -62,11 +61,11 @@
     "react-select": "^4.1.0",
     "react-select-async-paginate": "^0.5.3",
     "react-virtualized": "^9.22.3",
-    "tdp_core": "git+ssh://git@github.com:datavisyn/tdp_core#develop",
-    "visyn_scripts": "git+ssh://git@github.com/datavisyn/visyn_scripts#develop"
+    "tdp_core": "git+ssh://git@github.com:datavisyn/tdp_core#visyn_core",
+    "visyn_scripts": "git+ssh://git@github.com/datavisyn/visyn_scripts#visyn_core"
   },
   "optionalDependencies": {
-    "ordino": "git+ssh://git@github.com:Caleydo/ordino#develop"
+    "ordino": "git+ssh://git@github.com:Caleydo/ordino#visyn_core"
   },
   "visyn": {
     "entries": {

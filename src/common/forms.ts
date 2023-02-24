@@ -2,6 +2,7 @@
  * Created by sam on 06.03.2017.
  */
 
+import { IServerColumn } from 'visyn_core';
 import {
   FormElementType,
   IFormElement,
@@ -12,7 +13,6 @@ import {
   RestStorageUtils,
   LineupUtils,
   RestBaseUtils,
-  IServerColumn,
 } from 'tdp_core';
 import { FormSubtype } from '../providers';
 import { SpeciesUtils } from './common';
