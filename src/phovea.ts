@@ -15,7 +15,9 @@ export default function (registry) {
   // generator-phovea:begin
 
   /// #if include('ordino')
-  registry.push(EP_ORDINO_STARTMENU_DATASET_SECTION, 'celllinedb_cellline_start', () => import('./menu/DatasetCard.js'), <IPublicDbStartMenuDatasetSectionDesc>{
+  registry.push(EP_ORDINO_STARTMENU_DATASET_SECTION, 'celllinedb_cellline_start', () => import('./menu/DatasetCard.js'), <
+    Partial<IPublicDbStartMenuDatasetSectionDesc>
+  >{
     name: 'Cell Lines',
     icon: 'fas fa-database',
     cssClass: 'cellline-dataset',
@@ -30,7 +32,9 @@ export default function (registry) {
     ],
   });
 
-  registry.push(EP_ORDINO_STARTMENU_DATASET_SECTION, 'bioinfodb_tissue_start', () => import('./menu/DatasetCard.js'), <IPublicDbStartMenuDatasetSectionDesc>{
+  registry.push(EP_ORDINO_STARTMENU_DATASET_SECTION, 'bioinfodb_tissue_start', () => import('./menu/DatasetCard.js'), <
+    Partial<IPublicDbStartMenuDatasetSectionDesc>
+  >{
     name: 'Tissue Samples',
     icon: 'fas fa-database',
     cssClass: 'tissue-dataset',
@@ -45,7 +49,9 @@ export default function (registry) {
     ],
   });
 
-  registry.push(EP_ORDINO_STARTMENU_DATASET_SECTION, 'celllinedb_genes_start', () => import('./menu/DatasetCard.js'), <IPublicDbStartMenuDatasetSectionDesc>{
+  registry.push(EP_ORDINO_STARTMENU_DATASET_SECTION, 'celllinedb_genes_start', () => import('./menu/DatasetCard.js'), <
+    Partial<IPublicDbStartMenuDatasetSectionDesc>
+  >{
     name: 'Genes',
     icon: 'fas fa-database',
     cssClass: 'genes-dataset',
