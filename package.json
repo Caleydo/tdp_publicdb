@@ -16,7 +16,6 @@
     "type": "git",
     "url": "https://github.com/caleydo/tdp_publicdb.git"
   },
-  "private": false,
   "files": [
     "src",
     "dist",

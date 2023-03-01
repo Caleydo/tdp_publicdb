@@ -1,7 +1,8 @@
 /**
  * Created by Samuel Gratzl on 27.04.2016.
  */
-import { IDType, AView } from 'tdp_core';
+import { IDType } from 'visyn_core';
+import { AView } from 'tdp_core';
 import 'jquery-ui/ui/widgets/sortable';
 export interface ISample {
     name: string;

@@ -2,7 +2,8 @@
  * Created by sam on 06.03.2017.
  */
 
-import { IDType, IScore, INamedSet, IDTypeManager, RestBaseUtils, IParams, LineupUtils } from 'tdp_core';
+import { IDType, IDTypeManager } from 'visyn_core';
+import { IScore, INamedSet, RestBaseUtils, IParams, LineupUtils } from 'tdp_core';
 import { FieldUtils } from '../providers';
 import { SpeciesUtils } from '../common';
 import { ScoreUtils } from './ScoreUtils';

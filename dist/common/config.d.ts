@@ -1,7 +1,8 @@
 /**
  * Created by sam on 06.03.2017.
  */
-import { IServerColumn, IAdditionalColumnDesc } from 'tdp_core';
+import { IServerColumn } from 'visyn_core';
+import { IAdditionalColumnDesc } from 'tdp_core';
 /**
  * maximal number of rows in which just the subset if fetched instead of all
  * @type {number}

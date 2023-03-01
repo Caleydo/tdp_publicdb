@@ -1,7 +1,8 @@
 /**
  * Created by Holger Stitz on 07.12.2016.
  */
-import { FormElementType, ProxyView, IDTypeManager } from 'tdp_core';
+import { IDTypeManager } from 'visyn_core';
+import { FormElementType, ProxyView } from 'tdp_core';
 import { GeneProxyView } from './GeneProxyView';
 /**
  * helper view for proxying an existing external website

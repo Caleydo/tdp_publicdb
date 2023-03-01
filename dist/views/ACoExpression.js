@@ -1,13 +1,10 @@
 /**
  * Created by Holger Stitz on 12.08.2016.
  */
-import { IDTypeManager } from 'tdp_core';
-import { FormElementType } from 'tdp_core';
-import { ErrorAlertHandler } from 'tdp_core';
 import * as d3v3 from 'd3v3';
-import { SelectionUtils, SelectOperation } from 'tdp_core';
-import { AD3View } from 'tdp_core';
 import { jStat } from 'jstat';
+import { IDTypeManager, SelectOperation, SelectionUtils } from 'visyn_core';
+import { AD3View, FormElementType, ErrorAlertHandler } from 'tdp_core';
 import { ViewUtils } from './ViewUtils';
 const FORM_ID_REFERENCE_GENE = 'referenceGene';
 /**

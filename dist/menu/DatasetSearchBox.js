@@ -44,9 +44,8 @@ export function DatasetSearchBox({ placeholder, dataSource, onOpen, onSaveAsName
     };
     // eslint-disable-next-line @typescript-eslint/no-shadow
     const formatOptionLabel = (option, ctx) => {
-        var _a;
         // do not highlight selected elements
-        if ((_a = ctx.selectValue) === null || _a === void 0 ? void 0 : _a.some((o) => o.id === option.id)) {
+        if (ctx.selectValue?.some((o) => o.id === option.id)) {
             return option.text;
         }
         return (React.createElement(React.Fragment, null,
@@ -57,8 +56,7 @@ export function DatasetSearchBox({ placeholder, dataSource, onOpen, onSaveAsName
         setInputValue('');
     }, [items]);
     const onPaste = async (event) => {
-        var _a;
-        const pastedData = (_a = event.clipboardData.getData('text')) === null || _a === void 0 ? void 0 : _a.toLocaleLowerCase();
+        const pastedData = event.clipboardData.getData('text')?.toLocaleLowerCase();
         const splitData = Select3Utils.splitEscaped(pastedData, tokenSeparators, false)
             .map((d) => d.trim())
             .filter((d) => d !== '');
@@ -69,7 +67,7 @@ export function DatasetSearchBox({ placeholder, dataSource, onOpen, onSaveAsName
             .map((s) => ({ id: s, text: s, invalid: true }));
         setItems([...validData, ...invalidData]);
     };
-    const validItems = items === null || items === void 0 ? void 0 : items.filter((i) => !i.invalid);
+    const validItems = items?.filter((i) => !i.invalid);
     const searchResults = {
         search: {
             ids: validItems.map((i) => i.id),
@@ -141,7 +139,7 @@ export function DatasetSearchBox({ placeholder, dataSource, onOpen, onSaveAsName
                     },
                 }),
             } }),
-        React.createElement("button", { type: "button", className: "btn btn-secondary", "data-testid": "open-button", disabled: !(validItems === null || validItems === void 0 ? void 0 : validItems.length), onClick: (event) => onOpen(event, searchResults) }, "Open"),
-        React.createElement("button", { type: "button", className: "btn btn-outline-secondary text-nowrap", "data-testid": "save-button", disabled: !(validItems === null || validItems === void 0 ? void 0 : validItems.length), onClick: () => onSaveAsNamedSet(validItems) }, "Save as set")));
+        React.createElement("button", { type: "button", className: "btn btn-secondary", "data-testid": "open-button", disabled: !validItems?.length, onClick: (event) => onOpen(event, searchResults) }, "Open"),
+        React.createElement("button", { type: "button", className: "btn btn-outline-secondary text-nowrap", "data-testid": "save-button", disabled: !validItems?.length, onClick: () => onSaveAsNamedSet(validItems) }, "Save as set")));
 }
 //# sourceMappingURL=DatasetSearchBox.js.map

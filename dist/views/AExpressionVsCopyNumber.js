@@ -1,4 +1,5 @@
-import { ErrorAlertHandler, FormElementType, AD3View, IDTypeManager, SelectionUtils, SelectOperation } from 'tdp_core';
+import { IDTypeManager, SelectionUtils, SelectOperation } from 'visyn_core';
+import { ErrorAlertHandler, FormElementType, AD3View } from 'tdp_core';
 import * as d3v3 from 'd3v3';
 import { jStat } from 'jstat';
 import { FormSubtype } from '../providers/forms';

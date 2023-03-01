@@ -1,4 +1,5 @@
-import { ISelection, IViewContext, IServerColumn } from 'tdp_core';
+import { IServerColumn } from 'visyn_core';
+import { ISelection, IViewContext } from 'tdp_core';
 import { ACommonList, IACommonListOptions } from './ACommonList';
 export declare class GeneList extends ACommonList {
     constructor(context: IViewContext, selection: ISelection, parent: HTMLElement, options: IACommonListOptions);

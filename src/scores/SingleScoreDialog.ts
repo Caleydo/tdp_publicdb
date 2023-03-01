@@ -3,7 +3,8 @@
  */
 
 import { merge } from 'lodash';
-import { IFormElementDesc, FormElementType, I18nextManager, IPluginDesc, BaseUtils, FormDialog, IForm } from 'tdp_core';
+import { I18nextManager, IPluginDesc } from 'visyn_core';
+import { IFormElementDesc, FormElementType, FormDialog, IForm } from 'tdp_core';
 import {
   FORCE_COMPUTE_ALL_CELLLINE,
   FORCE_COMPUTE_ALL_GENES,

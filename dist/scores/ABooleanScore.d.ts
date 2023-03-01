@@ -13,7 +13,7 @@ export declare abstract class ABooleanScore implements IScore<number> {
      * defines the IDType of which score values are returned. A score row is a pair of id and its score, e.g. {id: 'EGFR', score: 100}
      * @type {IDType}
      */
-    get idType(): import("tdp_core").IDType;
+    get idType(): import("visyn_core").IDType;
     constructor(params: IBooleanScoreParams, dataSource: IDataSourceConfig);
     /**
      * creates the column description used within LineUp to create the oclumn

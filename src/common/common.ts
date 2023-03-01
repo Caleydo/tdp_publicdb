@@ -2,7 +2,8 @@
  * Created by Samuel Gratzl on 11.05.2016.
  */
 
-import { UserSession, IDType, IFormSelectOption, ISelection, IDTypeManager } from 'tdp_core';
+import { UserSession, IDType, IDTypeManager } from 'visyn_core';
+import { IFormSelectOption, ISelection } from 'tdp_core';
 import { Categories } from './Categories';
 
 // has to work for all data sources (gene, tissue, cell line)

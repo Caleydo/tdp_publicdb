@@ -1,5 +1,6 @@
 import React from 'react';
-import { ENamedSetType, RestBaseUtils, RestStorageUtils, StoreUtils, UserSession, UniqueIdManager, I18nextManager, IDTypeManager, useAsync, GlobalEventHandler, AView, } from 'tdp_core';
+import { UserSession, I18nextManager, IDTypeManager, useAsync, GlobalEventHandler } from 'visyn_core';
+import { ENamedSetType, RestBaseUtils, RestStorageUtils, StoreUtils, UniqueIdManager, AView } from 'tdp_core';
 import { NamedSetList, OrdinoContext } from 'ordino';
 import { DatasetSearchBox } from './DatasetSearchBox';
 import { Species } from '../common';
@@ -62,9 +63,9 @@ export default function DatasetCard({ name, icon, tabs, startViewId, dataSource,
     const predefinedNamedSets = useAsync(loadPredefinedSet, []);
     const me = UserSession.getInstance().currentUserNameOrAnonymous();
     const { status: namedSetsStatus } = useAsync(loadNamedSets, []);
-    const myNamedSets = { ...namedSets, ...{ value: namedSets === null || namedSets === void 0 ? void 0 : namedSets.filter((d) => d.type === ENamedSetType.NAMEDSET && d.creator === me) } };
-    const publicNamedSets = { ...namedSets, ...{ value: namedSets === null || namedSets === void 0 ? void 0 : namedSets.filter((d) => d.type === ENamedSetType.NAMEDSET && d.creator !== me) } };
-    const filterValue = (value, tab) => value === null || value === void 0 ? void 0 : value.filter((entry) => entry.subTypeValue === tab);
+    const myNamedSets = { ...namedSets, ...{ value: namedSets?.filter((d) => d.type === ENamedSetType.NAMEDSET && d.creator === me) } };
+    const publicNamedSets = { ...namedSets, ...{ value: namedSets?.filter((d) => d.type === ENamedSetType.NAMEDSET && d.creator !== me) } };
+    const filterValue = (value, tab) => value?.filter((entry) => entry.subTypeValue === tab);
     const onOpenNamedSet = (event, { namedSet, species }) => {
         event.preventDefault();
         const defaultSessionValues = {
@@ -85,7 +86,7 @@ export default function DatasetCard({ name, icon, tabs, startViewId, dataSource,
     };
     const onSaveAsNamedSet = (items, subtype) => {
         StoreUtils.editDialog(null, I18nextManager.getInstance().i18n.t(`tdp:core.editDialog.listOfEntities.default`), async (datasetName, description, isPublic) => {
-            const idStrings = items === null || items === void 0 ? void 0 : items.map((i) => i.id);
+            const idStrings = items?.map((i) => i.id);
             const idType = IDTypeManager.getInstance().resolveIdType(dataSource.idType);
             await RestStorageUtils.saveNamedSet(datasetName, idType, idStrings, subtype, description, isPublic);
             setDirtyNamedSets(true);

@@ -1,4 +1,5 @@
-import { IRow, IAdditionalColumnDesc } from 'tdp_core';
+import { IRow } from 'visyn_core';
+import { IAdditionalColumnDesc } from 'tdp_core';
 export declare class LineUpStoredData {
     /**
      * Load the column description for a given idType
