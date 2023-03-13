@@ -3,7 +3,8 @@
  */
 
 import { ICategory } from 'lineupjs';
-import { IServerColumn, ColumnDescUtils, IAdditionalColumnDesc } from 'tdp_core';
+import { IServerColumn } from 'visyn_core';
+import { ColumnDescUtils, IAdditionalColumnDesc } from 'tdp_core';
 import { Categories } from './Categories';
 
 /**

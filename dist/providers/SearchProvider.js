@@ -1,3 +1,4 @@
+// redeclare to avoid dependency
 import { RestBaseUtils } from 'tdp_core';
 import { SpeciesUtils } from '../common/common';
 export class SearchProvider {

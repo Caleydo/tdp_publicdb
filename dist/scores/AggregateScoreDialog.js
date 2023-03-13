@@ -1,7 +1,8 @@
 /**
  * Created by Samuel Gratzl on 27.04.2016.
  */
-import { I18nextManager, FormDialog, FormMap } from 'tdp_core';
+import { I18nextManager } from 'visyn_core';
+import { FormDialog, FormMap } from 'tdp_core';
 import { ParameterFormIds, FORM_GENE_FILTER, FORM_TISSUE_FILTER, FORM_CELLLINE_FILTER } from '../common/forms';
 import { FORCE_COMPUTE_ALL_CELLLINE, FORCE_COMPUTE_ALL_GENES, FORCE_COMPUTE_ALL_TISSUE, FORM_AGGREGATED_SCORE, FORM_AGGREGATED_SCORE_DEPLETION } from './forms';
 import { gene, tissue, cellline, splitTypes, MAX_FILTER_SCORE_ROWS_BEFORE_ALL } from '../common/config';

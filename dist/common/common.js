@@ -1,7 +1,7 @@
 /**
  * Created by Samuel Gratzl on 11.05.2016.
  */
-import { UserSession, IDTypeManager } from 'tdp_core';
+import { UserSession, IDTypeManager } from 'visyn_core';
 import { Categories } from './Categories';
 // eslint-disable-next-line @typescript-eslint/no-namespace
 export var Species;
@@ -46,8 +46,7 @@ export class SpeciesUtils {
         return IDTypeManager.getInstance().mapNameToFirstName(selection.idtype, selection.ids, target);
     }
     static createOptions(ensgs, selection, base) {
-        var _a;
-        if (ensgs === null || ensgs.length === 0 || ((_a = selection.ids) === null || _a === void 0 ? void 0 : _a.length) === 0) {
+        if (ensgs === null || ensgs.length === 0 || selection.ids?.length === 0) {
             return Promise.resolve([]);
         }
         return Promise.all([SpeciesUtils.mapToId(selection, base), SpeciesUtils.selectReadableIDType(base)]).then((results) => {

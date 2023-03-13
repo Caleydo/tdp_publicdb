@@ -1,4 +1,5 @@
-import { INamedSet, ENamedSetType, IDType } from 'tdp_core';
+import { INamedSet, ENamedSetType } from 'tdp_core';
+import { IDType } from 'visyn_core';
 
 export class FieldUtils {
   /**

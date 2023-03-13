@@ -1,7 +1,8 @@
 /**
  * Created by sam on 16.02.2017.
  */
-import { FormElementType, IDTypeManager, RestBaseUtils, LineupUtils } from 'tdp_core';
+import { IDTypeManager } from 'visyn_core';
+import { FormElementType, RestBaseUtils, LineupUtils } from 'tdp_core';
 import { ParameterFormIds, FORM_TISSUE_OR_CELLLINE_FILTER, FORM_DATA_SOURCE, FORM_COLOR_CODING } from '../common/forms';
 import { ViewUtils } from './ViewUtils';
 import { expression } from '../common/config';

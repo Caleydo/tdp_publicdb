@@ -1,7 +1,8 @@
 /**
  * Created by sam on 16.02.2017.
  */
-import { RestBaseUtils, LineupUtils, IDTypeManager } from 'tdp_core';
+import { IDTypeManager } from 'visyn_core';
+import { RestBaseUtils, LineupUtils } from 'tdp_core';
 import { ParameterFormIds, FORM_TISSUE_OR_CELLLINE_FILTER, FORM_DATA_SOURCE } from '../common/forms';
 import { ViewUtils } from './ViewUtils';
 import { AOncoPrint } from './AOncoPrint';

@@ -2,7 +2,8 @@
  * Created by Holger Stitz on 07.12.2016.
  */
 
-import { FormElementType, IFormSelectElement, ProxyView, IDTypeManager } from 'tdp_core';
+import { IDTypeManager } from 'visyn_core';
+import { FormElementType, IFormSelectElement, ProxyView } from 'tdp_core';
 import { GeneProxyView } from './GeneProxyView';
 
 /**
