@@ -21,7 +21,6 @@ class VisynPlugin(AVisynPlugin):
         )
 
         registry.append('mapping_provider', 'sql_mapping_provider', 'tdp_core.mapping_table', {})
-
         from os import path
 
         registry.append(
