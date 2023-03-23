@@ -1,4 +1,5 @@
 // import {ToursSection} from 'ordino';
+import selectEvent from 'react-select-event';
 import { IStep, Tour, TourUtils } from 'tdp_core';
 
 export class AssessBCCellLinesTour {
@@ -39,7 +40,7 @@ export class AssessBCCellLinesTour {
         html: `<p>Here they choose between the three entity types <i>'Cell Lines'</i>, <i>'Tissue Samples'</i>, and <i>'Genes'</i>.</p>
         <p>In this example they choose to work with a list of genes.</p>`,
         placement: 'centered',
-        preAction: () => TourUtils.waitFor('#ordino_dataset_tab > .ordino-scrollspy-container .genes-dataset > .card').then(() => TourUtils.wait(600)),
+        preAction: () => TourUtils.waitFor('#ordino_dataset_tab > .ordino-scrollspy-container .genes-dataset > .card').then(() => TourUtils.wait(1000)),
         postAction: () => TourUtils.click('.ordino-dataset.genes-dataset .session-tab > li:first-child'),
       },
       {
@@ -57,7 +58,7 @@ export class AssessBCCellLinesTour {
         selector: '.le.le-multi.lineup-engine',
         placement: 'centered',
         html: `The information is presented in a tabular format. Additionally to the gene ID, a set of columns containing some basic information is shown by default.`,
-        preAction: () => TourUtils.waitFor('.le.le-multi.lineup-engine', Infinity).then(() => TourUtils.wait(1500)),
+        preAction: () => TourUtils.waitFor('.le-tr:nth-of-type(1)', Infinity),
       },
       {
         selector: '.lu-side-panel-wrapper .lu-adder > button',
@@ -77,7 +78,7 @@ export class AssessBCCellLinesTour {
       {
         selector: '.modal.show .col > .select3',
         placement: 'centered',
-        preAction: () => TourUtils.waitFor('.modal.show').then(() => TourUtils.wait(150)),
+        preAction: () => TourUtils.waitFor('.modal.show', Infinity).then(() => TourUtils.wait(150)),
         html: `Now they select the cell line 'HCC1954' &hellip;`,
         postAction: () => {
           TourUtils.setValueAndTrigger('.modal.show .select3 input.select2-search__field', 'HCC1954;', 'input');
@@ -101,15 +102,16 @@ export class AssessBCCellLinesTour {
         selector: '.le [data-col-id="col8"] .lu-action-sort',
         placement: 'centered',
         html: `They want to sort by this newly added column, so they click on the sort button in the column header.`,
-        preAction: () => TourUtils.waitFor('.le [data-col-id="col8"] .lu-action-sort'),
+        preAction: () => TourUtils.waitFor('.le-tr:nth-of-type(1) [title="1.83"]', Infinity),
         postAction: () => {
           TourUtils.click('.le [data-col-id="col8"] .lu-action-sort');
         },
       },
       {
-        selector: ['[data-index="0"].le-tr, [data-index="14"].le-tr'],
+        // selector: ['[data-index="0"].le-tr, [data-index="14"].le-tr'], // Bug: It highlights the selectors before waiting for the preAction
         placement: 'centered',
         html: `After sorting by this column, the analyst observes that about 15 genes on chromosome 17 are affected by a large genomic amplification.`,
+        preAction: () => TourUtils.waitFor('.le-tr:nth-of-type(1) [title="8.00"]', Infinity),
       },
       {
         selector: '.lu-side-panel-wrapper .lu-adder > button',
@@ -120,10 +122,11 @@ export class AssessBCCellLinesTour {
           TourUtils.click('.lu-side-panel-wrapper .lu-adder > button');
           TourUtils.click('[data-testid=lu-adder-div] > .lu-search > .lu-search-list > :nth-child(2) > ul > :nth-child(1) > span');
           TourUtils.toggleClass('.lu-adder.once', 'once', false);
-          TourUtils.waitFor('.modal.show').then(() => {
+          TourUtils.waitFor('.modal.show').then(async () => {
             TourUtils.setValueAndTrigger('.modal.show .select3 input.select2-search__field', 'HCC1954;', 'input');
             TourUtils.setValueAndTrigger('.show .col > select', 'expression-tpm', 'change');
-            TourUtils.wait(1000).then(() => TourUtils.click('.modal.show .modal-footer button[type=submit]'));
+            await TourUtils.wait(1000);
+            TourUtils.click('.modal.show .modal-footer button[type=submit]');
           });
         },
       },
@@ -131,7 +134,7 @@ export class AssessBCCellLinesTour {
         selector: '.lu-side-panel-wrapper .lu-adder > button',
         html: `They also add a column with a Gene Sensitivity Score (a measure of importance for cell survival) for HCC1954.`,
         placement: 'centered',
-        preAction: () => TourUtils.waitFor('.le header [data-col-id="col9"]').then(() => TourUtils.wait(500)),
+        preAction: () => TourUtils.waitFor('.le-tr:nth-of-type(1) [title="5324.86"]', Infinity),
         postAction: () => {
           TourUtils.click('.lu-side-panel-wrapper .lu-adder > button');
         },
@@ -156,7 +159,7 @@ export class AssessBCCellLinesTour {
         html: `<p>In an effort to improve the depletion score's readability, they decide to invert the linear scaling.</p>
         <p>To do this, they click on the three dots for more column options.</p>`,
         placement: 'centered',
-        preAction: TourUtils.waitForSelector,
+        preAction: () => TourUtils.waitFor('.le-tr:nth-of-type(1) [title="−2.75"]', Infinity),
         postAction: TourUtils.clickSelector,
       },
       {
@@ -185,6 +188,7 @@ export class AssessBCCellLinesTour {
         <p>Observe: Combining the columns highlights the importance of ERBB2.</p>
         <p>It is therefore probably the most relevant gene within this amplified genomic region.</p>`,
         placement: 'centered',
+        allowUserInteraction: true,
       },
       {
         selector: '[data-index="0"]',
@@ -206,8 +210,9 @@ export class AssessBCCellLinesTour {
           TourUtils.click('.lu-side-panel-wrapper .lu-adder > button');
           TourUtils.click('[data-testid=lu-adder-div] > .lu-search > .lu-search-list > :nth-child(2) > ul > :nth-child(2) > span');
           TourUtils.toggleClass('.lu-adder.once', 'once', false);
-          TourUtils.waitFor('.show .modal-body form > div:nth-child(1) .row:nth-child(1) div:nth-child(1) select').then(() => {
+          TourUtils.waitFor('.show .modal-body form > div:nth-child(1) .row:nth-child(1) div:nth-child(1) select').then(async () => {
             TourUtils.setValueAndTrigger('.show .modal-body form > div:nth-child(1) .row:nth-child(1) div:nth-child(1) select', 'tumortype', 'change');
+            await TourUtils.wait(500);
             TourUtils.setValueAndTrigger(
               '.show .modal-body form > .col-sm-12:nth-child(1) .row:nth-child(1) .row:nth-child(1) > div:nth-child(2) select',
               'breast carcinoma',
@@ -225,13 +230,14 @@ export class AssessBCCellLinesTour {
         selector: '.lu-side-panel-wrapper .lu-adder > button',
         html: `2. A column with the gene copy number distribution for breast cancer cell lines in boxplot format`,
         placement: 'centered',
-        preAction: () => TourUtils.waitFor('.le header [data-col-id="col11"]'),
+        preAction: () => TourUtils.waitFor('.le-tr:nth-of-type(1) [title="890.37"]', Infinity),
         postAction: () => {
           TourUtils.click('.lu-side-panel-wrapper .lu-adder > button');
           TourUtils.click('[data-testid=lu-adder-div] > .lu-search > .lu-search-list > :nth-child(2) > ul > :nth-child(2) > span');
           TourUtils.toggleClass('.lu-adder.once', 'once', false);
-          TourUtils.waitFor('.show .modal-body form > div:nth-child(1) .row:nth-child(1) div:nth-child(1) select').then(() => {
+          TourUtils.waitFor('.show .modal-body form > div:nth-child(1) .row:nth-child(1) div:nth-child(1) select').then(async () => {
             TourUtils.setValueAndTrigger('.show .modal-body form > div:nth-child(1) .row:nth-child(1) div:nth-child(1) select', 'tumortype', 'change');
+            await TourUtils.wait(500);
             TourUtils.setValueAndTrigger(
               '.show .modal-body form > .col-sm-12:nth-child(1) .row:nth-child(1) .row:nth-child(1) > div:nth-child(2) select',
               'breast carcinoma',
@@ -249,13 +255,14 @@ export class AssessBCCellLinesTour {
         selector: '.lu-side-panel-wrapper .lu-adder > button',
         html: `3. A column with the gene amplification frequency (>4) across all breast cancer cell lines`,
         placement: 'centered',
-        preAction: () => TourUtils.waitFor('.le header [data-col-id="col12"]'),
+        preAction: () => TourUtils.waitFor('.le-tr:nth-of-type(1) .lu-renderer-boxplot', Infinity),
         postAction: () => {
           TourUtils.click('.lu-side-panel-wrapper .lu-adder > button');
           TourUtils.click('[data-testid=lu-adder-div] > .lu-search > .lu-search-list > :nth-child(2) > ul > :nth-child(2) > span');
           TourUtils.toggleClass('.lu-adder.once', 'once', false);
-          TourUtils.waitFor('.show .modal-body form > div:nth-child(1) .row:nth-child(1) div:nth-child(1) select').then(() => {
+          TourUtils.waitFor('.show .modal-body form > div:nth-child(1) .row:nth-child(1) div:nth-child(1) select').then(async () => {
             TourUtils.setValueAndTrigger('.show .modal-body form > div:nth-child(1) .row:nth-child(1) div:nth-child(1) select', 'tumortype', 'change');
+            await TourUtils.wait(500);
             TourUtils.setValueAndTrigger(
               '.show .modal-body form > .col-sm-12:nth-child(1) .row:nth-child(1) .row:nth-child(1) > div:nth-child(2) select',
               'breast carcinoma',
@@ -277,7 +284,7 @@ export class AssessBCCellLinesTour {
         selector: '.le.le-multi.lineup-engine',
         html: `Observe: They notice that ERBB2 is amplified in almost 25% of all assessed breast cancer cell lines. Further, it is highly expressed.`,
         placement: 'centered',
-        preAction: () => TourUtils.waitFor('.le header [data-col-id="col13"]'),
+        preAction: () => TourUtils.waitFor('.le-tr:nth-of-type(1) [title="0.25"]', Infinity),
       },
       {
         selector: '[data-index="0"] .lu-renderer-selection',
@@ -416,7 +423,7 @@ export class AssessBCCellLinesTour {
         <p>HCC1954 has the highest ERBB2 amplification among BRCA1 mutated cell lines.</p>
         <p>HCC1569 has the highest ERBB2 amplification among BRCA2 mutated cell lines.</p>`,
         placement: 'centered',
-        preAction: () => TourUtils.waitFor('[data-testid="viewWrapper-1"] .le header [data-col-id="col8"]'),
+        preAction: () => TourUtils.waitFor('.le-tr:nth-of-type(1) [data-id="col8"][data-renderer="categorical"]'),
       },
       {
         selector: '',

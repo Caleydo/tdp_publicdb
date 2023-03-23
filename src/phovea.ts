@@ -1092,7 +1092,7 @@ export default function (registry) {
     },
     {
       factory: 'createTour',
-      name: 'Prediction of TP53 Mutation Status',
+      name: 'Prediction of TP53 Mutation Status (WIP)',
       description: 'This case study summarizes another analysis session, this time involving the prediction of the mutation status for TP53.',
       preview() {
         return import('./assets/previews/expression.jpg'); // TODO update preview image
@@ -1103,24 +1103,24 @@ export default function (registry) {
     },
   );
 
-  registry.push(
-    'tdpTour',
-    'ordinoDrugTargetDiscoveryTour',
-    function () {
-      return import('./tours').then((t) => t.DrugTargetDiscoveryTour);
-    },
-    {
-      factory: 'createTour',
-      name: 'Drug Target Discovery',
-      description: '??? Add description here.',
-      preview() {
-        return import('./assets/previews/expression.jpg'); // TODO update preview image
-      },
-      multiPage: true,
-      level: 'beginner',
-      canJumpAround: false,
-    },
-  );
+  // registry.push(
+  //   'tdpTour',
+  //   'ordinoDrugTargetDiscoveryTour',
+  //   function () {
+  //     return import('./tours').then((t) => t.DrugTargetDiscoveryTour);
+  //   },
+  //   {
+  //     factory: 'createTour',
+  //     name: 'Drug Target Discovery',
+  //     description: '??? Add description here.',
+  //     preview() {
+  //       return import('./assets/previews/expression.jpg'); // TODO update preview image
+  //     },
+  //     multiPage: true,
+  //     level: 'beginner',
+  //     canJumpAround: false,
+  //   },
+  // );
   /// #endif
 
   registry.push(
