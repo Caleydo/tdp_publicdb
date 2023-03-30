@@ -1092,7 +1092,7 @@ export default function (registry) {
     },
     {
       factory: 'createTour',
-      name: 'Prediction of TP53 Mutation Status (WIP)',
+      name: 'Prediction of TP53 Mutation Status',
       description: 'This case study summarizes another analysis session, this time involving the prediction of the mutation status for TP53.',
       preview() {
         return import('./assets/previews/expression.jpg'); // TODO update preview image
@@ -1103,24 +1103,45 @@ export default function (registry) {
     },
   );
 
-  // registry.push(
-  //   'tdpTour',
-  //   'ordinoDrugTargetDiscoveryTour',
-  //   function () {
-  //     return import('./tours').then((t) => t.DrugTargetDiscoveryTour);
-  //   },
-  //   {
-  //     factory: 'createTour',
-  //     name: 'Drug Target Discovery',
-  //     description: '??? Add description here.',
-  //     preview() {
-  //       return import('./assets/previews/expression.jpg'); // TODO update preview image
-  //     },
-  //     multiPage: true,
-  //     level: 'beginner',
-  //     canJumpAround: false,
-  //   },
-  // );
+  registry.push(
+    'tdpTour',
+    'ordinoPredictionTP53Tour2',
+    function () {
+      return import('./tours').then((t) => t.PredictionTP53Tour2);
+    },
+    {
+      factory: 'createTour',
+      name: 'Prediction of TP53 Mutation Status: Continued',
+      description:
+        'This case study serves as a continuation of the initial tour "Prediction of TP53 Mutation Status". It takes a deeper look into the efficacy of the TP53 Predictor Score, in combination with the MDM2 sensitivity score.',
+      preview() {
+        return import('./assets/previews/expression.jpg'); // TODO update preview image
+      },
+      multiPage: true,
+      level: 'beginner',
+      canJumpAround: false,
+    },
+  );
+
+  registry.push(
+    'tdpTour',
+    'ordinoDrugTargetDiscoveryTour',
+    function () {
+      return import('./tours').then((t) => t.DrugTargetDiscoveryTour);
+    },
+    {
+      factory: 'createTour',
+      name: 'Drug Target Discovery',
+      description:
+        'A demonstration of Taggle (integrated into the Ordino Target Discovery Platform) by means of a case study conducted on complex genomics data for the purpose of drug target discovery.',
+      preview() {
+        return import('./assets/previews/expression.jpg'); // TODO update preview image
+      },
+      multiPage: true,
+      level: 'beginner',
+      canJumpAround: false,
+    },
+  );
   /// #endif
 
   registry.push(

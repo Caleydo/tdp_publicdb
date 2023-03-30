@@ -162,21 +162,32 @@ export class DrugTargetDiscoveryTour {
         },
       },
       {
-        selector: [
-          '.show .modal-body form > div:nth-child(1) .row:nth-child(1) div:nth-child(1) select, .show .modal-body form > .col-sm-12:nth-child(1) .row:nth-child(1) .row:nth-child(1) > div:nth-child(2) select',
-        ],
-        html: `They select 'My Named Sets' in the drop down and then enter 'TP53 Predictor' as the specific set &hellip;`,
+        selector: '[data-testid="Filter"] [data-testid="row-1"] .form-select',
+        html: `They select 'Gene Symbol' in the drop down and then enter the list of genes used for the TP53 Predictor &hellip;`,
         placement: 'centered',
         preAction: () => TourUtils.waitFor('.show .modal-body form > div:nth-child(1) .row:nth-child(1) div:nth-child(1) select'),
-        postAction: () => {
-          TourUtils.setValueAndTrigger('.show .modal-body form > div:nth-child(1) .row:nth-child(1) div:nth-child(1) select', 'namedset4ensg', 'change');
-          TourUtils.wait(1500).then(() => {
-            TourUtils.setValueAndTrigger(
-              '.show .modal-body form > .col-sm-12:nth-child(1) .row:nth-child(1) .row:nth-child(1) > div:nth-child(2) select',
-              '0Qd2E6S4R9',
-              'change',
-            );
-          });
+        postAction: async () => {
+          // Ensure that the list of inputs is empty first
+          TourUtils.setValueAndTrigger('.show .modal-body form > div:nth-child(1) .row:nth-child(1) div:nth-child(1) select', 'ensg', 'change');
+          await TourUtils.wait(1500);
+          TourUtils.click('[data-testid="Filter"] [data-testid="close-button"]');
+          await TourUtils.wait(1500);
+          TourUtils.setValueAndTrigger('.show .modal-body form > div:nth-child(1) .row:nth-child(1) div:nth-child(1) select', 'ensg', 'change');
+          await TourUtils.wait(1500);
+
+          // Now add the list of 13 genes here instead
+          TourUtils.setValueAndTrigger(
+            '.modal-dialog [data-testid="row-2"] .select2 input',
+            'AEN,BAX,CCNG1,CDKN1A,DDB2,FDXR,MDM2,RPS27L,RRM2B,SESN1,TNFRSF10B,XPC,ZMAT3',
+            'input',
+          );
+          await TourUtils.wait(1020);
+
+          // Inspect if the checkbox is checked, if so then uncheck it
+          const checkboxTest = document.querySelector('.modal-dialog [data-testid="form-checkbox"]') as HTMLInputElement;
+          if (!checkboxTest.checked) {
+            TourUtils.click('.modal-dialog [data-testid="form-checkbox"]');
+          }
         },
       },
       {
@@ -207,30 +218,46 @@ export class DrugTargetDiscoveryTour {
         selector: '.lu-side-panel-wrapper .lu-adder > button',
         html: `Similarly, they add a matrix column with all of the individual expression values.`,
         placement: 'centered',
-        postAction: () => {
+        postAction: async () => {
           TourUtils.click('.lu-side-panel-wrapper .lu-adder > button');
           TourUtils.click('[data-testid=lu-adder-div] > .lu-search > .lu-search-list > :nth-child(2) > ul > :nth-child(2) > span');
           TourUtils.toggleClass('.lu-adder.once', 'once', false);
-          TourUtils.waitFor('.show .modal-body form > div:nth-child(1) .row:nth-child(1) div:nth-child(1) select').then(() => {
-            TourUtils.setValueAndTrigger('.show .modal-body form > div:nth-child(1) .row:nth-child(1) div:nth-child(1) select', 'namedset4ensg', 'change');
-            TourUtils.setValueAndTrigger(
-              '.show .modal-body form > .col-sm-12:nth-child(1) .row:nth-child(1) .row:nth-child(1) > div:nth-child(2) select',
-              '0Qd2E6S4R9',
-              'change',
-            );
-            TourUtils.setValueAndTrigger('.show .modal-body form > .col-sm-12:nth-child(2) select', 'expression-tpm', 'change');
-            TourUtils.setValueAndTrigger('.show [data-testid="aggregation"] select', 'numbers', 'change');
-            TourUtils.wait(1000).then(() => {
-              TourUtils.click('.modal.show .modal-footer button[type=submit]');
-              TourUtils.click('.modal.show .modal-footer button[type=submit]');
-            });
-          });
+          await TourUtils.wait(500);
+
+          TourUtils.setValueAndTrigger('.show .modal-body form > div:nth-child(1) .row:nth-child(1) div:nth-child(1) select', 'ensg', 'change');
+          await TourUtils.wait(1500);
+          TourUtils.click('[data-testid="Filter"] [data-testid="close-button"]');
+          await TourUtils.wait(1500);
+          TourUtils.setValueAndTrigger('.show .modal-body form > div:nth-child(1) .row:nth-child(1) div:nth-child(1) select', 'ensg', 'change');
+          await TourUtils.wait(1500);
+
+          // Now add the list of 13 genes here instead
+          TourUtils.setValueAndTrigger(
+            '.modal-dialog [data-testid="row-2"] .select2 input',
+            'AEN,BAX,CCNG1,CDKN1A,DDB2,FDXR,MDM2,RPS27L,RRM2B,SESN1,TNFRSF10B,XPC,ZMAT3',
+            'input',
+          );
+          await TourUtils.wait(1020);
+
+          TourUtils.setValueAndTrigger('.show .modal-body form > .col-sm-12:nth-child(2) select', 'expression-tpm', 'change');
+          TourUtils.setValueAndTrigger('.show [data-testid="aggregation"] select', 'numbers', 'change');
+
+          // Inspect if the checkbox is checked, if so then uncheck it
+          const checkboxTest = document.querySelector('.modal-dialog [data-testid="form-checkbox"]') as HTMLInputElement;
+          if (!checkboxTest.checked) {
+            TourUtils.click('.modal-dialog [data-testid="form-checkbox"]');
+          }
+          await TourUtils.wait(1000);
+          TourUtils.click('.modal.show .modal-footer button[type=submit]');
+          await TourUtils.wait(1000); // Button must be pressed twice because of the warning that is thrown
+          TourUtils.click('.modal.show .modal-footer button[type=submit]');
         },
       },
       {
         selector: '[data-id="col7"] .lu-action-filter',
         html: `Furthermore, they decide to hide all cell lines with unknown mutation status.`,
         placement: 'centered',
+        // preAction: // ??? Wait for the matrix load
         postAction: () => {
           TourUtils.click('[data-id="col7"] .lu-action-filter');
           TourUtils.waitFor('.lu-dialog > .lu-checkbox input').then(() => {
@@ -389,6 +416,10 @@ export class DrugTargetDiscoveryTour {
           TourUtils.click('.le-tr[data-index="14"] .lu-renderer-selection');
           TourUtils.click('.le-tr[data-index="15"] .lu-renderer-selection');
         },
+      },
+      {
+        html: `<p>Thanks for joining this tour demonstrating a typical analysis session by a drug discovery team at a pharmaceutical company.</p>
+        <p>There are still many more features to discover. Enjoy!</p>`,
       },
     ];
   }
