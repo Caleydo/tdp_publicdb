@@ -1073,7 +1073,7 @@ export default function (registry) {
     },
     {
       factory: 'createTour',
-      name: 'Assessment and Selection of Breast Cancer Cell Lines',
+      name: 'Assessment of Breast Cancer Cell Lines',
       description: 'This case study summarizes an analysis session carried out by a scientist working in a drug discovery team at a pharmaceutical company.',
       preview() {
         return import('./assets/previews/expression.jpg'); // TODO update preview image
@@ -1112,8 +1112,7 @@ export default function (registry) {
     {
       factory: 'createTour',
       name: 'Prediction of TP53 Mutation Status: Continued',
-      description:
-        'This case study serves as a continuation of the initial tour "Prediction of TP53 Mutation Status". It takes a deeper look into the efficacy of the TP53 Predictor Score, in combination with the MDM2 sensitivity score.',
+      description: 'This case study serves as a continuation of the initial tour "Prediction of TP53 Mutation Status".',
       preview() {
         return import('./assets/previews/expression.jpg'); // TODO update preview image
       },
