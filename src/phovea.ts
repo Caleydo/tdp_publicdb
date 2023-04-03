@@ -1019,7 +1019,7 @@ export default function (registry) {
       name: 'Ordino Welcome Tour',
       description: 'Learn the basic features of Ordino in a short welcome tour.',
       preview() {
-        return import('./assets/previews/expression.jpg'); // TODO update preview image
+        return import('./assets/previews/tourOrdinoWelcome.png');
       },
       multiPage: true,
       level: 'beginner',
@@ -1038,7 +1038,7 @@ export default function (registry) {
       name: 'Overview of Start Menu',
       description: 'This tour provides an overview of the Ordino start menu.',
       preview() {
-        return import('./assets/previews/expression.jpg'); // TODO update preview image
+        return import('./assets/previews/tourStartMenu.png');
       },
       multiPage: true,
       level: 'beginner',
@@ -1057,7 +1057,7 @@ export default function (registry) {
       name: 'Adding Data Columns',
       description: 'Learn how to add data columns to rankings in Ordino.',
       preview() {
-        return import('./assets/previews/expression.jpg'); // TODO update preview image
+        return import('./assets/previews/tourAddColumn.png');
       },
       multiPage: true,
       level: 'beginner',
@@ -1076,7 +1076,7 @@ export default function (registry) {
       name: 'Assessment of Breast Cancer Cell Lines',
       description: 'This case study summarizes an analysis session carried out by a scientist working in a drug discovery team at a pharmaceutical company.',
       preview() {
-        return import('./assets/previews/expression.jpg'); // TODO update preview image
+        return import('./assets/previews/tourBreastCancerCL.png');
       },
       multiPage: true,
       level: 'beginner',
@@ -1095,7 +1095,7 @@ export default function (registry) {
       name: 'Prediction of TP53 Mutation Status',
       description: 'This case study summarizes another analysis session, this time involving the prediction of the mutation status for TP53.',
       preview() {
-        return import('./assets/previews/expression.jpg'); // TODO update preview image
+        return import('./assets/previews/tourTP53Predictor.png');
       },
       multiPage: true,
       level: 'beginner',
@@ -1114,7 +1114,7 @@ export default function (registry) {
       name: 'Prediction of TP53 Mutation Status: Continued',
       description: 'This case study serves as a continuation of the initial tour "Prediction of TP53 Mutation Status".',
       preview() {
-        return import('./assets/previews/expression.jpg'); // TODO update preview image
+        return import('./assets/previews/tourTP53Predictor.png');
       },
       multiPage: true,
       level: 'beginner',
@@ -1134,7 +1134,7 @@ export default function (registry) {
       description:
         'A demonstration of Taggle (integrated into the Ordino Target Discovery Platform) by means of a case study conducted on complex genomics data for the purpose of drug target discovery.',
       preview() {
-        return import('./assets/previews/expression.jpg'); // TODO update preview image
+        return import('./assets/previews/tourDrugDiscovery.png');
       },
       multiPage: true,
       level: 'beginner',
