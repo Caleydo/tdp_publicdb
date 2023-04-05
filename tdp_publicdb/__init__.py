@@ -20,6 +20,7 @@ class VisynPlugin(AVisynPlugin):
             {"name": "Gene Hopper Similar Genes Proxy", "url": "http://genehopper.ifis.cs.tu-bs.de/rest/similargenes?q={gene}"},
         )
 
+        registry.append("mapping_provider", "sql_mapping_provider", "tdp_core.mapping_table", {})
         from os import path
 
         registry.append(
