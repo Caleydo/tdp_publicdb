@@ -1,1 +1,1 @@
-{"version":3,"file":"index.d.ts","sourceRoot":"","sources":["../../src/tours/index.ts"],"names":[],"mappings":"AAAA,cAAc,eAAe,CAAC;AAC9B,cAAc,2BAA2B,CAAC;AAC1C,cAAc,iBAAiB,CAAC;AAChC,cAAc,yBAAyB,CAAC;AACxC,cAAc,sBAAsB,CAAC;AACrC,cAAc,2BAA2B,CAAC"}
+{"version":3,"file":"index.d.ts","sourceRoot":"","sources":["../../src/tours/index.ts"],"names":[],"mappings":"AAAA,cAAc,eAAe,CAAC;AAC9B,cAAc,2BAA2B,CAAC;AAC1C,cAAc,iBAAiB,CAAC;AAChC,cAAc,yBAAyB,CAAC;AACxC,cAAc,sBAAsB,CAAC;AACrC,cAAc,uBAAuB,CAAC;AACtC,cAAc,2BAA2B,CAAC"}
