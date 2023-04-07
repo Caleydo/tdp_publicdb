@@ -1,9 +1,7 @@
 // import {ToursSection} from 'ordino';
-import { IStep, Tour } from 'tdp_core';
+import { IStep } from 'tdp_core';
 import { TourUtils } from 'tdp_core/src/tour/TourUtils';
-import selectEvent from 'react-select-event';
-import { wideEnoughCat } from 'lineupjs/build/src/renderer/utils';
-import { select } from 'lineupjs';
+import { openAddColumPanel } from './utils';
 
 export class PredictionTP53Tour {
   static createTour(): IStep[] {
@@ -44,15 +42,17 @@ export class PredictionTP53Tour {
             datasetTab.querySelector('a').classList.add('hover');
           }
         },
-        postAction: () => {
+        postAction: async () => {
           const datasetTab = document.querySelector('ul[data-header="mainMenu"] > li:nth-child(1)') as HTMLElement;
           if (!datasetTab.classList.contains('active')) {
             datasetTab.querySelector('a').classList.remove('hover');
             datasetTab.querySelector('a').click();
           }
-          return TourUtils.waitFor('.ordino-dataset.tissue-dataset').then(() =>
-            TourUtils.click('#ordino_dataset_tab > .ordino-scrollspy-nav > a:nth-child(2)'),
-          );
+
+          await TourUtils.waitFor('.ordino-dataset.tissue-dataset').then(async () => {
+            TourUtils.click('#ordino_dataset_tab > .ordino-scrollspy-nav > a:nth-child(2)');
+            await TourUtils.wait(1000);
+          });
         },
         pageBreak: 'manual',
       },
@@ -90,17 +90,18 @@ export class PredictionTP53Tour {
         },
       },
       {
-        selector: '[data-testid="add-column-button"]',
+        selector: '[data-testid=lu-adder-div] > .lu-search > .lu-search-list > :nth-child(2) > ul > :nth-child(1) > span',
         html: `<p>Now they add a single gene score for the following:</p>
         <p>Gene: TP53<p/>
         <p>Data Type: AA Mutated<p/>`,
         placement: 'centered',
+        preAction: openAddColumPanel,
         postAction: async () => {
           TourUtils.click('[data-testid="add-column-button"]');
           await TourUtils.wait(500);
           TourUtils.click('[data-testid=lu-adder-div] > .lu-search > .lu-search-list > :nth-child(2) > ul > :nth-child(1) > span');
           TourUtils.toggleClass('.lu-adder.once', 'once', false);
-          TourUtils.waitFor('.modal.show').then(async () => {
+          await TourUtils.waitFor('.modal.show').then(async () => {
             TourUtils.setValueAndTrigger('.modal.show .select3 input.select2-search__field', 'TP53;', 'input');
             TourUtils.setValueAndTrigger('.show .col > select', 'mutation-aa_mutated', 'change');
             await TourUtils.wait(500);
@@ -112,7 +113,7 @@ export class PredictionTP53Tour {
         selector: '[data-testid="viewWrapper-0"] [data-id="col7"] .lu-action-filter',
         html: `They filter out the samples with an unknown TP53 mutation status.`,
         placement: 'centered',
-        preAction: () => TourUtils.waitFor('.le-tr:nth-of-type(1) [data-id="col7"].lu-missing', Infinity),
+        preAction: TourUtils.waitForSelector,
         postAction: async () => {
           TourUtils.click('[data-testid="viewWrapper-0"] [data-id="col7"] .lu-action-filter');
           await TourUtils.wait(500);
@@ -122,14 +123,17 @@ export class PredictionTP53Tour {
         },
       },
       {
-        selector: '.lu-side-panel-wrapper .lu-adder > button',
+        selector: '[data-testid=lu-adder-div] > .lu-search > .lu-search-list > :nth-child(2) > ul > :nth-child(2) > span',
         html: `<p>Next they add an aggregated gene score with the following criteria:</p>
         <p>Filter: My Named Sets = TP53 Predictor</p>
         <p>Data Type: Expression (TPM)</p>
         <p>Aggregation: Average</p>
         <p>Compute score only for current sample subset</p>`,
         placement: 'centered',
-        preAction: () => TourUtils.waitFor('.le-tr:nth-of-type(1) [data-id="col7"] [style="background-color: rgb(170, 170, 170);"]', Infinity),
+        preAction: async () => {
+          await TourUtils.waitFor('.le-tr:nth-of-type(1) [data-id="col7"] [style="background-color: rgb(170, 170, 170);"]', Infinity);
+          openAddColumPanel();
+        },
         postAction: async () => {
           TourUtils.click('.lu-side-panel-wrapper .lu-adder > button');
           TourUtils.click('[data-testid=lu-adder-div] > .lu-search > .lu-search-list > :nth-child(2) > ul > :nth-child(2) > span');

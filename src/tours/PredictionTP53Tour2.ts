@@ -1,9 +1,7 @@
 // import {ToursSection} from 'ordino';
-import { IStep, Tour } from 'tdp_core';
+import { IStep } from 'tdp_core';
 import { TourUtils } from 'tdp_core/src/tour/TourUtils';
-import selectEvent from 'react-select-event';
-import { wideEnoughCat } from 'lineupjs/build/src/renderer/utils';
-import { select } from 'lineupjs';
+import { openAddColumPanel } from './utils';
 
 export class PredictionTP53Tour2 {
   static createTour(): IStep[] {
@@ -32,13 +30,16 @@ export class PredictionTP53Tour2 {
             datasetTab.querySelector('a').classList.add('hover');
           }
         },
-        postAction: () => {
+        postAction: async () => {
           const datasetTab = document.querySelector('ul[data-header="mainMenu"] > li:nth-child(1)') as HTMLElement;
           if (!datasetTab.classList.contains('active')) {
             datasetTab.querySelector('a').classList.remove('hover');
             datasetTab.querySelector('a').click();
           }
-          return TourUtils.waitFor('.ordino-dataset.genes-dataset').then(() => TourUtils.click('#ordino_dataset_tab > .ordino-scrollspy-nav > a:nth-child(1)'));
+          await TourUtils.waitFor('.ordino-dataset.genes-dataset').then(async () => {
+            TourUtils.click('#ordino_dataset_tab > .ordino-scrollspy-nav > a:nth-child(1)');
+            await TourUtils.wait(1000);
+          });
         },
       },
       {
@@ -49,12 +50,15 @@ export class PredictionTP53Tour2 {
         pageBreak: 'manual',
       },
       {
-        selector: '[data-testid="add-column-button"]',
+        selector: '[data-testid=lu-adder-div] > .lu-search > .lu-search-list > :nth-child(2) > ul > :nth-child(1) > span',
         html: `<p>They add a single gene score for the following:</p>
         <p>Gene: TP53<p/>
         <p>Data Type: AA Mutated and AA Mutation<p/>`,
         placement: 'centered',
-        preAction: () => TourUtils.waitFor('.le-tr:nth-of-type(1)', Infinity).then(() => TourUtils.wait(1500)),
+        preAction: async () => {
+          await TourUtils.waitFor('.le-tr:nth-of-type(1)', Infinity).then(() => TourUtils.wait(1500));
+          openAddColumPanel();
+        },
         postAction: async () => {
           TourUtils.click('[data-testid="add-column-button"]');
           await TourUtils.wait(500);
@@ -103,7 +107,7 @@ export class PredictionTP53Tour2 {
         },
       },
       {
-        selector: '.lu-side-panel-wrapper .lu-adder > button',
+        selector: '[data-testid=lu-adder-div] > .lu-search > .lu-search-list > :nth-child(2) > ul > :nth-child(2) > span',
         html: `<p>Next they add an aggregated gene score with the following criteria:</p>
         <p>Filter: Gene Symbol = AEN, BAX, CCNG1, CDKN1A, DDB2, FDXR, MDM2, RPS27L, RRM2B, SESN1, TNFRSF10B, XPC,
         ZMAT3 </p>
@@ -111,7 +115,10 @@ export class PredictionTP53Tour2 {
         <p>Aggregation: Average</p>
         <p>Compute score for all cell lines, not only the selected subset</p>`,
         placement: 'centered',
-        preAction: () => TourUtils.waitFor('.le-tr:nth-of-type(1) [data-id="col7"] [style="background-color: rgb(27, 166, 78);"]', Infinity),
+        preAction: async () => {
+          await TourUtils.waitFor('.le-tr:nth-of-type(1) [data-id="col7"] [style="background-color: rgb(27, 166, 78);"]', Infinity);
+          openAddColumPanel();
+        },
         postAction: async () => {
           TourUtils.click('.lu-side-panel-wrapper .lu-adder > button');
           TourUtils.click('[data-testid=lu-adder-div] > .lu-search > .lu-search-list > :nth-child(2) > ul > :nth-child(2) > span');
@@ -138,7 +145,7 @@ export class PredictionTP53Tour2 {
 
           // Inspect if the checkbox is checked, if so then uncheck it
           const checkboxTest = document.querySelector('.modal-dialog [data-testid="form-checkbox"]') as HTMLInputElement;
-          if (checkboxTest.checked) {
+          if (checkboxTest?.checked) {
             TourUtils.click('.modal-dialog [data-testid="form-checkbox"]');
           }
           await TourUtils.wait(1000);
@@ -149,7 +156,6 @@ export class PredictionTP53Tour2 {
         selector: '[data-id="col9"] > .lu-toolbar > .lu-action-more',
         html: `<p>They decide to rename the new column to "TP53 Predictor Score".</p>`,
         placement: 'centered',
-        preAction: () => TourUtils.waitFor('.le-tr:nth-of-type(1) [title="54.56"]', Infinity),
         postAction: async () => {
           TourUtils.click('[data-id="col9"] > .lu-toolbar > .lu-action-more');
           await TourUtils.wait(500);
@@ -179,17 +185,21 @@ export class PredictionTP53Tour2 {
         postAction: TourUtils.clickSelector,
       },
       {
-        selector: '.le.le-multi.lineup-engine',
+        selector: '.le-tbody.le-tbody',
         html: `<p>Observe: There is a clear enrichment of TP53 non-mutated among the cell lines with high score.</p>`,
         placement: 'centered',
-        preAction: () => TourUtils.waitFor('.le-tr:nth-of-type(1) [title="209.10"]', Infinity),
+        preAction: () => TourUtils.waitFor('[data-id="col9"].lu-renderer-number', Infinity),
+        postAction: async () => {
+          await TourUtils.wait(500);
+        },
       },
       {
-        selector: '.lu-side-panel-wrapper .lu-adder > button',
+        selector: '[data-testid=lu-adder-div] > .lu-search > .lu-search-list > :nth-child(2) > ul > :nth-child(4) > span',
         html: `<p>Next, they choose to add a 'Depletion Screen Score (Single)' using the following:</p>
         <p>Gene: MDM2</p>
         <p>Data type: DRIVE RSA (NB: the lower this value, the more sensitive a cell line is to the depletion of the gene of interest)</p>`,
         placement: 'centered',
+        preAction: openAddColumPanel,
         postAction: async () => {
           TourUtils.click('.lu-side-panel-wrapper .lu-adder > button');
           TourUtils.click('[data-testid=lu-adder-div] > .lu-search > .lu-search-list > :nth-child(2) > ul > :nth-child(4) > span');
@@ -209,7 +219,7 @@ export class PredictionTP53Tour2 {
         selector: '[data-id="col10"] > .lu-toolbar > .lu-action-more',
         html: `<p>To amplify the visibility of the added depletion score's significance, they decide to invert the scaling via the data mapping.</p>`,
         placement: 'centered',
-        preAction: () => TourUtils.waitFor('.le-tr:nth-of-type(1) [data-id="col10"].lu-missing', Infinity),
+        preAction: () => TourUtils.waitFor('.le-tr [data-id="col10"].lu-renderer-number', Infinity),
         postAction: async () => {
           TourUtils.click('[data-id="col10"] > .lu-toolbar > .lu-action-more');
           await TourUtils.wait(500);
@@ -242,13 +252,13 @@ export class PredictionTP53Tour2 {
         selector: '.le.le-multi.lineup-engine',
         html: `<p>Observe: Small MDM2 RSA values (large bars) are correlated to the expression score (TP53 predictor score) and the TP53 mutation status</p>`,
         placement: 'centered',
-        allowUserInteraction: true,
         preAction: () => TourUtils.waitFor('.le-tr:nth-of-type(1) [title="−7.14"]', Infinity),
+        postAction: () => TourUtils.wait(500),
       },
       // Can't do the drag operation for this final step in the aim
       // Remaining two aims are also primarily just observations, but rely on the combined score column; What to do?
       {
-        selector: '',
+        selector: ['section[data-col-id="col9"]', 'section[data-col-id="col10"]'],
         html: `<p>Conclusion: When combining the TP53 Predictor Score column and the MDM2 Gene Sensitivity Score, the new weighted sum column serves as an even more accurate predictor.</p>
         <p>Thanks for joining this tour taking a deeper look into the TP53 Predictor Score.</p>
         <p>There are still many more features to discover. Enjoy!</p>`,

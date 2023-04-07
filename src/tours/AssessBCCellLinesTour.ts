@@ -1,6 +1,5 @@
-// import {ToursSection} from 'ordino';
-import selectEvent from 'react-select-event';
-import { IStep, Tour, TourUtils } from 'tdp_core';
+import { IStep, TourUtils } from 'tdp_core';
+import { openAddColumPanel, setNextActive } from './utils';
 
 export class AssessBCCellLinesTour {
   static createTour(): IStep[] {
@@ -25,7 +24,7 @@ export class AssessBCCellLinesTour {
             datasetTab.querySelector('a').classList.add('hover');
           }
         },
-        postAction: () => {
+        postAction: async () => {
           const datasetTab = document.querySelector('ul[data-header="mainMenu"] > li:nth-child(1)') as HTMLElement;
           if (!datasetTab.classList.contains('active')) {
             datasetTab.querySelector('a').classList.remove('hover');
@@ -47,7 +46,7 @@ export class AssessBCCellLinesTour {
         selector: '[data-testid="normal-chromosome-protein-coding-human-genes-button"]',
         html: `The scientists start by loading the list of all protein coding genes for humans.`,
         placement: 'centered',
-        postAction: () => {
+        postAction: async () => {
           return TourUtils.waitFor('.ordino-dataset.genes-dataset .dataset-entry button[title^="Name: normal chromosome protein coding human genes"]').then(
             TourUtils.click,
           );
@@ -57,22 +56,23 @@ export class AssessBCCellLinesTour {
       {
         selector: '.le.le-multi.lineup-engine',
         placement: 'centered',
+        preAction: () => TourUtils.waitFor('.le.le-multi.lineup-engine', Infinity).then(() => TourUtils.wait(2000)),
         html: `The information is presented in a tabular format. Additionally to the gene ID, a set of columns containing some basic information is shown by default.`,
-        preAction: () => TourUtils.waitFor('.le-tr:nth-of-type(1)', Infinity),
       },
       {
         selector: '.lu-side-panel-wrapper .lu-adder > button',
         html: `They begin by adding an additional column, done so by clicking on the plus icon shown here.`,
         placement: 'centered',
-        postAction: TourUtils.clickSelector,
+        postAction: openAddColumPanel,
       },
       {
-        selector: '[data-testid=lu-adder-div] > .lu-search > .lu-search-list > :nth-child(2) > ul > :nth-child(1) > span',
+        selector: '[data-testid="lu-adder-div"] > .lu-search > .lu-search-list > :nth-child(2) > ul > :nth-child(1) > span',
         html: `They choose to add a column for a single cell line score.`,
         placement: 'centered',
-        postAction: () => {
-          TourUtils.click('[data-testid=lu-adder-div] > .lu-search > .lu-search-list > :nth-child(2) > ul > :nth-child(1) > span');
+        postAction: async () => {
+          TourUtils.click('[data-testid="lu-adder-div"] > .lu-search > .lu-search-list > :nth-child(2) > ul > :nth-child(1) > span');
           TourUtils.toggleClass('.lu-adder.once', 'once', false);
+          return Promise.resolve();
         },
       },
       {
@@ -102,27 +102,27 @@ export class AssessBCCellLinesTour {
         selector: '.le [data-col-id="col8"] .lu-action-sort',
         placement: 'centered',
         html: `They want to sort by this newly added column, so they click on the sort button in the column header.`,
-        preAction: () => TourUtils.waitFor('.le-tr:nth-of-type(1) [title="1.83"]', Infinity),
+        preAction: () => TourUtils.waitFor('.le-tr[data-index="0"] [data-id="col8"].lu-renderer-number', Infinity),
         postAction: () => {
           TourUtils.click('.le [data-col-id="col8"] .lu-action-sort');
         },
       },
       {
-        // selector: ['[data-index="0"].le-tr, [data-index="14"].le-tr'], // Bug: It highlights the selectors before waiting for the preAction
+        selector: ['[data-index="0"].le-tr, [data-index="14"].le-tr'],
         placement: 'centered',
         html: `After sorting by this column, the analyst observes that about 15 genes on chromosome 17 are affected by a large genomic amplification.`,
-        preAction: () => TourUtils.waitFor('.le-tr:nth-of-type(1) [title="8.00"]', Infinity),
+        preAction: () => TourUtils.waitFor('[data-index="0"].le-tr', Infinity).then(() => TourUtils.wait(2000)),
       },
       {
         selector: '.lu-side-panel-wrapper .lu-adder > button',
         html: `<p>In order to identify the most relevant of these genes, the analyst adds a column with the Normalized Gene Expression (a measure of activity) for cell line HCC1954</p>
         <p><i>Individual steps for adding a column have been skipped this time.</i></p>`,
         placement: 'centered',
-        postAction: () => {
+        postAction: async () => {
           TourUtils.click('.lu-side-panel-wrapper .lu-adder > button');
           TourUtils.click('[data-testid=lu-adder-div] > .lu-search > .lu-search-list > :nth-child(2) > ul > :nth-child(1) > span');
           TourUtils.toggleClass('.lu-adder.once', 'once', false);
-          TourUtils.waitFor('.modal.show').then(async () => {
+          await TourUtils.waitFor('.modal.show').then(async () => {
             TourUtils.setValueAndTrigger('.modal.show .select3 input.select2-search__field', 'HCC1954;', 'input');
             TourUtils.setValueAndTrigger('.show .col > select', 'expression-tpm', 'change');
             await TourUtils.wait(1000);
@@ -134,7 +134,7 @@ export class AssessBCCellLinesTour {
         selector: '.lu-side-panel-wrapper .lu-adder > button',
         html: `They also add a column with a Gene Sensitivity Score (a measure of importance for cell survival) for HCC1954.`,
         placement: 'centered',
-        preAction: () => TourUtils.waitFor('.le-tr:nth-of-type(1) [title="5324.86"]', Infinity),
+        preAction: () => TourUtils.waitFor('.le-tr[data-index="0"] [data-id="col9"].lu-renderer-number', Infinity),
         postAction: () => {
           TourUtils.click('.lu-side-panel-wrapper .lu-adder > button');
         },
@@ -159,7 +159,7 @@ export class AssessBCCellLinesTour {
         html: `<p>In an effort to improve the depletion score's readability, they decide to invert the linear scaling.</p>
         <p>To do this, they click on the three dots for more column options.</p>`,
         placement: 'centered',
-        preAction: () => TourUtils.waitFor('.le-tr:nth-of-type(1) [title="−2.75"]', Infinity),
+        preAction: () => TourUtils.waitFor('.le-tr[data-index="0"] [data-id="col10"].lu-renderer-number', Infinity),
         postAction: TourUtils.clickSelector,
       },
       {
@@ -230,7 +230,7 @@ export class AssessBCCellLinesTour {
         selector: '.lu-side-panel-wrapper .lu-adder > button',
         html: `2. A column with the gene copy number distribution for breast cancer cell lines in boxplot format`,
         placement: 'centered',
-        preAction: () => TourUtils.waitFor('.le-tr:nth-of-type(1) [title="890.37"]', Infinity),
+        preAction: () => TourUtils.waitFor('.le-tr:nth-of-type(1) [data-id="col11"].lu-renderer-number', Infinity),
         postAction: () => {
           TourUtils.click('.lu-side-panel-wrapper .lu-adder > button');
           TourUtils.click('[data-testid=lu-adder-div] > .lu-search > .lu-search-list > :nth-child(2) > ul > :nth-child(2) > span');
@@ -255,7 +255,7 @@ export class AssessBCCellLinesTour {
         selector: '.lu-side-panel-wrapper .lu-adder > button',
         html: `3. A column with the gene amplification frequency (>4) across all breast cancer cell lines`,
         placement: 'centered',
-        preAction: () => TourUtils.waitFor('.le-tr:nth-of-type(1) .lu-renderer-boxplot', Infinity),
+        preAction: () => TourUtils.waitFor('.le-tr:nth-of-type(1) [data-id="col12"].lu-renderer-boxplot', Infinity),
         postAction: () => {
           TourUtils.click('.lu-side-panel-wrapper .lu-adder > button');
           TourUtils.click('[data-testid=lu-adder-div] > .lu-search > .lu-search-list > :nth-child(2) > ul > :nth-child(2) > span');
@@ -301,22 +301,24 @@ export class AssessBCCellLinesTour {
         postAction: TourUtils.clickSelector,
       },
       {
-        selector: '.ids',
+        selector: '.tdp-view.expressionVsCopyNumber .ids',
         html: `Here they observe the direct correlation between copy number and expression of ERBB2.`,
         placement: 'centered',
-        preAction: () => TourUtils.waitFor('.ids').then(() => TourUtils.wait(300)),
+        preAction: () => TourUtils.waitFor('.tdp-view.expressionVsCopyNumber .ids').then(() => TourUtils.wait(300)),
       },
       {
         selector: '[data-viewid="targetvalidation"]',
+        preAction: TourUtils.clickSelector,
         html: `To find more information, they open the 'Open Targets' detail view &hellip;`,
         placement: 'centered',
-        postAction: TourUtils.clickSelector,
+        waitFor: () => TourUtils.waitFor('iframe [title="ERBB2"]').then(setNextActive),
       },
       {
         selector: '[data-viewid="pubmed"]',
         html: `&hellip; and then the 'PubMed' detail view.`,
         placement: 'centered',
-        postAction: TourUtils.clickSelector,
+        preAction: TourUtils.clickSelector,
+        waitFor: () => TourUtils.waitFor('.tdp-view.proxy_view ').then(setNextActive),
       },
       {
         selector: '',
@@ -378,7 +380,7 @@ export class AssessBCCellLinesTour {
         selector: '[data-testid="viewWrapper-1"] .lu-side-panel-wrapper .lu-adder > button',
         html: `They now want to add the BRCA gene score columns.`,
         placement: 'centered',
-        postAction: TourUtils.clickSelector,
+        postAction: openAddColumPanel,
       },
       {
         selector: '[data-testid="viewWrapper-1"] [data-testid=lu-adder-div] > .lu-search > .lu-search-list > :nth-child(2) > ul > :nth-child(1) > span',

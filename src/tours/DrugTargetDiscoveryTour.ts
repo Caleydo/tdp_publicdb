@@ -1,5 +1,6 @@
 // import {ToursSection} from 'ordino';
-import { IStep, Tour, TourManager, TourUtils } from 'tdp_core';
+import { IStep, TourUtils } from 'tdp_core';
+import { openAddColumPanel } from './utils';
 
 export class DrugTargetDiscoveryTour {
   static createTour(): IStep[] {
@@ -89,7 +90,7 @@ export class DrugTargetDiscoveryTour {
         html: `As the analyst wants to investigate the TP53 gene, he decides to add a categorical column with the mutation status (mutated vs non mutated).`,
         placement: 'centered',
         preAction: TourUtils.waitForSelector,
-        postAction: TourUtils.clickSelector,
+        postAction: openAddColumPanel,
       },
       {
         selector: '[data-testid=lu-adder-div] > .lu-search > .lu-search-list > :nth-child(2) > ul > :nth-child(1) > span',
@@ -124,11 +125,12 @@ export class DrugTargetDiscoveryTour {
         postAction: TourUtils.clickSelector,
       },
       {
-        selector: '.lu-side-panel-wrapper .lu-adder > button',
+        selector: '[data-testid=lu-adder-div] > .lu-search > .lu-search-list > :nth-child(2) > ul > :nth-child(1) > span',
         html: `<p>Additionally, they decide to add a textual column that provides further details about the mutation (if present).</p>
         <p>This is done by repeating the same steps to add a column, but choosing "AA Mutation" as the data type this time instead.</p>
         <p><i>Individual steps for adding a column have been skipped this time.</i></p>`,
         placement: 'centered',
+        preAction: openAddColumPanel,
         postAction: () => {
           TourUtils.click('.lu-side-panel-wrapper .lu-adder > button');
           TourUtils.click('[data-testid=lu-adder-div] > .lu-search > .lu-search-list > :nth-child(2) > ul > :nth-child(1) > span');
@@ -150,7 +152,7 @@ export class DrugTargetDiscoveryTour {
         selector: '.lu-side-panel-wrapper .lu-adder > button',
         html: `They begin by adding a new column.`,
         placement: 'centered',
-        postAction: TourUtils.clickSelector,
+        postAction: openAddColumPanel,
       },
       {
         selector: '[data-testid=lu-adder-div] > .lu-search > .lu-search-list > :nth-child(2) > ul > :nth-child(2) > span',
@@ -215,9 +217,10 @@ export class DrugTargetDiscoveryTour {
         },
       },
       {
-        selector: '.lu-side-panel-wrapper .lu-adder > button',
+        selector: '[data-testid=lu-adder-div] > .lu-search > .lu-search-list > :nth-child(2) > ul > :nth-child(2) > span',
         html: `Similarly, they add a matrix column with all of the individual expression values.`,
         placement: 'centered',
+        preAction: openAddColumPanel,
         postAction: async () => {
           TourUtils.click('.lu-side-panel-wrapper .lu-adder > button');
           TourUtils.click('[data-testid=lu-adder-div] > .lu-search > .lu-search-list > :nth-child(2) > ul > :nth-child(2) > span');
@@ -362,15 +365,17 @@ export class DrugTargetDiscoveryTour {
         placement: 'centered',
       },
       {
-        selector: '.lu-side-panel-wrapper .lu-adder > button',
+        selector: '[data-testid=lu-adder-div] > .lu-search > .lu-search-list > :nth-child(2) > ul > :nth-child(1) > span',
         html: `He adds a column with the CDKN2A relative copy number, &hellip;`,
         placement: 'centered',
+        preAction: openAddColumPanel,
         postAction: () => {
           TourUtils.click('.lu-side-panel-wrapper .lu-adder > button');
           TourUtils.click('[data-testid=lu-adder-div] > .lu-search > .lu-search-list > :nth-child(2) > ul > :nth-child(1) > span');
           TourUtils.toggleClass('.lu-adder.once', 'once', false);
           TourUtils.waitFor('.modal.show').then(() => {
             TourUtils.setValueAndTrigger('.modal.show .select3 input.select2-search__field', 'CDKN2A;', 'input');
+            TourUtils.setValueAndTrigger('.show .col > select', null, 'change'); // clear previous value
             TourUtils.setValueAndTrigger('.show .col > select', 'copy_number-relativecopynumber', 'change');
             TourUtils.wait(2000).then(() => TourUtils.click('.modal.show .modal-footer button[type=submit]'));
           });
