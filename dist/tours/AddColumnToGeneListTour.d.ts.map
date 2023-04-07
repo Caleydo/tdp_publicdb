@@ -1,1 +1,1 @@
-{"version":3,"file":"AddColumnToGeneListTour.d.ts","sourceRoot":"","sources":["../../src/tours/AddColumnToGeneListTour.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,KAAK,EAAa,MAAM,UAAU,CAAC;AAE5C,qBAAa,uBAAuB;IAClC,MAAM,CAAC,UAAU,IAAI,KAAK,EAAE;CAqQ7B"}
+{"version":3,"file":"AddColumnToGeneListTour.d.ts","sourceRoot":"","sources":["../../src/tours/AddColumnToGeneListTour.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,KAAK,EAAa,MAAM,UAAU,CAAC;AAG5C,qBAAa,uBAAuB;IAClC,MAAM,CAAC,UAAU,IAAI,KAAK,EAAE;CAiQ7B"}

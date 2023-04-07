@@ -1,4 +1,5 @@
 import { TourUtils } from 'tdp_core';
+import { openAddColumPanel } from './utils';
 export class AddColumnToGeneListTour {
     static createTour() {
         return [
@@ -61,7 +62,7 @@ export class AddColumnToGeneListTour {
                 selector: '.lu-side-panel-wrapper .lu-adder > button',
                 html: `Additional columns can be added using the plus sign.`,
                 placement: 'centered',
-                postAction: TourUtils.clickSelector,
+                postAction: openAddColumPanel,
             },
             {
                 selector: '.lu-search ul',
@@ -123,9 +124,7 @@ export class AddColumnToGeneListTour {
                 selector: '.lu-search .lu-search-group .lu-search-item',
                 placement: 'centered',
                 html: `Now, we want to add two columns containing the copy number information of two specific cell lines. To do so, we open the <i>'Cell Line Score (Single)'</i> dialog`,
-                preAction: () => {
-                    TourUtils.click('.lu-side-panel-wrapper .lu-adder > button');
-                },
+                preAction: openAddColumPanel,
                 postAction: () => {
                     TourUtils.click('.lu-search .lu-search-group .lu-search-item');
                     TourUtils.toggleClass('.lu-adder.once', 'once', false);
@@ -165,9 +164,7 @@ export class AddColumnToGeneListTour {
                 placement: 'centered',
                 html: `Finally, we want to add an aggregated column containing the mean/average copy number values of all breast cancer cell lines.
         To do so, we open the <i>'Cell Line Score (Aggregated)'</i> dialog`,
-                preAction: () => {
-                    TourUtils.click('.lu-side-panel-wrapper .lu-adder > button');
-                },
+                preAction: openAddColumPanel,
                 postAction: () => {
                     TourUtils.click('.lu-search .lu-search-group .lu-search-item:nth-child(2)');
                     TourUtils.toggleClass('.lu-adder.once', 'once', false);
