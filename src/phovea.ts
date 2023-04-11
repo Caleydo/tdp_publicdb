@@ -1092,7 +1092,7 @@ export default function (registry) {
     },
     {
       factory: 'createTour',
-      name: 'Prediction of TP53 Mutation Status',
+      name: 'Prediction of TP53 Mutation Status (Part 1)',
       description: 'This case study summarizes another analysis session, this time involving the prediction of the mutation status for TP53.',
       preview() {
         return import('./assets/previews/tourTP53Predictor.png');
@@ -1111,7 +1111,7 @@ export default function (registry) {
     },
     {
       factory: 'createTour',
-      name: 'Prediction of TP53 Mutation Status: Continued',
+      name: 'Prediction of TP53 Mutation Status (Part 2)',
       description: 'This case study serves as a continuation of the initial tour "Prediction of TP53 Mutation Status".',
       preview() {
         return import('./assets/previews/tourTP53Predictor.png');
