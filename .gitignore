@@ -16,6 +16,7 @@ __pycache__/
 *.pyc
 *.swp
 *.lock
+/dist/
 # due to using tox and pytest
 .tox
 .cache
