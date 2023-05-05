@@ -57,13 +57,22 @@
   "dependencies": {
     "jquery-ui": "1.12.1",
     "jstat": "^1.9.4",
-    "react-select-event": "^5.5.1",
     "react-highlight-words": "^0.17.0",
     "react-select": "^4.1.0",
     "react-select-async-paginate": "^0.5.3",
+    "react-select-event": "^5.5.1",
     "react-virtualized": "^9.22.3",
     "tdp_core": "git+ssh://git@github.com:datavisyn/tdp_core#develop",
     "visyn_scripts": "git+ssh://git@github.com/datavisyn/visyn_scripts#develop"
+  },
+  "resolutions": {
+    "@types/react": "~18.2.0",
+    "@types/react-dom": "~18.2.0",
+    "react": "~18.2.0",
+    "react-dom": "~18.2.0",
+    "visyn_scripts": "git+ssh://git@github.com/datavisyn/visyn_scripts#react18",
+    "visyn_core": "git+ssh://git@github.com/datavisyn/visyn_core#react18",
+    "tdp_core": "git+ssh://git@github.com:datavisyn/tdp_core#react18"
   },
   "optionalDependencies": {
     "ordino": "git+ssh://git@github.com:Caleydo/ordino#develop"

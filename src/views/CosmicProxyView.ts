@@ -2,7 +2,7 @@
  * Created by Stefan Luger on 06.12.17
  */
 
-import { IDTypeManager } from 'visyn_core';
+import { IDTypeManager } from 'visyn_core/idtype';
 import { ProxyView, IFormSelectOption } from 'tdp_core';
 
 /**

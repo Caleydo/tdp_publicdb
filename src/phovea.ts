@@ -5,7 +5,7 @@
  **************************************************************************** */
 
 import { EP_ORDINO_STARTMENU_DATASET_SECTION } from 'ordino';
-import { EP_PHOVEA_CORE_LOCALE, ILocaleEPDesc, PluginRegistry } from 'visyn_core';
+import { EP_PHOVEA_CORE_LOCALE, ILocaleEPDesc, PluginRegistry } from 'visyn_core/plugin';
 import { gene, cellline, tissue } from './common/config';
 import { IPublicDbStartMenuDatasetSectionDesc } from './base/extensions';
 

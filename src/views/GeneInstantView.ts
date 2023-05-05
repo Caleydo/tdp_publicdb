@@ -1,4 +1,4 @@
-import { IDTypeManager } from 'visyn_core';
+import { IDTypeManager } from 'visyn_core/idtype';
 import { AInstantView, RestBaseUtils, ErrorAlertHandler } from 'tdp_core';
 import { SpeciesUtils } from '../common';
 import { gene } from '../common/config';

@@ -2,7 +2,8 @@
  * Created by Marc Streit on 28.07.2016.
  */
 
-import { IServerColumn, IDTypeManager } from 'visyn_core';
+import { IServerColumn } from 'visyn_core/base';
+import { IDTypeManager } from 'visyn_core/idtype';
 import { ARankingView, AdapterUtils, IARankingViewOptions, IScoreRow, FormElementType, ISelection, IViewContext, RestBaseUtils, LineupUtils } from 'tdp_core';
 import { ParameterFormIds, FORM_GENE_FILTER } from '../common/forms';
 import { ViewUtils } from './ViewUtils';

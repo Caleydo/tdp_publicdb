@@ -1,4 +1,4 @@
-import { IRow } from 'visyn_core';
+import { IRow } from 'visyn_core/base';
 import { RestBaseUtils, IParams, IAdditionalColumnDesc } from 'tdp_core';
 import { Species, SpeciesUtils } from '../common/common';
 import { gene } from '../common/config';
