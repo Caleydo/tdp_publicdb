@@ -3,7 +3,7 @@
  */
 import * as d3v3 from 'd3v3';
 import { jStat } from 'jstat';
-import { IDTypeManager, SelectOperation, SelectionUtils } from 'visyn_core';
+import { IDTypeManager, SelectOperation, SelectionUtils } from 'visyn_core/idtype';
 import { AD3View, FormElementType, ErrorAlertHandler } from 'tdp_core';
 import { ViewUtils } from './ViewUtils';
 const FORM_ID_REFERENCE_GENE = 'referenceGene';

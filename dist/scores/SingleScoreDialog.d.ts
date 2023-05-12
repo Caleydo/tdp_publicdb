@@ -1,7 +1,7 @@
 /**
  * Created by sam on 06.03.2017.
  */
-import { IPluginDesc } from 'visyn_core';
+import { IPluginDesc } from 'visyn_core/plugin';
 import { IFormElementDesc } from 'tdp_core';
 export declare class SingleScoreDialog {
     static createScoreDialog(pluginDesc: IPluginDesc, extra: any, formDesc: IFormElementDesc[], countHint?: number): Promise<any>;

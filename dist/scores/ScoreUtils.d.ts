@@ -1,7 +1,7 @@
 /**
  * Created by Samuel Gratzl on 27.04.2016.
  */
-import { IPluginDesc } from 'visyn_core';
+import { IPluginDesc } from 'visyn_core/plugin';
 import { IFormMultiMap } from 'tdp_core';
 import { IDataSubtypeConfig, IDataSourceConfig } from '../common/config';
 export declare class ScoreUtils {

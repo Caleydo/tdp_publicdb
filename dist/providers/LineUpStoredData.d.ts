@@ -1,4 +1,4 @@
-import { IRow } from 'visyn_core';
+import { IRow } from 'visyn_core/base';
 import { IAdditionalColumnDesc } from 'tdp_core';
 export declare class LineUpStoredData {
     /**

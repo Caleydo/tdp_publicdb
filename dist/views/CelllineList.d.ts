@@ -1,4 +1,4 @@
-import { IServerColumn } from 'visyn_core';
+import { IServerColumn } from 'visyn_core/base';
 import { ISelection, IViewContext } from 'tdp_core';
 import { ACommonList, IACommonListOptions } from './ACommonList';
 export declare class CelllineList extends ACommonList {

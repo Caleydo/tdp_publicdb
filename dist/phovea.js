@@ -4,7 +4,7 @@
  * Licensed under the new BSD license, available at http://caleydo.org/license
  **************************************************************************** */
 import { EP_ORDINO_STARTMENU_DATASET_SECTION } from 'ordino';
-import { EP_PHOVEA_CORE_LOCALE, PluginRegistry } from 'visyn_core';
+import { EP_PHOVEA_CORE_LOCALE, PluginRegistry } from 'visyn_core/plugin';
 import { gene, cellline, tissue } from './common/config';
 // register all extensions in the registry following the given pattern
 export default function (registry) {
@@ -750,7 +750,7 @@ export default function (registry) {
         return import('./tours').then((t) => t.PredictionTP53Tour);
     }, {
         factory: 'createTour',
-        name: 'Prediction of TP53 Mutation Status',
+        name: 'Prediction of TP53 Mutation Status (Part 1)',
         description: 'This case study summarizes another analysis session, this time involving the prediction of the mutation status for TP53.',
         preview() {
             return import('./assets/previews/tourTP53Predictor.png');
@@ -763,7 +763,7 @@ export default function (registry) {
         return import('./tours').then((t) => t.PredictionTP53Tour2);
     }, {
         factory: 'createTour',
-        name: 'Prediction of TP53 Mutation Status: Continued',
+        name: 'Prediction of TP53 Mutation Status (Part 2)',
         description: 'This case study serves as a continuation of the initial tour "Prediction of TP53 Mutation Status".',
         preview() {
             return import('./assets/previews/tourTP53Predictor.png');

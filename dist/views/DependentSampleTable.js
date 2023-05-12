@@ -1,7 +1,7 @@
 /**
  * Created by Marc Streit on 26.07.2016.
  */
-import { IDTypeManager } from 'visyn_core';
+import { IDTypeManager } from 'visyn_core/idtype';
 import { ARankingView, AdapterUtils, FormElementType, RestBaseUtils, LineupUtils } from 'tdp_core';
 import { ParameterFormIds, FORM_DATA_SOURCE, FORM_TISSUE_OR_CELLLINE_FILTER } from '../common/forms';
 import { ViewUtils } from './ViewUtils';

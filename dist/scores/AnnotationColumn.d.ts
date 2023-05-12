@@ -1,4 +1,4 @@
-import { IPluginDesc } from 'visyn_core';
+import { IPluginDesc } from 'visyn_core/plugin';
 import { IScore } from 'tdp_core';
 import { ABooleanScore, IBooleanScoreParams } from './ABooleanScore';
 /**

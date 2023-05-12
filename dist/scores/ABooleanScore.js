@@ -1,4 +1,4 @@
-import { IDTypeManager } from 'visyn_core';
+import { IDTypeManager } from 'visyn_core/idtype';
 import { ColumnDescUtils, RestBaseUtils } from 'tdp_core';
 /**
  * score implementation in this case a numeric score is computed
