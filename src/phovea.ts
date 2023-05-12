@@ -15,7 +15,7 @@ export default function (registry) {
   // generator-phovea:begin
 
   /// #if include('ordino')
-  registry.push(EP_ORDINO_STARTMENU_DATASET_SECTION, 'celllinedb_cellline_start', () => import('./menu/DatasetCard.js'), <
+  registry.push(EP_ORDINO_STARTMENU_DATASET_SECTION, 'celllinedb_cellline_start', () => import('./menu/DatasetCard'), <
     Partial<IPublicDbStartMenuDatasetSectionDesc>
   >{
     name: 'Cell Lines',
@@ -32,7 +32,7 @@ export default function (registry) {
     ],
   });
 
-  registry.push(EP_ORDINO_STARTMENU_DATASET_SECTION, 'bioinfodb_tissue_start', () => import('./menu/DatasetCard.js'), <
+  registry.push(EP_ORDINO_STARTMENU_DATASET_SECTION, 'bioinfodb_tissue_start', () => import('./menu/DatasetCard'), <
     Partial<IPublicDbStartMenuDatasetSectionDesc>
   >{
     name: 'Tissue Samples',
@@ -49,7 +49,7 @@ export default function (registry) {
     ],
   });
 
-  registry.push(EP_ORDINO_STARTMENU_DATASET_SECTION, 'celllinedb_genes_start', () => import('./menu/DatasetCard.js'), <
+  registry.push(EP_ORDINO_STARTMENU_DATASET_SECTION, 'celllinedb_genes_start', () => import('./menu/DatasetCard'), <
     Partial<IPublicDbStartMenuDatasetSectionDesc>
   >{
     name: 'Genes',
@@ -72,7 +72,7 @@ export default function (registry) {
     'tdpView',
     'celllinedb_start',
     function () {
-      return import('./views/GeneList.js');
+      return import('./views/GeneList');
     },
     {
       factory: 'new GeneList',
@@ -86,7 +86,7 @@ export default function (registry) {
     'tdpView',
     'expressiontable',
     function () {
-      return import('./views/DependentSampleTable.js').then((d) => d.DependentSampleTable);
+      return import('./views/DependentSampleTable').then((d) => d.DependentSampleTable);
     },
     {
       name: 'Expression',
@@ -109,7 +109,7 @@ export default function (registry) {
     'tdpView',
     'copynumbertable',
     function () {
-      return import('./views/DependentSampleTable.js').then((d) => d.DependentSampleTable);
+      return import('./views/DependentSampleTable').then((d) => d.DependentSampleTable);
     },
     {
       name: 'Copy Number',
@@ -132,7 +132,7 @@ export default function (registry) {
     'tdpView',
     'mutationtable',
     function () {
-      return import('./views/DependentSampleTable.js').then((d) => d.DependentSampleTable);
+      return import('./views/DependentSampleTable').then((d) => d.DependentSampleTable);
     },
     {
       name: 'Mutation',
@@ -155,7 +155,7 @@ export default function (registry) {
     'tdpView',
     'gene_generic_detail_view',
     function () {
-      return import('./views/InfoTable.js');
+      return import('./views/InfoTable');
     },
     {
       name: 'Database Info',
@@ -178,7 +178,7 @@ export default function (registry) {
     'tdpInstantView',
     'gene_instant_view',
     function () {
-      return import('./views/GeneInstantView.js');
+      return import('./views/GeneInstantView');
     },
     {
       factory: 'new GeneInstantView',
@@ -193,7 +193,7 @@ export default function (registry) {
     'tdpView',
     'celllinedb_onco_print',
     function () {
-      return import('./views/OncoPrint.js');
+      return import('./views/OncoPrint');
     },
     {
       factory: 'new OncoPrint',
@@ -216,7 +216,7 @@ export default function (registry) {
     'tdpView',
     'celllinedb_expression_vs_copynumber',
     function () {
-      return import('./views/ExpressionVsCopyNumber.js');
+      return import('./views/ExpressionVsCopyNumber');
     },
     {
       factory: 'new ExpressionVsCopyNumber',
@@ -239,7 +239,7 @@ export default function (registry) {
     'tdpView',
     'celllinedb_co_expression',
     function () {
-      return import('./views/CoExpression.js');
+      return import('./views/CoExpression');
     },
     {
       factory: 'new CoExpression',
@@ -262,7 +262,7 @@ export default function (registry) {
     'tdpView',
     'gene_combined_lineup',
     function () {
-      return import('./views/CombinedDependentSampleTable.js').then((c) => c.CombinedDependentSampleTable);
+      return import('./views/CombinedDependentSampleTable').then((c) => c.CombinedDependentSampleTable);
     },
     {
       factory: 'createCombinedDependentSampleTable',
@@ -289,7 +289,7 @@ export default function (registry) {
     'idTypeDetector',
     'geneSymbol',
     function () {
-      return import('./detectors/GeneSymbolDetector.js').then((g) => g.GeneSymbolDetector);
+      return import('./detectors/GeneSymbolDetector').then((g) => g.GeneSymbolDetector);
     },
     {
       factory: 'human',
@@ -306,7 +306,7 @@ export default function (registry) {
     'epTdpUploadedDataLineupColumnDesc',
     'geneColumnDesc',
     function () {
-      return import('./providers/LineUpStoredData.js').then((l) => l.LineUpStoredData);
+      return import('./providers/LineUpStoredData').then((l) => l.LineUpStoredData);
     },
     {
       factory: 'loadEnsemblColumnDesc',
@@ -319,7 +319,7 @@ export default function (registry) {
     'epTdpUploadedDataLineupRows',
     'geneRows',
     function () {
-      return import('./providers/LineUpStoredData.js').then((l) => l.LineUpStoredData);
+      return import('./providers/LineUpStoredData').then((l) => l.LineUpStoredData);
     },
     {
       factory: 'loadEnsemblRows',
@@ -333,7 +333,7 @@ export default function (registry) {
     'dTilesSearchProvider',
     'gene',
     function () {
-      return import('./providers/GeneSearchProvider.js').then((s) => s.GeneSearchProvider);
+      return import('./providers/GeneSearchProvider').then((s) => s.GeneSearchProvider);
     },
     {
       factory: 'createGene',
@@ -347,7 +347,7 @@ export default function (registry) {
     'tdpView',
     'celllinedb_cellline',
     function () {
-      return import('./views/CelllineList.js');
+      return import('./views/CelllineList');
     },
     {
       factory: 'new CelllineList',
@@ -361,7 +361,7 @@ export default function (registry) {
     'tdpView',
     'bioinfodb_tissue_start',
     function () {
-      return import('./views/TissueList.js');
+      return import('./views/TissueList');
     },
     {
       factory: 'new TissueList',
@@ -377,7 +377,7 @@ export default function (registry) {
     'tdpView',
     'cosmic',
     function () {
-      return import('./views/CosmicProxyView.js');
+      return import('./views/CosmicProxyView');
     },
     {
       factory: 'new CosmicProxyView',
@@ -410,7 +410,7 @@ export default function (registry) {
       'tdpView',
       `${plain}_inverted_expressiontable`,
       function () {
-        return import('./views/DependentGeneTable.js').then((d) => d.DependentGeneTable);
+        return import('./views/DependentGeneTable').then((d) => d.DependentGeneTable);
       },
       {
         name: 'Expression',
@@ -434,7 +434,7 @@ export default function (registry) {
       'tdpView',
       `${plain}_inverted_copynumbertable`,
       function () {
-        return import('./views/DependentGeneTable.js').then((d) => d.DependentGeneTable);
+        return import('./views/DependentGeneTable').then((d) => d.DependentGeneTable);
       },
       {
         name: 'Copy Number',
@@ -458,7 +458,7 @@ export default function (registry) {
       'tdpView',
       `${plain}_inverted_mutationtable`,
       function () {
-        return import('./views/DependentGeneTable.js').then((d) => d.DependentGeneTable);
+        return import('./views/DependentGeneTable').then((d) => d.DependentGeneTable);
       },
       {
         name: 'Mutation',
@@ -482,7 +482,7 @@ export default function (registry) {
       'tdpView',
       `${plain}_combined_lineup`,
       function () {
-        return import('./views/CombinedDependentGeneTable.js').then((c) => c.CombinedDependentGeneTable);
+        return import('./views/CombinedDependentGeneTable').then((c) => c.CombinedDependentGeneTable);
       },
       {
         factory: 'createCombinedDependentGeneTable',
@@ -508,7 +508,7 @@ export default function (registry) {
       'tdpView',
       `${plain}_generic_detail_view`,
       function () {
-        return import('./views/InfoTable.js');
+        return import('./views/InfoTable');
       },
       {
         name: 'Database Info',
@@ -532,7 +532,7 @@ export default function (registry) {
       'dTilesSearchProvider',
       idType.toLowerCase(),
       function () {
-        return import('./providers/GeneSearchProvider.js').then((s) => s.GeneSearchProvider);
+        return import('./providers/GeneSearchProvider').then((s) => s.GeneSearchProvider);
       },
       {
         factory: `create${idType}`,
@@ -546,7 +546,7 @@ export default function (registry) {
       'idTypeDetector',
       `${plain}IDTypeDetector`,
       function () {
-        return import('./detectors/IDTypeDetector.js').then((i) => i.IDTypeDetector);
+        return import('./detectors/IDTypeDetector').then((i) => i.IDTypeDetector);
       },
       {
         name: `${label} IDType Detector`,
@@ -570,7 +570,7 @@ export default function (registry) {
       'tdpScore',
       `${prefix}_single_score`,
       function () {
-        return import('./scores/SingleScoreDialog.js').then((s) => s.SingleScoreDialog);
+        return import('./scores/SingleScoreDialog').then((s) => s.SingleScoreDialog);
       },
       {
         name: `${label} Score (Single)`,
@@ -584,7 +584,7 @@ export default function (registry) {
       'tdpScoreImpl',
       `${prefix}_single_score`,
       function () {
-        return import('./scores/SingleScore.js').then((s) => s.SingleScore);
+        return import('./scores/SingleScore').then((s) => s.SingleScore);
       },
       {
         factory: 'createScore',
@@ -597,7 +597,7 @@ export default function (registry) {
       'tdpScore',
       `${prefix}_aggregated_score`,
       function () {
-        return import('./scores/AggregateScoreDialog.js').then((a) => a.AggregateScoreDialog);
+        return import('./scores/AggregateScoreDialog').then((a) => a.AggregateScoreDialog);
       },
       {
         name: `${label} Score (Aggregated)`,
@@ -611,7 +611,7 @@ export default function (registry) {
       'tdpScoreImpl',
       `${prefix}_aggregated_score`,
       function () {
-        return import('./scores/AggregatedScore.js').then((a) => a.AggregatedScore);
+        return import('./scores/AggregatedScore').then((a) => a.AggregatedScore);
       },
       {
         factory: 'createAggregationFrequencyScore',
@@ -629,7 +629,7 @@ export default function (registry) {
       'tdpScore',
       `${prefix}_single_score`,
       function () {
-        return import('./scores/SingleScoreDialog.js').then((s) => s.SingleScoreDialog);
+        return import('./scores/SingleScoreDialog').then((s) => s.SingleScoreDialog);
       },
       {
         name: 'Gene Score (Single)',
@@ -643,7 +643,7 @@ export default function (registry) {
       'tdpScoreImpl',
       `${prefix}_single_score`,
       function () {
-        return import('./scores/SingleScore.js').then((s) => s.SingleScore);
+        return import('./scores/SingleScore').then((s) => s.SingleScore);
       },
       {
         factory: 'createScore',
@@ -656,7 +656,7 @@ export default function (registry) {
       'tdpScore',
       `${prefix}_aggregated_score`,
       function () {
-        return import('./scores/AggregateScoreDialog.js').then((a) => a.AggregateScoreDialog);
+        return import('./scores/AggregateScoreDialog').then((a) => a.AggregateScoreDialog);
       },
       {
         name: 'Gene Score (Aggregated)',
@@ -670,7 +670,7 @@ export default function (registry) {
       'tdpScoreImpl',
       `${prefix}_aggregated_score`,
       function () {
-        return import('./scores/AggregatedScore.js').then((a) => a.AggregatedScore);
+        return import('./scores/AggregatedScore').then((a) => a.AggregatedScore);
       },
       {
         factory: 'createAggregationFrequencyScore',
@@ -683,7 +683,7 @@ export default function (registry) {
       'tdpScore',
       `${prefix}_signature_score`,
       function () {
-        return import('./scores/GeneSignatureScore.js').then((a) => a.GeneSignatureScore);
+        return import('./scores/GeneSignatureScore').then((a) => a.GeneSignatureScore);
       },
       {
         factory: 'createGeneSignatureDialog',
@@ -696,7 +696,7 @@ export default function (registry) {
       'tdpScoreImpl',
       `${prefix}_signature_score`,
       function () {
-        return import('./scores/GeneSignatureScore.js').then((a) => a.GeneSignatureScore);
+        return import('./scores/GeneSignatureScore').then((a) => a.GeneSignatureScore);
       },
       {
         factory: 'createGeneSignatureScore',
@@ -745,7 +745,7 @@ export default function (registry) {
     'tdpView',
     'gene_details',
     function () {
-      return import('./views/GeneProxyView.js');
+      return import('./views/GeneProxyView');
     },
     {
       name: 'Genehopper',
@@ -768,7 +768,7 @@ export default function (registry) {
     'tdpView',
     'gene_similarity',
     function () {
-      return import('./views/SimilarityView.js');
+      return import('./views/SimilarityView');
     },
     {
       name: 'Gene Similarity (internal)',
@@ -789,7 +789,7 @@ export default function (registry) {
     'tdpView',
     'gene_similarity_external',
     function () {
-      return import('./views/GeneProxyView.js');
+      return import('./views/GeneProxyView');
     },
     {
       name: 'Gene Similarity',
@@ -811,7 +811,7 @@ export default function (registry) {
     'tdpView',
     'pubmed',
     function () {
-      return import('./views/GeneSymbolProxyView.js');
+      return import('./views/GeneSymbolProxyView');
     },
     {
       name: 'PubMed',
@@ -840,7 +840,7 @@ export default function (registry) {
       'tdpScore',
       `${prefix}_depletion_single_score`,
       function () {
-        return import('./scores/SingleScoreDialog.js').then((s) => s.SingleScoreDialog);
+        return import('./scores/SingleScoreDialog').then((s) => s.SingleScoreDialog);
       },
       {
         name: 'Depletion Screen Score (Single)',
@@ -854,7 +854,7 @@ export default function (registry) {
       'tdpScoreImpl',
       `${prefix}_depletion_single_score`,
       function () {
-        return import('./scores/SingleScore.js').then((s) => s.SingleDepletionScore);
+        return import('./scores/SingleScore').then((s) => s.SingleDepletionScore);
       },
       {
         factory: 'createSingleDepletionScore',
@@ -867,7 +867,7 @@ export default function (registry) {
       'tdpScore',
       `${prefix}_depletion_aggregated_score`,
       function () {
-        return import('./scores/AggregateScoreDialog.js').then((a) => a.AggregateScoreDialog);
+        return import('./scores/AggregateScoreDialog').then((a) => a.AggregateScoreDialog);
       },
       {
         name: 'Depletion Screen Score (Aggregated)',
@@ -881,7 +881,7 @@ export default function (registry) {
       'tdpScoreImpl',
       `${prefix}_depletion_aggregated_score`,
       function () {
-        return import('./scores/AggregatedScore.js').then((a) => a.AggregatedDepletionScore);
+        return import('./scores/AggregatedScore').then((a) => a.AggregatedDepletionScore);
       },
       {
         primaryType: idType,
@@ -894,7 +894,7 @@ export default function (registry) {
       'tdpScore',
       `${prefix}_prism_drug_single_score`,
       function () {
-        return import('./scores/SingleScoreDialog.js').then((a) => a.SingleScoreDialog);
+        return import('./scores/SingleScoreDialog').then((a) => a.SingleScoreDialog);
       },
       {
         name: 'Drug Screen Score',
@@ -909,7 +909,7 @@ export default function (registry) {
       'tdpScoreImpl',
       `${prefix}_prism_drug_single_score`,
       function () {
-        return import('./scores/SingleScore.js').then((a) => a.SingleDrugScore);
+        return import('./scores/SingleScore').then((a) => a.SingleDrugScore);
       },
       {
         factory: 'createSingleDrugScore',
@@ -926,7 +926,7 @@ export default function (registry) {
       'tdpScore',
       `${prefix}_depletion_single_score`,
       function () {
-        return import('./scores/SingleScoreDialog.js').then((s) => s.SingleScoreDialog);
+        return import('./scores/SingleScoreDialog').then((s) => s.SingleScoreDialog);
       },
       {
         name: 'Depletion Screen Score (Single)',
@@ -940,7 +940,7 @@ export default function (registry) {
       'tdpScoreImpl',
       `${prefix}_depletion_single_score`,
       function () {
-        return import('./scores/SingleScore.js').then((s) => s.SingleDepletionScore);
+        return import('./scores/SingleScore').then((s) => s.SingleDepletionScore);
       },
       {
         factory: 'createSingleDepletionScore',
@@ -953,7 +953,7 @@ export default function (registry) {
       'tdpScore',
       `${prefix}_depletion_aggregated_score`,
       function () {
-        return import('./scores/AggregateScoreDialog.js').then((a) => a.AggregateScoreDialog);
+        return import('./scores/AggregateScoreDialog').then((a) => a.AggregateScoreDialog);
       },
       {
         name: 'Depletion Screen Score (Aggregated)',
@@ -967,7 +967,7 @@ export default function (registry) {
       'tdpScoreImpl',
       `${prefix}_depletion_aggregated_score`,
       function () {
-        return import('./scores/AggregatedScore.js').then((a) => a.AggregatedDepletionScore);
+        return import('./scores/AggregatedScore').then((a) => a.AggregatedDepletionScore);
       },
       {
         primaryType: 'Ensembl',
@@ -985,7 +985,7 @@ export default function (registry) {
       'tdpScore',
       `${prefix}AnnotationColumn`,
       function () {
-        return import('./scores/AnnotationColumn.js').then((a) => a.AnnotationColumn);
+        return import('./scores/AnnotationColumn').then((a) => a.AnnotationColumn);
       },
       {
         factory: 'createAnnotationColumn',
@@ -998,7 +998,7 @@ export default function (registry) {
       'tdpScoreImpl',
       `${prefix}AnnotationColumn`,
       function () {
-        return import('./scores/AnnotationColumn.js').then((a) => a.AnnotationColumn);
+        return import('./scores/AnnotationColumn').then((a) => a.AnnotationColumn);
       },
       {
         factory: 'createAnnotationColumnScore',
@@ -1012,7 +1012,7 @@ export default function (registry) {
     'tdpTour',
     'ordinoWelcomeTour',
     function () {
-      return import('./tours/WelcomeTour.js').then((t) => t.WelcomeTour);
+      return import('./tours/WelcomeTour').then((t) => t.WelcomeTour);
     },
     {
       factory: 'createTour',
@@ -1031,7 +1031,7 @@ export default function (registry) {
     'tdpTour',
     'ordinoStartMenuTour',
     function () {
-      return import('./tours/StartMenuTour.js').then((t) => t.StartMenuTour);
+      return import('./tours/StartMenuTour').then((t) => t.StartMenuTour);
     },
     {
       factory: 'createTour',
@@ -1050,7 +1050,7 @@ export default function (registry) {
     'tdpTour',
     'ordinoAddColumnToGeneListTour',
     function () {
-      return import('./tours/AddColumnToGeneListTour.js').then((t) => t.AddColumnToGeneListTour);
+      return import('./tours/AddColumnToGeneListTour').then((t) => t.AddColumnToGeneListTour);
     },
     {
       factory: 'createTour',
@@ -1159,7 +1159,7 @@ export default function (registry) {
   }
 
   // proxy pages
-  tdpView('ensembl_org', () => import('./views/GeneProxyView.js'), {
+  tdpView('ensembl_org', () => import('./views/GeneProxyView'), {
     factory: 'new GeneProxyView',
     name: 'Ensembl',
     site: 'https://ensembl.org/{species}/Gene/Summary?g={gene}',
@@ -1194,7 +1194,7 @@ export default function (registry) {
   //   topics: ['external']
   // });
 
-  tdpView('uniprot', () => import('./views/UniProtProxyView.js'), {
+  tdpView('uniprot', () => import('./views/UniProtProxyView'), {
     factory: 'new UniProtProxyView',
     name: 'UniProt',
     site: 'https://www.uniprot.org/uniprot/{gene}/',
@@ -1211,7 +1211,7 @@ export default function (registry) {
     topics: ['uniprot', 'external'],
   });
 
-  tdpView('targetvalidation', () => import('./views/GeneProxyView.js'), {
+  tdpView('targetvalidation', () => import('./views/GeneProxyView'), {
     factory: 'new GeneProxyView',
     name: 'Open Targets',
     site: 'https://www.targetvalidation.org/target/{gene}',
@@ -1230,7 +1230,7 @@ export default function (registry) {
     topics: ['external'],
   });
 
-  tdpView('proteinatlas_org', () => import('./views/GeneProxyView.js'), {
+  tdpView('proteinatlas_org', () => import('./views/GeneProxyView'), {
     factory: 'new GeneProxyView',
     name: 'Human Protein Atlas',
     site: 'https://proteinatlas.org/{gene}',
@@ -1322,11 +1322,11 @@ export default function (registry) {
     },
   );
 
-  registry.push('importPostProcessor', 'GeneSymbol', () => import('./common/common.js').then((c) => c.SpeciesUtils), {
+  registry.push('importPostProcessor', 'GeneSymbol', () => import('./common/common').then((c) => c.SpeciesUtils), {
     factory: 'convertGeneSymbolToEnsembl',
   });
 
-  registry.push('tdpListFilters', 'SpeciesFilter', () => import('./common/common.js').then((c) => c.SpeciesUtils), {
+  registry.push('tdpListFilters', 'SpeciesFilter', () => import('./common/common').then((c) => c.SpeciesUtils), {
     factory: 'filterSpecies',
   });
 
@@ -1334,7 +1334,7 @@ export default function (registry) {
     'idTypeDetector',
     'gene_idtype_detector',
     () => {
-      return import('./providers/GeneIDTypeDetector.js').then((v) => v.GeneIDTypeDetector);
+      return import('./providers/GeneIDTypeDetector').then((v) => v.GeneIDTypeDetector);
     },
     {
       name: 'IDTypeDetector',
