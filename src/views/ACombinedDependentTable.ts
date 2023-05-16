@@ -1,4 +1,5 @@
-import { IServerColumn, IDTypeManager } from 'visyn_core';
+import { IServerColumn } from 'visyn_core/base';
+import { IDTypeManager } from 'visyn_core/idtype';
 import { IViewContext, ISelection, ARankingView, RestBaseUtils, IParams, IAdditionalColumnDesc, IScoreRow, LineupUtils, AdapterUtils } from 'tdp_core';
 import { SpeciesUtils } from '../common';
 import { ParameterFormIds, FORM_DATA_HIERARCHICAL_SUBTYPE } from '../common/forms';

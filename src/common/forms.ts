@@ -2,7 +2,7 @@
  * Created by sam on 06.03.2017.
  */
 
-import { IServerColumn } from 'visyn_core';
+import { IServerColumn } from 'visyn_core/base';
 import {
   FormElementType,
   IFormElement,

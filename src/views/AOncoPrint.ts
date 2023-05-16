@@ -3,7 +3,7 @@
  */
 
 import { select, format, event as d3event, Selection } from 'd3v3';
-import { IDTypeManager, SelectionUtils, SelectOperation, IDType } from 'visyn_core';
+import { IDTypeManager, SelectionUtils, SelectOperation, IDType } from 'visyn_core/idtype';
 import { IView, AView, ErrorAlertHandler } from 'tdp_core';
 import * as $ from 'jquery';
 import { Categories } from '../common/Categories';

@@ -1,4 +1,6 @@
-import { AppContext, I18nextManager, IPluginDesc } from 'visyn_core';
+import { I18nextManager } from 'visyn_core/i18n';
+import { AppContext } from 'visyn_core/base';
+import { IPluginDesc } from 'visyn_core/plugin';
 import { IScore, FormDialog, FormElementType } from 'tdp_core';
 import { chooseDataSource } from '../common/config';
 import { ABooleanScore, IBooleanScoreParams } from './ABooleanScore';

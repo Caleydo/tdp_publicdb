@@ -1,4 +1,4 @@
-import { IServerColumn } from 'visyn_core';
+import { IServerColumn } from 'visyn_core/base';
 import { ISelection, IViewContext } from 'tdp_core';
 import { gene } from '../common/config';
 import { ACommonList, IACommonListOptions } from './ACommonList';

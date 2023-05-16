@@ -1,7 +1,8 @@
 /**
  * Created by Samuel Gratzl on 11.05.2016.
  */
-import { UserSession, IDTypeManager } from 'visyn_core';
+import { IDTypeManager } from 'visyn_core/idtype';
+import { UserSession } from 'visyn_core/security';
 import { Categories } from './Categories';
 // eslint-disable-next-line @typescript-eslint/no-namespace
 export var Species;

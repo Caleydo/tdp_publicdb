@@ -2,7 +2,8 @@
  * Created by sam on 06.03.2017.
  */
 
-import { IScore, IScoreRow, INamedSet, IDTypeManager, RestBaseUtils, IParams, LineupUtils, IDType } from 'tdp_core';
+import { IScore, IScoreRow, INamedSet, RestBaseUtils, IParams, LineupUtils } from 'tdp_core';
+import { IDTypeManager, IDType } from 'visyn_core/idtype';
 import { ScoreUtils } from './ScoreUtils';
 import { AScore, ICommonScoreParam } from './AScore';
 import { IDataSourceConfig, dataSubtypes, MAX_FILTER_SCORE_ROWS_BEFORE_ALL } from '../common/config';

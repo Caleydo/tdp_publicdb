@@ -1,4 +1,6 @@
-import { AppContext, IDTypeManager, I18nextManager } from 'visyn_core';
+import { AppContext } from 'visyn_core/base';
+import { IDTypeManager } from 'visyn_core/idtype';
+import { I18nextManager } from 'visyn_core/i18n';
 import { ColumnDescUtils, RestBaseUtils, FormDialog, FormElementType } from 'tdp_core';
 import { FieldUtils } from '../providers';
 import { SpeciesUtils } from '../common';

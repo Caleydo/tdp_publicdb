@@ -1,7 +1,7 @@
 /*
  * Created by Stefan Luger on 06.12.17
  */
-import { IDTypeManager } from 'visyn_core';
+import { IDTypeManager } from 'visyn_core/idtype';
 import { ProxyView } from 'tdp_core';
 /**
  * Proxy view for the idType Cosmic which fetches the original cell line data based on the mapping from Cell line to

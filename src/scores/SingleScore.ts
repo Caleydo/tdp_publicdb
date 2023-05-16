@@ -2,7 +2,7 @@
  * Created by sam on 06.03.2017.
  */
 
-import { IPluginDesc } from 'visyn_core';
+import { IPluginDesc } from 'visyn_core/plugin';
 import { IScore, IParams } from 'tdp_core';
 import { IDataSourceConfig } from '../common/config';
 import { ScoreUtils } from './ScoreUtils';

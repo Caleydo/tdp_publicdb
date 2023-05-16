@@ -1,7 +1,7 @@
 /**
  * Created by sam on 06.03.2017.
  */
-import { IDType } from 'visyn_core';
+import { IDType } from 'visyn_core/idtype';
 import { IScore, INamedSet, IParams } from 'tdp_core';
 import { AScore, ICommonScoreParam } from './AScore';
 import { IDataSourceConfig } from '../common/config';

@@ -1,7 +1,8 @@
 /**
  * Created by sam on 06.03.2017.
  */
-import { IDTypeManager, RestBaseUtils, LineupUtils } from 'tdp_core';
+import { RestBaseUtils, LineupUtils } from 'tdp_core';
+import { IDTypeManager } from 'visyn_core/idtype';
 import { ScoreUtils } from './ScoreUtils';
 import { AScore } from './AScore';
 import { dataSubtypes, MAX_FILTER_SCORE_ROWS_BEFORE_ALL } from '../common/config';
