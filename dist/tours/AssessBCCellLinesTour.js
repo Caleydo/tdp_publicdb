@@ -1,5 +1,5 @@
 import { TourUtils } from 'tdp_core';
-import { openAddColumPanel, setNextActive } from './utils';
+import { openAddColumPanel } from './utils';
 export class AssessBCCellLinesTour {
     static createTour() {
         return [
@@ -292,20 +292,6 @@ export class AssessBCCellLinesTour {
                 preAction: () => TourUtils.waitFor('.tdp-view.expressionVsCopyNumber .ids').then(() => TourUtils.wait(300)),
             },
             {
-                selector: '[data-viewid="targetvalidation"]',
-                preAction: TourUtils.clickSelector,
-                html: `To find more information, they open the 'Open Targets' detail view &hellip;`,
-                placement: 'centered',
-                waitFor: () => TourUtils.waitFor('iframe [title="ERBB2"]').then(setNextActive),
-            },
-            {
-                selector: '[data-viewid="pubmed"]',
-                html: `&hellip; and then the 'PubMed' detail view.`,
-                placement: 'centered',
-                preAction: TourUtils.clickSelector,
-                waitFor: () => TourUtils.waitFor('.tdp-view.proxy_view ').then(setNextActive),
-            },
-            {
                 selector: '',
                 html: `Their question is now: In what cell lines is ERBB2 amplified?`,
                 placement: 'centered',
@@ -403,7 +389,7 @@ export class AssessBCCellLinesTour {
                 postAction: TourUtils.clickSelector,
             },
             {
-                selector: ['[data-testid="viewWrapper-1"] [data-index="0"].le-tr, [data-testid="viewWrapper-1"] [data-index="2"].le-tr'],
+                selector: ['[data-testid="viewWrapper-1"] [data-index="0"].le-tr, [data-testid="viewWrapper-1"] [data-index="1"].le-tr'],
                 html: `<p>Observe:</p>
         <p>HCC1954 has the highest ERBB2 amplification among BRCA1 mutated cell lines.</p>
         <p>HCC1569 has the highest ERBB2 amplification among BRCA2 mutated cell lines.</p>`,
@@ -416,12 +402,12 @@ export class AssessBCCellLinesTour {
                 placement: 'centered',
             },
             {
-                selector: ['[data-testid="viewWrapper-1"] [data-index="0"].le-tr, [data-testid="viewWrapper-1"] [data-index="2"].le-tr'],
+                selector: ['[data-testid="viewWrapper-1"] [data-index="0"].le-tr, [data-testid="viewWrapper-1"] [data-index="1"].le-tr'],
                 html: `They select HCC1954 and HCC1569 &hellip;`,
                 placement: 'centered',
                 postAction: () => {
                     TourUtils.click('[data-testid="viewWrapper-1"] [data-index="0"] .lu-renderer-selection');
-                    TourUtils.click('[data-testid="viewWrapper-1"] [data-index="2"] .lu-renderer-selection');
+                    TourUtils.click('[data-testid="viewWrapper-1"] [data-index="1"] .lu-renderer-selection');
                 },
             },
             {
