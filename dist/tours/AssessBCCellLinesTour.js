@@ -5,7 +5,7 @@ export class AssessBCCellLinesTour {
         return [
             {
                 html: `<p>Welcome to this short tour showing the assessment of breast cancer cell lines!</p>
-        <p>This tour will follow an analysis session from the perspective of a drug discovery team at a pharmaceutical company.</p>
+        <p>This tour will show an example analysis session from scientists in cancer research.</p>
         <p>
           Use the "Next" button to iterate through all the steps. You can use the
           <i>"Cancel"</i> button at any time to stop the tour and to interact with Ordino.
@@ -105,7 +105,7 @@ export class AssessBCCellLinesTour {
                 },
             },
             {
-                selector: ['[data-index="0"].le-tr, [data-index="14"].le-tr'],
+                selector: ['[data-index="0"].le-tr, [data-index="15"].le-tr'],
                 placement: 'centered',
                 html: `After sorting by this column, the analyst observes that about 15 genes on chromosome 17 are affected by a large genomic amplification.`,
                 preAction: () => TourUtils.waitFor('[data-index="0"].le-tr', Infinity).then(() => TourUtils.wait(2000)),
