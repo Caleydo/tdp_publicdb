@@ -216,6 +216,21 @@ export class DrugTargetDiscoveryTour {
         },
       },
       {
+        selector: '.le [data-id="col9"]',
+        html: `<p>They decide to rename the new column to "TP53 Predictor Score".</p>`,
+        placement: 'centered',
+        preAction: () => TourUtils.waitFor('.le [data-col-id="col9"]'),
+        postAction: async () => {
+          TourUtils.click('[data-id="col9"] > .lu-toolbar > .lu-action-more');
+          await TourUtils.wait(500);
+          TourUtils.click('.lu-action-rename > span');
+          await TourUtils.waitFor('.lu-dialog-rename input[placeholder="name"]');
+          TourUtils.setValueAndTrigger('.lu-dialog-rename input[placeholder="name"]', 'TP53 Predictor Score', 'change');
+          await TourUtils.wait(500);
+          TourUtils.click('.lu-dialog-buttons > [type="submit"]');
+        },
+      },
+      {
         selector: '[data-testid=lu-adder-div] > .lu-search > .lu-search-list > :nth-child(2) > ul > :nth-child(2) > span',
         html: `Similarly, they add a matrix column with all of the individual expression values.`,
         placement: 'centered',
@@ -360,8 +375,29 @@ export class DrugTargetDiscoveryTour {
       },
       {
         selector: '.le.le-multi.lineup-engine',
-        html: `Based on the ranking, he decides to consider all cell lines with unknown TP53 mutation status and a TP53 predictor score greater than 110 as non mutated.`,
+        html: `Based on the ranking, he decides to consider all cell lines with unknown TP53 mutation status and a TP53 Predictor Score greater than 110 as non mutated.`,
         placement: 'centered',
+      },
+      {
+        selector: '.le [data-col-id="col9"] .lu-action-filter',
+        html: `So he filters out all cell lines with a TP53 Predictor Score less than 110, &hellip;`,
+        placement: 'centered',
+        postAction: () => {
+          TourUtils.click('.le [data-col-id="col9"] .lu-action-filter');
+          TourUtils.wait(500);
+          TourUtils.doubleClick('.lu-dialog.lu-dialog-mapper .lu-histogram-min');
+          TourUtils.wait(500);
+          TourUtils.setValueAndTrigger('.lu-dialog > input', '110', 'change');
+        },
+      },
+      {
+        selector: '.lu-dialog.lu-dialog-mapper',
+        html: `&hellip; and filters out missing data.`,
+        placement: 'centered',
+        postAction: () => {
+          TourUtils.click('.lu-dialog > .lu-summary .lu-checkbox input');
+          TourUtils.wait(500).then(() => TourUtils.click('.lu-dialog-buttons > [type="submit"]'));
+        },
       },
       {
         selector: '[data-testid=lu-adder-div] > .lu-search > .lu-search-list > :nth-child(2) > ul > :nth-child(1) > span',
@@ -401,7 +437,7 @@ export class DrugTargetDiscoveryTour {
         },
       },
       {
-        selector: ['.le-tr[data-index="2"] .lu-renderer-selection, .le-tr[data-index="20"] .lu-renderer-selection'],
+        selector: ['.le-tr[data-index="2"] .lu-renderer-selection, .le-tr[data-index="15"] .lu-renderer-selection'],
         html: `Finally, he selects the top hits of the resulting list. All these cell lines fulfill the analyst's requirements.`,
         placement: 'centered',
         postAction: () => {
