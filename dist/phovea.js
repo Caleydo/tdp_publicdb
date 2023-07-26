@@ -738,7 +738,7 @@ export default function (registry) {
     }, {
         factory: 'createTour',
         name: 'Assessment of Breast Cancer Cell Lines',
-        description: 'This case study summarizes an analysis session carried out by a scientist working in a drug discovery team at a pharmaceutical company.',
+        description: 'This tour shows an example Ordino use case in cancer research, described in <a href="http://data.jku-vds-lab.at/papers/2019_bioinformatics_ordino_supplement.pdf" target="_blank" rel="noopener noreferrer">Ordino Supplemental Material</a>.',
         preview() {
             return import('./assets/previews/tourBreastCancerCL.png');
         },
@@ -751,7 +751,7 @@ export default function (registry) {
     }, {
         factory: 'createTour',
         name: 'Prediction of TP53 Mutation Status (Part 1)',
-        description: 'This case study summarizes another analysis session, this time involving the prediction of the mutation status for TP53.',
+        description: 'This tour is the first part of another example Ordino use case in cancer research, described in <a href="http://data.jku-vds-lab.at/papers/2019_bioinformatics_ordino_supplement.pdf" target="_blank" rel="noopener noreferrer">Ordino Supplemental Material</a>.',
         preview() {
             return import('./assets/previews/tourTP53Predictor.png');
         },
@@ -764,7 +764,7 @@ export default function (registry) {
     }, {
         factory: 'createTour',
         name: 'Prediction of TP53 Mutation Status (Part 2)',
-        description: 'This case study serves as a continuation of the initial tour "Prediction of TP53 Mutation Status".',
+        description: 'This tour is the second part of the example Ordino use case in cancer research, described in <a href="http://data.jku-vds-lab.at/papers/2019_bioinformatics_ordino_supplement.pdf" target="_blank" rel="noopener noreferrer">Ordino Supplemental Material</a>.',
         preview() {
             return import('./assets/previews/tourTP53Predictor.png');
         },
