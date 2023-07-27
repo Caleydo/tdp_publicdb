@@ -422,7 +422,6 @@ export class AssessBCCellLinesTour {
                 html: `Here they can use the drop-down menu to switch between the two cell lines.`,
                 placement: 'centered',
                 preAction: () => TourUtils.waitFor('[data-testid="viewWrapper-2"] select').then(() => TourUtils.wait(1000)),
-                postAction: () => TourUtils.setValueAndTrigger('[data-testid="viewWrapper-2"] select', '907046', 'change'),
             },
             {
                 html: `<p>Thanks for joining this tour demonstrating the assessment of breast cancer cell lines.</p>
