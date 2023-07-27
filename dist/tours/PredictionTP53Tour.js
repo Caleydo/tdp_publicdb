@@ -6,8 +6,7 @@ export class PredictionTP53Tour {
             {
                 html: `
         <p>
-          This case study summarizes another analysis session carried out by a 
-          research scientist working in a drug discovery team at a pharmaceutical company.
+        This tour will show an example analysis session from a scientist in cancer research.
         </p>
 
         <p> 
@@ -109,7 +108,7 @@ export class PredictionTP53Tour {
                 selector: '[data-testid="viewWrapper-0"] [data-id="col7"] .lu-action-filter',
                 html: `They filter out the samples with an unknown TP53 mutation status.`,
                 placement: 'centered',
-                preAction: TourUtils.waitForSelector,
+                preAction: () => TourUtils.waitFor('.le-tr:nth-of-type(1) [data-id="col7"][data-renderer="categorical"]'),
                 postAction: async () => {
                     TourUtils.click('[data-testid="viewWrapper-0"] [data-id="col7"] .lu-action-filter');
                     await TourUtils.wait(500);
@@ -158,7 +157,7 @@ export class PredictionTP53Tour {
                 selector: '[data-id="col8"] .lu-action-sort',
                 html: `They sort by this newly-added gene expression column.`,
                 placement: 'centered',
-                preAction: TourUtils.waitForSelector,
+                preAction: () => TourUtils.waitFor('.le-tr:nth-of-type(1) [data-id="col8"][data-renderer="number"]'),
                 postAction: TourUtils.clickSelector,
             },
             {

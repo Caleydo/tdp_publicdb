@@ -5,8 +5,7 @@ export class DrugTargetDiscoveryTour {
     static createTour() {
         return [
             {
-                html: `<p>Welcome to this short tour showing the assessment of breast cancer cell lines!</p>
-        <p>This tour will follow an analysis session from the perspective of a drug discovery team at a pharmaceutical company.</p>
+                html: `<p>This tour will show an example analysis session from scientists in cancer research to showcase some advanced Ordino features.</p>
         <p>
           Use the "Next" button to iterate through all the steps. You can use the
           <i>"Cancel"</i> button at any time to stop the tour and to interact with Ordino.
@@ -36,7 +35,7 @@ export class DrugTargetDiscoveryTour {
             },
             {
                 selector: '.ordino-dataset.cellline-dataset > .card [data-testid="ccle-button"]',
-                html: `The analyst begins by loading a list of 1009 cell lines from the public CCLE dataset.`,
+                html: `The analyst begins by loading a list of cell lines from the public CCLE dataset.`,
                 placement: 'centered',
                 preAction: () => TourUtils.waitFor('.ordino-dataset.cellline-dataset > .card [data-testid="ccle-button"]').then(() => TourUtils.wait(600)),
                 postAction: TourUtils.clickSelector,
@@ -76,7 +75,7 @@ export class DrugTargetDiscoveryTour {
             },
             {
                 selector: ['.lu-dialog .lu-dialog-table, .lu-dialog-button[title="Apply"]'],
-                html: `They now apply the filter, after which only 255 cell lines remain.`,
+                html: `They now apply the filter, after which only a few hundred cell lines remain.`,
                 placement: 'centered',
                 postAction: () => {
                     TourUtils.click('.lu-dialog-button[type="submit"]');
@@ -208,6 +207,21 @@ export class DrugTargetDiscoveryTour {
                 },
             },
             {
+                selector: '.le [data-id="col9"]',
+                html: `<p>They decide to rename the new column to "TP53 Predictor Score".</p>`,
+                placement: 'centered',
+                preAction: () => TourUtils.waitFor('.le [data-col-id="col9"]'),
+                postAction: async () => {
+                    TourUtils.click('[data-id="col9"] > .lu-toolbar > .lu-action-more');
+                    await TourUtils.wait(500);
+                    TourUtils.click('.lu-action-rename > span');
+                    await TourUtils.waitFor('.lu-dialog-rename input[placeholder="name"]');
+                    TourUtils.setValueAndTrigger('.lu-dialog-rename input[placeholder="name"]', 'TP53 Predictor Score', 'change');
+                    await TourUtils.wait(500);
+                    TourUtils.click('.lu-dialog-buttons > [type="submit"]');
+                },
+            },
+            {
                 selector: '[data-testid=lu-adder-div] > .lu-search > .lu-search-list > :nth-child(2) > ul > :nth-child(2) > span',
                 html: `Similarly, they add a matrix column with all of the individual expression values.`,
                 placement: 'centered',
@@ -259,7 +273,7 @@ export class DrugTargetDiscoveryTour {
                 postAction: TourUtils.clickSelector,
             },
             {
-                selector: '[data-testid="en/disable-overview-button"]',
+                selector: '[data-testid="enable/disable-overview-button"]',
                 html: `&hellip; and then swap to the overview.`,
                 placement: 'centered',
                 postAction: TourUtils.clickSelector,
@@ -344,8 +358,29 @@ export class DrugTargetDiscoveryTour {
             },
             {
                 selector: '.le.le-multi.lineup-engine',
-                html: `Based on the ranking, he decides to consider all cell lines with unknown TP53 mutation status and a TP53 predictor score greater than 110 as non mutated.`,
+                html: `Based on the ranking, he decides to consider all cell lines with unknown TP53 mutation status and a TP53 Predictor Score greater than 110 as non mutated.`,
                 placement: 'centered',
+            },
+            {
+                selector: '.le [data-col-id="col9"] .lu-action-filter',
+                html: `So he filters out all cell lines with a TP53 Predictor Score less than 110, &hellip;`,
+                placement: 'centered',
+                postAction: () => {
+                    TourUtils.click('.le [data-col-id="col9"] .lu-action-filter');
+                    TourUtils.wait(500);
+                    TourUtils.doubleClick('.lu-dialog.lu-dialog-mapper .lu-histogram-min');
+                    TourUtils.wait(500);
+                    TourUtils.setValueAndTrigger('.lu-dialog > input', '110', 'change');
+                },
+            },
+            {
+                selector: '.lu-dialog.lu-dialog-mapper',
+                html: `&hellip; and filters out missing data.`,
+                placement: 'centered',
+                postAction: () => {
+                    TourUtils.click('.lu-dialog > .lu-summary .lu-checkbox input');
+                    TourUtils.wait(500).then(() => TourUtils.click('.lu-dialog-buttons > [type="submit"]'));
+                },
             },
             {
                 selector: '[data-testid=lu-adder-div] > .lu-search > .lu-search-list > :nth-child(2) > ul > :nth-child(1) > span',
@@ -385,8 +420,8 @@ export class DrugTargetDiscoveryTour {
                 },
             },
             {
-                selector: ['.le-tr[data-index="2"] .lu-renderer-selection, .le-tr[data-index="20"] .lu-renderer-selection'],
-                html: `Finally, he selects the top hits of the resulting list (see Figure 11). All these cell lines fulfill the analyst's requirements.`,
+                selector: ['.le-tr[data-index="2"] .lu-renderer-selection, .le-tr[data-index="15"] .lu-renderer-selection'],
+                html: `Finally, he selects the top hits of the resulting list. All these cell lines fulfill the analyst's requirements.`,
                 placement: 'centered',
                 postAction: () => {
                     TourUtils.click('.le-tr[data-index="2"] .lu-renderer-selection');

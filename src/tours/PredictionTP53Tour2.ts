@@ -250,7 +250,7 @@ export class PredictionTP53Tour2 {
       },
       {
         selector: '.le.le-multi.lineup-engine',
-        html: `<p>Observe: Small MDM2 RSA values (large bars) are correlated to the expression score (TP53 predictor score) and the TP53 mutation status</p>`,
+        html: `<p>Observe: Small MDM2 RSA values (large bars) are correlated to the expression score (TP53 Predictor Score) and the TP53 mutation status</p>`,
         placement: 'centered',
         preAction: () => TourUtils.waitFor('.le-tr:nth-of-type(1) [title="−7.14"]', Infinity),
         postAction: () => TourUtils.wait(500),

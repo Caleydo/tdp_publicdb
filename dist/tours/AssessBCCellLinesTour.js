@@ -1,11 +1,11 @@
 import { TourUtils } from 'tdp_core';
-import { openAddColumPanel, setNextActive } from './utils';
+import { openAddColumPanel } from './utils';
 export class AssessBCCellLinesTour {
     static createTour() {
         return [
             {
                 html: `<p>Welcome to this short tour showing the assessment of breast cancer cell lines!</p>
-        <p>This tour will follow an analysis session from the perspective of a drug discovery team at a pharmaceutical company.</p>
+        <p>This tour will show an example analysis session from scientists in cancer research.</p>
         <p>
           Use the "Next" button to iterate through all the steps. You can use the
           <i>"Cancel"</i> button at any time to stop the tour and to interact with Ordino.
@@ -105,7 +105,7 @@ export class AssessBCCellLinesTour {
                 },
             },
             {
-                selector: ['[data-index="0"].le-tr, [data-index="14"].le-tr'],
+                selector: ['[data-index="0"].le-tr, [data-index="15"].le-tr'],
                 placement: 'centered',
                 html: `After sorting by this column, the analyst observes that about 15 genes on chromosome 17 are affected by a large genomic amplification.`,
                 preAction: () => TourUtils.waitFor('[data-index="0"].le-tr', Infinity).then(() => TourUtils.wait(2000)),
@@ -169,8 +169,8 @@ export class AssessBCCellLinesTour {
                 selector: ['.browser-default, .lu-dialog-buttons > [type="submit"]'],
                 html: `They select the 'Invert' option in the Normalization Scaling dropdown and then click on the tick at the bottom right to apply the new mapping.`,
                 placement: 'centered',
+                preAction: () => TourUtils.setValueAndTrigger('.browser-default', 'linear_invert', 'change'),
                 postAction: () => {
-                    TourUtils.setValueAndTrigger('.browser-default', 'linear_invert', 'change');
                     TourUtils.click('.lu-dialog-buttons > [type="submit"]');
                 },
             },
@@ -292,20 +292,6 @@ export class AssessBCCellLinesTour {
                 preAction: () => TourUtils.waitFor('.tdp-view.expressionVsCopyNumber .ids').then(() => TourUtils.wait(300)),
             },
             {
-                selector: '[data-viewid="targetvalidation"]',
-                preAction: TourUtils.clickSelector,
-                html: `To find more information, they open the 'Open Targets' detail view &hellip;`,
-                placement: 'centered',
-                waitFor: () => TourUtils.waitFor('iframe [title="ERBB2"]').then(setNextActive),
-            },
-            {
-                selector: '[data-viewid="pubmed"]',
-                html: `&hellip; and then the 'PubMed' detail view.`,
-                placement: 'centered',
-                preAction: TourUtils.clickSelector,
-                waitFor: () => TourUtils.waitFor('.tdp-view.proxy_view ').then(setNextActive),
-            },
-            {
                 selector: '',
                 html: `Their question is now: In what cell lines is ERBB2 amplified?`,
                 placement: 'centered',
@@ -403,7 +389,7 @@ export class AssessBCCellLinesTour {
                 postAction: TourUtils.clickSelector,
             },
             {
-                selector: ['[data-testid="viewWrapper-1"] [data-index="0"].le-tr, [data-testid="viewWrapper-1"] [data-index="2"].le-tr'],
+                selector: ['[data-testid="viewWrapper-1"] [data-index="0"].le-tr, [data-testid="viewWrapper-1"] [data-index="1"].le-tr'],
                 html: `<p>Observe:</p>
         <p>HCC1954 has the highest ERBB2 amplification among BRCA1 mutated cell lines.</p>
         <p>HCC1569 has the highest ERBB2 amplification among BRCA2 mutated cell lines.</p>`,
@@ -416,12 +402,12 @@ export class AssessBCCellLinesTour {
                 placement: 'centered',
             },
             {
-                selector: ['[data-testid="viewWrapper-1"] [data-index="0"].le-tr, [data-testid="viewWrapper-1"] [data-index="2"].le-tr'],
+                selector: ['[data-testid="viewWrapper-1"] [data-index="0"].le-tr, [data-testid="viewWrapper-1"] [data-index="1"].le-tr'],
                 html: `They select HCC1954 and HCC1569 &hellip;`,
                 placement: 'centered',
                 postAction: () => {
                     TourUtils.click('[data-testid="viewWrapper-1"] [data-index="0"] .lu-renderer-selection');
-                    TourUtils.click('[data-testid="viewWrapper-1"] [data-index="2"] .lu-renderer-selection');
+                    TourUtils.click('[data-testid="viewWrapper-1"] [data-index="1"] .lu-renderer-selection');
                 },
             },
             {
