@@ -169,8 +169,8 @@ export class AssessBCCellLinesTour {
                 selector: ['.browser-default, .lu-dialog-buttons > [type="submit"]'],
                 html: `They select the 'Invert' option in the Normalization Scaling dropdown and then click on the tick at the bottom right to apply the new mapping.`,
                 placement: 'centered',
+                preAction: () => TourUtils.setValueAndTrigger('.browser-default', 'linear_invert', 'change'),
                 postAction: () => {
-                    TourUtils.setValueAndTrigger('.browser-default', 'linear_invert', 'change');
                     TourUtils.click('.lu-dialog-buttons > [type="submit"]');
                 },
             },
