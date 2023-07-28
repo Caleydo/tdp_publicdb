@@ -1,7 +1,7 @@
 {
   "name": "tdp_publicdb",
   "description": "",
-  "version": "14.0.0",
+  "version": "14.0.1-SNAPSHOT",
   "author": {
     "name": "The Caleydo Team",
     "email": "contact@caleydo.org",
@@ -62,8 +62,8 @@
     "react-select-async-paginate": "^0.5.3",
     "react-select-event": "^5.5.1",
     "react-virtualized": "^9.22.3",
-    "tdp_core": "^20.1.0",
-    "visyn_scripts": "^4.1.0"
+    "tdp_core": "git+ssh://git@github.com:datavisyn/tdp_core#develop",
+    "visyn_scripts": "git+ssh://git@github.com/datavisyn/visyn_scripts#develop"
   },
   "resolutions": {
     "@types/react": "~18.2.0",
@@ -72,7 +72,7 @@
     "react-dom": "~18.2.0"
   },
   "optionalDependencies": {
-    "ordino": "git+ssh://git@github.com:Caleydo/ordino#semver:^14.0.0"
+    "ordino": "git+ssh://git@github.com:Caleydo/ordino#develop"
   },
   "visyn": {
     "entries": {
