@@ -1,4 +1,5 @@
-import { IDTypeManager, LineupUtils, RestBaseUtils } from 'tdp_core';
+import { IDTypeManager } from 'visyn_core/idtype';
+import { LineupUtils, RestBaseUtils } from 'tdp_core';
 import { ViewUtils } from './ViewUtils';
 import { ParameterFormIds, FORM_TISSUE_OR_CELLLINE_FILTER, FORM_DATA_SOURCE, FORM_COLOR_CODING } from '../common/forms';
 import { expression, copyNumber } from '../common/config';

@@ -1,7 +1,8 @@
 /**
  * Created by sam on 06.03.2017.
  */
-import { IDTypeManager, RestBaseUtils } from 'tdp_core';
+import { IDTypeManager } from 'visyn_core/idtype';
+import { RestBaseUtils } from 'tdp_core';
 import { FieldUtils } from '../providers';
 import { SpeciesUtils } from '../common';
 import { ScoreUtils } from './ScoreUtils';

@@ -2,7 +2,8 @@
  * Created by Stefan Luger on 06.12.17
  */
 
-import { ProxyView, IFormSelectOption, IDTypeManager } from 'tdp_core';
+import { IDTypeManager } from 'visyn_core/idtype';
+import { ProxyView, IFormSelectOption } from 'tdp_core';
 
 /**
  * Proxy view for the idType Cosmic which fetches the original cell line data based on the mapping from Cell line to

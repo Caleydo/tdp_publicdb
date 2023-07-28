@@ -1,12 +1,13 @@
 /**
  * Created by Holger Stitz on 07.12.2016.
  */
-import { FormElementType, ProxyView, IDTypeManager } from 'tdp_core';
+import { IDTypeManager } from 'visyn_core/idtype';
+import { FormElementType, ProxyView } from 'tdp_core';
 import { GeneProxyView } from './GeneProxyView';
 /**
  * helper view for proxying an existing external website
  */
-export class UniProtProxyView extends GeneProxyView {
+class UniProtProxyView extends GeneProxyView {
     initImpl() {
         super.initImpl();
         this.$node.classed('proxy_view', true);
@@ -116,4 +117,5 @@ export class UniProtProxyView extends GeneProxyView {
 }
 UniProtProxyView.SELECTED_UNIPROT_ITEM = 'externalUniProt';
 UniProtProxyView.OUTPUT_IDTYPE = 'UniProt_human';
+export { UniProtProxyView };
 //# sourceMappingURL=UniProtProxyView.js.map

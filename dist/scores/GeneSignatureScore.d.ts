@@ -1,4 +1,6 @@
-import { IScore, IScoreRow, INamedSet, IDType, IPluginDesc } from 'tdp_core';
+import { IPluginDesc } from 'visyn_core/plugin';
+import { IDType } from 'visyn_core/idtype';
+import { IScore, IScoreRow, INamedSet } from 'tdp_core';
 import { IDataSourceConfig } from '../common/config';
 /**
  * Interface describing the parameter needed for a `Gene Signature Score`.

@@ -1,4 +1,5 @@
-import { ISelection, IViewContext, IServerColumn } from 'tdp_core';
+import { IServerColumn } from 'visyn_core/base';
+import { ISelection, IViewContext } from 'tdp_core';
 import { ACommonList, IACommonListOptions } from './ACommonList';
 export declare class TissueList extends ACommonList {
     constructor(context: IViewContext, selection: ISelection, parent: HTMLElement, options: IACommonListOptions);

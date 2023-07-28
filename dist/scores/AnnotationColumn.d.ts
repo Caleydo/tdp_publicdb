@@ -1,4 +1,5 @@
-import { IScore, IPluginDesc } from 'tdp_core';
+import { IPluginDesc } from 'visyn_core/plugin';
+import { IScore } from 'tdp_core';
 import { ABooleanScore, IBooleanScoreParams } from './ABooleanScore';
 /**
  * interface describing the parameter needed for MyScore

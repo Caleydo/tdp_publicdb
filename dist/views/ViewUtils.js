@@ -1,8 +1,9 @@
-import { ColumnDescUtils, IDTypeManager } from 'tdp_core';
+import { IDTypeManager } from 'visyn_core/idtype';
+import { ColumnDescUtils } from 'tdp_core';
 import { zipWith } from 'lodash';
 import { scale as d3Scale } from 'd3v3';
 import { FieldUtils } from '../providers';
-export class ViewUtils {
+class ViewUtils {
     static integrateColors(scale, colors) {
         const old = new Set(scale.domain());
         colors = Array.from(new Set(colors.filter((d) => Boolean(d) && !old.has(d)))); // just valid ones
@@ -103,4 +104,5 @@ ViewUtils.base = d3Scale.category20().range().slice(); // splice out the orange 
 ViewUtils.removed = ViewUtils.base.splice(2, 2);
 // reorder such that repeat after the primary colors
 ViewUtils.colors = ViewUtils.base.filter((d, i) => i % 2 === 0).concat(ViewUtils.base.filter((d, i) => i % 2 === 1));
+export { ViewUtils };
 //# sourceMappingURL=ViewUtils.js.map

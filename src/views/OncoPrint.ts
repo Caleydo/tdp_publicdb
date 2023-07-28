@@ -2,7 +2,8 @@
  * Created by sam on 16.02.2017.
  */
 
-import { IFormElementDesc, RestBaseUtils, IParams, LineupUtils, IDTypeManager } from 'tdp_core';
+import { IDTypeManager } from 'visyn_core/idtype';
+import { IFormElementDesc, RestBaseUtils, IParams, LineupUtils } from 'tdp_core';
 import { ParameterFormIds, FORM_TISSUE_OR_CELLLINE_FILTER, FORM_DATA_SOURCE } from '../common/forms';
 import { ViewUtils } from './ViewUtils';
 import { IDataSourceConfig } from '../common/config';

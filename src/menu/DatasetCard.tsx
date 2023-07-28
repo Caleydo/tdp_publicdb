@@ -1,19 +1,10 @@
 import React from 'react';
-import {
-  INamedSet,
-  ENamedSetType,
-  RestBaseUtils,
-  RestStorageUtils,
-  StoreUtils,
-  IdTextPair,
-  UserSession,
-  UniqueIdManager,
-  I18nextManager,
-  IDTypeManager,
-  useAsync,
-  GlobalEventHandler,
-  AView,
-} from 'tdp_core';
+import { I18nextManager } from 'visyn_core/i18n';
+import { IDTypeManager } from 'visyn_core/idtype';
+import { GlobalEventHandler } from 'visyn_core/base';
+import { useAsync } from 'visyn_core/hooks';
+import { UserSession } from 'visyn_core/security';
+import { INamedSet, ENamedSetType, RestBaseUtils, RestStorageUtils, StoreUtils, IdTextPair, UniqueIdManager, AView } from 'tdp_core';
 import { NamedSetList, OrdinoContext } from 'ordino';
 import { DatasetSearchBox } from './DatasetSearchBox';
 import { IPublicDbStartMenuDatasetSectionDesc } from '../base/extensions';

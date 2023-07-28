@@ -1,4 +1,5 @@
-import { IScoreRow, ColumnDescUtils, IDTypeManager } from 'tdp_core';
+import { IDTypeManager } from 'visyn_core/idtype';
+import { IScoreRow, ColumnDescUtils } from 'tdp_core';
 import { zipWith } from 'lodash';
 import { scale as d3Scale } from 'd3v3';
 import { IDataSubtypeConfig } from '../common/config';

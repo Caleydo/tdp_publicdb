@@ -1,4 +1,5 @@
-import { ARankingView, RestBaseUtils, IDTypeManager, LineupUtils, AdapterUtils, } from 'tdp_core';
+import { IDTypeManager } from 'visyn_core/idtype';
+import { ARankingView, RestBaseUtils, LineupUtils, AdapterUtils } from 'tdp_core';
 import { SpeciesUtils } from '../common';
 import { ParameterFormIds, FORM_DATA_HIERARCHICAL_SUBTYPE } from '../common/forms';
 import { ViewUtils } from './ViewUtils';

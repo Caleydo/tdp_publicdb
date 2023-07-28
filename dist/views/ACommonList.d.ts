@@ -23,7 +23,7 @@ export declare abstract class ACommonList extends AStartList {
     constructor(context: IViewContext, selection: ISelection, parent: HTMLElement, dataSource: ICommonDBConfig, options: Partial<IACommonListOptions>);
     protected loadColumnDesc(): Promise<Readonly<import("tdp_core").IDatabaseViewDesc>>;
     protected buildFilter(): IParams;
-    protected loadRows(): Promise<import("tdp_core").IRow[]>;
+    protected loadRows(): Promise<import("visyn_core/base").IRow[]>;
     protected isValidFilter(key: string): boolean;
 }
 export {};

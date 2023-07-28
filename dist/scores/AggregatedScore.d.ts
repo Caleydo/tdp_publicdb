@@ -1,7 +1,8 @@
 /**
  * Created by sam on 06.03.2017.
  */
-import { IScore, IParams, IPluginDesc } from 'tdp_core';
+import { IPluginDesc } from 'visyn_core/plugin';
+import { IScore, IParams } from 'tdp_core';
 import { IDataSourceConfig } from '../common/config';
 import { AAggregatedScore } from './AAggregatedScore';
 import { AFrequencyScore } from './AFrequencyScore';

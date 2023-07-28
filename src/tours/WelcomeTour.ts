@@ -1,4 +1,5 @@
 import { IStep, TourUtils } from 'tdp_core';
+import { openAddColumPanel } from './utils';
 
 export class WelcomeTour {
   static createTour(): IStep[] {
@@ -58,7 +59,7 @@ export class WelcomeTour {
         selector: '.lu-side-panel-wrapper .lu-adder > button',
         html: `Additional columns can be added using the plus sign.`,
         placement: 'centered',
-        postAction: TourUtils.clickSelector,
+        postAction: openAddColumPanel,
       },
       {
         selector: '.lu-search .lu-search-item',

@@ -1,4 +1,5 @@
-import { IScore, IScoreRow, IDTypeManager, ColumnDescUtils, RestBaseUtils } from 'tdp_core';
+import { IDTypeManager } from 'visyn_core/idtype';
+import { IScore, IScoreRow, ColumnDescUtils, RestBaseUtils } from 'tdp_core';
 import { IDataSourceConfig } from '../common/config';
 
 export interface IBooleanScoreParams {

@@ -2,7 +2,8 @@
  * Created by sam on 06.03.2017.
  */
 
-import { IScore, IScoreRow, INamedSet, IDTypeManager, RestBaseUtils, IParams, LineupUtils, IDType } from 'tdp_core';
+import { IScore, IScoreRow, INamedSet, RestBaseUtils, IParams, LineupUtils } from 'tdp_core';
+import { IDTypeManager, IDType } from 'visyn_core/idtype';
 import { ScoreUtils } from './ScoreUtils';
 import { AScore, ICommonScoreParam } from './AScore';
 import { IDataSourceConfig, dataSubtypes, MAX_FILTER_SCORE_ROWS_BEFORE_ALL } from '../common/config';
@@ -87,6 +88,12 @@ export abstract class AAggregatedScore extends AScore implements IScore<number> 
       });
       // hack in the _columns
       (<any>rows)._columns = columns;
+    }
+    if (this.parameter.aggregation === 'boxplot') {
+      // When passing missing min/max values to LineUp the domain of the data mapping cannot be auto-inferred correctly and the data mapping is broken.
+      // Filtering out rows with missing values result in a missing value dash for the given id.
+      // @see https://github.com/Caleydo/tdp_bi_bioinfodb/issues/1446
+      rows = rows.filter((d) => d.score.min !== null && d.score.max !== null);
     }
     if (this.dataSubType.useForAggregation.indexOf('log2') !== -1) {
       return FieldUtils.convertLog2ToLinear(rows, 'score');

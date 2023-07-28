@@ -4,7 +4,7 @@
  * Licensed under the new BSD license, available at http://caleydo.org/license
  **************************************************************************** */
 import { EP_ORDINO_STARTMENU_DATASET_SECTION } from 'ordino';
-import { EP_PHOVEA_CORE_LOCALE, PluginRegistry } from 'tdp_core';
+import { EP_PHOVEA_CORE_LOCALE, PluginRegistry } from 'visyn_core/plugin';
 import { gene, cellline, tissue } from './common/config';
 // register all extensions in the registry following the given pattern
 export default function (registry) {
@@ -695,39 +695,91 @@ export default function (registry) {
     });
     /// #if include('ordino')
     registry.push('tdpTour', 'ordinoWelcomeTour', function () {
-        return import('./tours').then((t) => t.WelcomeTour);
+        return import('./tours/WelcomeTour').then((t) => t.WelcomeTour);
     }, {
         factory: 'createTour',
         name: 'Ordino Welcome Tour',
         description: 'Learn the basic features of Ordino in a short welcome tour.',
         preview() {
-            return import('./assets/previews/expression.jpg'); // TODO update preview image
+            return import('./assets/previews/tourOrdinoWelcome.png');
         },
         multiPage: true,
         level: 'beginner',
         canJumpAround: false,
     });
     registry.push('tdpTour', 'ordinoStartMenuTour', function () {
-        return import('./tours').then((t) => t.StartMenuTour);
+        return import('./tours/StartMenuTour').then((t) => t.StartMenuTour);
     }, {
         factory: 'createTour',
         name: 'Overview of Start Menu',
         description: 'This tour provides an overview of the Ordino start menu.',
         preview() {
-            return import('./assets/previews/expression.jpg'); // TODO update preview image
+            return import('./assets/previews/tourStartMenu.png');
         },
         multiPage: true,
         level: 'beginner',
         canJumpAround: false,
     });
     registry.push('tdpTour', 'ordinoAddColumnToGeneListTour', function () {
-        return import('./tours').then((t) => t.AddColumnToGeneListTour);
+        return import('./tours/AddColumnToGeneListTour').then((t) => t.AddColumnToGeneListTour);
     }, {
         factory: 'createTour',
         name: 'Adding Data Columns',
         description: 'Learn how to add data columns to rankings in Ordino.',
         preview() {
-            return import('./assets/previews/expression.jpg'); // TODO update preview image
+            return import('./assets/previews/tourAddColumn.png');
+        },
+        multiPage: true,
+        level: 'beginner',
+        canJumpAround: false,
+    });
+    registry.push('tdpTour', 'ordinoAssessBCCellLinesTour', function () {
+        return import('./tours').then((t) => t.AssessBCCellLinesTour);
+    }, {
+        factory: 'createTour',
+        name: 'Assessment of Breast Cancer Cell Lines',
+        description: 'This tour shows an example Ordino use case in cancer research, described in <a href="http://data.jku-vds-lab.at/papers/2019_bioinformatics_ordino_supplement.pdf" target="_blank" rel="noopener noreferrer">Ordino Supplemental Material</a>.',
+        preview() {
+            return import('./assets/previews/tourBreastCancerCL.png');
+        },
+        multiPage: true,
+        level: 'beginner',
+        canJumpAround: false,
+    });
+    registry.push('tdpTour', 'ordinoPredictionTP53Tour', function () {
+        return import('./tours').then((t) => t.PredictionTP53Tour);
+    }, {
+        factory: 'createTour',
+        name: 'Prediction of TP53 Mutation Status (Part 1)',
+        description: 'This tour is the first part of another example Ordino use case in cancer research, described in <a href="http://data.jku-vds-lab.at/papers/2019_bioinformatics_ordino_supplement.pdf" target="_blank" rel="noopener noreferrer">Ordino Supplemental Material</a>.',
+        preview() {
+            return import('./assets/previews/tourTP53Predictor.png');
+        },
+        multiPage: true,
+        level: 'beginner',
+        canJumpAround: false,
+    });
+    registry.push('tdpTour', 'ordinoPredictionTP53Tour2', function () {
+        return import('./tours').then((t) => t.PredictionTP53Tour2);
+    }, {
+        factory: 'createTour',
+        name: 'Prediction of TP53 Mutation Status (Part 2)',
+        description: 'This tour is the second part of the example Ordino use case in cancer research, described in <a href="http://data.jku-vds-lab.at/papers/2019_bioinformatics_ordino_supplement.pdf" target="_blank" rel="noopener noreferrer">Ordino Supplemental Material</a>.',
+        preview() {
+            return import('./assets/previews/tourTP53Predictor.png');
+        },
+        multiPage: true,
+        level: 'beginner',
+        canJumpAround: false,
+    });
+    registry.push('tdpTour', 'ordinoDrugTargetDiscoveryTour', function () {
+        return import('./tours').then((t) => t.DrugTargetDiscoveryTour);
+    }, {
+        factory: 'createTour',
+        name: 'Drug Target Discovery',
+        description: 'A demonstration of Taggle (integrated into the Ordino Target Discovery Platform) by means of a case study conducted on complex genomics data for the purpose of drug target discovery.',
+        preview() {
+            return import('./assets/previews/tourDrugDiscovery.png');
         },
         multiPage: true,
         level: 'beginner',

@@ -1,17 +1,8 @@
-import {
-  IScore,
-  ColumnDescUtils,
-  IScoreRow,
-  RestBaseUtils,
-  INamedSet,
-  FormDialog,
-  FormElementType,
-  AppContext,
-  IDTypeManager,
-  IDType,
-  I18nextManager,
-  IPluginDesc,
-} from 'tdp_core';
+import { IPluginDesc } from 'visyn_core/plugin';
+import { AppContext } from 'visyn_core/base';
+import { IDTypeManager, IDType } from 'visyn_core/idtype';
+import { I18nextManager } from 'visyn_core/i18n';
+import { IScore, ColumnDescUtils, IScoreRow, RestBaseUtils, INamedSet, FormDialog, FormElementType } from 'tdp_core';
 import { FieldUtils } from '../providers';
 import { SpeciesUtils } from '../common';
 import { ScoreUtils } from './ScoreUtils';

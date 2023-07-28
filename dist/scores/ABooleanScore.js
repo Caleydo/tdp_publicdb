@@ -1,18 +1,19 @@
-import { IDTypeManager, ColumnDescUtils, RestBaseUtils } from 'tdp_core';
+import { IDTypeManager } from 'visyn_core/idtype';
+import { ColumnDescUtils, RestBaseUtils } from 'tdp_core';
 /**
  * score implementation in this case a numeric score is computed
  */
 export class ABooleanScore {
-    constructor(params, dataSource) {
-        this.params = params;
-        this.dataSource = dataSource;
-    }
     /**
      * defines the IDType of which score values are returned. A score row is a pair of id and its score, e.g. {id: 'EGFR', score: 100}
      * @type {IDType}
      */
     get idType() {
         return IDTypeManager.getInstance().resolveIdType(this.dataSource.idType);
+    }
+    constructor(params, dataSource) {
+        this.params = params;
+        this.dataSource = dataSource;
     }
     /**
      * creates the column description used within LineUp to create the oclumn

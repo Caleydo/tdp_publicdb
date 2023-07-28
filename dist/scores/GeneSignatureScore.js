@@ -1,4 +1,7 @@
-import { ColumnDescUtils, RestBaseUtils, FormDialog, FormElementType, AppContext, IDTypeManager, I18nextManager, } from 'tdp_core';
+import { AppContext } from 'visyn_core/base';
+import { IDTypeManager } from 'visyn_core/idtype';
+import { I18nextManager } from 'visyn_core/i18n';
+import { ColumnDescUtils, RestBaseUtils, FormDialog, FormElementType } from 'tdp_core';
 import { FieldUtils } from '../providers';
 import { SpeciesUtils } from '../common';
 import { ScoreUtils } from './ScoreUtils';
@@ -65,8 +68,7 @@ export class GeneSignatureScore {
             },
         });
         return dialog.showAsPromise((r) => {
-            var _a;
-            const signatures = (_a = r.getElementValues()) === null || _a === void 0 ? void 0 : _a.signatures.map(({ id }) => {
+            const signatures = r.getElementValues()?.signatures.map(({ id }) => {
                 return {
                     params: {
                         signature: id,

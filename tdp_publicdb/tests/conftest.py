@@ -3,7 +3,7 @@ from typing import Any, Generator
 import pytest
 from fastapi import FastAPI
 from fastapi.testclient import TestClient
-from tdp_core.server.visyn_server import create_visyn_server
+from visyn_core.server.visyn_server import create_visyn_server
 
 
 @pytest.fixture()

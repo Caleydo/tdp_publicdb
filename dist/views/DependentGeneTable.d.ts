@@ -1,7 +1,8 @@
 /**
  * Created by Marc Streit on 28.07.2016.
  */
-import { ARankingView, IARankingViewOptions, ISelection, IViewContext, IServerColumn } from 'tdp_core';
+import { IServerColumn } from 'visyn_core/base';
+import { ARankingView, IARankingViewOptions, ISelection, IViewContext } from 'tdp_core';
 import { IDataTypeConfig } from '../common/config';
 export declare class DependentGeneTable extends ARankingView {
     private readonly dataType;
@@ -12,7 +13,7 @@ export declare class DependentGeneTable extends ARankingView {
     protected loadColumnDesc(): Promise<Readonly<import("tdp_core").IDatabaseViewDesc>>;
     protected createSelectionAdapter(): import("tdp_core").ISelectionAdapter;
     protected getColumnDescs(columns: IServerColumn[]): import("tdp_core").IAdditionalColumnDesc[];
-    protected loadRows(): Promise<import("tdp_core").IRow[]>;
+    protected loadRows(): Promise<import("visyn_core/base").IRow[]>;
     private get dataSubType();
     private loadSelectionColumnData;
     static createExpressionDependentGeneTable(context: IViewContext, selection: ISelection, parent: HTMLElement, options?: any): DependentGeneTable;

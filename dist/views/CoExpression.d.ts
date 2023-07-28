@@ -14,7 +14,7 @@ export declare class CoExpression extends ACoExpression {
     loadData(ensg: string): Promise<ICoExprDataFormatRow[]>;
     loadFirstName(ensg: string): Promise<string>;
     protected getAttributeName(): string;
-    get itemIDType(): import("tdp_core").IDType;
+    get itemIDType(): import("visyn_core/idtype").IDType;
     protected select(range: string[]): void;
     protected getNoDataErrorMessage(refGene: IGeneOption): string;
 }
