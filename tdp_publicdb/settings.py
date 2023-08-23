@@ -10,7 +10,7 @@ class TDPPublicDBSettings(BaseModel):
     statement_timeout: str = "'5min'"
     statement_timeout_query: str = "set statement_timeout to {}"
     engine: dict[str, str] | None = {"pool_pre_ping": True}
-    poolclass: str | None = "QueuePool"
+    poolclass: str | None = "QueuePool"  # "NullPool" | "QueuePool" | "StaticPool"
 
     @validator("engine", pre=True)
     def json_decode_headers(cls, v):  # NOQA N805
