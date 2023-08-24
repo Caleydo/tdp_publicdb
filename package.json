@@ -55,7 +55,7 @@
     "@types/react-select": "^4.0.13"
   },
   "dependencies": {
-    "jquery-ui": "1.12.1",
+    "jquery-ui": "1.13.2",
     "jstat": "^1.9.4",
     "react-highlight-words": "^0.17.0",
     "react-select": "^4.1.0",
