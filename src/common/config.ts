@@ -185,9 +185,7 @@ export const tissue: IDataSourceConfig = {
   },
 };
 
-function toChromosomes(categories: (string | Partial<ICategory>)[]) {
-  const mappedCategories: Partial<ICategory>[] = categories.map((category) => (typeof category === 'string' ? { name: category, label: category } : category));
-
+function toChromosomes(categories: Partial<ICategory>[]) {
   const order = new Map<string, number>();
   for (let i = 1; i <= 22; ++i) {
     order.set(String(i), i);
@@ -196,7 +194,7 @@ function toChromosomes(categories: (string | Partial<ICategory>)[]) {
   order.set('y', 24);
   order.set('mt', 25);
 
-  mappedCategories.sort((a, b) => {
+  categories.sort((a, b) => {
     const an = a.label.toLowerCase();
     const bn = b.label.toLowerCase();
     const ai = order.get(an);
@@ -213,7 +211,7 @@ function toChromosomes(categories: (string | Partial<ICategory>)[]) {
     return ai - bi;
   });
 
-  return mappedCategories.map((d, i) => ({ name: d.name, label: d.label, value: i }));
+  return categories;
 }
 
 export const gene: IDataSourceConfig = {
@@ -231,7 +229,10 @@ export const gene: IDataSourceConfig = {
       ColumnDescUtils.stringCol('symbol', { label: 'Symbol', width: 120 }),
       ColumnDescUtils.stringCol('id', { label: 'Ensembl' }),
       ColumnDescUtils.stringCol('name', { label: 'Name' }),
-      ColumnDescUtils.categoricalCol('chromosome', toChromosomes(find('chromosome').categories), { label: 'Chromosome' }),
+      ColumnDescUtils.categoricalCol('chromosome', find('chromosome').categories, {
+        label: 'Chromosome',
+        extras: { categoryOrder: toChromosomes },
+      }),
       ColumnDescUtils.categoricalCol('biotype', find('biotype').categories, { label: 'Biotype' }),
       ColumnDescUtils.categoricalCol(
         'strand',
