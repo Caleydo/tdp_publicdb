@@ -17335,6 +17335,46 @@ __metadata:
   languageName: node
   linkType: hard
 
+"tdp_core@npm:^23.0.1":
+  version: 23.0.1
+  resolution: "tdp_core@npm:23.0.1"
+  dependencies:
+    "@popperjs/core": ^2.9.3
+    "@swc/jest": ^0.2.24
+    "@types/bootstrap": ~5.0.15
+    "@types/d3-hexbin": ^0.2.3
+    "@types/d3v3": "npm:@types/d3@~3.5.36"
+    "@types/d3v7": "npm:@types/d3@^7.4.0"
+    "@types/jquery": ~3.5.5
+    "@types/papaparse": ~5.3.0
+    "@types/react": ~18.2.0
+    "@types/react-dom": ~18.2.0
+    "@types/select2": 4.0.44
+    bootstrap: ~5.1.0
+    core-js: 2.6.5
+    crypto-js: ^4.0.0
+    d3-hexbin: ^0.2.2
+    d3v3: "npm:d3@~3.5.17"
+    d3v7: "npm:d3@^7.4.0"
+    jquery: ~3.5.1
+    lodash: ~4.17.20
+    marked: ~3.0.2
+    md5: ^2.3.0
+    papaparse: ~5.3.0
+    popper.js: ^1.15.0
+    react: ~18.2.0
+    react-dom: ~18.2.0
+    react-highlight-words: ^0.17.0
+    react-select: ^4.3.1
+    select2: ~4.0.13
+    select2-bootstrap-theme: 0.1.0-beta.9
+    use-deep-compare-effect: ^1.8.0
+    visyn_core: ^7.0.0
+    visyn_scripts: ^7.0.1
+  checksum: 7eb8d90b1b131c93160c2c50816279a6e25039f1f489774046881e8b12b30418a98538c568bfcfd9fe6256462f7882a4da3508b0bcca6cd92e7570d474858cb9
+  languageName: node
+  linkType: hard
+
 "tdp_publicdb@workspace:.":
   version: 0.0.0-use.local
   resolution: "tdp_publicdb@workspace:."
@@ -17348,6 +17388,7 @@ __metadata:
     react-select-async-paginate: ^0.5.3
     react-select-event: ^5.5.1
     react-virtualized: ^9.22.3
+    tdp_core: ^23.0.1
     visyn_scripts: ^7.0.1
   dependenciesMeta:
     ordino:
@@ -18278,6 +18319,51 @@ __metadata:
     use-deep-compare-effect: ^1.8.0
     visyn_scripts: "git+ssh://git@github.com/datavisyn/visyn_scripts#develop"
   checksum: fa426d15fe3551148317c400a9ddb518b9463c457aa91472f408ee741c079e8b0abeb504566c7e4e87bd3afd1dd27a04b68d63c4f193818be84611e9bdeb1bd2
+  languageName: node
+  linkType: hard
+
+"visyn_core@npm:^7.0.0":
+  version: 7.0.1
+  resolution: "visyn_core@npm:7.0.1"
+  dependencies:
+    "@emotion/react": ^11.9.3
+    "@fortawesome/fontawesome-free": ^6.1.1
+    "@fortawesome/fontawesome-svg-core": ^6.1.2
+    "@fortawesome/free-regular-svg-icons": ^6.1.2
+    "@fortawesome/free-solid-svg-icons": ^6.1.2
+    "@fortawesome/react-fontawesome": ^0.2.0
+    "@mantine/core": ~6.0.19
+    "@mantine/dates": ~6.0.19
+    "@mantine/dropzone": ~6.0.19
+    "@mantine/form": ~6.0.19
+    "@mantine/hooks": ~6.0.19
+    "@mantine/modals": ~6.0.19
+    "@mantine/notifications": ~6.0.19
+    "@mantine/styles": ~6.0.19
+    "@mantine/tiptap": ~6.0.19
+    "@types/d3-hexbin": ^0.2.3
+    "@types/d3v7": "npm:@types/d3@^7.4.0"
+    "@types/plotly.js-dist-min": ^2.3.0
+    "@types/react": ^18.2.0
+    "@types/react-dom": ^18.2.0
+    "@types/react-plotly.js": ^2.5.0
+    arquero: ^5.2.0
+    d3-force-boundary: ^0.0.3
+    d3-hexbin: ^0.2.2
+    d3v7: "npm:d3@^7.4.0"
+    i18next: ^22.4.15
+    jstat: ^1.9.6
+    lineupjs: 4.9.0
+    lodash: ~4.17.20
+    plotly.js-dist-min: ~2.12.0
+    react: ~18.2.0
+    react-dom: ~18.2.0
+    react-highlight-words: ^0.17.0
+    react-plotly.js: ^2.5.1
+    react-spring: ^9.7.1
+    use-deep-compare-effect: ^1.8.0
+    visyn_scripts: ^7.0.1
+  checksum: 605a96909218b880860c901e3f6cfcd3f7d95fa4106b163bc08f0ab1b5b8df1ae0ca0fbb5b8cf3a6548cbe0c5d5c1c011910f16984e632cce73d64efea0f5ac3
   languageName: node
   linkType: hard
 
