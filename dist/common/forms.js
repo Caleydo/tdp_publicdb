@@ -10,7 +10,7 @@ import { GeneUtils } from './GeneUtils';
  * List of ids for parameter form elements
  * Reuse this ids and activate the `useSession` option for form elements to have the same selectedIndex between different views
  */
-class ParameterFormIds {
+export class ParameterFormIds {
 }
 ParameterFormIds.DATA_SOURCE = 'data_source';
 ParameterFormIds.GENE_SYMBOL = 'gene_symbol';
@@ -28,7 +28,6 @@ ParameterFormIds.COMPARISON_VALUE = 'comparison_value';
 ParameterFormIds.COMPARISON_CN = 'comparison_cn';
 ParameterFormIds.SCORE_FORCE_DATASET_SIZE = 'maxDirectFilterRows';
 ParameterFormIds.COLOR_CODING = 'form_color_coding';
-export { ParameterFormIds };
 export const COMPARISON_OPERATORS = [
     { name: '&lt; less than', value: '<', data: '<' },
     { name: '&lt;= less equal', value: '<=', data: '<=' },

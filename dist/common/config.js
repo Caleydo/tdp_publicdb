@@ -140,7 +140,6 @@ export const tissue = {
     },
 };
 function toChromosomes(categories) {
-    const mappedCategories = categories.map((category) => (typeof category === 'string' ? { name: category, label: category } : category));
     const order = new Map();
     for (let i = 1; i <= 22; ++i) {
         order.set(String(i), i);
@@ -148,7 +147,7 @@ function toChromosomes(categories) {
     order.set('x', 23);
     order.set('y', 24);
     order.set('mt', 25);
-    mappedCategories.sort((a, b) => {
+    categories.sort((a, b) => {
         const an = a.label.toLowerCase();
         const bn = b.label.toLowerCase();
         const ai = order.get(an);
@@ -164,7 +163,7 @@ function toChromosomes(categories) {
         }
         return ai - bi;
     });
-    return mappedCategories.map((d, i) => ({ name: d.name, label: d.label, value: i }));
+    return categories;
 }
 export const gene = {
     idType: Categories.GENE_IDTYPE,
@@ -181,7 +180,10 @@ export const gene = {
             ColumnDescUtils.stringCol('symbol', { label: 'Symbol', width: 120 }),
             ColumnDescUtils.stringCol('id', { label: 'Ensembl' }),
             ColumnDescUtils.stringCol('name', { label: 'Name' }),
-            ColumnDescUtils.categoricalCol('chromosome', toChromosomes(find('chromosome').categories), { label: 'Chromosome' }),
+            ColumnDescUtils.categoricalCol('chromosome', find('chromosome').categories, {
+                label: 'Chromosome',
+                extras: { categoryOrder: toChromosomes },
+            }),
             ColumnDescUtils.categoricalCol('biotype', find('biotype').categories, { label: 'Biotype' }),
             ColumnDescUtils.categoricalCol('strand', [
                 { label: 'reverse strand', name: String(-1) },
