@@ -72,7 +72,7 @@
     "react-dom": "~18.2.0"
   },
   "optionalDependencies": {
-    "ordino": "git+ssh://git@github.com:Caleydo/ordino#develop"
+    "ordino": "git+ssh://git@github.com:Caleydo/ordino#semver:^14.0.0"
   },
   "visyn": {
     "entries": {

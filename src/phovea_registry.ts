@@ -12,6 +12,7 @@ import reg from './phovea';
  */
 /// #if include('ordino')
 import 'ordino/dist/phovea_registry';
+import 'tdp_core/dist/phovea_registry';
 /// #endif
 // self
 PluginRegistry.getInstance().register('tdp_publicdb', reg);
