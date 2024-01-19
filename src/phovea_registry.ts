@@ -16,7 +16,7 @@ import 'tdp_core/dist/phovea_registry';
 try {
   // As ordino is an optional dependency, we can't import it directly: https://github.com/webpack/webpack/issues/15957
   // eslint-disable-next-line global-require, @typescript-eslint/no-var-requires
-  require('ordino/phovea_registry');
+  require('ordino/dist/phovea_registry');
 } catch (e) {
   console.error("Failed to load 'visyn_pro/phovea_registry'", e);
 }
