@@ -18,7 +18,7 @@ try {
   // eslint-disable-next-line global-require, @typescript-eslint/no-var-requires
   require('ordino/dist/phovea_registry');
 } catch (e) {
-  console.error("Failed to load 'visyn_pro/phovea_registry'", e);
+  console.error("Failed to load 'ordino/phovea_registry'", e);
 }
 
 /// #endif
