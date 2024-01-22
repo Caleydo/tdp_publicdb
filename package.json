@@ -63,7 +63,7 @@
     "react-select-event": "^5.5.1",
     "react-virtualized": "^9.22.3",
     "tdp_core": "^20.1.0",
-    "visyn_scripts": "^4.1.0"
+    "visyn_scripts": "^7.0.1"
   },
   "resolutions": {
     "@types/react": "~18.2.0",
