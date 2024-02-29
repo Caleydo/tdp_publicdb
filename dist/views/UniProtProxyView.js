@@ -7,7 +7,7 @@ import { GeneProxyView } from './GeneProxyView';
 /**
  * helper view for proxying an existing external website
  */
-class UniProtProxyView extends GeneProxyView {
+export class UniProtProxyView extends GeneProxyView {
     initImpl() {
         super.initImpl();
         this.$node.classed('proxy_view', true);
@@ -117,5 +117,4 @@ class UniProtProxyView extends GeneProxyView {
 }
 UniProtProxyView.SELECTED_UNIPROT_ITEM = 'externalUniProt';
 UniProtProxyView.OUTPUT_IDTYPE = 'UniProt_human';
-export { UniProtProxyView };
 //# sourceMappingURL=UniProtProxyView.js.map

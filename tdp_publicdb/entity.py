@@ -16,7 +16,7 @@ Entity = namedtuple(
 
 
 def _gene_columns(query):
-    return query.column("biotype", type="categorical").column("chromosome", type="categorical")
+    return query.column("biotype", type="categorical", categories=None).column("chromosome", type="categorical", categories=None)
 
 
 gene = Entity(
@@ -37,20 +37,19 @@ gene = Entity(
 
 def _tissue_columns(query):
     return (
-        query.column("species", type="categorical")
-        .column("tumortype", type="categorical")
-        .column("organ", type="categorical")
-        .column("gender", type="categorical")
+        query.column("species", type="categorical", categories=None)
+        .column("tumortype", type="categorical", categories=None)
+        .column("organ", type="categorical", categories=None)
+        .column("gender", type="categorical", categories=None)
         .column("tumortype_adjacent", type="string")
-        .column("vendorname", type="categorical")
-        .column("race", type="categorical")
-        .column("ethnicity", type="categorical")
+        .column("vendorname", type="categorical", categories=None)
+        .column("race", type="categorical", categories=None)
+        .column("ethnicity", type="categorical", categories=None)
         .column("age", type="number")
         .column("days_to_death", type="number")
         .column("days_to_last_followup", type="number")
         .column(
             "vital_status",
-            type="categorical",
             categories=[dict(name="true", label="Alive", color="white"), dict(name="false", label="Deceased", color="black")],
         )
         .column("height", type="number")
@@ -58,10 +57,10 @@ def _tissue_columns(query):
         .column("bmi", type="number")
         .column("tumorpurity", type="number")
         .column("microsatellite_stability_score", type="number")
-        .column("microsatellite_stability_class", type="categorical")
+        .column("microsatellite_stability_class", type="categorical", categories=None)
         .column("mutational_fraction", type="number")
-        .column("hla_a_allele1", type="categorical")
-        .column("hla_a_allele2", type="categorical")
+        .column("hla_a_allele1", type="categorical", categories=None)
+        .column("hla_a_allele2", type="categorical", categories=None)
     )
 
 
@@ -106,20 +105,20 @@ tissue = Entity(
 
 def _cellline_columns(query):
     return (
-        query.column("tumortype", type="categorical")
-        .column("organ", type="categorical")
-        .column("gender", type="categorical")
-        .column("metastatic_site", type="categorical")
-        .column("histology_type", type="categorical")
-        .column("morphology", type="categorical")
-        .column("growth_type", type="categorical")
-        .column("age_at_surgery", type="categorical")
+        query.column("tumortype", type="categorical", categories=None)
+        .column("organ", type="categorical", categories=None)
+        .column("gender", type="categorical", categories=None)
+        .column("metastatic_site", type="categorical", categories=None)
+        .column("histology_type", type="categorical", categories=None)
+        .column("morphology", type="categorical", categories=None)
+        .column("growth_type", type="categorical", categories=None)
+        .column("age_at_surgery", type="categorical", categories=None)
         .column("cosmicid", type="number")
         .column("mutational_fraction", type="number")
         .column("microsatellite_stability_score", type="number")
-        .column("microsatellite_stability_class", type="categorical")
-        .column("hla_a_allele1", type="categorical")
-        .column("hla_a_allele2", type="categorical")
+        .column("microsatellite_stability_class", type="categorical", categories=None)
+        .column("hla_a_allele1", type="categorical", categories=None)
+        .column("hla_a_allele2", type="categorical", categories=None)
     )
 
 
